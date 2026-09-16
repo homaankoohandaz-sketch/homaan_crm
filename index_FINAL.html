@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بانک فایل هومان</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<style>
+  :root{
+    --bg:#F7F5F1;
+    --surface:#FFFFFF;
+    --ink:#1B2430;
+    --ink-soft:#5B6472;
+    --border:#E2DFD6;
+    --navy:#1F3A4D;
+    --navy-dark:#132531;
+    --teal:#0F5C4F;
+    --teal-soft:#E3F0EC;
+    --amber:#B9752B;
+    --amber-soft:#FBF0E1;
+    --red:#A23B2E;
+    --red-soft:#FBEAE6;
+    --radius:10px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Vazirmatn',sans-serif;background:var(--bg);color:var(--ink);}
+  input,select,textarea,button{font-family:inherit;font-size:14px;}
+  h1,h2,h3{font-weight:600;margin:0;}
+
+  /* ---------- Auth screen ---------- */
+  #authScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+  .authCard{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px 28px;width:100%;max-width:380px;}
+  .authTitle{font-size:20px;color:var(--navy-dark);margin-bottom:4px;}
+  .authSub{color:var(--ink-soft);font-size:13px;margin-bottom:24px;}
+  .tabs{display:flex;gap:8px;margin-bottom:20px;border-bottom:1px solid var(--border);}
+  .tab{flex:1;text-align:center;padding:10px 0;cursor:pointer;color:var(--ink-soft);border-bottom:2px solid transparent;font-size:14px;}
+  .tab.active{color:var(--navy-dark);border-color:var(--teal);font-weight:600;}
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:12px;color:var(--ink-soft);margin-bottom:6px;}
+  .field input{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--bg);}
+  .btnPrimary{width:100%;padding:11px;border:none;border-radius:8px;background:var(--navy);color:#fff;font-weight:600;cursor:pointer;}
+  .btnPrimary:hover{background:var(--navy-dark);}
+  .authMsg{margin-top:12px;font-size:13px;text-align:center;}
+  .authMsg.err{color:var(--red);}
+  .authMsg.ok{color:var(--teal);}
+
+  /* ---------- App shell ---------- */
+  #appScreen{display:none;min-height:100vh;}
+  header.topbar{background:var(--navy);color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;}
+  header.topbar .brand{font-size:16px;font-weight:600;}
+  header.topbar .userbox{display:flex;align-items:center;gap:10px;font-size:13px;}
+  .roleBadge{background:rgba(255,255,255,.15);padding:3px 10px;border-radius:20px;font-size:11px;}
+  .signout{background:none;border:1px solid rgba(255,255,255,.35);color:#fff;padding:6px 12px;border-radius:8px;cursor:pointer;font-size:12px;}
+
+  nav.tabbar{display:flex;overflow-x:auto;background:var(--surface);border-bottom:1px solid var(--border);}
+  nav.tabbar button{flex-shrink:0;padding:13px 16px;background:none;border:none;cursor:pointer;font-size:13px;color:var(--ink-soft);border-bottom:2px solid transparent;white-space:nowrap;}
+  nav.tabbar button.active{color:var(--navy-dark);border-color:var(--teal);font-weight:600;}
+
+  main{padding:16px;max-width:960px;margin:0 auto;}
+  .sectionHead{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+  .sectionHead h2{font-size:17px;color:var(--navy-dark);}
+  .btnAdd{background:var(--teal);color:#fff;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;}
+  .btnAdd:hover{opacity:.9;}
+
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;}
+  .card .row1{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;}
+  .card .title{font-size:14px;font-weight:600;color:var(--ink);}
+  .card .meta{font-size:12px;color:var(--ink-soft);margin-top:4px;line-height:1.8;}
+  .badge{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600;}
+  .badge.active{background:var(--teal-soft);color:var(--teal);}
+  .badge.pending{background:var(--amber-soft);color:var(--amber);}
+  .badge.inactive{background:var(--red-soft);color:var(--red);}
+  .cardActions{display:flex;gap:8px;margin-top:10px;}
+  .iconBtn{border:1px solid var(--border);background:var(--bg);padding:5px 11px;border-radius:7px;cursor:pointer;font-size:12px;color:var(--ink-soft);}
+  .iconBtn.danger{color:var(--red);border-color:var(--red-soft);}
+  .empty{text-align:center;color:var(--ink-soft);padding:40px 10px;font-size:13px;}
+
+  /* ---------- Modal ---------- */
+  .overlay{display:none;position:fixed;inset:0;background:rgba(20,25,32,.45);align-items:center;justify-content:center;padding:16px;z-index:50;}
+  .overlay.show{display:flex;}
+  .modal{background:var(--surface);border-radius:14px;padding:22px;width:100%;max-width:440px;max-height:88vh;overflow-y:auto;}
+  .modal h3{font-size:16px;margin-bottom:16px;color:var(--navy-dark);}
+  .modal .field input,.modal .field select,.modal .field textarea{width:100%;padding:9px 11px;border:1px solid var(--border);border-radius:7px;background:var(--bg);}
+  .modal .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .modalActions{display:flex;gap:8px;margin-top:16px;}
+  .btnGhost{flex:1;padding:10px;border:1px solid var(--border);background:none;border-radius:8px;cursor:pointer;color:var(--ink-soft);}
+  .btnSave{flex:1;padding:10px;border:none;background:var(--teal);color:#fff;border-radius:8px;cursor:pointer;font-weight:600;}
+
+  .loading{text-align:center;padding:30px;color:var(--ink-soft);font-size:13px;}
+</style>
+</head>
+<body>
+
+<!-- ============== AUTH SCREEN ============== -->
+<div id="authScreen">
+  <div class="authCard">
+    <div class="authTitle">بانک فایل هومان</div>
+    <div class="authSub">ورود یا ثبت‌نام برای دسترسی به سامانه</div>
+    <div class="tabs">
+      <div class="tab active" data-mode="signin">ورود</div>
+      <div class="tab" data-mode="signup">ثبت‌نام</div>
+    </div>
+    <div class="field"><label>ایمیل</label><input id="authEmail" type="email" placeholder="you@example.com"></div>
+    <div class="field"><label>رمز عبور</label><input id="authPass" type="password" placeholder="حداقل ۶ کاراکتر"></div>
+    <div class="field" id="fullNameField" style="display:none;"><label>نام و نام خانوادگی</label><input id="authName" type="text" placeholder="نام کامل"></div>
+    <button class="btnPrimary" id="authSubmit">ورود</button>
+    <div class="authMsg" id="authMsg"></div>
+  </div>
+</div>
+
+<!-- ============== APP SCREEN ============== -->
+<div id="appScreen">
+  <header class="topbar">
+    <div class="brand">بانک فایل هومان</div>
+    <div class="userbox">
+      <span id="userName"></span>
+      <span class="roleBadge" id="userRole"></span>
+      <button class="signout" id="signOutBtn">خروج</button>
+    </div>
+  </header>
+  <nav class="tabbar" id="tabbar"></nav>
+  <main id="mainContent"><div class="loading">در حال بارگذاری...</div></main>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal" id="modalBody"></div>
+</div>
+<input type="file" id="excelFileInput" accept=".xlsx,.xls" style="display:none">
+
+<script>
+const SUPABASE_URL = "https://beuestoewletjsgmigmf.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJldWVzdG9ld2xldGpzZ21pZ21mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc5ODE0MDAsImV4cCI6MjEwMzU1NzQwMH0.oYeA3TvkHiNW10ogKMzhT91PIT1gtjN99lobpj-tOPw";
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+let currentUser = null;
+let currentProfile = null; // { role, full_name, ... }
+let currentTab = 'dashboard';
+
+/* ---------------- AUTH ---------------- */
+let authMode = 'signin';
+document.querySelectorAll('.tab').forEach(t=>{
+  t.onclick = ()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    authMode = t.dataset.mode;
+    document.getElementById('fullNameField').style.display = authMode==='signup' ? 'block':'none';
+    document.getElementById('authSubmit').textContent = authMode==='signup' ? 'ثبت‌نام' : 'ورود';
+    document.getElementById('authMsg').textContent = '';
+  };
+});
+
+document.getElementById('authSubmit').onclick = async ()=>{
+  const email = document.getElementById('authEmail').value.trim().toLowerCase();
+  const password = document.getElementById('authPass').value;
+  const msg = document.getElementById('authMsg');
+  msg.className='authMsg'; msg.textContent='';
+  if(!email || !password){ msg.textContent='ایمیل و رمز عبور را وارد کنید'; msg.classList.add('err'); return; }
+
+  if(authMode==='signup'){
+    const full_name = document.getElementById('authName').value.trim();
+    if(!full_name){ msg.textContent='نام و نام خانوادگی را وارد کنید'; msg.classList.add('err'); return; }
+    if(password.length < 6){ msg.textContent='رمز عبور باید حداقل ۶ کاراکتر باشد'; msg.classList.add('err'); return; }
+    const { data, error } = await sb.auth.signUp({
+      email,
+      password,
+      options:{ data:{ full_name } }
+    });
+    if(error){ msg.textContent = error.message; msg.classList.add('err'); return; }
+    if(data.session){ await afterLogin(); }
+    else { msg.textContent='ثبت‌نام انجام شد. اگر تایید ایمیل فعال باشد، ایمیل خود را بررسی کنید.'; msg.classList.add('ok'); }
+  } else {
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+    if(error){ msg.textContent = 'ورود ناموفق: ' + error.message; msg.classList.add('err'); return; }
+    await afterLogin();
+  }
+};
+
+document.getElementById('signOutBtn').onclick = async ()=>{
+  try{
+    await sb.from('activity_logs').insert({ actor_id: currentUser.id, actor_name: currentProfile?.full_name, action:'logout', table_name:'auth', record_id: currentUser.id });
+  }catch(e){}
+  await sb.auth.signOut();
+  location.reload();
+};
+
+async function afterLogin(){
+  try{
+    const { data:{ user }, error:userError } = await sb.auth.getUser();
+    if(userError || !user) throw userError || new Error('کاربر احراز هویت نشده است.');
+    currentUser = user;
+
+    const { data: profile, error } = await sb.from('app_roles')
+      .select('*').eq('user_id', user.id).single();
+
+    if(error || !profile){
+      document.getElementById('authMsg').textContent = 'پروفایل کاربری پیدا نشد. چند لحظه صبر کنید و دوباره تلاش کنید.';
+      document.getElementById('authMsg').className='authMsg err';
+      return;
+    }
+
+    if(profile.active !== true){
+      await sb.auth.signOut();
+      currentUser = null;
+      currentProfile = null;
+      document.getElementById('authMsg').textContent = 'دسترسی این کاربر غیرفعال است.';
+      document.getElementById('authMsg').className='authMsg err';
+      return;
+    }
+
+    currentProfile = profile;
+    document.getElementById('authScreen').style.display='none';
+  document.getElementById('appScreen').style.display='block';
+  document.getElementById('userName').textContent = profile.full_name || user.email;
+  document.getElementById('userRole').textContent = roleLabel(profile.role);
+  try{
+    await sb.from('activity_logs').insert({ actor_id: user.id, actor_name: profile.full_name, action:'login', table_name:'auth', record_id: user.id });
+  }catch(e){}
+    buildTabs();
+    await renderTab('dashboard');
+  }catch(e){
+    console.error(e);
+    currentUser = null;
+    currentProfile = null;
+    document.getElementById('authScreen').style.display='flex';
+    document.getElementById('appScreen').style.display='none';
+    document.getElementById('authMsg').textContent = 'خطا در بارگذاری حساب کاربری. دوباره تلاش کنید.';
+    document.getElementById('authMsg').className='authMsg err';
+  }
+}
+
+
+function roleLabel(r){
+  return r==='owner' ? 'مالک سیستم' : r==='staff' ? 'کارمند' : 'مشاهده‌گر';
+}
+function canWrite(){
+  return !!currentProfile && currentProfile.active === true &&
+    (currentProfile.role === 'owner' || currentProfile.role === 'staff');
+}
+function isOwner(){
+  return !!currentProfile && currentProfile.active === true && currentProfile.role === 'owner';
+}
+function escapeHtml(value){
+  return String(value ?? '')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#039;');
+}
+function safeValue(value){
+  return escapeHtml(value);
+}
+function showError(message){
+  console.error(message);
+  alert('خطا: ' + (message || 'خطای نامشخص'));
+}
+
+/* ---------------- TABS ---------------- */
+const TABS = [
+  { id:'dashboard', label:'داشبورد' },
+  { id:'properties', label:'املاک' },
+  { id:'leads', label:'خواهان‌ها' },
+  { id:'calendar', label:'تقویم' },
+  { id:'tasks', label:'وظایف' },
+  { id:'deals', label:'معاملات' },
+  { id:'owners', label:'مالکین' },
+  { id:'users', label:'کاربران', ownerOnly:true },
+  { id:'logs', label:'لاگ فعالیت', ownerOnly:true },
+];
+
+function buildTabs(){
+  const bar = document.getElementById('tabbar');
+  bar.innerHTML = '';
+  TABS.filter(t=> !t.ownerOnly || isOwner()).forEach(t=>{
+    const b = document.createElement('button');
+    b.textContent = t.label;
+    b.className = t.id===currentTab ? 'active':'';
+    b.onclick = ()=> renderTab(t.id);
+    b.dataset.tab = t.id;
+    bar.appendChild(b);
+  });
+}
+
+async function renderTab(tabId){
+  const requestedTab = TABS.find(t => t.id === tabId);
+  if(requestedTab?.ownerOnly && !isOwner()) tabId = 'dashboard';
+  currentTab = tabId;
+  document.querySelectorAll('#tabbar button').forEach(b=> b.classList.toggle('active', b.dataset.tab===tabId));
+  const main = document.getElementById('mainContent');
+  main.innerHTML = '<div class="loading">در حال بارگذاری...</div>';
+  if(tabId==='dashboard') await renderDashboard();
+  else if(tabId==='properties') await renderProperties();
+  else if(tabId==='leads') await renderLeads();
+  else if(tabId==='calendar') await renderAppointments();
+  else if(tabId==='tasks') await renderTasks();
+  else if(tabId==='deals') await renderDeals();
+  else if(tabId==='owners') await renderOwners();
+  else if(tabId==='users') await renderUsers();
+  else if(tabId==='logs') await renderLogs();
+}
+
+function sectionHeader(title, addLabel, onAdd){
+  const wrap = document.createElement('div');
+  wrap.className='sectionHead';
+  wrap.innerHTML = `<h2>${escapeHtml(title)}</h2>`;
+  if(canWrite() && addLabel){
+    const btn = document.createElement('button');
+    btn.className='btnAdd'; btn.textContent = addLabel;
+    btn.onclick = onAdd;
+    wrap.appendChild(btn);
+  }
+  return wrap;
+}
+
+/* ---------------- DASHBOARD ---------------- */
+async function renderDashboard(){
+  const main = document.getElementById('mainContent'); main.innerHTML='';
+  main.appendChild(sectionHeader('داشبورد', null, null));
+
+  const todayStart = new Date(); todayStart.setHours(0,0,0,0);
+  const todayEnd = new Date(); todayEnd.setHours(23,59,59,999);
+  const [leadsToday, apptsToday, tasksToday, pendingLeads] = await Promise.all([
+    sb.from('leads').select('id', {count:'exact', head:true}).gte('created_at', todayStart.toISOString()),
+    sb.from('appointments').select('*').gte('scheduled_at', todayStart.toISOString()).lte('scheduled_at', todayEnd.toISOString()).order('scheduled_at'),
+    sb.from('tasks').select('*').eq('status','pending').lte('due_date', todayEnd.toISOString()).order('due_date'),
+    sb.from('leads').select('id', {count:'exact', head:true}).eq('status','active'),
+  ]);
+
+  const statsWrap = document.createElement('div');
+  statsWrap.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;';
+  const stat = (label, value)=> `<div class="card" style="text-align:center;"><div class="meta">${label}</div><div style="font-size:22px;font-weight:700;color:var(--navy-dark);margin-top:4px;">${value}</div></div>`;
+  statsWrap.innerHTML =
+    stat('خواهان جدید امروز', leadsToday.count ?? 0) +
+    stat('وقت‌های امروز', (apptsToday.data||[]).length) +
+    stat('وظایف امروز', (tasksToday.data||[]).length) +
+    stat('خواهان‌های فعال', pendingLeads.count ?? 0);
+  main.appendChild(statsWrap);
+
+  const apptData = apptsToday.data || [];
+  const taskData = tasksToday.data || [];
+  const h1 = document.createElement('div'); h1.className='meta'; h1.style.margin='10px 0 6px'; h1.textContent='📅 برنامه‌ی امروز:';
+  main.appendChild(h1);
+  if(!apptData.length && !taskData.length){
+    main.innerHTML += '<div class="empty">برای امروز چیزی ثبت نشده</div>';
+  } else {
+    apptData.forEach(a=>{
+      const c = document.createElement('div'); c.className='card';
+      c.innerHTML = `<div class="row1"><div class="title">${a.event_type==='request'?'ثبت درخواست':a.event_type==='call'?'تماس':a.event_type==='followup'?'پیگیری':'بازدید'}</div><span class="badge pending">${new Date(a.scheduled_at).toLocaleTimeString('fa-IR',{hour:'2-digit',minute:'2-digit'})}</span></div>`;
+      main.appendChild(c);
+    });
+    taskData.forEach(t=>{
+      const c = document.createElement('div'); c.className='card';
+      c.innerHTML = `<div class="row1"><div class="title">✅ ${escapeHtml(t.title)}</div><span class="badge pending">وظیفه</span></div>`;
+      main.appendChild(c);
+    });
+  }
+}
+
+/* ---------------- TASKS (وظایف) ---------------- */
+async function renderTasks(){
+  const main = document.getElementById('mainContent'); main.innerHTML='';
+  main.appendChild(sectionHeader('وظایف', '+ افزودن وظیفه', ()=>openTaskForm()));
+  const { data, error } = await sb.from('tasks').select('*').order('due_date',{ascending:true}).limit(150);
+  if(error){ main.innerHTML += `<div class="empty">خطا: ${error.message}</div>`; return; }
+  if(!data.length){ main.innerHTML += '<div class="empty">وظیفه‌ای ثبت نشده است</div>'; return; }
+  data.forEach(t=>{
+    const c = document.createElement('div'); c.className='card';
+    const typeLabel = {call:'تماس', followup:'پیگیری', visit:'بازدید', other:'سایر'}[t.task_type]||'سایر';
+    c.innerHTML = `
+      <div class="row1">
+        <div>
+          <div class="title">${escapeHtml(t.title)}</div>
+          <div class="meta">نوع: ${escapeHtml(typeLabel)}${t.due_date? ' | موعد: '+new Date(t.due_date).toLocaleString('fa-IR'):''}</div>
+        </div>
+        <span class="badge ${t.status==='done'?'active':'pending'}">${t.status==='done'?'انجام‌شده':'در انتظار'}</span>
+      </div>
+      <div class="cardActions"></div>`;
+    const actions = c.querySelector('.cardActions');
+    if(canWrite()){
+      if(t.status!=='done'){
+        actions.appendChild(mkIconBtn('انجام شد', async ()=>{
+          await sb.from('tasks').update({ status:'done' }).eq('id', t.id);
+          renderTasks();
+        }));
+      }
+      actions.appendChild(mkIconBtn('ویرایش', ()=>openTaskForm(t)));
+    }
+    if(isOwner()) actions.appendChild(mkIconBtn('حذف', ()=>deleteRow('tasks', t.id, renderTasks), true));
+    main.appendChild(c);
+  });
+}
+function openTaskForm(t){
+  t = t||{};
+  showModal(`
+    <h3>${t.id?'ویرایش وظیفه':'وظیفه جدید'}</h3>
+    <div class="field"><label>عنوان</label><input id="f_title" value="${escapeHtml(t.title||'')}"></div>
+    <div class="grid2">
+      <div class="field"><label>نوع</label>
+        <select id="f_task_type">
+          <option value="call" ${t.task_type==='call'?'selected':''}>تماس</option>
+          <option value="followup" ${t.task_type==='followup'?'selected':''}>پیگیری</option>
+          <option value="visit" ${t.task_type==='visit'?'selected':''}>بازدید</option>
+          <option value="other" ${(!t.task_type||t.task_type==='other')?'selected':''}>سایر</option>
+        </select>
+      </div>
+      <div class="field"><label>موعد انجام</label><input id="f_due_date" type="datetime-local" value="${t.due_date? t.due_date.slice(0,16):''}"></div>
+    </div>
+    <div class="field"><label>توضیحات</label><textarea id="f_description" rows="2">${escapeHtml(t.description||'')}</textarea></div>
+    <div class="modalActions">
+      <button class="btnGhost" id="modalCancel">انصراف</button>
+      <button class="btnSave" id="modalSave">ذخیره</button>
+    </div>
+  `);
+  document.getElementById('modalCancel').onclick = closeModal;
+  document.getElementById('modalSave').onclick = async ()=>{
+    const payload = { title: val('f_title'), task_type: val('f_task_type'), due_date: val('f_due_date')||null, description: val('f_description') };
+    let error;
+    if(t.id) ({ error } = await sb.from('tasks').update(payload).eq('id', t.id));
+    else { payload.created_by = currentUser.id; ({ error } = await sb.from('tasks').insert(payload)); }
+    if(error){ alert('خطا: '+error.message); return; }
+    closeModal(); renderTasks();
+  };
+}
+
+/* ---------------- PROPERTIES ---------------- */
+const PROPERTY_COLUMNS = [
+  { key:'property_code', headers:['کد ملک','کد','property_code'] },
+  { key:'property_name', headers:['عنوان','نام ملک','property_name'] },
+  { key:'request_type', headers:['نوع درخواست','درخواست','request_type','listing_type'] },
+  { key:'property_type', headers:['نوع ملک','property_type'] },
+  { key:'ownership_type', headers:['مالکیت','ownership_type'] },
+  { key:'owner_name', headers:['مالک','نام مالک','owner_name'] },
+  { key:'mobile', headers:['موبایل','موبايل','شماره موبایل','mobile','phone'] },
+  { key:'emergency_phone', headers:['تلفن ضروري','تلفن ضروری','emergency_phone'] },
+  { key:'neighborhood', headers:['محله','neighborhood'] },
+  { key:'street', headers:['خیابان','street'] },
+  { key:'alley_name', headers:['اسم','نام کوچه','alley_name'] },
+  { key:'alley', headers:['کوچه','alley'] },
+  { key:'sub_alley', headers:['فرعی','sub_alley'] },
+  { key:'built_area', headers:['متراژ بنا','زیربنا','built_area'], numeric:true },
+  { key:'land_area', headers:['متراژ زمین','زمین','land_area'], numeric:true },
+  { key:'floor', headers:['طبقه','floor'], numeric:true },
+  { key:'total_floors', headers:['کل طبقات','total_floors'], numeric:true },
+  { key:'bedrooms', headers:['تعداد خواب','خواب','bedrooms'], numeric:true },
+  { key:'building_age', headers:['سن بنا','building_age'], numeric:true },
+  { key:'unit_count', headers:['تعداد واحد','unit_count'], numeric:true },
+  { key:'units_per_floor', headers:['واحد در طبقه','units_per_floor'], numeric:true },
+  { key:'parking_count', headers:['پارکینگ','parking_count'], numeric:true },
+  { key:'storage_count', headers:['انباری','storage_count'], numeric:true },
+  { key:'width', headers:['عرض','عرض ملک','width'], numeric:true },
+  { key:'total_price', headers:['قیمت کل','قيمت کل','total_price'], numeric:true },
+  { key:'price_per_meter', headers:['قیمت متری','قيمت متري','price_per_meter'], numeric:true },
+  { key:'full_deposit', headers:['رهن کامل','full_deposit'], numeric:true },
+  { key:'deposit_amount', headers:['رهن','deposit_amount'], numeric:true },
+  { key:'rent_amount', headers:['اجاره','rent_amount'], numeric:true },
+  { key:'description', headers:['توضیحات','description'] },
+  { key:'entrance_info', headers:['ورودی','entrance_info'] },
+  { key:'regulation', headers:['ضابطه','regulation'] },
+  { key:'status', headers:['وضعیت','وضعیت سیستم','status'] },
+  { key:'activity_status', headers:['وضعیت فعالیت','activity_status'] },
+  { key:'source', headers:['منبع','source'] },
+  { key:'rate', headers:['rate','ریت'] },
+  { key:'year_registered', headers:['سال','year_registered'] },
+  { key:'listing_type', headers:['listing_type'] },
+];
+
+function normalizeHeader(v){
+  return String(v??'').trim().replace(/[يى]/g,'ی').replace(/ك/g,'ک').replace(/[\u200c\u200f]/g,'').replace(/\s+/g,' ').toLowerCase();
+}
+function normalizeDigits(v){
+  return String(v??'').replace(/[۰-۹]/g,d=>String('۰۱۲۳۴۵۶۷۸۹'.indexOf(d))).replace(/[٠-٩]/g,d=>String('٠١٢٣٤٥٦٧٨٩'.indexOf(d)));
+}
+function toNumber(v){
+  if(v===null||v===undefined||v==='') return null;
+  if(typeof v==='number' && Number.isFinite(v)) return v;
+  const s=normalizeDigits(v).replace(/[,٬،\s]/g,'').replace(/تومان|ریال/gi,'');
+  const n=Number(s); return Number.isFinite(n)?n:null;
+}
+function findCell(row, headers){
+  const map={}; Object.keys(row).forEach(k=>map[normalizeHeader(k)]=row[k]);
+  for(const h of headers){ const k=normalizeHeader(h); if(Object.prototype.hasOwnProperty.call(map,k)) return map[k]; }
+  return null;
+}
+
+async function loadXLSX(){
+  if(window.XLSX) return;
+  throw new Error('کتابخانه اکسل بارگذاری نشده است. صفحه را با اینترنت پایدار دوباره باز کنید.');
+}
+async function exportPropertiesToExcel(){
+  try{await loadXLSX();}catch(e){alert(e.message);return;}
+  const {data,error}=await sb.from('properties').select('*').order('created_at',{ascending:false}).limit(5000);
+  if(error){alert('خطا: '+error.message);return;}
+  const rows=data.map(p=>{const r={}; PROPERTY_COLUMNS.forEach(c=>r[c.headers[0]]=p[c.key]??''); return r;});
+  const ws=XLSX.utils.json_to_sheet(rows), wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'املاک'); XLSX.writeFile(wb,'homan-properties-'+new Date().toISOString().slice(0,10)+'.xlsx');
+}
+async function importPropertiesFromExcel(file){
+  try{await loadXLSX();}catch(e){alert(e.message);return;}
+  let rows;
+  try{
+    const wb=XLSX.read(await file.arrayBuffer(),{type:'array',cellDates:false});
+    if(!wb.SheetNames.length) throw new Error('هیچ Sheetای در فایل پیدا نشد');
+    rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:'',raw:true});
+  }catch(e){alert('خواندن اکسل ناموفق بود: '+e.message);return;}
+  if(!rows.length){alert('فایل اکسل خالی است.');return;}
+  const mapped=rows.map(r=>{
+    const o={};
+    PROPERTY_COLUMNS.forEach(c=>{let v=findCell(r,c.headers); if(c.numeric)v=toNumber(v); else if(v!==null&&v!==undefined)v=String(v).trim(); o[c.key]=(v===''?null:v);});
+    o.created_by=currentUser.id; return o;
+  }).filter(o=>o.property_code||o.property_name||o.owner_name||o.mobile||o.street||o.property_type||o.land_area||o.built_area);
+  if(!mapped.length){alert('هیچ ردیف قابل شناسایی پیدا نشد. نام ستون‌های فایل با قالب قابل قبول تطبیق نداشت.');return;}
+  const {data:batch,error:batchError}=await sb.from('import_batches').insert({file_name:file.name,total_rows:rows.length,status:'pending'}).select().single();
+  if(batchError){alert('ثبت گزارش واردات ناموفق بود: '+batchError.message);return;}
+  let success=0, failed=0, errors=[];
+  const CHUNK=100;
+  for(let i=0;i<mapped.length;i+=CHUNK){
+    const chunk=mapped.slice(i,i+CHUNK);
+    const {data,error}=await sb.from('properties').insert(chunk).select('id');
+    if(error){
+      failed+=chunk.length; errors.push(`ردیف‌های ${i+2}-${i+chunk.length+1}: ${error.message}`);
+    } else success+=(data||[]).length;
+  }
+  const duplicate=rows.length-mapped.length;
+  await sb.from('import_batches').update({successful_rows:success,failed_rows:failed,duplicate_rows:duplicate,status:failed?'partial':'success',error_log:errors.join('\n').slice(0,10000)||null}).eq('id',batch.id);
+  alert(`نتیجه واردات\nموفق: ${success}\nناموفق: ${failed}\nردیف‌های خالی/غیرقابل شناسایی: ${duplicate}`);
+  await renderProperties();
+}
+document.getElementById('excelFileInput').addEventListener('change',async e=>{const file=e.target.files?.[0];e.target.value='';if(file)await importPropertiesFromExcel(file);});
+
+async function renderProperties(){
+  const main = document.getElementById('mainContent');
+  main.innerHTML='';
+  const head = document.createElement('div'); head.className='sectionHead';
+  head.innerHTML = '<h2>املاک</h2>';
+  const btnWrap = document.createElement('div');
+  btnWrap.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;';
+  const exportBtn = mkIconBtn('خروجی اکسل', exportPropertiesToExcel);
+  btnWrap.appendChild(exportBtn);
+  if(canWrite()){
+    const importBtn = mkIconBtn('ورودی اکسل', ()=> document.getElementById('excelFileInput').click());
+    btnWrap.appendChild(importBtn);
+    const addBtn = document.createElement('button');
+    addBtn.className='btnAdd'; addBtn.textContent='+ افزودن ملک';
+    addBtn.onclick = ()=> openPropertyForm();
+    btnWrap.appendChild(addBtn);
+  }
+  head.appendChild(btnWrap);
+  main.appendChild(head);
+  const { data, error } = await sb.from('properties').select('*').order('created_at',{ascending:false}).limit(100);
+  if(error){ main.innerHTML += `<div class="empty">خطا: ${error.message}</div>`; return; }
+  if(!data.length){ main.innerHTML += '<div class="empty">هنوز ملکی ثبت نشده است</div>'; return; }
+  data.forEach(p=>{
+    const c = document.createElement('div'); c.className='card';
+    c.innerHTML = `
+      <div class="row1">
+        <div>
+          <div class="title">${escapeHtml(p.property_name || p.property_code || 'بدون عنوان')} ${p.neighborhood ? ' - ' + escapeHtml(p.neighborhood) : ''}</div>
+          <div class="meta">
+            نوع: ${escapeHtml(p.property_type||'-')} | درخواست: ${escapeHtml(p.request_type||'-')} | متراژ: ${p.built_area||'-'}<br>
+            قیمت کل: ${fmtMoney(p.total_price)} | موبایل: ${escapeHtml(p.mobile||'-')}
+          </div>
+        </div>
+        <span class="badge ${p.status==='active'?'active':'pending'}">${escapeHtml(p.status||'نامشخص')}</span>
+      </div>
+      <div class="cardActions"></div>`;
+    const actions = c.querySelector('.cardActions');
+    if(canWrite()){
+      const editBtn = mkIconBtn('ویرایش', ()=>openPropertyForm(p));
+      actions.appendChild(editBtn);
+    }
+    if(isOwner()){
+      const delBtn = mkIconBtn('حذف', ()=>deleteRow('properties', p.id, renderProperties), true);
+      actions.appendChild(delBtn);
+    }
+    main.appendChild(c);
+  });
+}
+
+function openPropertyForm(p){
+  p = p || {};
+  showModal(`
+    <h3>${p.id?'ویرایش ملک':'ملک جدید'}</h3>
+    <div class="grid2">
+      <div class="field"><label>کد ملک</label><input id="f_property_code" value="${escapeHtml(p.property_code||'')}"></div>
+      <div class="field"><label>نام/عنوان</label><input id="f_property_name" value="${escapeHtml(p.property_name||'')}"></div>
+      <div class="field"><label>نوع درخواست</label><input id="f_request_type" placeholder="فروش/رهن/اجاره" value="${escapeHtml(p.request_type||'')}"></div>
+      <div class="field"><label>نوع ملک</label><input id="f_property_type" placeholder="آپارتمان/زمین/..." value="${escapeHtml(p.property_type||'')}"></div>
+      <div class="field"><label>محله</label><input id="f_neighborhood" value="${escapeHtml(p.neighborhood||'')}"></div>
+      <div class="field"><label>خیابان</label><input id="f_street" value="${escapeHtml(p.street||'')}"></div>
+      <div class="field"><label>متراژ زمین</label><input id="f_land_area" type="number" value="${p.land_area||''}"></div>
+      <div class="field"><label>متراژ بنا</label><input id="f_built_area" type="number" value="${p.built_area||''}"></div>
+      <div class="field"><label>تعداد خواب</label><input id="f_bedrooms" type="number" value="${p.bedrooms||''}"></div>
+      <div class="field"><label>قیمت کل</label><input id="f_total_price" type="number" value="${p.total_price||''}"></div>
+      <div class="field"><label>موبایل</label><input id="f_mobile" value="${escapeHtml(p.mobile||'')}"></div>
+      <div class="field"><label>وضعیت</label>
+        <select id="f_status">
+          <option value="active" ${p.status==='active'?'selected':''}>فعال</option>
+          <option value="pending" ${p.status==='pending'?'selected':''}>در انتظار</option>
+          <option value="closed" ${p.status==='closed'?'selected':''}>بسته‌شده</option>
+        </select>
+      </div>
+    </div>
+    <div class="field"><label>توضیحات</label><textarea id="f_description" rows="3">${escapeHtml(p.description||'')}</textarea></div>
+    <div class="modalActions">
+      <button class="btnGhost" id="modalCancel">انصراف</button>
+      <button class="btnSave" id="modalSave">ذخیره</button>
+    </div>
+  `);
+  document.getElementById('modalCancel').onclick = closeModal;
+  document.getElementById('modalSave').onclick = async ()=>{
+    const payload = {
+      property_code: val('f_property_code'), property_name: val('f_property_name'),
+      request_type: val('f_request_type'), property_type: val('f_property_type'),
+      neighborhood: val('f_neighborhood'), street: val('f_street'),
+      land_area: numVal('f_land_area'), built_area: numVal('f_built_area'),
+      bedrooms: numVal('f_bedrooms'), total_price: numVal('f_total_price'),
+      mobile: val('f_mobile'), status: val('f_status'), description: val('f_description'),
+    };
+    let error;
+    if(p.id){
+      payload.updated_by = currentUser.id;
+      ({ error } = await sb.from('properties').update(payload).eq('id', p.id));
+    } else {
+      payload.created_by = currentUser.id;
+      ({ error } = await sb.from('properties').insert(payload));
+    }
+    if(error){ alert('خطا: '+error.message); return; }
+    closeModal(); renderProperties();
+  };
+}
+
+/* ---------------- LEADS (خواهان‌ها) ---------------- */
+async function renderLeads(){
+  const main = document.getElementById('mainContent'); main.innerHTML='';
+  main.appendChild(sectionHeader('خواهان‌ها', '+ افزودن خواهان', ()=>openLeadForm()));
+  const { data, error } = await sb.from('leads').select('*').order('created_at',{ascending:false}).limit(100);
+  if(error){ main.innerHTML += `<div class="empty">خطا: ${error.message}</div>`; return; }
+  if(!data.length){ main.innerHTML += '<div class="empty">هنوز خواهانی ثبت نشده است</div>'; return; }
+  for(const l of data){
+    const c = document.createElement('div'); c.className='card';
+    c.innerHTML = `
+      <div class="row1">
+        <div>
+          <div class="title">${escapeHtml(l.full_name)}</div>
+          <div class="meta">
+            موبایل: ${escapeHtml(l.mobile)} | خواسته: ${escapeHtml(l.desired_property_type)}<br>
+            بودجه: ${fmtMoney(l.budget_min)} تا ${fmtMoney(l.budget_max)}
+          </div>
+        </div>
+        <span class="badge ${l.status==='active'?'active':l.status==='won'?'active':'pending'}">${l.status||'-'}</span>
+      </div>
+      <div class="cardActions"></div>
+      <div class="matchBox" style="margin-top:8px;"></div>`;
+    const actions = c.querySelector('.cardActions');
+    if(canWrite()) actions.appendChild(mkIconBtn('ویرایش', ()=>openLeadForm(l)));
+    if(isOwner()) actions.appendChild(mkIconBtn('حذف', ()=>deleteRow('leads', l.id, renderLeads), true));
+    main.appendChild(c);
+
+    // جست‌وجوی املاک منطبق با خواسته‌ی این خواهان
+    const matchBox = c.querySelector('.matchBox');
+    let q = sb.from('properties').select('id, property_name, property_code, total_price, updated_at')
+      .ilike('property_type', `%${escapeHtml(l.desired_property_type)}%`)
+      .order('updated_at', { ascending:false }).limit(3);
+    if(l.budget_min) q = q.gte('total_price', l.budget_min);
+    if(l.budget_max) q = q.lte('total_price', l.budget_max);
+    const { data: matches } = await q;
+    if(matches && matches.length){
+      matchBox.innerHTML = '<div class="meta" style="margin-bottom:4px;">🔎 املاک منطبق (جدیدترین به‌روزرسانی):</div>' +
+        matches.map(m=>`<div class="meta">• ${escapeHtml(m.property_name||m.property_code)} — ${fmtMoney(m.total_price)}</div>`).join('');
+    }
+  }
+}
+function openLeadForm(l){
+  l = l||{};
+  showModal(`
+    <h3>${l.id?'ویرایش خواهان':'خواهان جدید'}</h3>
+    <div class="field"><label>نام و نام خانوادگی</label><input id="f_full_name" value="${escapeHtml(l.full_name||'')}"></div>
+    <div class="grid2">
+      <div class="field"><label>موبایل *</label><input id="f_mobile" required value="${escapeHtml(l.mobile||'')}"></div>
+      <div class="field"><label>خواسته (نوع ملک مدنظر) *</label><input id="f_desired_property_type" required value="${escapeHtml(l.desired_property_type||'')}"></div>
+      <div class="field"><label>بودجه از</label><input id="f_budget_min" type="number" value="${l.budget_min||''}"></div>
+      <div class="field"><label>بودجه تا</label><input id="f_budget_max" type="number" value="${l.budget_max||''}"></div>
+    </div>
+    <div class="field"><label>وضعیت</label>
+      <select id="f_status">
+        <option value="active" ${l.status==='active'?'selected':''}>فعال</option>
+        <option value="won" ${l.status==='won'?'selected':''}>موفق</option>
+        <option value="lost" ${l.status==='lost'?'selected':''}>منتفی</option>
+      </select>
+    </div>
+    <div class="field"><label>یادداشت</label><textarea id="f_notes" rows="2">${escapeHtml(l.notes||'')}</textarea></div>
+    <div class="modalActions">
+      <button class="btnGhost" id="modalCancel">انصراف</button>
+      <button class="btnSave" id="modalSave">ذخیره</button>
+    </div>
+  `);
+  document.getElementById('modalCancel').onclick = closeModal;
+  document.getElementById('modalSave').onclick = async ()=>{
+    const mobile = val('f_mobile').trim();
+    const desired = val('f_desired_property_type').trim();
+    if(!mobile || !desired){ alert('شماره موبایل و خواسته‌ی خواهان الزامی است'); return; }
+    const payload = {
+      full_name: val('f_full_name'), mobile,
+      desired_property_type: desired,
+      budget_min: numVal('f_budget_min'), budget_max: numVal('f_budget_max'),
+      status: val('f_status'), notes: val('f_notes'),
+    };
+    let error;
+    if(l.id) ({ error } = await sb.from('leads').update(payload).eq('id', l.id));
+    else { payload.created_by = currentUser.id; ({ error } = await sb.from('leads').insert(payload)); }
+    if(error){ alert('خطا: '+error.message); return; }
+    closeModal(); renderLeads();
+  };
+}
+
+/* ---------------- APPOINTMENTS ---------------- */
+async function renderAppointments(){
+  const main = document.getElementById('mainContent'); main.innerHTML='';
+  main.appendChild(sectionHeader('وقت‌های بازدید', '+ افزودن وقت بازدید', ()=>openAppointmentForm()));
+  const { data, error } = await sb.from('appointments').select('*, properties(property_name, property_code), leads(full_name)').order('scheduled_at',{ascending:true}).limit(100);
+  if(error){ main.innerHTML += `<div class="empty">خطا: ${error.message}</div>`; return; }
+  if(!data.length){ main.innerHTML += '<div class="empty">وقت بازدیدی ثبت نشده است</div>'; return; }
+  data.forEach(a=>{
+    const c = document.createElement('div'); c.className='card';
+    c.innerHTML = `
+      <div class="row1">
+        <div>
+          <div class="title">${escapeHtml(a.leads ? a.leads.full_name : 'بدون متقاضی')} - ${escapeHtml(a.properties ? (a.properties.property_name||a.properties.property_code) : 'بدون ملک')}</div>
+          <div class="meta">زمان: ${new Date(a.scheduled_at).toLocaleString('fa-IR')}</div>
+        </div>
+        <span class="badge ${a.status==='done'?'active':a.status==='cancelled'?'inactive':'pending'}">${escapeHtml(a.status||'-')}</span>
+      </div>
+      <div class="cardActions"></div>`;
+    const actions = c.querySelector('.cardActions');
+    if(canWrite()) actions.appendChild(mkIconBtn('ویرایش', ()=>openAppointmentForm(a)));
+    if(isOwner()) actions.appendChild(mkIconBtn('حذف', ()=>deleteRow('appointments', a.id, renderAppointments), true));
+    main.appendChild(c);
+  });
+}
+async function openAppointmentForm(a){
+  a = a||{};
+  const { data: props } = await sb.from('properties').select('id, property_name, property_code').limit(200);
+  const { data: leadsList } = await sb.from('leads').select('id, full_name').limit(200);
+  showModal(`
+    <h3>${a.id?'ویرایش وقت بازدید':'وقت بازدید جدید'}</h3>
+    <div class="field"><label>ملک</label><select id="f_property_id">
+      <option value="">-</option>
+      ${(props||[]).map(p=>`<option value="${escapeHtml(p.id)}" ${a.property_id===p.id?'selected':''}>${escapeHtml(p.property_name||p.property_code)}</option>`).join('')}
+    </select></div>
+    <div class="field"><label>متقاضی</label><select id="f_lead_id">
+      <option value="">-</option>
+      ${(leadsList||[]).map(l=>`<option value="${l.id}" ${a.lead_id===l.id?'selected':''}>${escapeHtml(l.full_name)}</option>`).join('')}
+    </select></div>
+    <div class="field"><label>تاریخ و ساعت</label><input id="f_scheduled_at" type="datetime-local" value="${a.scheduled_at? a.scheduled_at.slice(0,16):''}"></div>
+    <div class="field"><label>وضعیت</label>
+      <select id="f_status">
+        <option value="scheduled" ${a.status==='scheduled'?'selected':''}>برنامه‌ریزی‌شده</option>
+        <option value="done" ${a.status==='done'?'selected':''}>انجام‌شده</option>
+        <option value="cancelled" ${a.status==='cancelled'?'selected':''}>لغو‌شده</option>
+      </select>
+    </div>
+    <div class="field"><label>یادداشت</label><textarea id="f_notes" rows="2">${escapeHtml(a.notes||'')}</textarea></div>
+    <div class="modalActions">
+      <button class="btnGhost" id="modalCancel">انصراف</button>
+      <button class="btnSave" id="modalSave">ذخیره</button>
+    </div>
+  `);
+  document.getElementById('modalCancel').onclick = closeModal;
+  document.getElementById('modalSave').onclick = async ()=>{
+    const payload = {
+      property_id: val('f_property_id')||null, lead_id: val('f_lead_id')||null,
+      scheduled_at: val('f_scheduled_at'), status: val('f_status'), notes: val('f_notes'),
+    };
+    let error;
+    if(a.id) ({ error } = await sb.from('appointments').update(payload).eq('id', a.id));
+    else { payload.created_by = currentUser.id; ({ error } = await sb.from('appointments').insert(payload)); }
+    if(error){ alert('خطا: '+error.message); return; }
+    closeModal(); renderAppointments();
+  };
+}
+
+/* ---------------- DEALS ---------------- */
+async function renderDeals(){
+  const main = document.getElementById('mainContent'); main.innerHTML='';
+  main.appendChild(sectionHeader('معاملات', '+ ثبت معامله', ()=>openDealForm()));
+  const { data, error } = await sb.from('deals').select('*, properties(property_name, property_code)').order('created_at',{ascending:false}).limit(100);
+  if(error){ main.innerHTML += `<div class="empty">خطا: ${error.message}</div>`; return; }
+  if(!data.length){ main.innerHTML += '<div class="empty">معامله‌ای ثبت نشده است</div>'; return; }
+  data.forEach(d=>{
+    const c = document.createElement('div'); c.className='card';
+    c.innerHTML = `
+      <div class="row1">
+        <div>
+          <div class="title">${escapeHtml(d.properties ? (d.properties.property_name||d.properties.property_code) : 'بدون ملک')} - ${escapeHtml(d.deal_type||'-')}</div>
+          <div class="meta">قیمت نهایی: ${fmtMoney(d.final_price)} | کمیسیون: ${fmtMoney(d.commission_amount)}</div>
+        </div>
+        <span class="badge ${d.status==='completed'?'active':'pending'}">${escapeHtml(d.status||'-')}</span>
+      </div>
+      <div class="cardActions"></div>`;
+    const actions = c.querySelector('.cardActions');
+    if(canWrite()) actions.appendChild(mkIconBtn('ویرایش', ()=>openDealForm(d)));
+    if(isOwner()) actions.appendChild(mkIconBtn('حذف', ()=>deleteRow('deals', d.id, renderDeals), true));
+    main.appendChild(c);
+  });
+}
+async function openDealForm(d){
+  d = d||{};
+  const { data: props } = await sb.from('properties').select('id, property_name, property_code').limit(200);
+  showModal(`
+    <h3>${d.id?'ویرایش معامله':'معامله جدید'}</h3>
+    <div class="field"><label>ملک</label><select id="f_property_id">
+      <option value="">-</option>
+      ${(props||[]).map(p=>`<option value="${escapeHtml(p.id)}" ${d.property_id===p.id?'selected':''}>${escapeHtml(p.property_name||p.property_code)}</option>`).join('')}
+    </select></div>
+    <div class="grid2">
+      <div class="field"><label>نوع معامله</label><input id="f_deal_type" placeholder="فروش/اجاره" value="${escapeHtml(d.deal_type||'')}"></div>
+      <div class="field"><label>تاریخ معامله</label><input id="f_deal_date" type="date" value="${d.deal_date||''}"></div>
+      <div class="field"><label>قیمت نهایی</label><input id="f_final_price" type="number" value="${d.final_price||''}"></div>
+      <div class="field"><label>کمیسیون</label><input id="f_commission_amount" type="number" value="${d.commission_amount||''}"></div>
+    </div>
+    <div class="field"><label>وضعیت</label>
+      <select id="f_status">
+        <option value="pending" ${d.status==='pending'?'selected':''}>در انتظار</option>
+        <option value="completed" ${d.status==='completed'?'selected':''}>تکمیل‌شده</option>
+        <option value="cancelled" ${d.status==='cancelled'?'selected':''}>لغو‌شده</option>
+      </select>
+    </div>
+    <div class="modalActions">
+      <button class="btnGhost" id="modalCancel">انصراف</button>
+      <button class="btnSave" id="modalSave">ذخیره</button>
+    </div>
+  `);
+  document.getElementById('modalCancel').onclick = closeModal;
+  document.getElementById('modalSave').onclick = async ()=>{
+    const payload = {
+      property_id: val('f_property_id')||null, deal_type: val('f_deal_type'),
+      deal_date: val('f_deal_date')||null, final_price: numVal('f_final_price'),
+      commission_amount: numVal('f_commission_amount'), status: val('f_status'),
+    };
+    let error;
+    if(d.id) ({ error } = await sb.from('deals').update(payload).eq('id', d.id));
+    else { payload.created_by = currentUser.id; ({ error } = await sb.from('deals').insert(payload)); }
+    if(error){ alert('خطا: '+error.message); return; }
+    closeModal(); renderDeals();
+  };
+}
+
+/* ---------------- OWNERS (property owners) ---------------- */
+async function renderOwners(){
+  const main = document.getElementById('mainContent'); main.innerHTML='';
+  main.appendChild(sectionHeader('مالکین املاک', '+ افزودن مالک', ()=>openOwnerForm()));
+  const { data, error } = await sb.from('owners').select('*').order('created_at',{ascending:false}).limit(100);
+  if(error){ main.innerHTML += `<div class="empty">خطا: ${error.message}</div>`; return; }
+  if(!data.length){ main.innerHTML += '<div class="empty">مالکی ثبت نشده است</div>'; return; }
+  data.forEach(o=>{
+    const c = document.createElement('div'); c.className='card';
+    c.innerHTML = `
+      <div class="row1">
+        <div>
+          <div class="title">${escapeHtml(o.full_name)}</div>
+          <div class="meta">موبایل: ${escapeHtml(o.mobile||'-')} | تلفن: ${escapeHtml(o.phone||'-')}</div>
+        </div>
+      </div>
+      <div class="cardActions"></div>`;
+    const actions = c.querySelector('.cardActions');
+    if(canWrite()) actions.appendChild(mkIconBtn('ویرایش', ()=>openOwnerForm(o)));
+    if(isOwner()) actions.appendChild(mkIconBtn('حذف', ()=>deleteRow('owners', o.id, renderOwners), true));
+    main.appendChild(c);
+  });
+}
+function openOwnerForm(o){
+  o = o||{};
+  showModal(`
+    <h3>${o.id?'ویرایش مالک':'مالک جدید'}</h3>
+    <div class="field"><label>نام و نام خانوادگی</label><input id="f_full_name" value="${escapeHtml(o.full_name||'')}"></div>
+    <div class="grid2">
+      <div class="field"><label>موبایل</label><input id="f_mobile" value="${escapeHtml(o.mobile||'')}"></div>
+      <div class="field"><label>تلفن ثابت</label><input id="f_phone" value="${escapeHtml(o.phone||'')}"></div>
+    </div>
+    <div class="field"><label>یادداشت</label><textarea id="f_notes" rows="2">${escapeHtml(o.notes||'')}</textarea></div>
+    <div class="modalActions">
+      <button class="btnGhost" id="modalCancel">انصراف</button>
+      <button class="btnSave" id="modalSave">ذخیره</button>
+    </div>
+  `);
+  document.getElementById('modalCancel').onclick = closeModal;
+  document.getElementById('modalSave').onclick = async ()=>{
+    const payload = { full_name: val('f_full_name'), mobile: val('f_mobile'), phone: val('f_phone'), notes: val('f_notes') };
+    let error;
+    if(o.id) ({ error } = await sb.from('owners').update(payload).eq('id', o.id));
+    else ({ error } = await sb.from('owners').insert(payload));
+    if(error){ alert('خطا: '+error.message); return; }
+    closeModal(); renderOwners();
+  };
+}
+
+/* ---------------- USERS (owner only) ---------------- */
+async function renderUsers(){
+  const main = document.getElementById('mainContent'); main.innerHTML='';
+  if(!isOwner()){
+    main.innerHTML = '<div class="empty">دسترسی غیرمجاز</div>';
+    return;
+  }
+  main.appendChild(sectionHeader('کاربران', null, null));
+
+  const inviteCard = document.createElement('div'); inviteCard.className='card';
+  inviteCard.innerHTML = `
+    <div class="title" style="margin-bottom:10px;">دعوت با ایمیل مشخص</div>
+    <div class="grid2" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+      <input id="inviteEmail" type="email" placeholder="ایمیل فرد" style="padding:9px 11px;border:1px solid var(--border);border-radius:7px;background:var(--bg);">
+      <select id="inviteRole" style="padding:9px 11px;border:1px solid var(--border);border-radius:7px;background:var(--bg);">
+        <option value="staff">دسترسی کامل (Staff)</option>
+        <option value="viewer">فقط مشاهده (Viewer)</option>
+      </select>
+    </div>
+    <button class="btnAdd" id="inviteBtn" style="margin-top:10px;width:100%;">+ ثبت دعوت</button>
+    <div class="meta" style="margin-top:8px;">با این ایمیل هروقت ثبت‌نام کنه، خودکار همین نقش رو می‌گیره — نیازی به تغییر دستی بعد از ورودش نیست.</div>
+  `;
+  main.appendChild(inviteCard);
+  document.getElementById('inviteBtn').onclick = async ()=>{
+    const email = document.getElementById('inviteEmail').value.trim().toLowerCase();
+    const role = document.getElementById('inviteRole').value;
+    if(!email){ alert('ایمیل را وارد کنید'); return; }
+    if(!['staff','viewer'].includes(role)){ alert('نقش انتخاب‌شده معتبر نیست'); return; }
+    const { error } = await sb.from('invited_emails').upsert({
+      email, role, invited_by: currentUser.id, used_at: null
+    });
+    if(error){ alert('خطا: '+error.message); return; }
+    renderUsers();
+  };
+
+  const { data: invites } = await sb.from('invited_emails').select('*').is('used_at', null).order('created_at',{ascending:false});
+  if(invites && invites.length){
+    const h = document.createElement('div'); h.className='meta'; h.style.margin='14px 0 6px'; h.textContent='دعوت‌های در انتظار:';
+    main.appendChild(h);
+    invites.forEach(inv=>{
+      const c = document.createElement('div'); c.className='card';
+      c.innerHTML = `<div class="row1"><div class="title">${escapeHtml(inv.email)}</div><span class="badge pending">${inv.role==='staff'?'دسترسی کامل':'فقط مشاهده'}</span></div>`;
+      const actions = document.createElement('div'); actions.className='cardActions';
+      actions.appendChild(mkIconBtn('لغو دعوت', async ()=>{
+        await sb.from('invited_emails').delete().eq('email', inv.email);
+        renderUsers();
+      }, true));
+      c.appendChild(actions);
+      main.appendChild(c);
+    });
+  }
+
+  const { data, error } = await sb.from('app_roles').select('*').order('created_at',{ascending:true});
+  if(error){ main.innerHTML += `<div class="empty">خطا: ${error.message}</div>`; return; }
+  data.forEach(u=>{
+    const c = document.createElement('div'); c.className='card';
+    c.innerHTML = `
+      <div class="row1">
+        <div>
+          <div class="title">${escapeHtml(u.full_name||u.email||u.user_id)}</div>
+          <div class="meta">ایمیل: ${escapeHtml(u.email||'-')}</div>
+        </div>
+        <span class="badge ${u.active?'active':'inactive'}">${u.active?'فعال':'غیرفعال'}</span>
+      </div>
+      <div class="cardActions"></div>`;
+    const actions = c.querySelector('.cardActions');
+    if(u.role!=='owner'){
+      const roleSel = document.createElement('select');
+      roleSel.innerHTML = `<option value="staff" ${u.role==='staff'?'selected':''}>دسترسی کامل (Staff)</option>
+                           <option value="viewer" ${u.role==='viewer'?'selected':''}>فقط مشاهده (Viewer)</option>`;
+      roleSel.className='iconBtn';
+      roleSel.onchange = async ()=>{
+        const { error } = await sb.from('app_roles').update({ role: roleSel.value }).eq('user_id', u.user_id);
+        if(error) alert('خطا: '+error.message);
+      };
+      actions.appendChild(roleSel);
+      actions.appendChild(mkIconBtn(u.active?'غیرفعال کردن':'فعال کردن', async ()=>{
+        const { error } = await sb.from('app_roles').update({ active: !u.active }).eq('user_id', u.user_id);
+        if(error){ alert('خطا: '+error.message); return; }
+        renderUsers();
+      }, !u.active));
+    } else {
+      actions.innerHTML = '<span class="meta">مالک سیستم</span>';
+    }
+    main.appendChild(c);
+  });
+}
+
+/* ---------------- ACTIVITY LOG (owner only) ---------------- */
+async function renderLogs(){
+  const main = document.getElementById('mainContent'); main.innerHTML='';
+  if(!isOwner()){
+    main.innerHTML = '<div class="empty">دسترسی غیرمجاز</div>';
+    return;
+  }
+  main.appendChild(sectionHeader('لاگ فعالیت‌ها', null, null));
+  const { data, error } = await sb.from('activity_logs').select('*').order('created_at',{ascending:false}).limit(80);
+  if(error){ main.innerHTML += `<div class="empty">خطا: ${error.message}</div>`; return; }
+  if(!data.length){ main.innerHTML += '<div class="empty">فعالیتی ثبت نشده است</div>'; return; }
+  data.forEach(l=>{
+    const c = document.createElement('div'); c.className='card';
+    c.innerHTML = `
+      <div class="row1">
+        <div>
+          <div class="title">${escapeHtml(l.actor_name||'-')} — ${escapeHtml(actionLabel(l.action))} در ${escapeHtml(tableLabel(l.table_name))}</div>
+          <div class="meta">${new Date(l.created_at).toLocaleString('fa-IR')} | شناسه رکورد: ${escapeHtml(l.record_id||'-')}</div>
+        </div>
+      </div>`;
+    main.appendChild(c);
+  });
+}
+function actionLabel(a){ return a==='insert'?'ثبت': a==='update'?'ویرایش': a==='delete'?'حذف':a; }
+function tableLabel(t){
+  const map = { properties:'املاک', owners:'مالکین', leads:'متقاضیان', deals:'معاملات', appointments:'وقت بازدید', followups:'پیگیری‌ها' };
+  return map[t]||t;
+}
+
+/* ---------------- HELPERS ---------------- */
+function mkIconBtn(label, onClick, danger){
+  const b = document.createElement('button');
+  b.className = 'iconBtn' + (danger?' danger':'');
+  b.textContent = label;
+  b.onclick = onClick;
+  return b;
+}
+async function deleteRow(table, id, refresh){
+  if(!isOwner()){ alert('دسترسی غیرمجاز'); return; }
+  if(!confirm('از حذف این مورد مطمئن هستید؟')) return;
+  const { error } = await sb.from(table).delete().eq('id', id);
+  if(error){ alert('خطا: '+error.message); return; }
+  refresh();
+}
+function val(id){ return document.getElementById(id).value; }
+function numVal(id){ const v = document.getElementById(id).value; return v===''? null : Number(v); }
+function fmtMoney(n){ if(n===null||n===undefined||n==='') return '-'; return Number(n).toLocaleString('fa-IR'); }
+
+function showModal(html){
+  document.getElementById('modalBody').innerHTML = html;
+  document.getElementById('overlay').classList.add('show');
+}
+function closeModal(){ document.getElementById('overlay').classList.remove('show'); }
+document.getElementById('overlay').addEventListener('click', (e)=>{ if(e.target.id==='overlay') closeModal(); });
+
+/* ---------------- BOOTSTRAP: check existing session ---------------- */
+(async function init(){
+  try{
+    const { data:{ session }, error } = await sb.auth.getSession();
+    if(error) throw error;
+    if(session) await afterLogin();
+  }catch(e){
+    console.error('Session initialization failed:', e);
+  }
+  sb.auth.onAuthStateChange(async (event, session)=>{
+    if(event === 'SIGNED_OUT'){
+      currentUser = null;
+      currentProfile = null;
+      document.getElementById('authScreen').style.display='flex';
+      document.getElementById('appScreen').style.display='none';
+    }
+  });
+})();
+</script>
+</body>
+</html>
