@@ -20,6 +20,16 @@
   <div>در حال راه‌اندازی BuildWise AI…</div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+// Production Supabase configuration shim.
+// phase-app.js contains a legacy embedded key; force the current publishable key here.
+(()=>{
+  const U='https://beuestoewletjsgmigmf.supabase.co';
+  const K='sb_publishable_dE92Qm9EtMv4sdNRXF7SRg_7ox1xYax';
+  const original=supabase.createClient.bind(supabase);
+  supabase.createClient=(url,key,options)=>original(U,K,options);
+})();
+</script>
 <script src="./phase-app.js"></script>
 </body>
 </html>
