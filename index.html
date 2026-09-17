@@ -11,23 +11,15 @@
 <meta name="apple-mobile-web-app-title" content="BuildWise">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="stylesheet" href="./mobile-foundation.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap">
 <title>BuildWise.ai</title>
 </head>
-<body style="margin:0;min-height:100dvh">
-<script>
-(async()=>{
-  try{
-    if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
-    const r=await fetch('./index_FINAL.html',{cache:'no-store'});
-    let html=await r.text();
-    html=html.replace(/<title>[\s\S]*?<\/title>/i,'<title>BuildWise.ai</title>');
-    html=html.replace('</head>','<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><link rel="stylesheet" href="./mobile-foundation.css"></head>');
-    document.open();document.write(html);document.close();
-  }catch(e){
-    document.body.innerHTML='<main style="font-family:sans-serif;padding:24px;line-height:1.8"><h2>BuildWise.ai</h2><p>خطا در بارگذاری برنامه. اتصال اینترنت را بررسی کنید و دوباره تلاش کنید.</p></main>';
-  }
-})();
-</script>
-<noscript><main style="padding:24px">برای اجرای BuildWise.ai باید JavaScript فعال باشد.</main></noscript>
+<body>
+<main id="boot" style="min-height:100dvh;display:grid;place-items:center;padding:24px;font-family:Vazirmatn,sans-serif;color:#17364a">
+  <div>در حال راه‌اندازی BuildWise AI…</div>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="./phase-app.js"></script>
 </body>
 </html>
