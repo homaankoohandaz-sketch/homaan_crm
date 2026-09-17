@@ -1,0 +1,14 @@
+{
+  "name": "BuildWise AI+H",
+  "short_name": "BuildWise",
+  "description": "BuildWise AI+H — Real Estate OS",
+  "lang": "fa",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#f7f5f1",
+  "theme_color": "#17364a",
+  "icons": []
+}
