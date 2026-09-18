@@ -1,0 +1,23 @@
+name: BuildWise QA
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Syntax check
+        run: |
+          node --check buildwise-app.js
+          node --check data-import.js
+      - name: Basic source checks
+        run: |
+          test -s index.html
+          test -s buildwise-ui.css
+          grep -q "BuildWise AI" index.html
