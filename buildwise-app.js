@@ -62,3 +62,4 @@ const STYLE=`*{box-sizing:border-box}html{font-size:16px}body{margin:0;backgroun
 @media(max-width:380px){.stats{grid-template-columns:1fr}.stat strong{font-size:21px}}`;
 const style=document.createElement('style');style.textContent=STYLE;document.head.appendChild(style);
 if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
+window.addEventListener('DOMContentLoaded',()=>boot());
