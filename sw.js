@@ -1,4 +1,4 @@
-const CACHE='buildwise-shell-v3';
+const CACHE='buildwise-shell-v4';
 const SHELL=['./','./index.html','./manifest.webmanifest','./mobile-foundation.css','./buildwise-app.js'];
 const isSameOrigin=u=>u.origin===self.location.origin;
 const isDynamic=u=>u.pathname.includes('/functions/')||u.hostname.includes('supabase.co');
