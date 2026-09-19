@@ -1,48 +1,59 @@
 # Agent Control State
 
-status: team_registry_ready_runtime_pending
-project: homaan_crm
-control_plane_version: 0.3.0
-active_task: phase-02-specialist-team-bootstrap
+status: specification_frozen_runtime_bootstrap_pending
+project: BuildWise AI+H
+control_plane_version: 1.0.0
+active_task: phase-02-agent-runtime-bootstrap
 
 ## Master
 - chatgpt: master orchestrator / architect / synthesis
 
-## Specialist team
+## Specialist team — 21
 - coding
+- app
 - website
+- devops_infra
+- qa_security
+- crm
+- land_development
+- market_valuation
+- deal_intelligence
+- sales_engineering
+- document_contract
+- ai_assistant
+- project_control
+- visual_3d
 - branding
 - marketing
 - video
 - instagram
 - youtube
 - meta_analytics
-- app
-- ai_assistant
-- project_control
-- crm
-- qa_security
+- research_web
 
-## Completed
-- Existing vendor-neutral control plane verified.
-- Existing AGENTS.md and .agent-control protocol preserved.
-- Specialist team registry added.
-- Routing rules added.
-- External open-source agent/source catalog added.
-- Integration/secret variable blueprint added.
-- Individual specialist contracts added.
-- Public web research identified reusable orchestration and social-agent projects.
-- GitHub access to homaankoohandaz-sketch/homaan_crm verified with admin/push permissions.
+## Specification status
+- [x] Full BuildWise AI+H agent specification v1 written.
+- [x] Universal task contract written.
+- [x] Runtime/model matrix written.
+- [x] Specialist responsibilities, inputs, outputs, dependencies, guardrails and success criteria defined.
+- [x] Product AI Operating System loop defined.
+- [x] Data ownership boundaries defined.
+- [x] Trigger/dependency matrix defined.
 
 ## Runtime status
-Codex environment registry currently returns zero connected environments.
-Therefore the specialist contracts exist and are persistent, but live autonomous worker execution is not yet verified.
+- ChatGPT Master is active in this conversation.
+- Claude/Codex/Gemini/n8n are configured as target runtimes but live worker connection is not verified by this control plane.
+- Codex environment registry was previously zero connected.
+- Therefore agents are SPECIFIED but not yet OPERATIONAL as autonomous workers.
 
-## Important security rule
-Actual tokens must NOT be committed. Use GitHub Actions Secrets, deployment secrets, or a local ignored .env.
-
-## Next bootstrap objective
-Connect one executable agent runtime (Codex environment or another approved worker runtime) to this repository. Then wire the specialist registry to the runtime so Master can dispatch tasks and collect reports without rebuilding the architecture.
+## Critical product rules
+- Login/bootstrap remains protected.
+- Domain logic is centralized; agents must use business tools.
+- Unknown data is not invented.
+- Mutations require audit trail.
+- Alerts require owner, deadline, evidence and status.
+- Database migrations are serialized.
+- Production/destructive/secrets/billing/sensitive-public actions remain gated.
 
 ## Human approval gates
 - production deployment
@@ -51,3 +62,7 @@ Connect one executable agent runtime (Codex environment or another approved work
 - irreversible Git operations
 - billing/cost commitments
 - sensitive public social actions
+- material legal/financial commitments
+
+## Next objective
+Bootstrap one real worker runtime, execute documentation-only handoff, then read-only audit, then a tiny isolated non-production implementation. Only after passing these tests may runtime status change to operational.
