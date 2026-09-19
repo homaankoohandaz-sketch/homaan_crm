@@ -1,9 +1,10 @@
 # Agent Control State
 
-status: bootstrap
+status: bridge_contract_ready
 project: homaan_crm
-control_plane_version: 0.1.0
-active_task: bootstrap-control-plane
+control_plane_version: 0.2.0
+active_task: phase-01-claude-codex-bridge
+
 human_approval_required_for:
   - production deployment
   - destructive database/schema changes
@@ -12,10 +13,20 @@ human_approval_required_for:
   - billing/cost commitments
 
 ## Active agents
-No runtime agents registered yet.
+- chatgpt: architect/orchestrator
+- claude: reviewer/integrator (runtime connection pending)
+- codex: implementer/debugger (runtime connection pending)
+- qa: verifier contract defined
 
-## Current objective
-Install the shared coordination contract for Claude Code, Codex, and future MCP agents.
+## Completed in this phase
+- Shared agent roles and handoff chain defined.
+- File-lock contract defined.
+- Handoff contract defined.
+- Vendor-neutral runtime bridge contract added.
+- GitHub Actions validation added for control-plane contracts.
+
+## Current blocker
+The GitHub repository is ready, but no live Codex Environment/Workspace is registered and no direct Claude Code runtime connector is available in this ChatGPT session. Therefore live Claude -> Codex -> Claude execution cannot honestly be marked verified yet.
 
 ## Next objective
-Connect a runtime orchestrator/bridge and shared memory server without coupling the CRM to one vendor.
+Register or expose the local runtimes from the user's desktop, then run the documentation-only bootstrap handoff before granting application-code write authority.
