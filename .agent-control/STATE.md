@@ -43,7 +43,7 @@ active_task: phase-02-agent-runtime-bootstrap
 ## Runtime status
 - ChatGPT Master is active in this conversation.
 - Claude/Codex/Gemini/n8n are configured as target runtimes but live worker connection is not verified by this control plane.
-- Codex environment registry was previously zero connected.
+- Codex Tasks runtime was queried during bootstrap; the connector currently returns UNAUTHORIZED because Codex runtime authentication is not available in this session. Therefore no live worker was started.
 - Therefore agents are SPECIFIED but not yet OPERATIONAL as autonomous workers.
 
 ## Critical product rules
