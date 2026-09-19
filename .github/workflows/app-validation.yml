@@ -1,0 +1,24 @@
+name: Application Validation
+
+on:
+  pull_request:
+  push:
+    branches: [main, release-hardening-2026-09-19]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Syntax check JavaScript
+        shell: bash
+        run: |
+          set -e
+          find . -type f -name '*.js' -not -path './node_modules/*' -print0 | while IFS= read -r -d '' f; do
+            node --check "$f"
+          done
+      - name: Release smoke test
+        run: node tests/release-smoke.mjs
