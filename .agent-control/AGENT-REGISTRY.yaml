@@ -1,65 +1,45 @@
-version: 1
+version: 2
 master:
   id: master_orchestrator
   runtime: chatgpt
-  role: "Head / dispatcher / integrator"
+  role: "Head / dispatcher / architect / integrator"
   receives_reports_from: ["*"]
   final_output: consolidated_status
 
 specialists:
-  coding:
-    mission: "Build and debug software"
-    inputs: [requirements, repo, issues, architecture]
-    outputs: [code, tests, PRs, report]
-  website:
-    mission: "Build and maintain web presence"
-    inputs: [brand, requirements, repo]
-    outputs: [pages, components, deployment_preview, report]
-  branding:
-    mission: "Maintain coherent brand system"
-    inputs: [brand_assets, strategy, audience]
-    outputs: [brand_specs, creative_briefs, assets, report]
-  marketing:
-    mission: "Design measurable marketing systems"
-    inputs: [market_data, offer, audience, analytics]
-    outputs: [strategy, campaigns, experiments, report]
-  video:
-    mission: "Produce low-cost/free short-form video"
-    inputs: [property/project data, scripts, brand assets]
-    outputs: [storyboards, scripts, renders, report]
-  instagram:
-    mission: "Operate Instagram workflow"
-    inputs: [content, analytics, brand]
-    outputs: [content_queue, replies, experiments, report]
-  youtube:
-    mission: "Operate YouTube workflow"
-    inputs: [topics, video_assets, analytics]
-    outputs: [scripts, metadata, publishing_queue, report]
-  meta_analytics:
-    mission: "Measure Meta performance"
-    inputs: [Meta insights, content history]
-    outputs: [diagnosis, experiments, report]
-  app:
-    mission: "Build product/application features"
-    inputs: [product requirements, architecture]
-    outputs: [implementation, tests, PRs, report]
-  ai_assistant:
-    mission: "Build in-app AI capabilities"
-    inputs: [CRM schema, workflows, user tasks]
-    outputs: [tools, prompts, retrieval logic, tests, report]
-  project_control:
-    mission: "Control construction/project execution"
-    inputs: [contracts, BOQ, schedule, progress]
-    outputs: [milestones, risks, procurement/status reports]
-  crm:
-    mission: "Maintain CRM intelligence/data layer"
-    inputs: [property records, imports, schema]
-    outputs: [data workflows, validations, analytics, report]
-  qa_security:
-    mission: "Verify before release"
-    inputs: [diffs, tests, requirements]
-    outputs: [test report, risks, release gate]
+  coding: {mission: "Build and debug software"}
+  app: {mission: "Application architecture, UX flows and integrations"}
+  website: {mission: "Public web and frontend delivery"}
+  devops_infra: {mission: "Infrastructure, deployment, CI/CD and observability"}
+  qa_security: {mission: "Regression, security, permissions and release gates"}
+  crm: {mission: "Property data, imports, search, permissions and CRM intelligence"}
+  land_development: {mission: "Land/owner analysis, regulation and feasibility"}
+  market_valuation: {mission: "Market, price and construction-cost intelligence"}
+  deal_intelligence: {mission: "Evidence-based matching and deal opportunities"}
+  sales_engineering: {mission: "Builder/owner sales engineering and pipeline"}
+  document_contract: {mission: "Document extraction and contract intelligence"}
+  ai_assistant: {mission: "In-app AI tools, retrieval, routing and guardrails"}
+  project_control: {mission: "Construction schedule, BOQ, procurement, RFI, quality, HSE and risk"}
+  visual_3d: {mission: "Showroom and lightweight 3D/property visualization"}
+  branding: {mission: "Brand system and creative consistency"}
+  marketing: {mission: "Positioning, funnels, campaigns and measurement"}
+  video: {mission: "Short-form video production workflows"}
+  instagram: {mission: "Instagram content and workflow"}
+  youtube: {mission: "YouTube content and workflow"}
+  meta_analytics: {mission: "Meta performance analysis"}
+  research_web: {mission: "Current research, references and licensing checks"}
 
 shared_contract:
   report_file: ".agent-control/handoffs/<task-id>-<agent-id>.md"
   required_sections: [status, evidence, changes, tests, risks, blockers, next_action]
+
+routing:
+  default: "Master selects the smallest useful set of specialists"
+  code: [app, coding, qa_security]
+  crm: [crm, coding, qa_security]
+  land: [land_development, market_valuation, deal_intelligence]
+  construction: [project_control, crm, ai_assistant]
+  deal: [deal_intelligence, crm, market_valuation]
+  contract: [document_contract, qa_security]
+  ai: [ai_assistant, crm, app, qa_security]
+  deployment: [devops_infra, coding, qa_security]
