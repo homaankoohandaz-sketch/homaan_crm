@@ -2,7 +2,7 @@
 (function(){
 var U='https://beuestoewletjsgmigmf.supabase.co',K='sb_publishable_dE92Qm9EtMv4sdNRXF7SRg_7ox1xYax',dbi=supabase.createClient(U,K),B=1000,rows=[],target='properties',source='excel';
 function E(x){return String(x==null?'':x).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
-function N(x){return String(x==null?'':x).trim().toLowerCase().replace(/[\s\-\/]+/g,'_').replace(/[()]/g,'')}
+function N(x){return String(x==null?'':x).trim().toLowerCase().replace(/[يى]/g,'ی').replace(/ك/g,'ک').replace(/[\s\-\/]+/g,'_').replace(/[()]/g,'')}
 function num(x){if(x===''||x==null)return null;var s=String(x).replace(/[۰-۹]/g,function(c){return '۰۱۲۳۴۵۶۷۸۹'.indexOf(c)}).replace(/[٠-٩]/g,function(c){return '٠١٢٣٤٥٦٧٨٩'.indexOf(c)}).replace(/[,٬]/g,'').replace(/تومان|ریال/gi,'');var n=Number(s);return isFinite(n)?n:null}
 function pick(o,a){for(var i=0;i<a.length;i++){var v=o[N(a[i])];if(v!==undefined&&v!==null&&String(v).trim()!=='')return v}return ''}
 var _xlsxPromise=null;function loadX(){if(window.XLSX)return Promise.resolve();if(_xlsxPromise)return _xlsxPromise;_xlsxPromise=new Promise(function(ok,no){var urls=['https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js','https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js'];var i=0;function next(){if(window.XLSX)return ok();if(i>=urls.length){_xlsxPromise=null;return no(new Error('کتابخانه Excel بارگذاری نشد. اینترنت/فیلترشکن یا اتصال CDN را بررسی کنید.'))}var sc=document.createElement('script');sc.src=urls[i++];sc.onload=function(){window.XLSX?ok():next()};sc.onerror=next;document.head.appendChild(sc)}next()});return _xlsxPromise}
