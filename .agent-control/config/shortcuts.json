@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "shortcuts": {
+    "/build": ["app", "coding", "qa_security"],
+    "/fix": ["coding", "qa_security"],
+    "/crm": ["crm", "coding", "qa_security"],
+    "/land": ["land_development", "market_valuation", "deal_intelligence"],
+    "/deal": ["deal_intelligence", "crm", "market_valuation"],
+    "/sales": ["sales_engineering", "crm", "marketing"],
+    "/construction": ["project_control", "crm", "ai_assistant"],
+    "/contract": ["document_contract", "qa_security"],
+    "/ai": ["ai_assistant", "crm", "app", "qa_security"],
+    "/visual": ["visual_3d", "app"],
+    "/market": ["market_valuation", "research_web"],
+    "/research": ["research_web"],
+    "/video": ["video", "branding"],
+    "/instagram": ["instagram", "video", "marketing"],
+    "/youtube": ["youtube", "video", "marketing"],
+    "/deploy": ["devops_infra", "coding", "qa_security"],
+    "/qa": ["qa_security"],
+    "/status": ["master_orchestrator"],
+    "/agents": ["master_orchestrator"]
+  },
+  "approval_gates": [
+    "production",
+    "destructive_migration",
+    "secrets",
+    "irreversible_git",
+    "billing",
+    "sensitive_public_social_action"
+  ]
+}
