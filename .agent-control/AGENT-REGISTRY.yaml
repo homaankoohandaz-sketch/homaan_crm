@@ -1,45 +1,60 @@
-version: 2
+version: 3
+project: BuildWise AI+H
+specification: .agent-control/BUILDWISE-AGENT-SPECIFICATION-v1.md
+task_contract: .agent-control/AGENT-TASK-CONTRACT-v1.md
+runtime_matrix: .agent-control/AGENT-RUNTIME-MATRIX.yaml
 master:
   id: master_orchestrator
   runtime: chatgpt
   role: "Head / dispatcher / architect / integrator"
-  receives_reports_from: ["*"]
   final_output: consolidated_status
+  human_authority_boundary: "final business, legal, financial, production and irreversible decisions"
 
 specialists:
-  coding: {mission: "Build and debug software"}
-  app: {mission: "Application architecture, UX flows and integrations"}
-  website: {mission: "Public web and frontend delivery"}
-  devops_infra: {mission: "Infrastructure, deployment, CI/CD and observability"}
-  qa_security: {mission: "Regression, security, permissions and release gates"}
-  crm: {mission: "Property data, imports, search, permissions and CRM intelligence"}
-  land_development: {mission: "Land/owner analysis, regulation and feasibility"}
-  market_valuation: {mission: "Market, price and construction-cost intelligence"}
-  deal_intelligence: {mission: "Evidence-based matching and deal opportunities"}
-  sales_engineering: {mission: "Builder/owner sales engineering and pipeline"}
-  document_contract: {mission: "Document extraction and contract intelligence"}
-  ai_assistant: {mission: "In-app AI tools, retrieval, routing and guardrails"}
-  project_control: {mission: "Construction schedule, BOQ, procurement, RFI, quality, HSE and risk"}
-  visual_3d: {mission: "Showroom and lightweight 3D/property visualization"}
-  branding: {mission: "Brand system and creative consistency"}
-  marketing: {mission: "Positioning, funnels, campaigns and measurement"}
-  video: {mission: "Short-form video production workflows"}
-  instagram: {mission: "Instagram content and workflow"}
-  youtube: {mission: "YouTube content and workflow"}
-  meta_analytics: {mission: "Meta performance analysis"}
-  research_web: {mission: "Current research, references and licensing checks"}
-
-shared_contract:
-  report_file: ".agent-control/handoffs/<task-id>-<agent-id>.md"
-  required_sections: [status, evidence, changes, tests, risks, blockers, next_action]
+  coding: {mission: "Implement, debug, test and maintain software within approved scope", runtime: codex}
+  app: {mission: "Application architecture, UX flows, module boundaries and integrations", runtime: chatgpt_claude}
+  website: {mission: "Public web frontend, accessibility, performance and SEO", runtime: codex_claude}
+  devops_infra: {mission: "Infrastructure, CI/CD, environments, deployment and observability", runtime: codex_claude}
+  qa_security: {mission: "Independent regression, security, RLS/auth, integrity and release verification", runtime: claude_gemini}
+  crm: {mission: "Canonical real-estate data, imports, search, permissions, duplicate detection and history", runtime: in_app_ai_plus_codex}
+  land_development: {mission: "Land, regulation, buildable area, feasibility and participation scenarios", runtime: chatgpt_research}
+  market_valuation: {mission: "Evidence-based property pricing, comparables, cost intelligence and valuation confidence", runtime: chatgpt_research}
+  deal_intelligence: {mission: "Detect evidence-backed opportunities across owners, land, builders, buyers, suppliers, barter and participation", runtime: in_app_ai_plus_n8n}
+  sales_engineering: {mission: "Qualification, offer design, pipeline, follow-up and sales workflow", runtime: in_app_ai_plus_chatgpt}
+  document_contract: {mission: "Document extraction, clause comparison, structured contract intelligence and risk flags", runtime: chatgpt_claude}
+  ai_assistant: {mission: "Natural-language operating layer that routes tools, retrieves data, executes safe actions and audits them", runtime: model_router}
+  project_control: {mission: "Construction WBS, schedule, baseline, BOQ, procurement, progress, quality, HSE, risk and alerts", runtime: in_app_ai_plus_n8n}
+  visual_3d: {mission: "ROOM/showroom: project to complex to floor to unit to interior/bedroom visualization", runtime: image_video_3d_runtime}
+  branding: {mission: "Brand system, typography, visual consistency and creative rules", runtime: creative_ai_plus_human_gate}
+  marketing: {mission: "Positioning, funnels, campaigns, experiments and measurement", runtime: chatgpt}
+  video: {mission: "Reels/shorts scripts, storyboards, voice and low-cost production workflows", runtime: video_ai_runtime}
+  instagram: {mission: "Instagram content queue, reels workflow, captions, diagnostics and approved publishing", runtime: chatgpt_plus_meta}
+  youtube: {mission: "YouTube topics, scripts, metadata, thumbnail briefs and publishing workflow", runtime: chatgpt}
+  meta_analytics: {mission: "Meta performance, experiments, anomalies and measurement without unsupported causality", runtime: analytics_ai}
+  research_web: {mission: "Current external research, source verification, competitor/reference discovery and license checks", runtime: web_research}
 
 routing:
-  default: "Master selects the smallest useful set of specialists"
+  default: "Master selects the smallest useful set"
   code: [app, coding, qa_security]
   crm: [crm, coding, qa_security]
   land: [land_development, market_valuation, deal_intelligence]
-  construction: [project_control, crm, ai_assistant]
   deal: [deal_intelligence, crm, market_valuation]
+  construction: [project_control, crm, ai_assistant]
   contract: [document_contract, qa_security]
   ai: [ai_assistant, crm, app, qa_security]
+  visual: [visual_3d, app, crm]
+  growth: [marketing, video, instagram, youtube, meta_analytics]
   deployment: [devops_infra, coding, qa_security]
+  research: [research_web]
+
+approval_gates:
+  - production
+  - destructive_migration
+  - secrets_or_auth
+  - irreversible_git
+  - billing
+  - sensitive_public_social_action
+  - material_legal_or_financial_commitment
+
+operational_definition:
+  status: "An agent is operational only after specification, runtime, tools, schemas, permissions, triggers, tests, failure behavior, audit trail and a successful non-production task are all verified."
