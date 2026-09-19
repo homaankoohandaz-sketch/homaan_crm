@@ -1,0 +1,65 @@
+version: 1
+master:
+  id: master_orchestrator
+  runtime: chatgpt
+  role: "Head / dispatcher / integrator"
+  receives_reports_from: ["*"]
+  final_output: consolidated_status
+
+specialists:
+  coding:
+    mission: "Build and debug software"
+    inputs: [requirements, repo, issues, architecture]
+    outputs: [code, tests, PRs, report]
+  website:
+    mission: "Build and maintain web presence"
+    inputs: [brand, requirements, repo]
+    outputs: [pages, components, deployment_preview, report]
+  branding:
+    mission: "Maintain coherent brand system"
+    inputs: [brand_assets, strategy, audience]
+    outputs: [brand_specs, creative_briefs, assets, report]
+  marketing:
+    mission: "Design measurable marketing systems"
+    inputs: [market_data, offer, audience, analytics]
+    outputs: [strategy, campaigns, experiments, report]
+  video:
+    mission: "Produce low-cost/free short-form video"
+    inputs: [property/project data, scripts, brand assets]
+    outputs: [storyboards, scripts, renders, report]
+  instagram:
+    mission: "Operate Instagram workflow"
+    inputs: [content, analytics, brand]
+    outputs: [content_queue, replies, experiments, report]
+  youtube:
+    mission: "Operate YouTube workflow"
+    inputs: [topics, video_assets, analytics]
+    outputs: [scripts, metadata, publishing_queue, report]
+  meta_analytics:
+    mission: "Measure Meta performance"
+    inputs: [Meta insights, content history]
+    outputs: [diagnosis, experiments, report]
+  app:
+    mission: "Build product/application features"
+    inputs: [product requirements, architecture]
+    outputs: [implementation, tests, PRs, report]
+  ai_assistant:
+    mission: "Build in-app AI capabilities"
+    inputs: [CRM schema, workflows, user tasks]
+    outputs: [tools, prompts, retrieval logic, tests, report]
+  project_control:
+    mission: "Control construction/project execution"
+    inputs: [contracts, BOQ, schedule, progress]
+    outputs: [milestones, risks, procurement/status reports]
+  crm:
+    mission: "Maintain CRM intelligence/data layer"
+    inputs: [property records, imports, schema]
+    outputs: [data workflows, validations, analytics, report]
+  qa_security:
+    mission: "Verify before release"
+    inputs: [diffs, tests, requirements]
+    outputs: [test report, risks, release gate]
+
+shared_contract:
+  report_file: ".agent-control/handoffs/<task-id>-<agent-id>.md"
+  required_sections: [status, evidence, changes, tests, risks, blockers, next_action]
