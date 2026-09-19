@@ -1,0 +1,11 @@
+# Shared project defaults for Codex.
+# Project-local config is loaded only when this repository is trusted.
+model = "gpt-5.6"
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 3
+default_subagent_model = "gpt-5.6-terra"
+default_subagent_reasoning_effort = "high"
