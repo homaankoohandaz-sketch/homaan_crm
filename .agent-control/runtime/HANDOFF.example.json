@@ -1,0 +1,12 @@
+{
+  "from": "claude",
+  "to": "codex",
+  "task": "task-id",
+  "type": "handoff",
+  "timestamp": "ISO-8601",
+  "status": "ready",
+  "claimed_paths": [],
+  "summary": "",
+  "verification": [],
+  "blockers": []
+}

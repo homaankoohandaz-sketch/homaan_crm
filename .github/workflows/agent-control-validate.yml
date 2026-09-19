@@ -1,0 +1,48 @@
+name: Agent Control Plane Validation
+
+on:
+  pull_request:
+    paths:
+      - 'AGENTS.md'
+      - 'CLAUDE.md'
+      - '.agent-control/**'
+      - '.github/workflows/agent-control-validate.yml'
+  push:
+    branches: [main, agent-control-plane]
+    paths:
+      - 'AGENTS.md'
+      - 'CLAUDE.md'
+      - '.agent-control/**'
+      - '.github/workflows/agent-control-validate.yml'
+
+jobs:
+  validate-control-plane:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate required files
+        run: |
+          test -f AGENTS.md
+          test -f CLAUDE.md
+          test -f .agent-control/STATE.md
+          test -f .agent-control/PROTOCOL.md
+          test -f .agent-control/config/agents.json
+          test -f .agent-control/config/tasks.schema.json
+          test -f .agent-control/runtime/agent-manifest.json
+          test -f .agent-control/runtime/LOCKS.example.json
+          test -f .agent-control/runtime/HANDOFF.example.json
+      - name: Validate JSON contracts
+        run: |
+          python - <<'PY'
+          import json
+          for p in [
+              '.agent-control/config/agents.json',
+              '.agent-control/config/tasks.schema.json',
+              '.agent-control/runtime/agent-manifest.json',
+              '.agent-control/runtime/LOCKS.example.json',
+              '.agent-control/runtime/HANDOFF.example.json',
+          ]:
+              with open(p, encoding='utf-8') as f:
+                  json.load(f)
+              print('OK', p)
+          PY

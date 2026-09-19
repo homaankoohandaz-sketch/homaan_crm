@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "repository": "homaankoohandaz-sketch/homaan_crm",
+  "control_plane": ".agent-control",
+  "agents": {
+    "chatgpt": { "role": "architect", "mode": "orchestrator" },
+    "claude": { "role": "reviewer_integrator", "mode": "review" },
+    "codex": { "role": "implementer", "mode": "write" },
+    "qa": { "role": "verifier", "mode": "test" }
+  },
+  "handoff_chain": ["chatgpt", "claude", "codex", "claude", "qa"],
+  "shared_truth": "github",
+  "human_approval_gates": [
+    "production",
+    "destructive_migration",
+    "secrets",
+    "irreversible_git",
+    "billing"
+  ]
+}

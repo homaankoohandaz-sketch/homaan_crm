@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "principle": "Add tools by capability, not by quantity. Every tool must have an owner, approval boundary, and role in the agent loop.",
+  "recommended_stack": {
+    "source_control": ["GitHub"],
+    "implementation": ["Codex", "Claude Code"],
+    "architecture": ["ChatGPT"],
+    "testing_security": ["QA", "Codex Security"],
+    "development_method": ["Superpowers"],
+    "ai_platform": ["OpenAI Developers"],
+    "database": ["Supabase"],
+    "deployment": ["Netlify"],
+    "automation": ["n8n"],
+    "optional_task_board": ["Linear"],
+    "optional_observability": ["PostHog", "Datadog"]
+  },
+  "order": [
+    "Claude Code bridge",
+    "Codex environment",
+    "shared memory and locks",
+    "review and QA",
+    "security scanning",
+    "CI/CD",
+    "n8n automation",
+    "observability"
+  ],
+  "do_not_add_yet": [
+    "multiple redundant task managers",
+    "multiple hosting providers",
+    "production observability before runtime exists"
+  ],
+  "approval_gates": [
+    "production deployment",
+    "destructive migration",
+    "secrets/auth",
+    "irreversible git",
+    "billing"
+  ]
+}
