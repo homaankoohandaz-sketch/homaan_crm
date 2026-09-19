@@ -1,0 +1,71 @@
+version: 1
+project: BuildWise AI+H
+status: specified_not_operational
+master:
+  agent: master_orchestrator
+  runtime: chatgpt
+  authority: synthesis
+runtimes:
+  chatgpt:
+    role: master_orchestrator
+    state: connected_in_chat
+    capabilities: [architecture, routing, synthesis, research]
+  claude:
+    role: reviewer_integrator
+    state: configured_not_live_verified
+    capabilities: [review, refactor, integration, qa]
+  codex:
+    role: implementer
+    state: configured_not_live_verified
+    capabilities: [coding, debugging, tests]
+  gemini:
+    role: independent_reviewer
+    state: configured_not_live_verified
+    capabilities: [independent_review, research, analysis]
+  n8n:
+    role: automation
+    state: blueprint_only_not_live_verified
+    capabilities: [events, schedules, notifications, integrations]
+specialists:
+  - coding
+  - app
+  - website
+  - devops_infra
+  - qa_security
+  - crm
+  - land_development
+  - market_valuation
+  - deal_intelligence
+  - sales_engineering
+  - document_contract
+  - ai_assistant
+  - project_control
+  - visual_3d
+  - branding
+  - marketing
+  - video
+  - instagram
+  - youtube
+  - meta_analytics
+  - research_web
+activation_order:
+  - devops_infra
+  - qa_security
+  - crm
+  - ai_assistant
+  - project_control
+  - deal_intelligence
+  - land_development
+  - market_valuation
+  - app
+  - visual_3d
+  - sales_engineering
+  - document_contract
+  - website
+  - research_web
+  - branding
+  - marketing
+  - video
+  - instagram
+  - youtube
+  - meta_analytics
