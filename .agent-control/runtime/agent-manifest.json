@@ -1,20 +1,18 @@
 {
-  "version": 1,
+  "version": 2,
+  "project": "BuildWise AI+H",
   "repository": "homaankoohandaz-sketch/homaan_crm",
   "control_plane": ".agent-control",
-  "agents": {
-    "chatgpt": { "role": "architect", "mode": "orchestrator" },
-    "claude": { "role": "reviewer_integrator", "mode": "review" },
-    "codex": { "role": "implementer", "mode": "write" },
-    "qa": { "role": "verifier", "mode": "test" }
+  "specification": ".agent-control/BUILDWISE-AGENT-SPECIFICATION-v1.md",
+  "task_contract": ".agent-control/AGENT-TASK-CONTRACT-v1.md",
+  "runtimes": {
+    "chatgpt": {"role":"master_orchestrator","mode":"orchestrator","state":"active_in_chat"},
+    "claude": {"role":"reviewer_integrator","mode":"review","state":"configured_not_live_verified"},
+    "codex": {"role":"implementer","mode":"write","state":"configured_not_live_verified"},
+    "gemini": {"role":"independent_reviewer","mode":"review_research","state":"configured_not_live_verified"},
+    "n8n": {"role":"automation","mode":"workflow","state":"blueprint_only_not_live_verified"}
   },
-  "handoff_chain": ["chatgpt", "claude", "codex", "claude", "qa"],
-  "shared_truth": "github",
-  "human_approval_gates": [
-    "production",
-    "destructive_migration",
-    "secrets",
-    "irreversible_git",
-    "billing"
-  ]
+  "handoff_chain":["chatgpt","codex","claude","qa"],
+  "shared_truth":"github",
+  "human_approval_gates":["production","destructive_migration","secrets_or_auth","irreversible_git","billing","sensitive_public_social_action","material_legal_or_financial_commitment"]
 }

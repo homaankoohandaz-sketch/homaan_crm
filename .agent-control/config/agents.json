@@ -1,11 +1,31 @@
 {
-  "version": 1,
+  "version": 2,
   "agents": {
-    "chatgpt": {"role":"architect","capabilities":["analysis","architecture","planning","review"]},
+    "chatgpt": {"role":"master_orchestrator","capabilities":["analysis","architecture","planning","routing","synthesis"]},
     "claude": {"role":"reviewer_integrator","capabilities":["coding","review","refactor","qa"]},
     "codex": {"role":"implementer","capabilities":["coding","debugging","tests"]},
-    "gemini": {"role":"reviewer_optional","capabilities":["independent_review","analysis"]},
-    "n8n": {"role":"automation","capabilities":["workflow","integration","notifications"]}
+    "gemini": {"role":"independent_reviewer","capabilities":["research","analysis","review"]},
+    "n8n": {"role":"automation","capabilities":["workflow","integration","notifications"]},
+    "app": {"role":"application","capabilities":["architecture","ux","integration"]},
+    "website": {"role":"website","capabilities":["frontend","accessibility","performance"]},
+    "devops_infra": {"role":"infrastructure","capabilities":["ci","deployment","cloudflare","supabase","observability"]},
+    "qa_security": {"role":"verifier","capabilities":["regression","security","rls","auth","release_gates"]},
+    "crm": {"role":"crm_data","capabilities":["import","search","dedupe","permissions","market_data"]},
+    "land_development": {"role":"development_analyst","capabilities":["land","regulation","feasibility","participation"]},
+    "market_valuation": {"role":"market_analyst","capabilities":["comparables","pricing","cost","valuation"]},
+    "deal_intelligence": {"role":"deal_matcher","capabilities":["matching","barter","participation","opportunity_detection"]},
+    "sales_engineering": {"role":"sales_engineer","capabilities":["qualification","offers","pipeline","followup"]},
+    "document_contract": {"role":"document_intelligence","capabilities":["ocr","extraction","comparison","contract_structure"]},
+    "ai_assistant": {"role":"in_app_ai","capabilities":["tool_routing","retrieval","memory","natural_language_commands","guardrails"]},
+    "project_control": {"role":"construction_controller","capabilities":["wbs","schedule","boq","procurement","rfi","quality","hse","risk"]},
+    "visual_3d": {"role":"visualization","capabilities":["showroom","floorplans","3d","renders"]},
+    "branding": {"role":"brand","capabilities":["identity","typography","creative_system"]},
+    "marketing": {"role":"marketing","capabilities":["positioning","funnel","campaigns","experiments"]},
+    "video": {"role":"video","capabilities":["scripts","storyboards","reels","production"]},
+    "instagram": {"role":"instagram","capabilities":["content","reels","captions","diagnostics"]},
+    "youtube": {"role":"youtube","capabilities":["topics","scripts","metadata","seo"]},
+    "meta_analytics": {"role":"meta_analytics","capabilities":["insights","experiments","reporting"]},
+    "research_web": {"role":"research","capabilities":["web_research","source_verification","license_checks"]}
   },
-  "approval_gates": ["production","destructive_migration","secrets","irreversible_git","billing"]
+  "approval_gates": ["production","destructive_migration","secrets","irreversible_git","billing","sensitive_public_social_action"]
 }
