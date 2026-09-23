@@ -8,7 +8,7 @@ Status legend: DONE = implemented and verified; PARTIAL = some implementation ex
 2. Entity Resolution / Normalization — DONE
    - Shared normalization is wired before Excel import; Persian/Arabic digits, keys, phones and identity keys have automated contract tests.
 3. Real Estate Intelligence Graph — PARTIAL
-   - Added graph-engine.js plus persistent reos_graph_nodes/reos_graph_edges schema and graph-store.js adapter; full population from all entity tables and UI exploration remain.
+   - Added graph-engine.js, persistent graph schema, graph-store.js, and manager-triggered property→owner synchronization. Full entity population and graph UI remain.
 4. Opportunity Engine — PARTIAL
    - Added deterministic opportunity calculation primitive with value/cost/fees/reserve/profit/margin.
 5. Matching Engine — PARTIAL
