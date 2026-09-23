@@ -22,3 +22,5 @@ jobs:
           done
       - name: Release smoke test
         run: node tests/release-smoke.mjs
+      - name: Architecture contract test
+        run: node tests/architecture-contract.test.js
