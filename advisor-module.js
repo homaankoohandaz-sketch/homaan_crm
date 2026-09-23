@@ -10,7 +10,7 @@
   }
   function nav(){
     const items=[
-      ['dashboard','داشبورد','⌂'],['my_panel','پنل شخصی مشاور','◎'],['requests','درخواست‌ها','◉'],['followups','پیگیری‌ها','⏰'],
+      ['dashboard','داشبورد','⌂'],['my_panel','پنل شخصی مشاور','◎'],['security_reports','گزارش‌های داخلی','⚑'],['requests','درخواست‌ها','◉'],['followups','پیگیری‌ها','⏰'],
       ['promotions','پروموشن','✦'],['properties','املاک','⌂'],['leads','خواهان‌ها','◉'],['deals','معاملات','◆'],
       ['search','جستجوی هوشمند','⌕'],['construction','ساخت و پروژه','▦'],['market','بازار و ارزش‌گذاری','◌'],['matching','تطبیق','⇄'],
       ['room','ROOM','◇'],['automation','اتوماسیون','⚙'],['ai','دستیار AI','✦']
@@ -22,7 +22,7 @@
   window.go=async function(id){
     window.tab=id; if(window.main)main.innerHTML=window.busy?busy():''; nav();
     try{
-      const f={my_panel:myPanel,followups:followups}[id]||window[id];
+      const f={my_panel:myPanel,followups:followups,security_reports:securityReports}[id]||window[id];
       if(typeof f!=='function')throw new Error('بخش مورد نظر پیدا نشد');
       await f();
     }catch(e){main.innerHTML=window.errbox?errbox(e):'<div class="errorbox">'+esc2(e.message)+'</div>'}
