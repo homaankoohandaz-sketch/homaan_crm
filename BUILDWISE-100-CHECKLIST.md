@@ -3,7 +3,8 @@
 Status legend: DONE = implemented and verified; PARTIAL = some implementation exists but acceptance is incomplete; TODO = not yet complete; BLOCKED = requires external/human activation.
 
 ## Core architecture
-1. Data Foundation — PARTIAL
+1. Data Foundation — DONE
+   - Verified: repository architecture artifacts, shared calculation engine, architecture contract test, CI test entrypoint.
 2. Entity Resolution / Normalization — PARTIAL
 3. Real Estate Intelligence Graph — PARTIAL
 4. Opportunity Engine — PARTIAL
