@@ -5,7 +5,8 @@ Status legend: DONE = implemented and verified; PARTIAL = some implementation ex
 ## Core architecture
 1. Data Foundation — DONE
    - Verified: repository architecture artifacts, shared calculation engine, architecture contract test, CI test entrypoint.
-2. Entity Resolution / Normalization — PARTIAL
+2. Entity Resolution / Normalization — DONE
+   - Shared normalization is wired before Excel import; Persian/Arabic digits, keys, phones and identity keys have automated contract tests.
 3. Real Estate Intelligence Graph — PARTIAL
 4. Opportunity Engine — PARTIAL
 5. Matching Engine — PARTIAL
