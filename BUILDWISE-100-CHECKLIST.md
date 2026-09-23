@@ -8,9 +8,13 @@ Status legend: DONE = implemented and verified; PARTIAL = some implementation ex
 2. Entity Resolution / Normalization — DONE
    - Shared normalization is wired before Excel import; Persian/Arabic digits, keys, phones and identity keys have automated contract tests.
 3. Real Estate Intelligence Graph — PARTIAL
+   - Added graph-engine.js with typed nodes, relationships, neighbor traversal and bounded path checks; persistence/runtime wiring remains.
 4. Opportunity Engine — PARTIAL
+   - Added deterministic opportunity calculation primitive with value/cost/fees/reserve/profit/margin.
 5. Matching Engine — PARTIAL
+   - Added weighted deterministic candidate matching primitive.
 6. Deal Intelligence — PARTIAL
+   - Added ROI and risk primitives; full deal workspace integration remains.
 7. Contract Engine — PARTIAL
 8. Construction Engine — PARTIAL
 9. Sales Engine — PARTIAL
