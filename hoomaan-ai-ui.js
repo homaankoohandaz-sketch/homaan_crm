@@ -1,50 +1,16 @@
-/* Hooman AI — minimal field-level assistant */
+/* Hooman AI — contextual, output-only UI */
 (function(){
  const U='https://beuestoewletjsgmigmf.supabase.co';
  const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  async function token(){try{const s=(await window.db.auth.getSession()).data.session;return s?.access_token||null}catch{return null}}
- async function ask(payload){
-   const t=await token(); if(!t) throw new Error('ابتدا وارد BuildWise شوید.');
-   const r=await fetch(U+'/functions/v1/ai-orchestrator',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+t},body:JSON.stringify({action:'chat',...payload})});
-   const j=await r.json().catch(()=>({})); if(!r.ok) throw new Error(j.error||j.message||'پاسخ AI دریافت نشد'); return j;
- }
- function fieldLabel(el){return el.closest('label')?.firstChild?.textContent?.trim()||el.name||el.id||'فیلد'}
- function addButtons(root=document){
-   root.querySelectorAll('input:not([type=hidden]):not([data-hoomaan-ai]),select:not([data-hoomaan-ai]),textarea:not([data-hoomaan-ai])').forEach(el=>{
-     el.dataset.hoomaanAi='1';
-     const b=document.createElement('button');b.type='button';b.className='hoomaan-ai-field';b.textContent='Hooman AI';
-     b.onclick=()=>fieldAI(el);el.parentNode.insertBefore(b,el);
-   });
-   root.querySelectorAll('form:not([data-hoomaan-ai-form])').forEach(form=>{
-     form.dataset.hoomaanAiForm='1';
-     const b=document.createElement('button');b.type='button';b.className='hoomaan-ai-all';b.textContent='Hooman AI · تکمیل هوشمند';
-     b.onclick=()=>formAI(form);form.prepend(b);
-   });
- }
- window.fieldAI=async function(el){
-   const context=Array.from(el.form?.querySelectorAll('input,select,textarea')||[]).map(x=>({field:x.name||x.id,value:x.value})).filter(x=>x.field);
-   const q=prompt('Hooman AI — برای این فیلد چه کاری انجام شود؟','این فیلد را بر اساس اطلاعات موجود تحلیل و مقدار مناسب پیشنهاد کن');
-   if(!q)return;
-   el.disabled=true;
-   try{
-     const j=await ask({message:q,context:{field:fieldLabel(el),current_value:el.value,form:context},mode:'field_fill'});
-     const v=j.output??j.answer??j.message??j.result??'';
-     el.value=typeof v==='string'?v:JSON.stringify(v);
-     el.dispatchEvent(new Event('input',{bubbles:true}));
-   }catch(e){alert(e.message)}finally{el.disabled=false}
- };
- window.formAI=async function(form){
-   const fields=Array.from(form.querySelectorAll('input,select,textarea')).filter(x=>!x.disabled&&x.type!=='hidden').map(x=>({field:x.name||x.id,value:x.value}));
-   const q=prompt('Hooman AI — فرم را چگونه تکمیل کنم؟','با توجه به اطلاعات واردشده، تمام فیلدهای لازم را تحلیل و تکمیل کن؛ چیزی را حدس نزن و موارد نامطمئن را خالی بگذار');
-   if(!q)return;
-   try{
-     const j=await ask({message:q,context:{form:fields},mode:'form_fill'});
-     const values=j.fields||j.output?.fields||j.result?.fields||{};
-     fields.forEach(x=>{if(values[x.field]!==undefined){const el=form.querySelector('[name="'+CSS.escape(x.field)+'"],#'+CSS.escape(x.field));if(el){el.value=values[x.field]??'';el.dispatchEvent(new Event('input',{bubbles:true}))}}});
-   }catch(e){alert(e.message)}
- };
- window.hoomanAI=async function(){const q=prompt('Hooman AI','چه کاری انجام شود؟');if(!q)return;try{const j=await ask({message:q,mode:'general'});alert(j.output??j.answer??j.message??JSON.stringify(j))}catch(e){alert(e.message)}};
- const css=document.createElement('style');css.textContent='.hoomaan-ai-field{display:inline-block!important;min-height:32px!important;padding:4px 8px!important;margin:3px 0!important;border:1px solid #222!important;border-radius:8px!important;background:#222!important;color:#fff!important;font-size:11px!important;cursor:pointer}.hoomaan-ai-all{min-height:36px!important;padding:7px 12px!important;margin:0 0 8px!important;border:1px solid #222!important;border-radius:10px!important;background:#222!important;color:#fff!important;cursor:pointer}.hoomaan-ai-float{position:fixed;left:16px;bottom:84px;z-index:9999;border:0;border-radius:999px;padding:12px 16px;background:#111;color:#fff;box-shadow:0 6px 24px #0003;font-weight:800}';document.head.appendChild(css);
- const b=document.createElement('button');b.className='hoomaan-ai-float';b.textContent='Hooman AI';b.onclick=()=>hoomanAI();document.body.appendChild(b);
- const obs=new MutationObserver(()=>addButtons(document));obs.observe(document.body,{childList:true,subtree:true});setTimeout(()=>addButtons(document),300);
+ async function ask(payload){const t=await token();if(!t)throw new Error('ابتدا وارد BuildWise شوید.');const r=await fetch(U+'/functions/v1/ai-orchestrator',{method:'POST',headers:{'Content-Type':'application/json',Authorization:'Bearer '+t},body:JSON.stringify(payload)});const j=await r.json().catch(()=>({}));if(!r.ok)throw new Error(j.error||j.message||'پاسخ Hooman AI دریافت نشد');return j}
+ function label(el){return el.getAttribute('aria-label')||el.getAttribute('placeholder')||el.name||el.id||'این فیلد'}
+ function panel(title,body,actions){let x=document.getElementById('hw-ai-panel');if(!x){x=document.createElement('div');x.id='hw-ai-panel';document.body.appendChild(x)}x.innerHTML='<div class="hw-ai-card"><div class="row"><b>'+esc(title)+'</b><button onclick="document.getElementById(\'hw-ai-panel\').remove()">×</button></div><div class="hw-ai-body">'+body+'</div>'+(actions||'')+'</div>'}
+ window.fieldAI=async function(el){const form=el.form;const context={field:label(el),current_value:el.value,form:Array.from(form?.querySelectorAll('input,select,textarea')||[]).map(x=>({field:x.name||x.id,value:x.value})).filter(x=>x.field)};panel('Hooman AI','<p>برای این فیلد چه نتیجه‌ای می‌خواهید؟</p><textarea id="hw-ai-q" rows="3" placeholder="مثلاً بر اساس اطلاعات این فرم مقدار مناسب را پیشنهاد کن"></textarea>','<div class="modal-actions"><button class="btn primary" onclick="runFieldAI()">تحلیل و پیشنهاد</button></div>');window.__hwField={el,context}}
+ window.runFieldAI=async function(){const q=document.getElementById('hw-ai-q')?.value.trim();if(!q)return;const x=window.__hwField;try{const j=await ask({action:'field_fill',message:q,context:x.context});if(j.confidence<0.55){panel('Hooman AI','<p>'+esc(j.note||'اطمینان کافی برای تکمیل خودکار وجود ندارد.')+'</p>','<div class="modal-actions"><button class="btn" onclick="document.getElementById(\'hw-ai-panel\').remove()">بستن</button></div>');return}window.__hwFieldValue=j.value;panel('Hooman AI · نتیجه','<div class="hw-ai-result">'+esc(j.value??'')+'</div><small>'+esc(j.note||'')+'</small>','<div class="modal-actions"><button class="btn" onclick="document.getElementById(\'hw-ai-panel\').remove()">رد</button><button class="btn primary" onclick="applyFieldAI()">اعمال نتیجه</button></div>')}catch(e){panel('Hooman AI','<p>'+esc(e.message)+'</p>')}}
+ window.applyFieldAI=function(){const x=window.__hwField;if(x){x.el.value=window.__hwFieldValue??'';x.el.dispatchEvent(new Event('input',{bubbles:true}));x.el.dispatchEvent(new Event('change',{bubbles:true}))}document.getElementById('hw-ai-panel')?.remove()}
+ function add(root=document){root.querySelectorAll('input:not([type=hidden]):not([data-hoomaan-ai]),select:not([data-hoomaan-ai]),textarea:not([data-hoomaan-ai])').forEach(el=>{el.dataset.hoomaanAi='1';const b=document.createElement('button');b.type='button';b.className='hoomaan-ai-field';b.textContent='Hooman AI';b.onclick=()=>fieldAI(el);el.parentNode.insertBefore(b,el)})}
+ const css=document.createElement('style');css.textContent='.hoomaan-ai-field{display:inline-block!important;min-height:30px!important;padding:4px 8px!important;margin:3px 0!important;border:1px solid #17364a!important;border-radius:8px!important;background:#17364a!important;color:#fff!important;font-size:11px!important;cursor:pointer}.hw-ai-card{position:fixed;left:18px;bottom:80px;z-index:10001;width:min(430px,calc(100vw - 36px));background:#fff;border:1px solid #ddd;border-radius:16px;padding:14px;box-shadow:0 16px 50px #0003}.hw-ai-body{margin:12px 0}.hw-ai-result{padding:12px;border:1px solid #ddd;border-radius:10px;font-size:16px;font-weight:700}.hw-ai-card textarea{width:100%;box-sizing:border-box}.hw-ai-card .row{display:flex;justify-content:space-between}.hw-ai-card .row button{border:0;background:none;font-size:20px}.hoomaan-ai-float{position:fixed;left:16px;bottom:18px;z-index:10000;border:0;border-radius:999px;padding:12px 16px;background:#17364a;color:#fff;box-shadow:0 6px 24px #0003;font-weight:800}';document.head.appendChild(css);
+ const b=document.createElement('button');b.className='hoomaan-ai-float';b.textContent='Hooman AI';b.onclick=()=>window.openDealWorkspace?openDealWorkspace('assistant','global','Hooman AI'):null;document.body.appendChild(b);
+ const obs=new MutationObserver(()=>add(document));obs.observe(document.body,{childList:true,subtree:true});setTimeout(()=>add(document),300);
 })();
