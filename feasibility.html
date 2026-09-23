@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>محاسبه‌گر توجیه اقتصادی · BuildWise AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{--bg:#0e1116;--panel:#161a22;--panel2:#1c212b;--line:#262c38;--gold:#d9b56d;--gold-dark:#b9902f;--txt:#eef1f5;--muted:#9aa4b2;--green:#3fb972;--red:#e0604f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:Vazirmatn,system-ui,sans-serif;direction:rtl}
+.bar{position:sticky;top:0;z-index:10;background:#0e1116ee;backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.bar .brand{display:flex;align-items:center;gap:10px}
+.brand-mark{width:38px;height:38px;border-radius:11px;background:var(--gold);color:#1a1305;display:grid;place-items:center;font-weight:900}
+.bar a{color:var(--txt);text-decoration:none;border:1px solid var(--line);background:var(--panel);border-radius:9px;padding:8px 13px;font-size:13px}
+.wrap{max-width:960px;margin:auto;padding:18px 16px 60px}
+.steps{display:flex;gap:6px;margin:18px 0}
+.steps span{flex:1;height:4px;border-radius:3px;background:var(--line)}
+.steps span.done{background:var(--gold)}
+.step-label{color:var(--muted);font-size:12px;margin-bottom:4px}
+h1{font-size:22px;margin:4px 0 2px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:14px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted)}
+input,select{background:var(--panel2);border:1px solid var(--line);color:var(--txt);border-radius:9px;padding:11px 12px;font-family:inherit;font-size:14px}
+.choice{display:flex;gap:8px}
+.choice button{flex:1;padding:10px;border-radius:9px;border:1px solid var(--line);background:var(--panel2);color:var(--txt)}
+.choice button.active{background:var(--gold);color:#1a1305;border-color:var(--gold);font-weight:700}
+.actions{display:flex;gap:10px;margin-top:16px}
+.btn{flex:1;min-height:46px;border-radius:11px;border:1px solid var(--line);background:var(--panel2);color:var(--txt);font-family:inherit;font-size:14px}
+.btn.primary{background:var(--gold);border-color:var(--gold);color:#1a1305;font-weight:800}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}
+.stat{background:var(--panel2);border:1px solid var(--line);border-radius:13px;padding:13px}
+.stat span{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}
+.stat b{font-size:19px}
+.stat.good b{color:var(--green)}
+.stat.warn b{color:var(--red)}
+canvas{max-height:220px}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{padding:9px 6px;text-align:center;border-bottom:1px solid var(--line)}
+th{color:var(--muted);font-weight:600}
+th.bull{color:var(--green)}
+th.bear{color:var(--red)}
+.badge{display:inline-block;background:#1c3a2f;color:var(--green);border-radius:999px;padding:3px 9px;font-size:10px}
+.muted{color:var(--muted);font-size:12px}
+.savefield{margin-top:10px}
+.list-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--line)}
+.list-row:last-child{border-bottom:0}
+.list-row b{display:block}
+.list-row small{color:var(--muted)}
+.empty{text-align:center;color:var(--muted);padding:30px 10px;font-size:13px}
+@media(max-width:560px){.form-grid,.stats{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="bar">
+  <div class="brand"><div class="brand-mark">BW</div><b>محاسبه‌گر توجیه اقتصادی</b></div>
+  <a href="index.html">بازگشت به CRM</a>
+</div>
+<div class="wrap">
+  <div class="step-label" id="stepLabel">مرحله ۱ از ۴</div>
+  <div class="steps"><span id="s1"></span><span id="s2"></span><span id="s3"></span><span id="s4"></span></div>
+  <div id="content"></div>
+</div>
+<script>
+const U='https://beuestoewletjsgmigmf.supabase.co',K='sb_publishable_dE92Qm9EtMv4sdNRXF7SRg_7ox1xYax';
+const db=supabase.createClient(U,K);
+let me=null;
+const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money=x=>x==null||x===''||Number.isNaN(Number(x))?'—':Math.round(Number(x)).toLocaleString('fa-IR')+' تومان';
+const num=x=>x===''||x==null?null:Number(x);
+const DEFAULT_BUILD_COST=25000000; // تومان/متر — پیش‌فرض سیستم وقتی کاربر نمی‌داند
+const EFFICIENCY=0.82; // نسبت متراژ قابل‌فروش به زیربنای ناخالص
+let state={area:null,width:null,region:null,hasPermit:null,isBuilder:null,knowsCost:null,buildCostPerMeter:null,floors:4,footprint:60,landCost:null,salePricePerMeter:null,months:24};
+let chart=null;
+
+function setStep(n){for(let i=1;i<=4;i++)document.getElementById('s'+i).classList.toggle('done',i<=n);document.getElementById('stepLabel').textContent='مرحله '+['','۱','۲','۳','۴'][n]+' از ۴'}
+
+async function boot(){
+  const s=(await db.auth.getSession()).data.session;
+  if(!s){content.innerHTML='<div class="card"><p>برای استفاده از این ابزار ابتدا باید در CRM وارد شوید.</p><a class="btn primary" href="index.html" style="display:block;text-align:center;text-decoration:none;padding:12px;margin-top:10px">ورود به CRM</a></div>';setStep(0);return}
+  me=s.user;
+  step1();
+}
+
+function step1(){
+  setStep(1);
+  content.innerHTML=`
+  <h1>اطلاعات زمین شما</h1>
+  <div class="card">
+    <div class="form-grid">
+      <label>متراژ زمین (متر مربع)<input id="i_area" type="number" value="${state.area??''}"></label>
+      <label>عرض زمین (متر)<input id="i_width" type="number" value="${state.width??''}"></label>
+      <label>منطقه<input id="i_region" type="number" placeholder="مثلاً 1" value="${state.region??''}"></label>
+      <label>محله (اختیاری — برای قیمت دقیق‌تر بازار)<input id="i_neighborhood" placeholder="مثلاً معالی‌آباد"></label>
+    </div>
+    <div class="form-grid" style="margin-top:12px">
+      <label>آیا پروانه ساخت دارید؟<div class="choice"><button type="button" data-f="hasPermit" data-v="true">بله</button><button type="button" data-f="hasPermit" data-v="false">خیر</button></div></label>
+      <label>آیا خودتان سازنده هستید؟<div class="choice"><button type="button" data-f="isBuilder" data-v="true">بله</button><button type="button" data-f="isBuilder" data-v="false">خیر</button></div></label>
+    </div>
+    <label style="margin-top:12px">هزینه ساخت را می‌دانید؟
+      <div class="choice">
+        <button type="button" data-f="knowsCost" data-v="true">بله، خودم وارد می‌کنم</button>
+        <button type="button" data-f="knowsCost" data-v="false">نمی‌دانم (پیش‌فرض سیستم: ${money(DEFAULT_BUILD_COST)} / متر مربع)</button>
+      </div>
+    </label>
+    <div id="costInput" class="savefield" style="display:none"><label>هزینه ساخت (تومان / متر مربع)<input id="i_cost" type="number" value="${state.buildCostPerMeter??''}"></label></div>
+    <div class="actions"><button class="btn primary" onclick="submitStep1()" style="width:100%">مرحله بعد</button></div>
+  </div>`;
+  content.querySelectorAll('[data-f]').forEach(b=>{
+    b.classList.toggle('active', state[b.dataset.f]===(b.dataset.v==='true'));
+    b.onclick=()=>{state[b.dataset.f]=b.dataset.v==='true';content.querySelectorAll(`[data-f="${b.dataset.f}"]`).forEach(x=>x.classList.toggle('active',x===b));if(b.dataset.f==='knowsCost')document.getElementById('costInput').style.display=b.dataset.v==='true'?'block':'none'};
+  });
+  if(state.knowsCost===true)document.getElementById('costInput').style.display='block';
+}
+
+async function submitStep1(){
+  state.area=num(i_area.value);state.width=num(i_width.value);state.region=num(i_region.value);state.neighborhood=i_neighborhood.value.trim();
+  if(!state.area)return alert('متراژ زمین الزامی است');
+  if(state.hasPermit==null)return alert('وضعیت پروانه ساخت را انتخاب کنید');
+  if(state.isBuilder==null)return alert('مشخص کنید سازنده هستید یا خیر');
+  if(state.knowsCost==null)return alert('مشخص کنید هزینه ساخت را می‌دانید یا خیر');
+  state.buildCostPerMeter = state.knowsCost ? (num(document.getElementById('i_cost').value)||DEFAULT_BUILD_COST) : DEFAULT_BUILD_COST;
+  // تلاش برای گرفتن میانگین قیمت فروش واقعی بازار برای این منطقه از داده‌های ثبت‌شده
+  state.salePricePerMeter=null;
+  try{
+    let q=db.from('market_price_observations').select('price_per_meter,region,neighborhood').order('observed_at',{ascending:false}).limit(30);
+    if(state.region)q=q.eq('region',state.region);
+    const r=await q;
+    let rows=r.data||[];
+    if(state.neighborhood)rows=rows.filter(x=>(x.neighborhood||'').includes(state.neighborhood))||rows;
+    if(rows.length){const avg=rows.reduce((a,x)=>a+Number(x.price_per_meter||0),0)/rows.length;if(avg>0)state.salePricePerMeter=Math.round(avg)}
+  }catch(e){console.error(e)}
+  step2();
+}
+
+function calcScenario(saleMultiplier){
+  const grossBuilt=(state.area*(state.footprint/100))*state.floors;
+  const sellable=grossBuilt*EFFICIENCY;
+  const salePpm=(state.salePricePerMeter||state.buildCostPerMeter*1.8)*saleMultiplier;
+  const totalSale=sellable*salePpm;
+  const totalCost=grossBuilt*state.buildCostPerMeter;
+  const landCost=state.landCost||0;
+  const netProfit=totalSale-totalCost-landCost;
+  // جریان نقدی ماهانه: هزینه زمین در ماه صفر، هزینه ساخت به‌صورت خطی در طول دوره، فروش در دو ماه پایانی
+  const months=state.months;
+  const cf=new Array(months+1).fill(0);
+  cf[0]-=landCost;
+  const monthlyCost=totalCost/months;
+  for(let m=1;m<=months;m++)cf[m]-=monthlyCost;
+  cf[months-1]+=totalSale*0.5;
+  cf[months]+=totalSale*0.5;
+  // IRR ماهانه با نیوتن-رافسون
+  let rate=0.02;
+  for(let it=0;it<200;it++){
+    let npv=0,dnpv=0;
+    for(let t=0;t<cf.length;t++){npv+=cf[t]/Math.pow(1+rate,t);if(t>0)dnpv-=t*cf[t]/Math.pow(1+rate,t+1)}
+    if(Math.abs(dnpv)<1e-9)break;
+    const next=rate-npv/dnpv;
+    if(!Number.isFinite(next))break;
+    if(Math.abs(next-rate)<1e-7){rate=next;break}
+    rate=next;
+  }
+  const annualIRR=(Math.pow(1+rate,12)-1)*100;
+  return {grossBuilt,sellable,totalSale,totalCost,landCost,netProfit,irr:annualIRR,cf};
+}
+
+function step2(){
+  setStep(3);
+  const base=calcScenario(1);
+  window._base=base;
+  content.innerHTML=`
+  <h1>نتیجه تحلیل اولیه</h1>
+  <div class="card">
+    <div class="stats">
+      <div class="stat"><span>ارزش فروش کل</span><b>${money(base.totalSale)}</b></div>
+      <div class="stat"><span>هزینه ساخت کل</span><b>${money(base.totalCost)}</b></div>
+      <div class="stat"><span>سود خالص تقریبی</span><b class="${base.netProfit>=0?'':'warn'}">${money(base.netProfit)}</b></div>
+      <div class="stat good"><span>بازده تقریبی (IRR سالانه)</span><b>${base.irr.toFixed(0)}%</b></div>
+    </div>
+    <div class="savefield"><label>هزینه تقریبی زمین (اختیاری — برای دقت محاسبه سود)<input id="i_land" type="number" value="${state.landCost??''}" oninput="onLandCost()"></label></div>
+    <canvas id="cfChart"></canvas>
+    <div class="actions"><button class="btn" onclick="step1()">مرحله قبل</button><button class="btn primary" onclick="step3()">مشاهده سناریوها</button></div>
+  </div>`;
+  drawChart(base.cf);
+}
+function onLandCost(){state.landCost=num(document.getElementById('i_land').value);const base=calcScenario(1);window._base=base;content.querySelector('.stats').innerHTML=`<div class="stat"><span>ارزش فروش کل</span><b>${money(base.totalSale)}</b></div><div class="stat"><span>هزینه ساخت کل</span><b>${money(base.totalCost)}</b></div><div class="stat"><span>سود خالص تقریبی</span><b class="${base.netProfit>=0?'':'warn'}">${money(base.netProfit)}</b></div><div class="stat good"><span>بازده تقریبی (IRR سالانه)</span><b>${base.irr.toFixed(0)}%</b></div>`;drawChart(base.cf)}
+function drawChart(cf){if(chart)chart.destroy();const cum=[];cf.reduce((a,v,i)=>{cum[i]=a+v;return cum[i]},0);chart=new Chart(document.getElementById('cfChart'),{type:'bar',data:{labels:cf.map((_,i)=>i),datasets:[{label:'جریان نقدی ماهانه',data:cf,backgroundColor:cf.map(v=>v>=0?'#3fb972':'#e0604f')},{type:'line',label:'تجمعی',data:cum,borderColor:'#d9b56d',tension:.3}]},options:{plugins:{legend:{labels:{color:'#9aa4b2'}}},scales:{x:{ticks:{color:'#9aa4b2'},grid:{color:'#262c38'}},y:{ticks:{color:'#9aa4b2'},grid:{color:'#262c38'}}}}})}
+
+function step3(){
+  setStep(3);
+  const bear=calcScenario(0.85),bas=calcScenario(1),bull=calcScenario(1.15);
+  window._scn={bear,bas,bull};
+  const row=(label,fn,fmt=money)=>`<tr><td style="text-align:right;color:var(--muted)">${label}</td><td>${fmt(fn(bear))}</td><td>${fmt(fn(bas))}</td><td>${fmt(fn(bull))}</td></tr>`;
+  content.innerHTML=`
+  <h1>سناریوهای سرمایه‌گذاری</h1>
+  <div class="card">
+    <table>
+      <tr><th></th><th class="bear">بدبینانه (Bear)</th><th>واقعی (Base)</th><th class="bull">خوش‌بینانه (Bull)</th></tr>
+      ${row('ارزش فروش کل',x=>x.totalSale)}
+      ${row('هزینه ساخت',x=>x.totalCost)}
+      ${row('سود خالص تقریبی',x=>x.netProfit)}
+      ${row('IRR تقریبی',x=>x.irr,v=>v.toFixed(0)+'%')}
+      ${row('مدت ساخت',()=>state.months,v=>v+' ماه')}
+    </table>
+    <div class="actions"><button class="btn" onclick="step2()">مرحله قبل</button><button class="btn primary" onclick="step4()">ذخیره و مشاهده گزارش</button></div>
+  </div>`;
+}
+
+async function step4(){
+  setStep(4);
+  content.innerHTML=`
+  <h1>ذخیره تحلیل</h1>
+  <div class="card">
+    <label>عنوان پروژه/زمین<input id="i_title" placeholder="مثلاً زمین معالی‌آباد ۳۰۰ متر"></label>
+    <div class="actions"><button class="btn" onclick="step3()">مرحله قبل</button><button class="btn primary" onclick="saveAnalysis()">ذخیره و مشاهده گزارش</button></div>
+  </div>
+  <div class="card"><div class="step-label" style="margin-bottom:10px">پرونده‌های من</div><div id="myList">در حال بارگذاری...</div></div>`;
+  loadMyList();
+}
+
+async function saveAnalysis(){
+  const title=document.getElementById('i_title').value.trim();
+  if(!title)return alert('عنوان الزامی است');
+  const base=window._base, scn=window._scn||{bas:base};
+  const r=await db.from('construction_projects').insert({
+    title, land_area:state.area, footprint_percent:state.footprint, floors:state.floors,
+    gross_built_area:Math.round(base.grossBuilt), net_sellable_area:Math.round(base.sellable),
+    estimated_cost:Math.round(base.totalCost), expected_sale_price:Math.round(base.totalSale),
+    expected_duration_months:state.months, status:'draft', created_by:me.id,
+    assumptions:{region:state.region,neighborhood:state.neighborhood,has_permit:state.hasPermit,is_builder:state.isBuilder,
+      build_cost_per_meter:state.buildCostPerMeter,land_cost:state.landCost,irr_base:base.irr,net_profit_base:base.netProfit,
+      scenarios:{bear:{irr:scn.bear?.irr,net_profit:scn.bear?.netProfit},base:{irr:scn.bas?.irr,net_profit:scn.bas?.netProfit},bull:{irr:scn.bull?.irr,net_profit:scn.bull?.netProfit}}}
+  });
+  if(r.error)return alert('خطا در ذخیره: '+r.error.message);
+  document.getElementById('i_title').disabled=true;
+  loadMyList();
+}
+
+async function loadMyList(){
+  const r=await db.from('construction_projects').select('id,title,land_area,estimated_cost,expected_sale_price,assumptions,created_at').order('created_at',{ascending:false}).limit(20);
+  const el=document.getElementById('myList');
+  if(r.error){el.innerHTML='<div class="empty">خطا در بارگذاری</div>';return}
+  const rows=r.data||[];
+  el.innerHTML=rows.length?rows.map(x=>{
+    const irr=x.assumptions?.irr_base;
+    return `<div class="list-row"><div><b>${esc(x.title||'بدون عنوان')}</b><small>${new Date(x.created_at).toLocaleDateString('fa-IR')} · ${x.land_area?x.land_area+' متر':''}</small></div><span class="badge">${irr!=null?'IRR '+Math.round(irr)+'%':'تحلیل‌شده'}</span></div>`
+  }).join(''):'<div class="empty">هنوز تحلیلی ذخیره نشده است</div>';
+}
+
+window.addEventListener('DOMContentLoaded',boot);
+</script>
+</body>
+</html>
