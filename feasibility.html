@@ -65,7 +65,8 @@ th.bear{color:var(--red)}
   <div class="steps"><span id="s1"></span><span id="s2"></span><span id="s3"></span><span id="s4"></span></div>
   <div id="content"></div>
 </div>
-<script>
+<script type="module">
+import { calculateDevelopmentFeasibility } from "./src/domains/finance/feasibility-engine.js";
 const U='https://beuestoewletjsgmigmf.supabase.co',K='sb_publishable_dE92Qm9EtMv4sdNRXF7SRg_7ox1xYax';
 const db=supabase.createClient(U,K);
 let me=null;
@@ -138,34 +139,16 @@ async function submitStep1(){
 }
 
 function calcScenario(saleMultiplier){
-  const grossBuilt=(state.area*(state.footprint/100))*state.floors;
-  const sellable=grossBuilt*EFFICIENCY;
-  const salePpm=(state.salePricePerMeter||state.buildCostPerMeter*1.8)*saleMultiplier;
-  const totalSale=sellable*salePpm;
-  const totalCost=grossBuilt*state.buildCostPerMeter;
-  const landCost=state.landCost||0;
-  const netProfit=totalSale-totalCost-landCost;
-  // جریان نقدی ماهانه: هزینه زمین در ماه صفر، هزینه ساخت به‌صورت خطی در طول دوره، فروش در دو ماه پایانی
-  const months=state.months;
-  const cf=new Array(months+1).fill(0);
-  cf[0]-=landCost;
-  const monthlyCost=totalCost/months;
-  for(let m=1;m<=months;m++)cf[m]-=monthlyCost;
-  cf[months-1]+=totalSale*0.5;
-  cf[months]+=totalSale*0.5;
-  // IRR ماهانه با نیوتن-رافسون
-  let rate=0.02;
-  for(let it=0;it<200;it++){
-    let npv=0,dnpv=0;
-    for(let t=0;t<cf.length;t++){npv+=cf[t]/Math.pow(1+rate,t);if(t>0)dnpv-=t*cf[t]/Math.pow(1+rate,t+1)}
-    if(Math.abs(dnpv)<1e-9)break;
-    const next=rate-npv/dnpv;
-    if(!Number.isFinite(next))break;
-    if(Math.abs(next-rate)<1e-7){rate=next;break}
-    rate=next;
-  }
-  const annualIRR=(Math.pow(1+rate,12)-1)*100;
-  return {grossBuilt,sellable,totalSale,totalCost,landCost,netProfit,irr:annualIRR,cf};
+  return calculateDevelopmentFeasibility({
+    area:state.area,
+    footprintPercent:state.footprint,
+    floors:state.floors,
+    efficiency:EFFICIENCY,
+    buildCostPerMeter:state.buildCostPerMeter,
+    landCost:state.landCost,
+    salePricePerMeter:(state.salePricePerMeter||state.buildCostPerMeter*1.8)*saleMultiplier,
+    months:state.months
+  });
 }
 
 function step2(){
