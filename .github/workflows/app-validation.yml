@@ -3,7 +3,7 @@ name: Application Validation
 on:
   pull_request:
   push:
-    branches: [main, release-hardening-2026-09-19]
+    branches: [main, buildwise-implementation, release-hardening-2026-09-19]
 
 jobs:
   validate:
