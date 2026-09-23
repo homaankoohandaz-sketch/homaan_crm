@@ -27,6 +27,7 @@ assert.match(checklist, /100\. n8n Runtime/);
 console.log('architecture-contract.test.js: passed');
 
 const normalization = fs.readFileSync('data-normalization.js','utf8');
+globalThis.window=globalThis;
 eval(normalization);
 assert.equal(BuildWiseNormalize.normalizePhone('+98 912-123-4567'),'09121234567');
 assert.equal(BuildWiseNormalize.normalizeKey(' قیمت متری '),'قیمت_متری');
