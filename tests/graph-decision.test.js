@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+const graph=fs.readFileSync('graph-engine.js','utf8').replace('(window);','(globalThis);'); eval(graph);
+const g=BuildWiseGraph.buildGraph({people:[{id:1}],properties:[{id:2}],relationships:[{from_type:'people',from_id:1,to_type:'properties',to_id:2,relation:'owns'}]});
+assert.equal(BuildWiseGraph.neighbors(g,'people',1,'owns').length,1); assert.equal(BuildWiseGraph.pathExists(g,{type:'people',id:1},{type:'properties',id:2}),true);
+const d=fs.readFileSync('decision-engines.js','utf8').replace('(window);','(globalThis);'); eval(d);
+assert.equal(BuildWiseDecision.opportunity({expected_value:100,total_cost:60}).profit,40);
+assert.equal(BuildWiseDecision.match({region:1},[{id:1,region:1},{id:2,region:2}],{region:1})[0].id,1);
+assert.equal(Math.round(BuildWiseDecision.roi({investment:100,net_profit:20}).roi*100),20);
+assert.equal(BuildWiseDecision.risk([{probability:1,impact:80}]).level,'high');
+console.log('graph-and-decision-engines: passed');
