@@ -75,7 +75,7 @@ const money=x=>x==null||x===''||Number.isNaN(Number(x))?'—':Math.round(Number(
 const num=x=>x===''||x==null?null:Number(x);
 const DEFAULT_BUILD_COST=25000000; // تومان/متر — پیش‌فرض سیستم وقتی کاربر نمی‌داند
 const EFFICIENCY=0.82; // نسبت متراژ قابل‌فروش به زیربنای ناخالص
-let state={area:null,width:null,region:null,hasPermit:null,isBuilder:null,knowsCost:null,buildCostPerMeter:null,floors:4,footprint:60,landCost:null,salePricePerMeter:null,months:24};
+let state={area:null,width:null,region:null,hasPermit:null,isBuilder:null,knowsCost:null,buildCostPerMeter:null,floors:4,footprint:60,landCost:null,salePricePerMeter:null,months:24,dollar:null,gold18:null};
 let chart=null;
 
 function setStep(n){for(let i=1;i<=4;i++)document.getElementById('s'+i).classList.toggle('done',i<=n);document.getElementById('stepLabel').textContent='مرحله '+['','۱','۲','۳','۴'][n]+' از ۴'}
@@ -165,11 +165,12 @@ function step2(){
       <div class="stat good"><span>بازده تقریبی (IRR سالانه)</span><b>${base.irr.toFixed(0)}%</b></div>
     </div>
     <div class="savefield"><label>هزینه تقریبی زمین (اختیاری — برای دقت محاسبه سود)<input id="i_land" type="number" value="${state.landCost??''}" oninput="onLandCost()"></label></div>
-    <canvas id="cfChart"></canvas>
+<div class="card"><h3 style="margin-top:0">تحلیل دلار و طلا</h3><p class="muted">این بخش اثر تغییرات دلار و طلای ۱۸ عیار را روی ریسک هزینه ساخت نشان می‌دهد. قیمت‌ها را به‌عنوان مبنای تحلیل وارد کنید.</p><div class="form-grid"><label>دلار مبنا (تومان)<input id="i_dollar" type="number" value="${state.dollar??''}" oninput="updateMacroAnalysis()"></label><label>طلای ۱۸ عیار مبنا (تومان/گرم)<input id="i_gold18" type="number" value="${state.gold18??''}" oninput="updateMacroAnalysis()"></label></div><div id="macroAnalysis" class="stats" style="margin-top:12px"></div><div class="muted">سناریوی حساسیت: +۱۰٪، +۲۰٪ و +۳۰٪ رشد همزمان دلار/طلا. این تحلیل حساسیت است، نه قیمت لحظه‌ای بازار.</div></div>    <canvas id="cfChart"></canvas>
     <div class="actions"><button class="btn" onclick="step1()">مرحله قبل</button><button class="btn primary" onclick="step3()">مشاهده سناریوها</button></div>
   </div>`;
   drawChart(base.cf);
 }
+function updateMacroAnalysis(){state.dollar=num(document.getElementById('i_dollar')?.value);state.gold18=num(document.getElementById('i_gold18')?.value);const el=document.getElementById('macroAnalysis');if(!el)return;const base=calcScenario(1), rows=[10,20,30].map(p=>{const factor=1+p/100;const dollarPart=.45, goldPart=.15, domesticPart=.40;const costFactor=dollarPart*factor+goldPart*factor+domesticPart;const newCost=base.totalCost*costFactor;const delta=newCost-base.totalCost;return '<div class="stat"><span>رشد '+p+'٪ دلار/طلا</span><b>'+money(newCost)+'</b><small>افزایش هزینه ≈ '+money(delta)+'</small></div>'}).join('');el.innerHTML=rows||'<div class="muted">برای مشاهده حساسیت، قیمت مبنا را وارد کنید.</div>';}
 function onLandCost(){state.landCost=num(document.getElementById('i_land').value);const base=calcScenario(1);window._base=base;content.querySelector('.stats').innerHTML=`<div class="stat"><span>ارزش فروش کل</span><b>${money(base.totalSale)}</b></div><div class="stat"><span>هزینه ساخت کل</span><b>${money(base.totalCost)}</b></div><div class="stat"><span>سود خالص تقریبی</span><b class="${base.netProfit>=0?'':'warn'}">${money(base.netProfit)}</b></div><div class="stat good"><span>بازده تقریبی (IRR سالانه)</span><b>${base.irr.toFixed(0)}%</b></div>`;drawChart(base.cf)}
 function drawChart(cf){if(chart)chart.destroy();const cum=[];cf.reduce((a,v,i)=>{cum[i]=a+v;return cum[i]},0);chart=new Chart(document.getElementById('cfChart'),{type:'bar',data:{labels:cf.map((_,i)=>i),datasets:[{label:'جریان نقدی ماهانه',data:cf,backgroundColor:cf.map(v=>v>=0?'#3fb972':'#e0604f')},{type:'line',label:'تجمعی',data:cum,borderColor:'#d9b56d',tension:.3}]},options:{plugins:{legend:{labels:{color:'#9aa4b2'}}},scales:{x:{ticks:{color:'#9aa4b2'},grid:{color:'#262c38'}},y:{ticks:{color:'#9aa4b2'},grid:{color:'#262c38'}}}}})}
 
