@@ -1,5 +1,5 @@
 /* BuildWise AI — admin property editing + street-first display */
-(function(){
+(function(){document.head.insertAdjacentHTML('beforeend','<style>#di-nav-sideNav,#di-nav-mobileNav,#di-nav-bottomNav{display:none!important}</style>');
  const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  const n=x=>x===''||x==null?null:Number(x);
  const money=x=>x==null||x===''||Number.isNaN(Number(x))?'—':Number(x).toLocaleString('fa-IR');
