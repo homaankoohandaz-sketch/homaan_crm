@@ -65,8 +65,8 @@ th.bear{color:var(--red)}
   <div class="steps"><span id="s1"></span><span id="s2"></span><span id="s3"></span><span id="s4"></span></div>
   <div id="content"></div>
 </div>
-<script type="module">
-import { calculateDevelopmentFeasibility } from "./src/domains/finance/feasibility-engine.js";
+<script type="module">import { calculateDevelopmentFeasibility } from "./src/domains/finance/feasibility-engine.js"; window.BuildWiseFinance={calculateDevelopmentFeasibility};</script>
+<script>
 const U='https://beuestoewletjsgmigmf.supabase.co',K='sb_publishable_dE92Qm9EtMv4sdNRXF7SRg_7ox1xYax';
 const db=supabase.createClient(U,K);
 let me=null;
@@ -139,7 +139,7 @@ async function submitStep1(){
 }
 
 function calcScenario(saleMultiplier){
-  return calculateDevelopmentFeasibility({
+  return window.BuildWiseFinance.calculateDevelopmentFeasibility({
     area:state.area,
     footprintPercent:state.footprint,
     floors:state.floors,
