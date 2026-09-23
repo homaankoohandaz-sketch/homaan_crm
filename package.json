@@ -3,6 +3,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node tests/engines.test.js"
+    "test": "node tests/engines.test.js && node tests/architecture-contract.test.js"
   }
 }
