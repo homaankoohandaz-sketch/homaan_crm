@@ -3,6 +3,7 @@ import fs from 'node:fs';
 
 const requiredArtifacts = [
   'engines.js',
+  'data-normalization.js',
   'hoomaan-ai-ui.js',
   'deal-workspace.js',
   'advisor-module.js',
@@ -24,3 +25,10 @@ assert.match(checklist, /1\. Data Foundation/);
 assert.match(checklist, /100\. n8n Runtime/);
 
 console.log('architecture-contract.test.js: passed');
+
+const normalization = fs.readFileSync('data-normalization.js','utf8');
+eval(normalization);
+assert.equal(BuildWiseNormalize.normalizePhone('+98 912-123-4567'),'09121234567');
+assert.equal(BuildWiseNormalize.normalizeKey(' قیمت متری '),'قیمت_متری');
+assert.equal(BuildWiseNormalize.duplicateKey({mobile:'+989121234567'}),'phone:09121234567');
+assert.equal(BuildWiseNormalize.duplicateKey({name:'علی رضایی'}),'name:علی رضایی');
