@@ -99,7 +99,30 @@
   const oldView=window.viewProperty; if(oldView)window.viewProperty=async function(id){await logAccess('property_view','property',id);return oldView(id)};
   const oldEdit=window.editProperty; if(oldEdit)window.editProperty=async function(id){await logAccess('property_edit_open','property',id);return oldEdit(id)};
   const oldPromotion=window.promotions;
-  window.promotions=async function(){if(window.canWrite?.()&&isManager()){}return oldPromotion?oldPromotion():null};
+  window.promotions=async function(){
+    if(oldPromotion) await oldPromotion();
+    const isM=await managerGate().catch(()=>false);
+    const p=await window.db.from('promotions').select('id,title,status,property_id,public_slug,contact_name,contact_phone').order('created_at',{ascending:false}).limit(100);
+    const slots=await window.db.from('promotion_hot_slots').select('id,promotion_id,slot_type,slot_number,status,requested_by,approved_by,expires_at').order('created_at',{ascending:false});
+    const activeA=(slots.data||[]).filter(x=>x.slot_type==='advisor_hot'&&['approved','active'].includes(x.status)).length;
+    const cards=(p.data||[]).map(x=>{
+      const my=(slots.data||[]).find(s=>s.promotion_id===x.id&&s.requested_by===window.me?.id&&s.status==='pending');
+      const managerHot=(slots.data||[]).find(s=>s.promotion_id===x.id&&s.slot_type==='manager_hot'&&['approved','active'].includes(s.status));
+      const advisorHot=(slots.data||[]).filter(s=>s.promotion_id===x.id&&s.slot_type==='advisor_hot'&&['approved','active'].includes(s.status)).length;
+      return '<article class="integration-card"><div class="row"><b>'+esc2(x.title||('پروموشن #'+x.id))+'</b><span class="badge">'+esc2(x.status||'')+'</span></div><p>'+esc2(x.contact_name||'')+' · '+esc2(x.contact_phone||'')+'</p><div class="modal-actions">'+
+        (isM?'<button class="btn primary" onclick="setPromotionHot('+x.id+')">'+(managerHot?'Hot فعال است':'Hot مدیر')+'</button>':'')+
+        (!isM&&activeA<2&&!my&&!advisorHot?'<button class="btn" onclick="requestPromotionHot('+x.id+')">درخواست Hot</button>':'')+
+        (isM&&my?'<span class="badge">درخواست مشاور</span>':'')+
+        (isM&&advisorHot?'<span class="badge">Hot مشاور: '+advisorHot+'</span>':'')+
+      '</div></article>';
+    }).join('');
+    const pending=isM?(slots.data||[]).filter(s=>s.slot_type==='advisor_hot'&&s.status==='pending').map(s=>'<div class="metric-line"><div class="row"><span>Promotion #'+s.promotion_id+'</span><span>Slot '+s.slot_number+'</span></div><button class="btn" onclick="approvePromotionHot('+s.id+')">تأیید</button></div>').join(''):'';
+    main.insertAdjacentHTML('afterbegin',card('Hot / کنترل پروموشن','<p class="muted">۱ جایگاه Hot مستقیم برای مدیر؛ حداکثر ۲ جایگاه Hot مشاور که فقط بعد از تأیید مدیر فعال می‌شوند.</p>'+pending));
+    main.insertAdjacentHTML('beforeend','<section class="panel">'+cards+'</section>');
+  };
+  window.setPromotionHot=async function(id){if(!(await managerGate()))return toast('دسترسی مدیر لازم است','error');const ex=await window.db.from('promotion_hot_slots').select('id').eq('slot_type','manager_hot').in('status',['approved','active']).limit(1);if(ex.data?.length)return toast('جایگاه Hot مدیر در حال حاضر پر است','error');const r=await window.db.from('promotion_hot_slots').insert({promotion_id:id,slot_type:'manager_hot',slot_number:1,requested_by:window.me.id,approved_by:window.me.id,status:'active'});if(r.error)return toast(r.error.message,'error');await promotions();};
+  window.requestPromotionHot=async function(id){const active=await window.db.from('promotion_hot_slots').select('id').eq('slot_type','advisor_hot').in('status',['approved','active']);if((active.data||[]).length>=2)return toast('دو جایگاه Hot مشاور قبلاً پر شده است','error');const used=await window.db.from('promotion_hot_slots').select('slot_number').eq('slot_type','advisor_hot').eq('promotion_id',id).in('status',['pending','approved','active']);const slot=used.data?.some(x=>x.slot_number===1)?2:1;const r=await window.db.from('promotion_hot_slots').insert({promotion_id:id,slot_type:'advisor_hot',slot_number:slot,requested_by:window.me.id,status:'pending'});if(r.error)return toast(r.error.message,'error');toast('درخواست Hot برای مدیر ارسال شد','success');await promotions();};
+  window.approvePromotionHot=async function(slotId){if(!(await managerGate()))return toast('دسترسی مدیر لازم است','error');const active=await window.db.from('promotion_hot_slots').select('id').eq('slot_type','advisor_hot').in('status',['approved','active']);if((active.data||[]).length>=2)return toast('دو جایگاه Hot مشاور پر است','error');const r=await window.db.from('promotion_hot_slots').update({status:'active',approved_by:window.me.id,approved_at:new Date().toISOString()}).eq('id',slotId);if(r.error)return toast(r.error.message,'error');await promotions();};
   window.__BUILDWISE_ADVISOR_MODULE__={version:'1.0.0',tables:['crm_followups','crm_security_reports','crm_access_events']};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',()=>setTimeout(nav,50));else setTimeout(nav,50);
 })();
