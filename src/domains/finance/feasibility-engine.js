@@ -2,6 +2,8 @@
  * BuildWise Development Feasibility Domain
  * Pure deterministic land-development model.
  */
+import { calculateMonthlyIrr, annualizeMonthlyRate } from './scenario-engine.js';
+
 const finite = (value, fallback = 0) => Number.isFinite(Number(value)) ? Number(value) : fallback;
 
 export function calculateDevelopmentFeasibility(input = {}) {
@@ -43,32 +45,8 @@ export function calculateDevelopmentFeasibility(input = {}) {
     netProfit,
     roi: totalCost + landCost ? (netProfit / (totalCost + landCost)) * 100 : 0,
     cashflows,
-    irr: annualizedIrr(cashflows)
+    irr: annualizeMonthlyRate(calculateMonthlyIrr(cashflows))
   };
-}
-
-export function annualizedIrr(cashflows = []) {
-  if (!Array.isArray(cashflows) || cashflows.length < 2) return 0;
-  let rate = 0.02;
-  for (let iteration = 0; iteration < 200; iteration += 1) {
-    let npv = 0;
-    let derivative = 0;
-    for (let t = 0; t < cashflows.length; t += 1) {
-      const denominator = Math.pow(1 + rate, t);
-      if (!Number.isFinite(denominator) || denominator === 0) return 0;
-      npv += cashflows[t] / denominator;
-      if (t > 0) derivative -= (t * cashflows[t]) / (denominator * (1 + rate));
-    }
-    if (Math.abs(derivative) < 1e-12) break;
-    const next = rate - npv / derivative;
-    if (!Number.isFinite(next) || next <= -0.999999) break;
-    if (Math.abs(next - rate) < 1e-8) {
-      rate = next;
-      break;
-    }
-    rate = next;
-  }
-  return (Math.pow(1 + rate, 12) - 1) * 100;
 }
 
 export function compareDevelopmentScenarios(input = {}, multipliers = [0.85, 1, 1.15]) {
