@@ -1,6 +1,13 @@
 # Homaan CRM Agent Control Plane
 
-This directory is the coordination layer for the multi-agent development team.
+Coordination layer for the multi-agent development team (Grok + ChatGPT + Claude).
+
+## Start here (low token)
+1. **BRIEF.md** — ultra-short shared status (read every turn)
+2. **AGENT-SKILL-LOW-TOKEN.md** — how three agents work with minimal tokens
+3. **PROMPTS-FOR-OTHER-AGENTS.md** — copy-paste prompts for ChatGPT and Claude
+4. **TOKEN-OPTIMIZATION.md** + **PROMPT-CACHING.md** — cost controls
+5. Current **task** under `tasks/` + **AGENT-TASK-CONTRACT-v1.md**
 
 ## Planned layers
 1. Shared project memory
@@ -16,10 +23,9 @@ This directory is the coordination layer for the multi-agent development team.
 ## Design rule
 The CRM application must remain independent from the orchestration implementation. The control plane may use MCP, SQLite, JSON, WebSocket, n8n, or another bridge, but project knowledge and task contracts must remain portable.
 
-## Runtime candidates
-- shared-agent-memory: shared memory for Claude Code, Codex and MCP clients.
-- multiagents: orchestration for Claude Code, Codex CLI and Gemini CLI.
-- shared-context-mcp: real-time memory/tasks/messages/artifacts over MCP/WebSocket.
-- codex-orchestrator: Codex + Claude control plane with shared memory and project boards.
+## Claude without GitHub
+Claude never needs repo access. Human pastes BRIEF + task (+ optional short diff). Claude returns a patch proposal + 6-line SUMMARY. Grok or Human applies the change and updates BRIEF.
 
+## Runtime candidates
+- shared-agent-memory, multiagents, shared-context-mcp, codex-orchestrator
 These are integration candidates, not yet hard dependencies.
