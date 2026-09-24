@@ -95,3 +95,16 @@ for select to authenticated using (true);
 drop policy if exists project_result_publications_authenticated_write on public.project_result_publications;
 create policy project_result_publications_authenticated_write on public.project_result_publications
 for all to authenticated using (true) with check (true);
+
+-- Security hardening for Project Result layer
+alter view public.project_room_analyzed_results set (security_invoker = true);
+alter function public.prevent_project_result_mutation() set search_path = public;
+alter function public.publish_project_result(uuid) set search_path = public;
+drop policy if exists project_result_publications_authenticated_read on public.project_result_publications;
+drop policy if exists project_result_publications_authenticated_write on public.project_result_publications;
+create policy project_result_publications_authenticated_select on public.project_result_publications
+for select to authenticated using (true);
+create policy project_result_publications_authenticated_insert on public.project_result_publications
+for insert to authenticated with check (true);
+create policy project_result_publications_authenticated_update on public.project_result_publications
+for update to authenticated using (true) with check (true);
