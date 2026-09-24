@@ -4,13 +4,14 @@ This file is the compact cross-agent operational memory.
 Code remains in Git; this file records only change state and handoff facts.
 
 ## CURRENT
-status: SYNCED
-head: read Git main HEAD (do not hard-code; this ledger commit changes HEAD)
+status: BLOCKED
+head: c07ca94935c9a2846704c713e1b9f9681d57f621
 active_task: P0-runtime-bootstrap-and-read-only-audit
-last_verified: performance-memory skill + agent activation wiring reviewed 2026-09-24
-next: authenticate one real worker; then documentation-only handoff and read-only audit
+last_verified: 2026-09-24 Grok bridge git inspect (main + branches)
+next: Human/ChatGPT authenticate Codex (or designate Grok as interim read-only auditor); then continue P0 audit on agreed BASE_SHA
 
 ## LAST EVENTS
+2026-09-24 | P0-runtime-bootstrap | Grok | c07ca949 | BLOCKED | git inspect only | branches+HEAD verified | BASE_SHA=main c07ca949; Codex auth missing; AGENT-GOVERNANCE-v1.md absent on main | ChatGPT → auth worker or re-scope audit to Grok
 2026-09-24 | performance-memory | ChatGPT | 1c7afbc | DONE | skill + PERFORMANCE + protocol | structure verified | Git-backed shared memory added | wire worker runtime
 2026-09-24 | activation wiring | ChatGPT | pending | DONE | AGENTS, CLAUDE, LOW-TOKEN, BRIEF, PERFORMANCE | files re-read after write | all three-agent startup path now references PERFORMANCE | use it on next task
 2026-09-24 | control-plane token optimization | Grok | 553563c | DONE | AGENTS, CLAUDE, PROTOCOL, task-contract, caching, token-opt, BRIEF | reviewed | low-token routing established | runtime auth remains
