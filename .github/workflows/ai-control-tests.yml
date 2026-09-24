@@ -16,4 +16,4 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: node --test infra/ai-control/worker.test.js
+      - run: node --test infra/ai-control/worker.test.mjs
