@@ -1,0 +1,79 @@
+{
+  "version": "1.0.0",
+  "mission": "Move execution away from ChatGPT and minimize paid/context tokens.",
+  "default_gateway": "cloudflare-ai-gateway",
+  "routing": {
+    "deterministic": {
+      "provider": "local",
+      "models": ["@cf/qwen/qwen3-30b-a3b-fp8"],
+      "tasks": ["validation", "normalization", "simple-extraction", "classification", "dedupe"]
+    },
+    "cheap": {
+      "provider": "anthropic",
+      "model": "claude-haiku-4.5",
+      "tasks": ["summarization", "tool-result-check", "small-transform", "triage", "structured-extraction"]
+    },
+    "standard": {
+      "provider": "anthropic",
+      "model": "claude-sonnet-4.6",
+      "tasks": ["coding", "integration", "debugging", "document-analysis", "multi-step-agent"]
+    },
+    "deep": {
+      "provider": "anthropic",
+      "model": "claude-opus-4.8",
+      "tasks": ["architecture", "hard-debugging", "high-risk-review"],
+      "requires_reasoning": true
+    },
+    "fallback": {
+      "provider": "openai",
+      "model": "gpt-5.6",
+      "tasks": ["provider-fallback", "final-synthesis"]
+    }
+  },
+  "limits": {
+    "max_agent_turns": 4,
+    "max_retries": 1,
+    "max_parallel_workers": 3,
+    "default_max_output_tokens": 2048
+  },
+  "caching": {
+    "anthropic": {
+      "ttl": "5m",
+      "cache_static_prefix": true,
+      "upgrade_to_1h_when_gap_minutes_between_shared_prefix_requests": [5, 60]
+    },
+    "cloudflare_response_cache": {
+      "enabled": true,
+      "only_for_idempotent_requests": true
+    },
+    "semantic_cache": {
+      "enabled": false,
+      "reason": "Cloudflare AI Gateway currently documents exact-request caching; semantic caching is not yet available there."
+    }
+  },
+  "context_policy": {
+    "static_prefix": [
+      "system instructions",
+      "tool schemas",
+      "CLAUDE.md / AGENTS.md",
+      "project architecture",
+      "stable task contract"
+    ],
+    "dynamic_suffix": [
+      "current task",
+      "relevant files only",
+      "latest tool result",
+      "acceptance criteria"
+    ],
+    "never_send_by_default": [
+      "entire repository",
+      "entire conversation history",
+      "unrelated files",
+      "raw tool logs"
+    ]
+  },
+  "chatgpt_role": {
+    "allowed": ["task decomposition", "routing", "human approval", "final concise synthesis"],
+    "not_allowed_by_default": ["bulk coding", "large file transformation", "long log analysis", "repeated tool-result summarization"]
+  }
+}
