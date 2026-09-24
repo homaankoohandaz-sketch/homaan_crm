@@ -1,0 +1,19 @@
+name: BuildWise AI Control Tests
+
+on:
+  push:
+    branches:
+      - ai-cost-control
+  pull_request:
+    paths:
+      - "infra/ai-control/**"
+
+jobs:
+  test-ai-control:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --test infra/ai-control/worker.test.js
