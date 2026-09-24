@@ -3,6 +3,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node tests/engines.test.js && node tests/architecture-contract.test.js && node tests/graph-decision.test.js && node tests/contract-engine.test.js && node tests/construction-control.test.js"
+    "test": "node tests/engines.test.js && node tests/architecture-contract.test.js && node tests/graph-decision.test.js && node tests/contract-engine.test.js && node tests/construction-control.test.js && node tests/buildwise-integrity.test.js"
   }
 }
