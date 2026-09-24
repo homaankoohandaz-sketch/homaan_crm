@@ -127,5 +127,35 @@ Status legend: DONE = implemented and verified; PARTIAL = some implementation ex
 104. Closed-loop transaction workspace: context + chat + actions + timeline + follow-up — PARTIAL
 105. Mobile/desktop feature parity with responsive AI-first UX — TODO
 
+## 106–130 — Expanded Construction OS / Product / Launch architecture
+106. Project Master / Project Workspace — PARTIAL
+107. MSP-style WBS + Task Hierarchy — PARTIAL
+108. Gantt / Dependency / Critical Path — PARTIAL
+109. Baseline + Actual vs Planned — PARTIAL
+110. Resource / Crew Capacity Planning — PARTIAL
+111. AI Parallel-Work Recommendation with conflict detection — TODO
+112. Look-ahead / Weekly Work Plan / Constraint Log — TODO
+113. Procurement Schedule linked to activities — PARTIAL
+114. Material Request / MTO / Lead Time — PARTIAL
+115. Supplier Bid Comparison — PARTIAL
+116. Project Inventory / Material Consumption — PARTIAL
+117. Project Accounting Ledger — PARTIAL
+118. Historical Cost vs Current Replacement Cost — PARTIAL
+119. IRR + USD-at-purchase + USD-now tracking — PARTIAL
+120. Live Total Project Cost — PARTIAL
+121. Sellable-area ratio configurable (default 80%) — PARTIAL
+122. Cost per sellable m² — PARTIAL
+123. Cost per unit — PARTIAL
+124. Land current-value input from CRM + market evidence — PARTIAL
+125. EVM: PV / EV / AC / CPI / SPI / EAC — PARTIAL
+126. Configurable KPI engine — PARTIAL
+127. Event-driven Workflow Engine — PARTIAL
+128. Builder Sales Engineering: Plan/Permit + Render -> Unit Matrix -> Sales Room — PARTIAL
+129. Open-source reuse/fork/adapt registry with license gate — PARTIAL
+130. Premium Landing + PWA + Content/Video Bot + Instagram/YouTube launch loop — PARTIAL
+
+## Product principle
+BuildWise may reuse mature open-source implementations when licensing, security, maintenance and fit are acceptable. Customizability is a first-class architectural requirement: workflows, KPIs, fields, formulas, roles, approvals, dashboards and project templates must be configurable rather than hard-coded.
+
 ## Release rule
 No item is marked DONE merely because code exists. DONE requires implementation + relevant tests + verified runtime behavior for the current scope.
