@@ -46,3 +46,48 @@ Required secrets/values are supplied at deployment time and must never be commit
 ## Deployment boundary
 
 This branch contains the control-plane implementation only. No production deployment or secret mutation is performed from the repository change.
+
+
+## ثبت و پایش مصرف
+
+Gateway برای هر درخواست، بدون ذخیره‌کردن متن Prompt یا پاسخ مدل، این داده‌ها را ثبت می‌کند:
+
+- شناسه درخواست و زمان
+- مدل و مسیر انتخاب‌شده
+- وضعیت HTTP و زمان پاسخ
+- توکن ورودی و خروجی
+- توکن‌های خوانده‌شده از Cache
+- توکن‌های ایجادشده برای Cache
+- تشخیص Cache Hit
+- هزینه تقریبی، فقط در صورت تنظیم نرخ‌ها
+
+### ذخیره‌سازی
+
+برای نگهداری تجمیعی روزانه، یک KV Binding اختیاری با نام `AI_USAGE_KV` تعریف می‌شود. کلیدها به شکل `usage:YYYY-MM-DD:model` هستند و داده‌ها حداکثر ۳۵ روز نگهداری می‌شوند.
+
+اگر KV متصل نباشد، Gateway همچنان هدرهای مصرف را در پاسخ برمی‌گرداند و درخواست مدل مختل نمی‌شود.
+
+### نرخ هزینه
+
+نرخ‌ها عمداً داخل Git ذخیره نمی‌شوند و در محیط اجرا تنظیم می‌شوند:
+
+- `PRICE_INPUT_USD_PER_1M`
+- `PRICE_OUTPUT_USD_PER_1M`
+- `PRICE_CACHE_READ_USD_PER_1M`
+- `PRICE_CACHE_WRITE_USD_PER_1M`
+
+در صورت نبود نرخ، فقط مصرف توکن ثبت می‌شود و هزینه به‌عنوان `null` گزارش می‌شود. این کار مانع قدیمی‌شدن قیمت‌ها داخل کد می‌شود.
+
+### هدرهای پایش
+
+پاسخ Gateway این هدرها را برمی‌گرداند:
+
+- `x-buildwise-request-id`
+- `x-buildwise-route`
+- `x-buildwise-input-tokens`
+- `x-buildwise-output-tokens`
+- `x-buildwise-cache-read-tokens`
+- `x-buildwise-cache-write-tokens`
+- `x-buildwise-cache-hit`
+
+تست پایه Gateway در `worker.test.js` قرار دارد و رفتار احراز هویت، مصرف توکن و Cache Hit را بررسی می‌کند.
