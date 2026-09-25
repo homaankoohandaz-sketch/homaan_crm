@@ -6,6 +6,7 @@
   async function renderHierarchy(){
     var c=document.getElementById('content');
     if(!c)return;
+    if(!pid){c.innerHTML='<section class="panel"><h3>سلسله‌مراتب پروژه</h3><p class="muted">ابتدا یک پروژه را انتخاب یا در CRM ایجاد کنید.</p></section>';return;}
     c.innerHTML='<section class="panel"><h3>سلسله‌مراتب پروژه</h3><p class="muted">Project → Complex → Building → Phase → Floor → Unit</p><div class="actions"><button class="primary" onclick="window.hAddComplex()">+ مجتمع</button><button onclick="window.hAddBuilding()">+ ساختمان</button><button onclick="window.hAddFloor()">+ طبقه</button><button onclick="window.hAddUnit()">+ واحد</button><button onclick="window.renderHierarchy()">نوسازی</button></div><div id="hTree" class="muted">در حال بارگذاری...</div></section>';
     try{
       var complexes=await db.from('project_complexes').select('id,name,code,status,sort_order').eq('project_id',pid).order('sort_order');
@@ -46,12 +47,14 @@
   }
   window.renderHierarchy=renderHierarchy;
   window.hAddComplex=async function(){
+    if(!pid)return toast('پروژه انتخاب نشده');
     var name=prompt('نام مجتمع'); if(!name)return;
     var code=prompt('کد (اختیاری)')||null;
     var r=await db.from('project_complexes').insert({project_id:pid,name:name.trim(),code:code,status:'active',created_by:me&&me.id||null});
     if(r.error)return toast(r.error.message); toast('مجتمع ثبت شد'); renderHierarchy();
   };
   window.hAddBuilding=async function(){
+    if(!pid)return toast('پروژه انتخاب نشده');
     var cx=await db.from('project_complexes').select('id,name').eq('project_id',pid).order('sort_order');
     if(cx.error||!cx.data||!cx.data.length)return toast('ابتدا مجتمع بسازید');
     var cid=Number(prompt('شناسه مجتمع:\n'+cx.data.map(function(x){return x.id+': '+x.name;}).join('\n')));
@@ -61,6 +64,7 @@
     if(r.error)return toast(r.error.message); toast('ساختمان ثبت شد'); renderHierarchy();
   };
   window.hAddFloor=async function(){
+    if(!pid)return toast('پروژه انتخاب نشده');
     var b=await db.from('project_buildings').select('id,name,complex_id').order('id');
     var cxIds=(await db.from('project_complexes').select('id').eq('project_id',pid)).data||[];
     var set={}; cxIds.forEach(function(x){set[x.id]=1;});
@@ -73,6 +77,7 @@
     if(r.error)return toast(r.error.message); toast('طبقه ثبت شد'); renderHierarchy();
   };
   window.hAddUnit=async function(){
+    if(!pid)return toast('پروژه انتخاب نشده');
     var f=await db.from('project_floors').select('id,floor_number,name,building_id').order('id').limit(100);
     if(f.error||!f.data||!f.data.length)return toast('ابتدا طبقه بسازید');
     var fid=Number(prompt('شناسه طبقه:\n'+f.data.map(function(x){return x.id+': طبقه '+x.floor_number+' '+(x.name||'');}).join('\n')));
