@@ -1,4 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { requireRole, isAuthResponse } from '../_shared/auth.ts';
 
 const SPREADSHEET_ID = '1A24ypEXoOT-10j1V83Qzpn-PcGTwNxmfMB2YkuijeMo';
 const SHEET_GID = Deno.env.get('GOOGLE_SHEETS_GID') || '0';
@@ -24,12 +25,9 @@ function dateValue(v: string) { const d = new Date(v); return Number.isNaN(d.get
 
 Deno.serve(async (req) => {
   const supabase = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
-  const auth = req.headers.get('authorization');
-  if (!auth) return new Response(JSON.stringify({ error: 'authorization required' }), { status: 401 });
-  const { data: { user } } = await supabase.auth.getUser(auth.replace('Bearer ', ''));
-  if (!user) return new Response(JSON.stringify({ error: 'unauthorized' }), { status: 401 });
-  const { data: role } = await supabase.from('app_roles').select('role,active').eq('user_id', user.id).eq('active', true).single();
-  if (!role || !['owner','staff'].includes(role.role)) return new Response(JSON.stringify({ error: 'forbidden' }), { status: 403 });
+  const auth = await requireRole(req, ['owner', 'staff']);
+  if (isAuthResponse(auth)) return auth;
+  const user = auth.user;
 
   const importedAt = new Date().toISOString();
   const { data: run, error: runError } = await supabase.from('market_data_imports').insert({ source_type: 'api', source_name: `Google Sheets ${SPREADSHEET_ID}`, source_url: `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/edit`, imported_by: user.id, imported_at: importedAt, notes: `Google Sheets sync; gid=${SHEET_GID}` }).select('id').single();
