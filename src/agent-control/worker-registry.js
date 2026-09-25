@@ -39,8 +39,10 @@ export function routeTask(task, registry = createWorkerRegistry()) {
     automation: ["n8n", "grok"],
   };
 
+  const capabilityByKind = { implementation: "implement", review: "review", research: "research", orchestration: "orchestrate", automation: "automation" };
+  const requiredCapability = capabilityByKind[task.kind];
   const candidates = preferredMap[preferred] ?? kindMap[task.kind] ?? ["grok"];
-  const worker = candidates.find((name) => usable(workers[name]));
+  const worker = candidates.find((name) => usable(workers[name]) && (!requiredCapability || workers[name].capability === requiredCapability));
 
   if (!worker) {
     return {
