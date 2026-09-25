@@ -4,9 +4,9 @@ updated: 2026-09-25
 project: BuildWise AI+H | repo: homaankoohandaz-sketch/homaan_crm
 
 ## Now
-status: token_opt + live_grok_bridge | specialist runtimes partially blocked
-active: P0-worker-routing-and-runtime-bootstrap
-next: Grok executes implementation/review; authenticate additional runtimes only when available
+status: TASK1 audit DONE | Grok live bridge active
+active: await Master confirm for TASK2 hierarchy
+next: Project/Complex/Building/Phase/Floor/Unit hierarchy (CRUD + persistence)
 
 ## Who does what
 - Grok: live GitHub bridge, implementation/review/control-plane writes
