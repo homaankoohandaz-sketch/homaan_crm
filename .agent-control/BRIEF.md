@@ -1,17 +1,17 @@
 # BRIEF (read this first — max ~25 lines)
 
-updated: 2026-09-24
+updated: 2026-09-25
 project: BuildWise AI+H | repo: homaankoohandaz-sketch/homaan_crm
 
 ## Now
-status: token_opt + performance_memory_ready | runtime still blocked (Codex auth)
-active: P0-runtime-bootstrap-and-read-only-audit
-next: authenticate 1 real worker → doc-only handoff → read-only audit
+status: token_opt + live_grok_bridge | specialist runtimes partially blocked
+active: P0-worker-routing-and-runtime-bootstrap
+next: Grok executes implementation/review; authenticate additional runtimes only when available
 
 ## Who does what
-- Grok: GitHub bridge, control-plane writes, shared performance ledger
+- Grok: live GitHub bridge, implementation/review/control-plane writes
 - ChatGPT: Master / routing / architecture / synthesis
-- Claude: review / integrate / QA; receives BRIEF+PERFORMANCE+task
+- Claude: review / integrate / QA via handoff until a live runtime exists
 
 ## Shared memory
 - code truth: Git commit/branch
