@@ -29,3 +29,11 @@ Build and maintain Homaan CRM through coordinated AI agents. This repository is 
 
 ## Current project
 The first objective is to establish the multi-agent control plane without destabilizing the existing CRM.
+
+## Authentication contract
+- BuildWise application authentication is Supabase Auth; browser code may use only the publishable/anon key.
+- Application authorization is separate from authentication and is resolved from `app_roles` with an active-account check.
+- Server-side Edge Functions must use `supabase/functions/_shared/auth.ts` for Bearer-token verification and role authorization.
+- `SUPABASE_SERVICE_ROLE_KEY` is server-only and must never be shipped to browser code, logs, prompts, or client-visible files.
+- Privileged database operations may use the service-role client only after the caller's Supabase Auth identity and BuildWise role have been verified.
+- New protected Edge Functions must define their allowed roles explicitly with `requireRole(req, [...])`.
