@@ -26,7 +26,7 @@ export function routeTask(task, registry = createWorkerRegistry()) {
   const preferredMap = {
     codex: ["codex", "grok"],
     grok: ["grok"],
-    claude: ["claude"],
+    claude: ["claude", "grok"],
     gemini: ["gemini", "grok"],
     chatgpt: ["chatgpt"],
   };
