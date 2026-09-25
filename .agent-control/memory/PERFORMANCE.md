@@ -4,7 +4,7 @@
 state: SYNCED
 updated: 2026-09-25
 branch: buildwise-implementation
-head_basis: 7cbc2acc93dc73444c64d474792205687a0ddb22
+head_basis: 1e3e725bd0dcf0029a872b8249c5a33160353a07
 active_task: P0-control-plane-unify-and-worker-loop
 
 ## Recent events
@@ -19,3 +19,5 @@ Append ONE compact event after every meaningful verified task:
 timestamp | task | agent | commit | status | paths | tests | decision/impact | next
 
 Never store secrets. Never mark DONE without evidence.
+
+2026-09-25 | control-plane | chatgpt | cec015d | VERIFIED | BRIEF/STATE/task/reminder/audit | Git writes verified | shared worker loop established; hub registered | Grok execute + Claude review
