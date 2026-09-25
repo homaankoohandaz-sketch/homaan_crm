@@ -2,28 +2,36 @@
 
 For Claude, Grok and every future worker.
 
-READ: BRIEF → latest PERFORMANCE → active task → minimum allowed files.
+## STARTUP / BOOTSTRAP
+1. Resolve the BuildWise repository and target branch.
+2. If .agent-control/ is absent locally, sync/fetch the target branch before stopping.
+3. Read: BRIEF → latest PERFORMANCE → active task → minimum allowed files.
+4. Do not ask Master merely because the local control-plane folder is missing; escalate only if repository/branch access or authentication fails.
 
-BEFORE WORK:
+## BEFORE WORK
 - confirm task_id, BASE_SHA, scope, allowed files
-- claim the task/files
+- claim the exact files/records
 - detect newer changes; if found = CONFLICT and stop
+- record the actual MODEL_USED
 
-EXECUTE:
+## EXECUTE
 - do the assigned work; do not redesign outside scope
 - use the cheapest capable model/tool
 - parallelize only isolated scopes
 - never expose secrets
+- never modify files/records outside the allowed scope
+- if extra scope is genuinely required, stop and report SCOPE_ESCALATION with the exact paths/reason
 
-VERIFY:
+## VERIFY
 - test actual behavior
 - runtime/UI verify where applicable
 - record exact evidence
 
-CLOSE:
+## CLOSE
 - update task/handoff
 - append exactly ONE compact Performance event
 - return STATUS / CHANGED / TESTS / RISKS / NEXT
+- include MODEL_USED and BASE_SHA
 
 DONE = implementation + tests + runtime/evidence verification + state update.
 A proposal/patch alone is never DONE.
