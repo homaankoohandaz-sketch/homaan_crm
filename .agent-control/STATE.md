@@ -1,10 +1,10 @@
 # BuildWise Agent Control State
 
-status: control_plane_reconciled
+status: control_plane_hardened
 updated: 2026-09-25
 project: BuildWise AI
 branch: buildwise-implementation
-control_plane_version: 2.0.0
+control_plane_version: 2.1.0
 
 ## Truth
 - Code: GitHub repository + current task branch.
@@ -32,7 +32,13 @@ buildwise-implementation and main are divergent. Do not blind-merge. Transplant 
 P0-control-plane-unify-and-worker-loop
 
 ## Startup
-BRIEF → latest PERFORMANCE → active task → minimum allowed files.
+Resolve repo/branch → sync .agent-control if locally absent → BRIEF → latest PERFORMANCE → active task → minimum allowed files.
+
+## Worker controls
+- model_used and base_sha are mandatory handoff fields.
+- Allowed files are hard scope boundaries.
+- Additional files/records require SCOPE_ESCALATION before modification.
+- Workers must record exact evidence and tests.
 
 ## Gates
 Human approval: production, secrets/auth, destructive DB/schema, billing, irreversible Git, material legal/financial actions.
