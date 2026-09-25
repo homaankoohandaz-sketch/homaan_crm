@@ -4,9 +4,9 @@ updated: 2026-09-25
 project: BuildWise AI+H | repo: homaankoohandaz-sketch/homaan_crm
 
 ## Now
-status: TASK2 code READY | DB migration pending human apply
-active: apply supabase/migrations/20260925_project_hierarchy.sql
-next: after apply → Grok runtime CRUD verify → Task3 WBS/Gantt
+status: TASK2 PARTIAL — DB hierarchy verified; UI tab live; full auth CRUD not exercised by Grok
+active: Master to confirm TASK2 close or request auth-session UI CRUD
+next: after TASK2 close → Task3 WBS/Gantt
 
 ## Who does what
 - Grok: live GitHub bridge, implementation
@@ -14,13 +14,13 @@ next: after apply → Grok runtime CRUD verify → Task3 WBS/Gantt
 - Claude: review / QA via handoff
 
 ## Shared memory
-- code: Git
+- code: Git HEAD
 - coord: .agent-control/
 - PERFORMANCE.md
 
 ## Blockers
-- Hierarchy tables not yet on live Supabase (apply migration)
+- No authenticated browser session for end-to-end UI insert from Grok
 - Codex auth unavailable
 
 ## Handoff
-HEAD | TASK | CHANGED | RESULT | TESTS | RUNTIME | NEXT
+HEAD | TASK | RESULT | RUNTIME | NEXT
