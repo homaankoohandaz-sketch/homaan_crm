@@ -1,47 +1,41 @@
-# Agent Control State
+# BuildWise Agent Control State
 
-status: runtime_bootstrap_blocked_audit_baseline_recorded
-project: BuildWise AI+H
-control_plane_version: 1.0.0
-active_task: P0-runtime-bootstrap-and-read-only-audit
+status: control_plane_reconciled
+updated: 2026-09-25
+project: BuildWise AI
+branch: buildwise-implementation
+control_plane_version: 2.0.0
 
-## Master
-- chatgpt: master orchestrator / architect / synthesis
+## Truth
+- Code: GitHub repository + current task branch.
+- Coordination: .agent-control/.
+- Product acceptance: Master checklist v2.
+- Independent manager/control hub: homaankoohandaz-sketch/ai-agent-coworking.
 
-## Specialist team
-- 21 logical specialist roles are specified in BUILDWISE-AGENT-SPECIFICATION-v1.md.
-- They are not marked operational until runtime, tools, permissions, tests and a real non-production task pass.
+## Team
+- ChatGPT: Master Operator / architecture / routing / synthesis.
+- Grok: GitHub execution bridge / implementation when runtime is live.
+- Claude: independent review / integration / QA; implementation only if live write access is verified.
+- Other workers: selected by capability, cost, availability and verification quality.
 
-## Verified in current execution
-- GitHub connection: ADMIN / MAINTAIN / PUSH verified for homaankoohandaz-sketch/homaan_crm.
-- buildwise-implementation was fast-forwarded to the current main commit 36d9a1922853f69f2c4e92c04ec46b98d6f31454.
-- Supabase project is ACTIVE_HEALTHY.
-- Ten live Edge Functions are present and ACTIVE.
-- CRM, matching, market/valuation, project-control, AI-audit and public-request tables are present.
-- Netlify has an existing buildwise-ai-h site.
-- Supabase security/performance advisors have been queried.
-- A durable execution baseline and P0 runtime/audit task have been committed to the implementation branch.
+## Verified infrastructure
+- GitHub repository access: admin/maintain/push.
+- Supabase: beuestoewletjsgmigmf, ACTIVE_HEALTHY, 10 Edge Functions.
+- Netlify: buildwise-ai-h site exists.
+- Codex autonomous runtime: not verified in this ChatGPT session.
+- n8n: optional; never a hard dependency.
 
-## Runtime blocker
-- Codex Tasks authentication is unavailable in the current ChatGPT session.
-- No autonomous Codex worker is therefore considered operational.
-- Claude/Gemini/n8n remain configured targets, not live workers.
+## Important branch fact
+buildwise-implementation and main are divergent. Do not blind-merge. Transplant or reconcile control-plane changes deliberately.
 
-## P0 findings
-- The live ai-orchestrator is a CRM AI gateway with a limited tool surface, not yet the complete BuildWise specialist-agent operating layer.
-- The buildwise-app function serves a bundled frontend; end-to-end product behavior still requires verification.
-- Security advisor findings require review before production hardening.
-- A Telegram webhook secret is embedded in deployed function source and requires secret-management remediation under the human approval gate.
-- No GitHub Actions runs are currently recorded for buildwise-implementation.
+## Active task
+P0-control-plane-unify-and-worker-loop
 
-## Human approval gates
-- production deployment
-- destructive database/schema changes
-- secrets/authentication changes
-- irreversible Git operations
-- billing/cost commitments
-- sensitive public social actions
-- material legal/financial commitments
+## Startup
+BRIEF → latest PERFORMANCE → active task → minimum allowed files.
 
-## Next objective
-Authenticate one real worker, run documentation-only handoff, then read-only repository/application audit. Only after that permit isolated non-production implementation.
+## Gates
+Human approval: production, secrets/auth, destructive DB/schema, billing, irreversible Git, material legal/financial actions.
+
+## Done
+Implementation + tests + runtime/evidence verification + state update.
