@@ -1,7 +1,7 @@
 const DEFAULT_WORKERS = Object.freeze({
   chatgpt: { capability: "orchestrate", status: "available" },
-  grok: { capability: "implement", status: "available" },
-  claude: { capability: "review", status: "available" },
+  grok: { capability: ["implement", "review", "control"], status: "available" },
+  claude: { capability: "review", status: "handoff" },
   codex: { capability: "implement", status: "blocked" },
   gemini: { capability: "research", status: "configured" },
   n8n: { capability: "automation", status: "blocked" },
@@ -16,7 +16,7 @@ export function createWorkerRegistry(overrides = {}) {
 }
 
 function usable(worker) {
-  return worker && (worker.status === "available" || worker.status === "configured");
+  return worker && worker.status === "available";
 }
 
 export function routeTask(task, registry = createWorkerRegistry()) {
@@ -33,7 +33,7 @@ export function routeTask(task, registry = createWorkerRegistry()) {
 
   const kindMap = {
     implementation: ["codex", "grok"],
-    review: ["claude"],
+    review: ["claude", "grok"],
     research: ["gemini", "claude"],
     orchestration: ["chatgpt"],
     automation: ["n8n", "grok"],
@@ -42,7 +42,7 @@ export function routeTask(task, registry = createWorkerRegistry()) {
   const capabilityByKind = { implementation: "implement", review: "review", research: "research", orchestration: "orchestrate", automation: "automation" };
   const requiredCapability = capabilityByKind[task.kind];
   const candidates = preferredMap[preferred] ?? kindMap[task.kind] ?? ["grok"];
-  const worker = candidates.find((name) => usable(workers[name]) && (!requiredCapability || workers[name].capability === requiredCapability));
+  const worker = candidates.find((name) => usable(workers[name]) && (!requiredCapability || (Array.isArray(workers[name].capability) ? workers[name].capability.includes(requiredCapability) : workers[name].capability === requiredCapability)));
 
   if (!worker) {
     return {
