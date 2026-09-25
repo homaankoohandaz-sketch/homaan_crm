@@ -21,10 +21,19 @@ control_hub: homaankoohandaz-sketch/ai-agent-coworking
 - Other workers/tools: use when they reduce cost/time or improve verification.
 
 ## Startup order
-BRIEF → latest PERFORMANCE → active task → minimum allowed files.
+1. Resolve BuildWise repo + target branch.
+2. If .agent-control is absent locally, sync/fetch the target branch; do not stop merely because the local folder is missing.
+3. Read BRIEF → latest PERFORMANCE → active task → minimum allowed files.
+4. Claim exact scope before modification.
 
 ## Token rule
 Never replay full history. Use compact state + task + diff. Default max_iterations=3. Stable prompt first, variable context last.
+
+## Scope rule
+Allowed files are a hard boundary. If extra files/records are genuinely required, stop with SCOPE_ESCALATION and report exact paths/reason; do not modify them silently.
+
+## Handoff rule
+Every worker handoff records MODEL_USED, BASE_SHA, claim scope, evidence, tests, risks and next action.
 
 ## Gates
 Human approval required for production, secrets/auth, destructive DB/schema, billing, irreversible Git, material legal/financial actions.
