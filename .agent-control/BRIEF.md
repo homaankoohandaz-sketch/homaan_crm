@@ -31,3 +31,10 @@ Human approval required for production, secrets/auth, destructive DB/schema, bil
 
 ## Next
 P0-control-plane-unify-and-worker-loop → verify shared state, then dispatch the smallest non-production implementation task.
+
+## Runtime truth — Supabase
+- Git is code truth for repository artifacts; it is NOT the complete runtime truth.
+- Supabase is an independent runtime source of truth for live schema, RLS policies, Edge Function source, and security/performance advisors.
+- Claude has direct live Supabase read access and, when explicitly scoped, safe non-destructive write access. Assign Claude independent DB/security/runtime verification tasks; do not route all runtime QA through GitHub/Grok.
+- Any live Supabase change must be recorded back into the repository/control-plane ledger to prevent drift.
+- Runtime state must be distinguished from repository state: REPO / LIVE / DRIFT / VERIFIED.
