@@ -4,28 +4,23 @@ updated: 2026-09-25
 project: BuildWise AI+H | repo: homaankoohandaz-sketch/homaan_crm
 
 ## Now
-status: TASK2 hierarchy code READY | migration pending apply
-active: apply 20260925_project_hierarchy.sql in Supabase then verify insert
-next: after migration apply → runtime CRUD verify → Task3 WBS/Gantt
+status: TASK2 code READY | DB migration pending human apply
+active: apply supabase/migrations/20260925_project_hierarchy.sql
+next: after apply → Grok runtime CRUD verify → Task3 WBS/Gantt
 
 ## Who does what
-- Grok: live GitHub bridge, implementation/review/control-plane writes
-- ChatGPT: Master / routing / architecture / synthesis
-- Claude: review / integrate / QA via handoff until a live runtime exists
+- Grok: live GitHub bridge, implementation
+- ChatGPT: Master / architecture
+- Claude: review / QA via handoff
 
 ## Shared memory
-- code truth: Git commit/branch
-- coordination truth: `.agent-control/`
-- compact change memory: `.agent-control/memory/PERFORMANCE.md`
-
-## Token rules
-1. Read BRIEF + PERFORMANCE recent events + current task only.
-2. Prefer preferred_model + max_iterations.
-3. Send diffs/summaries, not whole files/history.
+- code: Git
+- coord: .agent-control/
+- PERFORMANCE.md
 
 ## Blockers
-- Hierarchy migration not yet applied to live Supabase (human SQL Editor)
-- Codex Tasks auth unavailable
+- Hierarchy tables not yet on live Supabase (apply migration)
+- Codex auth unavailable
 
 ## Handoff
-HEAD | TASK | CHANGED | RESULT | TESTS | DECISION | NEXT
+HEAD | TASK | CHANGED | RESULT | TESTS | RUNTIME | NEXT
