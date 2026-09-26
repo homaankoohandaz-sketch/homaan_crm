@@ -1,0 +1,103 @@
+version: 1
+roles:
+  manager:
+    visible:
+      - manager_control_center
+      - crm
+      - files
+      - people
+      - requests
+      - land_calculation
+      - architecture
+      - construction
+      - promotions
+      - audit
+    capabilities: ["*"]
+    quotas: unlimited
+
+  consultant:
+    visible:
+      - files
+      - personal_dashboard
+      - land_calculation
+      - facade_idea_no_plan
+    hidden:
+      - manager_control_center
+      - other_users_dashboards
+      - construction_control
+      - accounting
+      - internal_ai_admin
+      - internal_matching
+    scope: assigned_or_authorized_records
+    quotas:
+      land_calculation: 3/48h
+      file_preview: 3/48h
+      facade_generation: 1/48h
+
+  builder:
+    visible:
+      - builder_dashboard
+      - own_files
+      - upload_files
+      - own_promotions
+      - construction_control
+      - architecture_idea
+    hidden:
+      - manager_control_center
+      - unrelated_crm
+      - other_builders_private_data
+    scope: own_or_authorized_projects
+    quotas:
+      land_calculation: 3/48h
+      file_preview: 3/48h
+      facade_generation: 1/48h
+
+  owner:
+    visible:
+      - own_files
+      - own_requests
+      - property_calculation
+      - architecture_building_output
+      - plans_when_permitted
+    hidden:
+      - manager_control_center
+      - unrelated_crm
+      - other_owners_data
+    scope: own_or_authorized_properties
+    quotas:
+      land_calculation: 3/48h
+      file_preview: 3/48h
+      facade_generation: 1/48h
+
+capabilities:
+  - manager.all
+  - crm.people.read
+  - crm.people.phone.read
+  - crm.request.create
+  - crm.request.read.own
+  - files.list.assigned
+  - files.list.own
+  - files.preview
+  - files.upload.own
+  - promotion.create.own
+  - promotion.read.own
+  - land.calculate
+  - facade.generate
+  - architecture.plan.view
+  - architecture.idea.generate
+  - construction.read
+  - construction.write
+  - manager.audit.read
+
+quotas:
+  land.calculate:
+    window_hours: 48
+    limit: 3
+  files.preview:
+    window_hours: 48
+    limit: 3
+  facade.generate:
+    window_hours: 48
+    limit: 1
+  manager:
+    unlimited: true
