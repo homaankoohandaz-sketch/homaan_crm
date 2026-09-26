@@ -41,7 +41,7 @@ Every worker handoff records MODEL_USED, BASE_SHA, scope, evidence, tests, risks
 Human approval required for production, secrets/auth, destructive DB/schema, billing, irreversible Git, material legal/financial actions.
 
 ## Next
-CRM MVP role-access vertical slice is dispatched through the repository-controlled Grok worker workflow. Execution remains unverified until an independent worker commit/evidence appears. No credential/account bypass is permitted.
+Architecture-first baseline is committed. Worker loop is wired through the verified CI workflow. The only current external activation blocker is missing XAI_API_KEY and ANTHROPIC_API_KEY GitHub Actions secrets. No key should be pasted into chat.
 
 ## Runtime truth — Supabase
 Git is code truth; Supabase is independent runtime truth for live schema/RLS/functions/security advisors. Record live changes back into the ledger. Distinguish REPO / LIVE / DRIFT / VERIFIED.
