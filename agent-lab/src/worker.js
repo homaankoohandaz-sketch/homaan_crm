@@ -10,13 +10,14 @@ export class Worker {
   }
 }
 
-export function createWorkerResult({ worker, task, status, output = null, error = null }) {
+export function createWorkerResult({ worker, task, status, output = null, error = null, evidence = [] }) {
   return {
     task_id: task.id,
     worker,
     status,
     output,
     error,
+    evidence,
     completed_at: new Date().toISOString()
   };
 }
