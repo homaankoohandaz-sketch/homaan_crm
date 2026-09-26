@@ -1,11 +1,12 @@
 # TASK-CRM-MVP-ROLE-ACCESS — CRM MVP usable vertical slice
 
-status: READY_FOR_WORKER
+status: QUEUED
 task_id: TASK-CRM-MVP-ROLE-ACCESS
 requester: chatgpt
 specialist: crm
 runtime: grok-github-worker
 priority: P0
+depends_on: TASK-000-ARCHITECTURE-BASELINE
 preferred_model: grok
 max_iterations: 3
 base_sha: fa55ae52092bc3609e14545323565cc3480aff24
