@@ -1,4 +1,7 @@
-# BUILDWISE BRIEF — read first
+# BUILDWISE BRIEF — execution state
+
+Orientation source: `.agent-control/SUMMARY.md`
+Architecture source: `.agent-control/MASTER-ARCHITECTURE.md`
 
 updated: 2026-09-26
 project: BuildWise AI | branch: buildwise-implementation
