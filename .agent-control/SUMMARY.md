@@ -60,3 +60,5 @@ The control plane is present and the worker runtime is bounded. External worker 
 - 2026-09-26: Retired the obsolete 100-point checklist as an execution reference.
 - 2026-09-26: Root README now points every worker to the canonical orientation path.
 - Rule from now on: every structural/code change must append one short entry here: date + change + files + verification + next dependency.
+
+- 2026-09-27: Added current architecture phase map and durable decision ledger; consolidated Task/Follow-up/Calendar/Notification decisions; created inspectable branch `architecture/current-phase`; next implementation slice is Unified Task Engine.
