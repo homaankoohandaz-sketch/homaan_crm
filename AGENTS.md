@@ -28,7 +28,16 @@ Build and maintain Homaan CRM through coordinated AI agents. This repository is 
 - Production merges require explicit human approval.
 
 ## Current project
-The first objective is to establish the multi-agent control plane without destabilizing the existing CRM.
+BuildWise is now organized around `.agent-control/SUMMARY.md` and `.agent-control/MASTER-ARCHITECTURE.md`.
+
+### Mandatory orientation
+1. Read `.agent-control/SUMMARY.md` first.
+2. Read `.agent-control/MASTER-ARCHITECTURE.md` next.
+3. Read only the relevant `docs/PHASES/*.md` file.
+4. Then read the exact assigned task and minimum allowed files.
+5. Do not scan the whole repository for routine work.
+6. Do not implement new work in legacy duplicate index files (`index_FINAL.html`, `index_legacy.html`, `index3 2.html`).
+7. Every structural/code change must add one short entry to `.agent-control/SUMMARY.md`.
 
 ## Authentication contract
 - BuildWise application authentication is Supabase Auth; browser code may use only the publishable/anon key.
