@@ -33,7 +33,7 @@ test("rejects an unsafe task contract", () => {
 });
 
 test("allows deterministic state transitions", () => {
-  const task = createTask({ title: "transition" });
+  const task = createTask({\n    title: "transition",\n    preferred_model: "grok",\n    max_iterations: 3,\n    allowed_files: [],\n    cache_keys: [],\n    summarize_after_tools: true\n  });
   const running = transitionTask(task, "running");
   const completed = transitionTask(running, "completed");
 
