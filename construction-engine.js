@@ -5,84 +5,12 @@
   function fmtPct(x){return new Intl.NumberFormat('fa-IR',{maximumFractionDigits:2}).format(x)+'%'}
   function statSafe(t,val,meta){return stat(t,val,meta||'')}
 
-  window.calcConstruction=function(){
-    var land=v('cx_land'), coverage=p(v('cx_coverage')), reg=v('cx_reg');
-    var lowerRatio=p(v('cx_lowerRatio')), lowerFloors=Math.max(0,v('cx_lowerFloors'));
-    var balcony=v('cx_balcony'), roof=v('cx_roof'), eff=p(v('cx_eff'));
-    var ground=land*coverage;
-    var upper=ground*reg;
-    var lower=land*lowerRatio*lowerFloors;
-    var baseGross=ground+upper+lower+balcony+roof;
-    var extraGross=v('cx_extraCount')*v('cx_extraArea')+v('cx_console')+v('cx_parking')+v('cx_storage');
-    var totalGross=baseGross+extraGross;
-    var totalSellable=totalGross*eff;
-    var commercial=Math.min(v('cx_commercial'),totalSellable);
-    var residential=Math.max(0,totalSellable-commercial);
+  // Canonical calculation lives in src/domains/construction/calculations.js.
+  // This file is UI/persistence adapter only.
 
-    var buildBase=totalGross*v('cx_buildCost');
-    var construction=buildBase+v('cx_services')+v('cx_extraBroker')+v('cx_engineering')+v('cx_renovation')+v('cx_ownerPayment');
-    var landCapital=land*v('cx_landPrice');
-    var totalCapital=construction+landCapital;
-
-    var residentialReturn=residential*v('cx_salePrice');
-    var commercialReturn=commercial*v('cx_commercialPrice');
-    var totalReturn=residentialReturn+commercialReturn;
-    var constructionShare=totalCapital?construction/totalCapital:0;
-    var landShare=totalCapital?landCapital/totalCapital:0;
-    var builderReturn=totalReturn*constructionShare;
-    var ownerReturn=totalReturn*landShare;
-    var builderProfit=builderReturn-construction;
-    var ownerProfit=ownerReturn-landCapital;
-    var projectProfit=totalReturn-totalCapital;
-
-    var out={
-      land:land,width:v('cx_width'),reg:reg,coverage:coverage,lowerRatio:lowerRatio,lowerFloors:lowerFloors,
-      ground:ground,upper:upper,lower:lower,balcony:balcony,roof:roof,eff:eff,
-      baseGross:baseGross,extraGross:extraGross,totalGross:totalGross,totalSellable:totalSellable,
-      commercial:commercial,residentialSellable:residential,buildBase:buildBase,constructionCapital:construction,
-      landCapital:landCapital,totalCapital:totalCapital,residentialReturn:residentialReturn,commercialReturn:commercialReturn,
-      totalReturn:totalReturn,constructionShare:constructionShare,landShare:landShare,builderReturn:builderReturn,
-      ownerReturn:ownerReturn,builderProfit:builderProfit,ownerProfit:ownerProfit,projectProfit:projectProfit,
-      projectROI:totalCapital?projectProfit/totalCapital*100:0,builderROI:construction?builderProfit/construction*100:0,
-      ownerROI:landCapital?ownerProfit/landCapital*100:0,builderArea:residential*constructionShare,ownerArea:residential*landShare
-    };
-    window.__BUILDWISE_CONSTRUCTION_LAST=out;
-
-    document.getElementById('cx_area_output').innerHTML='<div class="stats">'
-      +statSafe('سطح اشغال',money(ground)+' m²',land+' × '+v('cx_coverage')+'%')
-      +statSafe('طبقات بالا',money(upper)+' m²',money(ground)+' × '+reg)
-      +statSafe('طبقات پایین',money(lower)+' m²',land+' × '+v('cx_lowerRatio')+'% × '+lowerFloors)
-      +statSafe('کل زیربنا',money(totalGross)+' m²','پایه '+money(baseGross)+' + مازاد '+money(extraGross))
-      +statSafe('قابل فروش کل',money(totalSellable)+' m²',money(totalGross)+' × '+v('cx_eff')+'%')
-      +statSafe('قابل فروش مسکونی',money(residential)+' m²','قابل فروش کل − تجاری')+'</div>';
-
-    document.getElementById('cx_result').innerHTML='<div class="stats">'
-      +statSafe('آورده ساخت',money(construction),'ساخت + هزینه‌های ساخت')
-      +statSafe('آورده زمین',money(landCapital),'زمین × قیمت زمین')
-      +statSafe('کل سرمایه پروژه',money(totalCapital),'ساخت + زمین')
-      +statSafe('بازگشت مسکونی',money(residentialReturn),money(residential)+' × '+money(v('cx_salePrice')))
-      +statSafe('بازگشت تجاری',money(commercialReturn),money(commercial)+' × '+money(v('cx_commercialPrice')))
-      +statSafe('کل بازگشت سرمایه',money(totalReturn),'مسکونی + تجاری')
-      +statSafe('سود پروژه',money(projectProfit),'بازگشت − کل سرمایه')
-      +statSafe('ROI پروژه',fmtPct(out.projectROI),'سود ÷ کل سرمایه')+'</div>';
-
-    document.getElementById('cx_split').innerHTML='<div class="data-grid">'
-      +'<article class="project-card"><h3>سازنده</h3><div class="project-values"><span>سهم سرمایه <b>'+fmtPct(constructionShare*100)+'</b></span><span>متراژ قابل فروش <b>'+money(out.builderArea)+' m²</b></span></div><p>بازگشت: '+money(builderReturn)+'<br>سود خالص: <b>'+money(builderProfit)+'</b><br>ROI: <b>'+fmtPct(out.builderROI)+'</b></p></article>'
-      +'<article class="project-card"><h3>مالک</h3><div class="project-values"><span>سهم سرمایه <b>'+fmtPct(landShare*100)+'</b></span><span>متراژ قابل فروش <b>'+money(out.ownerArea)+' m²</b></span></div><p>بازگشت: '+money(ownerReturn)+'<br>سود خالص: <b>'+money(ownerProfit)+'</b><br>ROI: <b>'+fmtPct(out.ownerROI)+'</b></p></article>'
-      +'</div>';
-
-    document.getElementById('cx_formula').textContent=
-      'Gross = '+land+'×'+v('cx_coverage')+'% + ('+land+'×'+v('cx_coverage')+'%×'+reg+') + ('+land+'×'+v('cx_lowerRatio')+'%×'+lowerFloors+') + '+balcony+' + '+roof+' + '+extraGross+' = '+totalGross+
-      '\\nSellable = '+totalGross+'×'+v('cx_eff')+'% = '+totalSellable+'; Residential = '+totalSellable+'−'+commercial+' = '+residential+
-      '\\nConstruction Capital = '+totalGross+'×'+v('cx_buildCost')+' + extras = '+construction+
-      '\\nLand Capital = '+land+'×'+v('cx_landPrice')+' = '+landCapital+
-      '\\nTotal Return = ('+residential+'×'+v('cx_salePrice')+') + ('+commercial+'×'+v('cx_commercialPrice')+') = '+totalReturn+
-      '\\nConstruction Share = '+fmtPct(constructionShare*100)+'; Land Share = '+fmtPct(landShare*100);
-
-    return out;
-  };
 
   window.construction=function(){
+    Promise.resolve(window.__buildwiseConstructionReady).then(function(){
     db.from('construction_projects').select('*').order('created_at',{ascending:false}).limit(50).then(function(r){
       main.innerHTML=page('ساخت و پروژه','موتور محاسبه دقیق مشارکت، ساخت، زمین، فروش و سود',canWrite()?btn('+ ذخیره پروژه','saveConstructionProject()',true):'')
       +card('اطلاعات پروژه','<div class="form-grid construction-grid">'
@@ -119,6 +47,7 @@
       +card('کنترل فرمول','<div class="note">سهم سازنده و مالک از کل بازگشت سرمایه بر اساس نسبت آورده ساخت و زمین محاسبه می‌شود. تجاری از مسکونی جداست و ارزش آن با قیمت تجاری وارد بازگشت کل می‌شود.</div><div id="cx_formula" class="formula"></div>')
       +card('پروژه‌های ذخیره‌شده','<div class="data-grid">'+(r.error?errbox(r.error):(r.data||[]).map(function(x){return '<article class="project-card"><div class="row"><span class="badge">'+esc(stateLabel(x.status))+'</span><small>'+date(x.created_at)+'</small></div><h3>'+esc(x.title||'پروژه')+'</h3><p>زمین '+money(x.land_area)+' متر · زیربنا '+money(x.gross_built_area)+' متر · قابل فروش '+money(x.net_sellable_area)+' متر</p><div class="project-values"><span>هزینه <b>'+money(x.estimated_cost)+'</b></span><span>بازگشت <b>'+money(x.expected_sale_price)+'</b></span></div></article>'}).join('')||empty('پروژه ذخیره‌شده‌ای وجود ندارد'))+'</div>');
       calcConstruction();
+    });
     });
   };
 
