@@ -1,6 +1,6 @@
 # BuildWise AI — SUMMARY
 
-Updated: 2026-09-26
+Updated: 2026-09-27
 Branch: buildwise-implementation
 
 ## Single source of orientation
@@ -60,5 +60,5 @@ The control plane is present and the worker runtime is bounded. External worker 
 - 2026-09-26: Retired the obsolete 100-point checklist as an execution reference.
 - 2026-09-26: Root README now points every worker to the canonical orientation path.
 - Rule from now on: every structural/code change must append one short entry here: date + change + files + verification + next dependency.
-
 - 2026-09-27: Added current architecture phase map and durable decision ledger; consolidated Task/Follow-up/Calendar/Notification decisions; created inspectable branch `architecture/current-phase`; next implementation slice is Unified Task Engine.
+- 2026-09-27: Completed structural repository audit: 205 files / 42 directories; zero exact-content duplicate groups; confirmed construction calculation duplication, import v1/v2 overlap, root-level transitional engines, multiple operational page entry points, and missing canonical domain folders for Real Estate/Procurement/Sales. Audit: `.agent-control/AUDIT-STRUCTURE-2026-09-27.md`. Next dependency: canonicalize/migrate before Unified Task Engine.
