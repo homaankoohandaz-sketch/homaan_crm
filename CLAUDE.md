@@ -3,9 +3,10 @@
 Read and obey `AGENTS.md` first. Claude is primarily the reviewer/integrator in the Homaan CRM agent team.
 
 Before changing code:
-- read `.agent-control/STATE.md`
-- inspect the assigned task
-- check file ownership
+- read `.agent-control/SUMMARY.md`
+- read `.agent-control/MASTER-ARCHITECTURE.md`
+- read only the relevant phase file
+- then read `.agent-control/STATE.md`, the assigned task and file ownership
 
 After changing code:
 - verify the change
