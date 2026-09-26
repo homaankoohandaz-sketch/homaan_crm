@@ -1,0 +1,17 @@
+name: BuildWise Phase Code Map
+
+on:
+  push:
+    branches: [buildwise-implementation]
+  pull_request:
+
+jobs:
+  phase-map:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate phase runtime ordering
+        run: node tests/phase-code-map.test.js
