@@ -58,4 +58,5 @@ The control plane is present and the worker runtime is bounded. External worker 
 - 2026-09-26: Created MASTER-ARCHITECTURE as the single mother architecture/decision reference.
 - 2026-09-26: Declared legacy duplicate index files non-development targets and removed `index_FINAL.html`, `index_legacy.html`, `index3 2.html` from the active branch.
 - 2026-09-26: Retired the obsolete 100-point checklist as an execution reference.
+- 2026-09-26: Root README now points every worker to the canonical orientation path.
 - Rule from now on: every structural/code change must append one short entry here: date + change + files + verification + next dependency.
