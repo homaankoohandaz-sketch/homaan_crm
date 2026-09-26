@@ -14,9 +14,10 @@ const db = createClient(SUPABASE_URL, SERVICE_KEY);
 const CORS = { "Access-Control-Allow-Origin": "*", "Access-Control-Allow-Headers": "authorization, content-type", "Access-Control-Allow-Methods": "POST, OPTIONS" };
 const json = (body: unknown, status = 200) => new Response(JSON.stringify(body), { status, headers: { ...CORS, "Content-Type": "application/json" } });
 
-const WRITE_ROLES = ["owner", "staff", "admin", "manager"];
+const WRITE_ROLES = ["owner", "staff", "admin", "manager", "builder", "advisor", "agent"];
 const canWrite = (profile: any) => WRITE_ROLES.includes(profile?.role);
 const isManager = (profile: any) => ["owner", "admin", "manager"].includes(profile?.role);
+const isAdvisor = (profile: any) => ["advisor", "agent"].includes(profile?.role);
 
 function normalizePhone(input: string | null | undefined) {
   return String(input || "").trim().replace(/[۰-۹]/g, d => "0123456789"["۰۱۲۳۴۵۶۷۸۹".indexOf(d)]).replace(/[٠-٩]/g, d => "0123456789"["٠١٢٣٤٥٦٧٨٩".indexOf(d)]).replace(/\D/g, "");
@@ -147,7 +148,7 @@ function randomToken() {
   return [...bytes].map(b => b.toString(16).padStart(2, "0")).join("");
 }
 async function createCustomerShare(a: any, input: any) {
-  if (!canWrite(a.profile)) throw new Error("forbidden");
+  if (!canWrite(a.profile) || (!isAdvisor(a.profile) && !["owner","admin","manager","builder","staff"].includes(a.profile?.role))) throw new Error("forbidden");
   const token = randomToken();
   const tokenHash = await hashToken(token);
   const expiresHours = Math.max(1, Math.min(720, Number(input.expires_in_hours) || 72));
