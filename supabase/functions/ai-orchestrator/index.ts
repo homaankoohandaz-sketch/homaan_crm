@@ -16,7 +16,8 @@ const json = (body: unknown, status = 200) => new Response(JSON.stringify(body),
 
 const WRITE_ROLES = ["owner", "staff", "admin", "manager", "builder", "advisor", "agent"];
 const canWrite = (profile: any) => WRITE_ROLES.includes(profile?.role);
-const isManager = (profile: any) => ["owner", "admin", "manager"].includes(profile?.role);\nconst isAdvisor = (profile: any) => ["advisor", "agent"].includes(profile?.role);
+const isManager = (profile: any) => ["owner", "admin", "manager"].includes(profile?.role);
+const isAdvisor = (profile: any) => ["advisor", "agent"].includes(profile?.role);
 
 function normalizePhone(input: string | null | undefined) {
   return String(input || "").trim().replace(/[۰-۹]/g, d => "0123456789"["۰۱۲۳۴۵۶۷۸۹".indexOf(d)]).replace(/[٠-٩]/g, d => "0123456789"["٠١٢٣٤٥٦٧٨٩".indexOf(d)]).replace(/\D/g, "");
