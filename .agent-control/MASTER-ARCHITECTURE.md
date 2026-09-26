@@ -85,3 +85,12 @@ Never scan the whole repository for routine work. Start with SUMMARY → MASTER-
 
 ## 8. Change rule
 Every architecture or structural change must update `.agent-control/SUMMARY.md` with a one-line ledger entry.
+
+
+## 9. Current architecture phase — 2026-09-27
+
+The current architecture phase is tracked separately in `.agent-control/PHASE-CURRENT-ARCHITECTURE.md`.
+
+The next cross-domain implementation slice is the **Unified Task Engine**: CRM/file/customer follow-up, construction/workshop follow-up, and procurement/purchasing follow-up. Shared capabilities are assignment, calendar, notification, reminder, priority, starred promotion, Yes/No response, completion, move-to-tomorrow and audit.
+
+Architecture decisions are durably indexed in `.agent-control/DECISIONS.md`.
