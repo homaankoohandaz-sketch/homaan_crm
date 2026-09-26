@@ -5,6 +5,7 @@ policy: autonomous-until-gate
 max_tasks_per_cycle: 1
 cycle: architecture-first
 active_task: TASK-000-ARCHITECTURE-BASELINE
+last_dispatch: 2026-09-26T14:00:00+03:30
 
 ## Critical path
 TASK-000-ARCHITECTURE-BASELINE
