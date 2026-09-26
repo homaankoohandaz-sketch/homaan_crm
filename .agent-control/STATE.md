@@ -1,7 +1,7 @@
 # BuildWise Agent Control State
 
 status: control_plane_hardened
-updated: 2026-09-25
+updated: 2026-09-26
 project: BuildWise AI
 branch: buildwise-implementation
 control_plane_version: 2.1.0
@@ -45,3 +45,14 @@ Human approval: production, secrets/auth, destructive DB/schema, billing, irreve
 
 ## Done
 Implementation + tests + runtime/evidence verification + state update.
+
+
+## 2026-09-26 verified product slice
+- Customer share/approval flow added to existing CRM.
+- `customer_shares` + `customer_responses` migrated to live Supabase.
+- Public `customer-portal` Edge Function deployed ACTIVE.
+- `ai-orchestrator` v9 deployed ACTIVE with customer-share, response-list and deal-analysis actions.
+- BuildWise UI now includes `مشتری → مشاور` workflow and deal AI analysis.
+- Demo customer share created for runtime testing; token is intentionally temporary.
+- Netlify branch deployment was triggered after merge.
+- Remaining verification: browser-level runtime confirmation of the public portal and full repository test suite; connector environment did not expose a runnable local/Codex worker.
