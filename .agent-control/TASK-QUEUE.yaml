@@ -1,0 +1,46 @@
+# BuildWise Autonomous Execution Queue
+
+version: 1
+policy: autonomous-until-gate
+max_tasks_per_cycle: 1
+cycle: architecture-first
+active_task: TASK-000-ARCHITECTURE-BASELINE
+
+## Critical path
+TASK-000-ARCHITECTURE-BASELINE
+-> PLATFORM-AUTH-PERMISSIONS
+-> CRM-MVP
+-> LAND-CALCULATION
+-> RLS-ROLE-HARDENING
+-> OWNER-BUILDER-PORTALS
+-> PROJECT-CONTROL
+-> DEAL-MATCHING
+-> REMAINING-CHECKLIST
+
+## Parallel lanes
+- QA/security audits
+- test coverage
+- market/valuation evidence
+- visual/architecture idea engine
+- data import/normalization
+- documentation/memory
+- deployment/CI
+- accounting (independent; does not block core app)
+- public website (independent; does not block core app)
+
+## Operating rule
+The orchestrator selects the first READY task whose dependencies are VERIFIED.
+A worker executes it.
+A reviewer audits it.
+Tests run.
+Only evidence can advance the queue.
+Failures loop back to the same task with a bounded retry.
+No user message is required between cycles.
+Human gates remain only for production, secrets/auth changes, destructive DB changes, billing, irreversible Git and material legal/financial actions.
+
+## Existing bounded tasks
+- TASK-CRM-MVP-ROLE-ACCESS: depends_on TASK-000-ARCHITECTURE-BASELINE
+- Project-control tasks: remain after CRM/auth critical path unless architecture declares safe parallelization.
+
+## 675-item rule
+The canonical checklist/master decision archive is the source of truth. Do not fabricate missing items. The orchestrator must recover/parse the full archive when it is available, preserve original IDs, and generate atomic queue entries automatically.
