@@ -56,5 +56,6 @@ The control plane is present and the worker runtime is bounded. External worker 
 ## Change ledger
 - 2026-09-26: Created SUMMARY as the compact orientation note.
 - 2026-09-26: Created MASTER-ARCHITECTURE as the single mother architecture/decision reference.
-- 2026-09-26: Declared legacy duplicate index files non-development targets.
+- 2026-09-26: Declared legacy duplicate index files non-development targets and removed `index_FINAL.html`, `index_legacy.html`, `index3 2.html` from the active branch.
+- 2026-09-26: Retired the obsolete 100-point checklist as an execution reference.
 - Rule from now on: every structural/code change must append one short entry here: date + change + files + verification + next dependency.
