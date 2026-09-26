@@ -24,3 +24,5 @@ jobs:
         run: node tests/release-smoke.mjs
       - name: Architecture contract test
         run: node tests/architecture-contract.test.js
+      - name: Phase code map test
+        run: node tests/phase-code-map.test.js
