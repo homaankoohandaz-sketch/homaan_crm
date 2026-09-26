@@ -1,0 +1,11 @@
+{
+  "name": "buildwise-agent-lab",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Isolated BuildWise agent orchestration laboratory",
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "bridge": "node src/desktop-worker.js"
+  }
+}
