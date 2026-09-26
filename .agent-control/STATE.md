@@ -1,6 +1,6 @@
 # Agent Control State
 
-status: TASK2 CLOSED PARTIAL | Grok bridge live | no active implementation task
+status: TASK2 PARTIAL_CLOSED | TASK3 PARTIAL | Grok bridge live
 project: BuildWise AI+H
 control_plane_version: 1.2.0-brief
 active_task: none
@@ -8,25 +8,14 @@ active_task: none
 ## Read first
 **Always start from `.agent-control/BRIEF.md`**
 
-## Master
-- chatgpt: master orchestrator / architect / synthesis
+## TASK2
+CLOSED = PARTIAL — DB hierarchy + UI shell OK; authenticated Browser CRUD not verified
 
-## Collaboration model
-- **Grok**: live GitHub bridge, implementation/review/control-plane commits
-- **ChatGPT**: Master routing
-- **Claude**: handoff/review target; no live runtime currently
-
-## TASK2 closure (2026-09-26)
-- Migration hierarchy applied on Supabase (20260925203123)
-- DB FK chain verified by Master
-- UI hierarchy tab/panel present
-- Authenticated Browser CRUD: NOT verified (no secure test account)
-- Status: PARTIAL_CLOSED — not DONE
+## TASK3
+PARTIAL — Schedule/WBS/milestone/predecessor UI wired to existing live columns; no new migration; auth runtime not verified
 
 ## Runtime blocker
 - No CRM test credentials in agent runtime
-- Codex Tasks: no registered environment
 
-## Next objective
-Await Master: (A) provide test account to complete auth UI verify, or (B) accept PARTIAL and authorize Task3 explicitly.
-Do not auto-start Task3.
+## Next
+Do not auto-start further tasks. Await Master.

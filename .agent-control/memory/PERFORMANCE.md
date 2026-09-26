@@ -1,18 +1,18 @@
 # Performance Memory — Shared Change Ledger
 
 ## CURRENT
-status: PARTIAL_CLOSED
-head: fc56b9a3b6f1ad9e887219fffb0c684107911b06
-active_task: none (TASK2 closed PARTIAL)
-last_verified: 2026-09-26 Grok — no test account; Path2 close
-next: Master supplies test account to reopen auth UI verify OR accepts PARTIAL; Task3 only on explicit authorize
+status: PARTIAL
+head: 3212af616e6470f12015dc1f91a4313f202377d3
+active_task: none (TASK3 slice delivered PARTIAL)
+last_verified: 2026-09-26 Grok schema probe + UI wiring commit
+next: auth runtime verify OR Master next authorize
 
 ## LAST EVENTS
-2026-09-26 | TASK2-close | Grok | fc56b9a3 | PARTIAL_CLOSED | BRIEF+PERFORMANCE | no test account in docs/env/runtime | auth UI CRUD not verified; no bypass | Master decide reopen-or-accept
-2026-09-26 | TASK2-auth-ui-verify | Grok | 89bd6ad | PARTIAL | login form confirmed session=null | no credentials | authenticated CRUD blocked | Path2 close
-2026-09-25 | TASK2-runtime-verify | Grok | 5c08973 | PARTIAL | tables HTTP200; UI shell | Master DB FK OK | full auth UI not exercised | —
-2026-09-25 | TASK2-hierarchy | Grok | 3b348280 | READY_FOR_APPLY | migration+UI | Master applied 20260925203123 | — | —
-2026-09-25 | TASK1-audit | Grok | 5b50d342 | DONE | vertical slice | verified | Task2 authorized | —
+2026-09-26 | TASK3-schedule-wbs | Grok | 3212af61 | PARTIAL | project-control.html Schedule/WBS/milestone/predecessor | schema columns exist; UI forms+gantt wired; no migration | auth CRUD not verified | Master credentials or accept
+2026-09-26 | TASK2-close | Grok | aa224859 | PARTIAL_CLOSED | control-plane | no test account | auth UI not verified | Task3 authorized explicitly
+2026-09-26 | TASK2-auth-ui | Grok | 89bd6ad | PARTIAL | login wall | session=null | blocked | Path2
+2026-09-25 | TASK2-hierarchy | Grok | 3b348280 | READY_FOR_APPLY | migration | Master applied | — | —
+2026-09-25 | TASK1-audit | Grok | 5b50d342 | DONE | vertical slice | verified | — | —
 
 ## RULE
 Append one compact event after each meaningful change. Keep latest 5.
