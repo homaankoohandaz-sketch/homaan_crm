@@ -138,6 +138,61 @@ async function workspaceChat(a:any, workspaceId:number, message:string) {
   return {configured:true,text,request_id:data.id};
 }
 
+
+async function hashToken(token: string) {
+  return sha256(String(token));
+}
+function randomToken() {
+  const bytes = crypto.getRandomValues(new Uint8Array(24));
+  return [...bytes].map(b => b.toString(16).padStart(2, "0")).join("");
+}
+async function createCustomerShare(a: any, input: any) {
+  if (!canWrite(a.profile)) throw new Error("forbidden");
+  const token = randomToken();
+  const tokenHash = await hashToken(token);
+  const expiresHours = Math.max(1, Math.min(720, Number(input.expires_in_hours) || 72));
+  const payload = {
+    token_hash: tokenHash,
+    person_id: input.person_id ? Number(input.person_id) : null,
+    lead_id: input.lead_id ? Number(input.lead_id) : null,
+    property_id: input.property_id ? Number(input.property_id) : null,
+    deal_id: input.deal_id ? Number(input.deal_id) : null,
+    advisor_id: a.user.id,
+    title: String(input.title || "پیشنهاد BuildWise").slice(0, 200),
+    message: String(input.message || "").slice(0, 4000),
+    expires_at: new Date(Date.now() + expiresHours * 3600000).toISOString()
+  };
+  const { data, error } = await db.from("customer_shares").insert(payload).select("id,title,status,expires_at,property_id,deal_id").single();
+  if (error) throw error;
+  await logAction(a.user.id, "customer_share_created", "customer_share", data.id, { property_id: payload.property_id, deal_id: payload.deal_id }, { status: data.status });
+  return { ...data, customer_url: SUPABASE_URL + "/functions/v1/customer-portal?token=" + token };
+}
+async function listCustomerResponses(a: any) {
+  const manager = isManager(a.profile);
+  let q = db.from("customer_responses").select("id,share_id,response_status,message,ai_summary,ai_confidence,created_at,customer_shares!inner(id,title,property_id,deal_id,advisor_id,status)");
+  if (!manager) q = q.eq("customer_shares.advisor_id", a.user.id);
+  const { data, error } = await q.order("created_at", { ascending: false }).limit(100);
+  if (error) throw error;
+  return data || [];
+}
+async function analyzeDeal(a: any, input: any) {
+  const dealId = Number(input.deal_id);
+  if (!Number.isFinite(dealId)) throw new Error("deal_id_required");
+  const { data: deal, error } = await db.from("deals").select("*").eq("id", dealId).single();
+  if (error || !deal) throw new Error("deal_not_found");
+  const property = deal.property_id ? (await db.from("properties").select("id,property_name,property_type,region,neighborhood,land_area,built_area,total_price,price_per_meter,barter_possible,barter_details,status").eq("id", deal.property_id).maybeSingle()).data : null;
+  const lead = deal.lead_id ? (await db.from("leads").select("id,full_name,desired_request_type,desired_property_type,desired_region,budget_min,budget_max,status").eq("id", deal.lead_id).maybeSingle()).data : null;
+  if (!OPENAI_API_KEY) return { configured: false, deal_id: dealId, message: "AI gateway فعال است اما کلید مدل تنظیم نشده است.", deal, property, lead };
+  const system = "تو مشاور معاملات BuildWise هستی. فقط بر اساس داده پرونده تحلیل کن. نتیجه را به فارسی و اجرایی بده. سناریوهای معامله، مزایا، ریسک‌ها، اطلاعات ناقص و اقدام بعدی را جدا کن. هیچ تصمیم قطعی یا ادعای داده‌نشده نساز.";
+  const inputData = { deal, property, lead, requested_focus: input.focus || "تحلیل کامل معامله" };
+  const resp = await fetch("https://api.openai.com/v1/responses", { method:"POST", headers:{ "Content-Type":"application/json", Authorization:"Bearer " + OPENAI_API_KEY }, body:JSON.stringify({model:OPENAI_MODEL,input:[{role:"system",content:system},{role:"user",content:JSON.stringify(inputData)}]})});
+  const out = await resp.json();
+  if (!resp.ok) throw new Error(out?.error?.message || "AI request failed");
+  const text = String(out.output_text || "").trim();
+  await logAction(a.user.id, "deal_ai_analysis", "deal", dealId, { focus: input.focus || null }, { has_output: Boolean(text) });
+  return { configured:true, deal_id:dealId, text, request_id:out.id, deal, property, lead };
+}
+
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers:CORS });
   try {
@@ -153,6 +208,9 @@ Deno.serve(async (req) => {
     if (body.action === "chat") { const msg = String(body.message || "").slice(0, 4000); const r=await chat(a,msg); await logAction(a.user.id,"chat",null,null,{length:msg.length},{configured:r.configured}); return json(r); }
     if (body.action === "field_fill" || body.action === "form_fill") { const msg=String(body.message||"").slice(0,4000); return json(await hoomanFieldFill(a,msg,body.context||{},body.action)); }
     if (body.action === "workspace_chat") { const msg=String(body.message||"").slice(0,4000); return json(await workspaceChat(a,Number(body.workspace_id),msg)); }
+    if (body.action === "create_customer_share" || body.action === "send_customer_file") return json(await createCustomerShare(a, body));
+    if (body.action === "customer_responses") return json({ data: await listCustomerResponses(a) });
+    if (body.action === "analyze_deal") return json(await analyzeDeal(a, body));
     return json({error:"unknown_action"},400);
   } catch(e) { console.error(e); return json({error:"internal_error"},500); }
 });
