@@ -4,9 +4,14 @@ updated: 2026-09-26
 project: BuildWise AI+H | repo: homaankoohandaz-sketch/homaan_crm
 
 ## Now
-status: TASK2 PARTIAL — DB+UI shell verified; authenticated Browser CRUD blocked
-active: Master must supply test login (email/password or approved session path)
-next: after auth CRUD verify → close TASK2 → Task3 WBS/Gantt
+status: TASK2 CLOSED = PARTIAL
+active: idle — await Master decision (auth test account OR accept PARTIAL close)
+next: Task3 only after Master explicit authorize (not auto)
+
+## TASK2 summary
+- DONE: migration live, FK hierarchy, UI tab/panel shell, vertical slice intact
+- NOT DONE: authenticated Browser CRUD / tree / refresh / cleanup under real login
+- BLOCKER: no secure test account in Grok runtime (no bypass)
 
 ## Who does what
 - Grok: live GitHub bridge, implementation
@@ -18,10 +23,5 @@ next: after auth CRUD verify → close TASK2 → Task3 WBS/Gantt
 - coord: .agent-control/
 - PERFORMANCE.md
 
-## Blockers
-- No CRM login credentials available to Grok runtime
-- Auth bypass forbidden; session forge forbidden
-- Anon cannot list construction_projects (RLS)
-
 ## Handoff
-HEAD | TASK | RESULT | RUNTIME | NEXT
+HEAD | TASK | RESULT | NEXT
