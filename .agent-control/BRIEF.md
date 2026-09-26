@@ -41,7 +41,7 @@ Every worker handoff records MODEL_USED, BASE_SHA, scope, evidence, tests, risks
 Human approval required for production, secrets/auth, destructive DB/schema, billing, irreversible Git, material legal/financial actions.
 
 ## Next
-Supply a real worker runtime outside the repository, execute one non-production task, and record independently verifiable evidence. Until then, runtime status remains BLOCKED; no credential/account bypass is permitted.
+CRM MVP role-access vertical slice is dispatched through the repository-controlled Grok worker workflow. Execution remains unverified until an independent worker commit/evidence appears. No credential/account bypass is permitted.
 
 ## Runtime truth — Supabase
 Git is code truth; Supabase is independent runtime truth for live schema/RLS/functions/security advisors. Record live changes back into the ledger. Distinguish REPO / LIVE / DRIFT / VERIFIED.
