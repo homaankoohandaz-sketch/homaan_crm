@@ -29,7 +29,7 @@ control_plane_version: 2.1.0
 buildwise-implementation and main are divergent. Do not blind-merge. Transplant or reconcile control-plane changes deliberately.
 
 ## Active task
-P0-control-plane-unify-and-worker-loop
+TASK-CRM-MVP-ROLE-ACCESS
 
 ## Startup
 Resolve repo/branch → sync .agent-control if locally absent → BRIEF → latest PERFORMANCE → active task → minimum allowed files.
