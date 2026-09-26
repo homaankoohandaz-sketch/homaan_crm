@@ -1,9 +1,9 @@
 const DEFAULT_WORKERS = Object.freeze({
   chatgpt: { capability: "orchestrate", status: "available" },
-  grok: { capability: ["implement", "review", "control"], status: "available" },
+  grok: { capability: ["implement", "review", "control"], status: "blocked" },
   claude: { capability: "review", status: "handoff" },
   codex: { capability: "implement", status: "blocked" },
-  gemini: { capability: "research", status: "configured" },
+  gemini: { capability: "research", status: "blocked" },
   n8n: { capability: "automation", status: "blocked" },
 });
 
