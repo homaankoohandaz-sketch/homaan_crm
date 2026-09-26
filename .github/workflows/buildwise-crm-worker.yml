@@ -10,13 +10,19 @@ on:
 
 permissions:
   contents: write
-  pull-requests: write
-  issues: write
+
+concurrency:
+  group: buildwise-autonomous-loop
+  cancel-in-progress: false
 
 jobs:
   loop:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 180
+    env:
+      MAX_CYCLES: '3'
+      XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -24,61 +30,73 @@ jobs:
           ref: buildwise-implementation
           fetch-depth: 0
 
-      - name: Install Grok Build
-        if: ${{ secrets.XAI_API_KEY != '' }}
+      - name: Install official worker CLIs
         run: |
+          set -euo pipefail
+          test -n "${XAI_API_KEY:-}" || { echo 'MISSING XAI_API_KEY'; exit 20; }
+          test -n "${ANTHROPIC_API_KEY:-}" || { echo 'MISSING ANTHROPIC_API_KEY'; exit 21; }
           curl -fsSL https://x.ai/cli/install.sh | bash
           echo "$HOME/.grok/bin" >> "$GITHUB_PATH"
+          npm install -g @anthropic-ai/claude-code
           grok --version
+          claude --version
 
-      - name: Grok implementation
-        if: ${{ secrets.XAI_API_KEY != '' }}
-        env:
-          XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+      - name: Run autonomous sequential cycles
         shell: bash
         run: |
           set -euo pipefail
-          TASK_FILE=$(grep '^active_task:' .agent-control/TASK-QUEUE.yaml | awk '{print $2}')
-          TASK_PATH=.agent-control/tasks/${TASK_FILE}.md
-          test -f "$TASK_PATH"
-          cat .agent-control/BRIEF.md .agent-control/AGENT-SKILL-LOW-TOKEN.md .agent-control/AGENT-TASK-CONTRACT-v1.md .agent-control/TASK-QUEUE.yaml "$TASK_PATH" > /tmp/buildwise-context.txt
-          cat > /tmp/buildwise-prompt.txt <<'PROMPT'
-You are the primary BuildWise implementation worker.
-Act now. Implement; do not merely explain.
-Read /tmp/buildwise-context.txt, inspect git branch/HEAD, then execute the active task.
-Stay inside the task scope. Prefer existing code and mature open-source patterns.
-Do not ask the user. Do not wait for confirmation.
+          for cycle in $(seq 1 "$MAX_CYCLES"); do
+            echo "===== BUILDWISE CYCLE $cycle/$MAX_CYCLES ====="
+            git pull --ff-only origin buildwise-implementation
+            TASK_FILE=$(grep '^active_task:' .agent-control/TASK-QUEUE.yaml | awk '{print $2}')
+            test -n "$TASK_FILE" || { echo 'QUEUE_EMPTY'; exit 0; }
+            TASK_PATH=.agent-control/tasks/${TASK_FILE}.md
+            test -f "$TASK_PATH" || { echo "MISSING_TASK $TASK_PATH"; exit 22; }
+            BASE_SHA=$(git rev-parse HEAD)
+            cat .agent-control/BRIEF.md .agent-control/AGENT-SKILL-LOW-TOKEN.md .agent-control/AGENT-TASK-CONTRACT-v1.md .agent-control/TASK-QUEUE.yaml "$TASK_PATH" > /tmp/buildwise-context.txt
+
+            cat > /tmp/grok-prompt.txt <<'PROMPT'
+You are BuildWise's primary execution worker.
+Read /tmp/buildwise-context.txt first.
+Inspect the actual repository and current HEAD.
+Execute the active task now; do not return a plan instead of edits.
+Stay inside allowed files and scope.
+Use existing code and mature open-source patterns where appropriate.
+Do not ask the user. Do not wait for approval.
 Run focused tests, fix failures, retest.
-Do not perform production, secret/auth, destructive DB, billing, or irreversible Git actions.
+Do not perform production deployment, secret changes, destructive DB changes, billing, or irreversible Git operations.
 Do not start another task.
-Leave the working tree ready for independent review.
+Leave implementation changes in the working tree for review.
 PROMPT
-          grok -p "$(cat /tmp/buildwise-prompt.txt)" --output-format streaming-json | tee /tmp/grok.log
-          git diff --check
+            grok -p "$(cat /tmp/grok-prompt.txt)" --output-format streaming-json | tee /tmp/grok-$cycle.log
+            git diff --check
 
-      - name: Claude independent review and fix
-        if: ${{ secrets.ANTHROPIC_API_KEY != '' }}
-        uses: anthropics/claude-code-action@v1
-        with:
-          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          prompt: |
-            Read BRIEF, LOW-TOKEN skill, TASK CONTRACT, TASK QUEUE, active task and git diff.
-            Review the implementation against the active task. Fix concrete defects yourself.
-            Run focused tests and retest failures.
-            Do not ask the user or start another task.
-            Do not perform production, secret/auth, destructive DB, billing, or irreversible Git actions.
-            If acceptance is genuinely satisfied, mark the task VERIFIED, advance active_task to the next dependency-ready task, and record evidence in PERFORMANCE.md.
-            If not satisfied, keep the same active_task and record PARTIAL/BLOCKED with exact reason and NEXT action.
+            cat > /tmp/claude-prompt.txt <<'PROMPT'
+You are BuildWise's independent reviewer/integrator.
+Read the canonical control-plane files, active task, and current git diff.
+Review the implementation against the active task and acceptance criteria.
+Fix concrete defects yourself; do not merely describe them.
+Run focused tests and retest after fixes.
+Do not ask the user. Do not start another task.
+Do not perform production deployment, secret changes, destructive DB changes, billing, or irreversible Git operations.
+If acceptance is genuinely satisfied, update the task to VERIFIED, advance active_task to the next dependency-ready task, and append one compact evidence event to PERFORMANCE.md.
+If acceptance is not satisfied, keep the same active_task and record PARTIAL or BLOCKED with exact evidence and NEXT.
+Never mark DONE without implementation + tests + relevant runtime/evidence verification.
+Return STATUS, MODEL_USED, BASE_SHA, HEAD, CHANGED, TESTS, EVIDENCE, RISKS, NEXT.
+PROMPT
+            claude -p "$(cat /tmp/claude-prompt.txt)" --max-turns 3 --output-format json | tee /tmp/claude-$cycle.json
+            git diff --check
 
-      - name: Final verification and checkpoint
-        shell: bash
-        run: |
-          set -euo pipefail
-          git diff --check
-          if [ -f package.json ]; then npm test --if-present; fi
-          if [ -z "$(git status --porcelain)" ]; then exit 0; fi
-          git config user.name 'BuildWise Autonomous Worker'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A
-          git commit -m 'automation: checkpoint autonomous BuildWise cycle'
-          git push origin HEAD:buildwise-implementation
+            if [ -z "$(git status --porcelain)" ]; then
+              echo 'NO_CHANGES_FROM_WORKERS'
+              exit 30
+            fi
+            git add -A
+            git commit -m "automation: checkpoint BuildWise cycle $cycle"
+            git push origin HEAD:buildwise-implementation
+
+            if ! grep -q '^active_task:' .agent-control/TASK-QUEUE.yaml; then
+              echo 'QUEUE_STATE_INVALID'
+              exit 31
+            fi
+          done
