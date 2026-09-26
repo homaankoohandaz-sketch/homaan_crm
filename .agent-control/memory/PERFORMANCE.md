@@ -4,10 +4,11 @@
 state: SYNCED
 updated: 2026-09-26
 branch: buildwise-implementation
-head_basis: 1fd7e473d5e94a7a44905ec8711c919c35abb5d2
+head_basis: worker-runtime bootstrap commits through 5be88f4
 active_task: P0-control-plane-unify-and-worker-loop
 
 ## Recent events
+2026-09-26 | worker-runtime-bootstrap | chatgpt | 5be88f4 | VERIFIED_PARTIAL | worker-runtime/test/workflow/registry/task | runtime gate + registry tests added; external runtime absent | execution adapter is bounded; no credentials stored; Grok/Gemini remain blocked until evidence | provide real worker runtime
 2026-09-26 | token-firewall | chatgpt | 1fd7e47 | VERIFIED | context-pack/access matrix/package/test | GitHub Actions unit test passed | bounded worker context added; runtime claims made factual | register real worker runtimes
 2026-09-25 | audit | chatgpt | 7cbc2a | VERIFIED | Git/Supabase/Netlify | read-only audit | branch diverges from main; do not blind-merge | sync control plane
 2026-09-25 | control-plane | repo | 9402133 | REPORTED | .agent-control | recent bridge commits | Grok bridge documented; runtime not independently proven here | verify worker loop
