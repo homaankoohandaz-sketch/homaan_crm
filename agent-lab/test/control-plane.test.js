@@ -33,7 +33,20 @@ test("rejects an unsafe task contract", () => {
 });
 
 test("allows deterministic state transitions", () => {
-  const task = createTask({\n    title: "transition",\n    preferred_model: "grok",\n    max_iterations: 3,\n    allowed_files: [],\n    cache_keys: [],\n    summarize_after_tools: true\n  });
+  const task = createTask({
+    title: "transition",
+    preferred_model: "grok",
+    max_iterations: 3,
+    allowed_files: [],
+    cache_keys: [],
+    summarize_after_tools: true
+  });
+  const running = transitionTask(task, "running");
+  const completed = transitionTask(running, "completed");
+
+  assert.equal(running.status, "running");
+  assert.equal(completed.status, "completed");
+});
   const running = transitionTask(task, "running");
   const completed = transitionTask(running, "completed");
 
