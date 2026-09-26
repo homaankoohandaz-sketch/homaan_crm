@@ -1,0 +1,75 @@
+name: BuildWise CRM MVP Worker
+
+on:
+  push:
+    branches: [buildwise-implementation]
+    paths:
+      - ".agent-control/tasks/TASK-CRM-MVP-ROLE-ACCESS.md"
+
+permissions:
+  contents: write
+
+jobs:
+  worker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout implementation branch
+        uses: actions/checkout@v4
+        with:
+          ref: buildwise-implementation
+          fetch-depth: 0
+
+      - name: Install Grok
+        run: npm install -g @xai-official/grok
+
+      - name: Run bounded CRM worker
+        env:
+          XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+        run: |
+          set -euo pipefail
+          test -n "${XAI_API_KEY:-}" || { echo "XAI_API_KEY GitHub secret is missing"; exit 2; }
+          test -f ".agent-control/tasks/TASK-CRM-MVP-ROLE-ACCESS.md"
+          PROMPT="$(cat .agent-control/tasks/TASK-CRM-MVP-ROLE-ACCESS.md)
+
+          Follow the task contract exactly.
+          First inspect the repository, current branch, and task.
+          Work only inside the allowed scope.
+          Do not modify the task file itself.
+          Do not deploy to production.
+          Do not change production secrets, auth configuration, or live RLS.
+          If secure role isolation requires schema/RLS/auth changes, create a migration/proposal only when explicitly allowed by the task and report it as NOT_APPLIED; otherwise stop with SCOPE_ESCALATION.
+          Do not create accounts or bypass RLS.
+          Run focused tests and static checks.
+          Before finishing, report STATUS, MODEL_USED, BASE_SHA, HEAD, CHANGED, TESTS, EVIDENCE, RISKS, NEXT.
+          Do not start another task."
+          grok --no-auto-update -p "$PROMPT" -m grok-4.7 --max-turns 3 --always-approve --output-format json | tee grok-result.json
+
+      - name: Enforce CRM worker scope
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only HEAD^ HEAD || true)"
+          echo "$changed"
+          while IFS= read -r file; do
+            case "$file" in
+              buildwise-app.js|advisor-module.js|analysis-engine-ui.js|project-control.html|tests/*|supabase/migrations/*|.agent-control/memory/PERFORMANCE.md)
+                ;;
+              *)
+                echo "SCOPE_ESCALATION: $file"
+                exit 3
+                ;;
+            esac
+          done <<< "$changed"
+
+      - name: Commit worker changes
+        run: |
+          set -euo pipefail
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No repository changes to commit."
+            exit 0
+          fi
+          git config user.name "BuildWise Grok Worker"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "worker(grok): implement CRM MVP role access"
+          git push origin "HEAD:buildwise-implementation"
