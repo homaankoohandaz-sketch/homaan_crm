@@ -4,6 +4,8 @@ import { createGrokWorker } from "../src/grok-adapter.js";
 import { createDesktopBridge } from "../src/desktop-bridge.js";
 import { createTask } from "../src/control-plane.js";
 
+import { createCommandTransport } from "../src/grok-command.js";
+
 function task(overrides = {}) {
   return createTask({
     title: "implement bridge",
@@ -40,6 +42,16 @@ test("Grok adapter sends only the task contract to its transport", async () => {
 test("Grok adapter refuses non-Grok tasks", async () => {
   const worker = createGrokWorker({ transport: async () => ({ output: "bad" }) });
   await assert.rejects(() => worker.execute(task({ preferred_model: "claude" })), /preferred_model must be grok/);
+});
+
+test("command transport uses a local JSON line worker", async () => {
+  const transport = createCommandTransport({
+    command: process.execPath,
+    args: ["-e", "process.stdin.setEncoding('utf8'); let s=''; process.stdin.on('data',d=>s+=d).on('end',()=>process.stdout.write(JSON.stringify({output:JSON.parse(s).task_id,evidence:['local-command']})));"]
+  });
+  const result = await transport({ model: "grok", task_id: "task_local" });
+  assert.equal(result.output, "task_local");
+  assert.deepEqual(result.evidence, ["local-command"]);
 });
 
 test("desktop bridge exposes health and delegates execute requests", async () => {
