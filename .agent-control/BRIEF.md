@@ -14,6 +14,8 @@ control_hub: homaankoohandaz-sketch/ai-agent-coworking
 - No durable Codex environment is registered in this ChatGPT session.
 - Grok/Claude/Gemini runtime execution is not independently verified here.
 - Replit connector is available, but no BuildWise Replit app is registered.
+- Bounded worker runtime adapter is implemented; it refuses execution when an external worker command/credential is absent.
+- Worker registry is now evidence-based: Grok/Gemini are blocked until live runtime evidence exists; Claude remains handoff-only; Codex remains blocked.
 
 ## Team
 - ChatGPT: Master Operator — architecture, decomposition, routing, synthesis, conflict control.
@@ -39,7 +41,7 @@ Every worker handoff records MODEL_USED, BASE_SHA, scope, evidence, tests, risks
 Human approval required for production, secrets/auth, destructive DB/schema, billing, irreversible Git, material legal/financial actions.
 
 ## Next
-Activate a real worker runtime with independently verifiable non-production execution; until then, keep the control plane truthful and use connected tools directly.
+Supply a real worker runtime outside the repository, execute one non-production task, and record independently verifiable evidence. Until then, runtime status remains BLOCKED; no credential/account bypass is permitted.
 
 ## Runtime truth — Supabase
 Git is code truth; Supabase is independent runtime truth for live schema/RLS/functions/security advisors. Record live changes back into the ledger. Distinguish REPO / LIVE / DRIFT / VERIFIED.
