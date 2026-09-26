@@ -31,7 +31,7 @@ async function saveResponse(token:string,message:string,choice:string){
   if(OPENAI_API_KEY){
     try{
       const prompt="پاسخ مشتری را در یکی از وضعیت‌های approved/rejected/interested/question طبقه‌بندی کن و یک خلاصه کوتاه فارسی بده. فقط JSON برگردان.";
-      const r=await fetch("https://api.openai.com/v1/responses",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+OPENAI_API_KEY},body:JSON.stringify({model:OPENAI_MODEL,input:[{role:"system",content:prompt},{role:"user",content:message}],text:{format:{type:"json_schema",name:"customer_response",strict:true,schema:{type:"object",properties:{status:{type:"string",enum:allowed},summary:{type:"string"},confidence:{type:"number"}},required:["status","summary","confidence"],additionalProperties:false}}})});
+      const r=await fetch("https://api.openai.com/v1/responses",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+OPENAI_API_KEY},body:JSON.stringify({model:OPENAI_MODEL,input:[{role:"system",content:prompt},{role:"user",content:message}],text:{format:{type:"json_schema",name:"customer_response",strict:true,schema:{type:"object",properties:{status:{type:"string",enum:allowed},summary:{type:"string"},confidence:{type:"number"}},required:["status","summary","confidence"],additionalProperties:false}}}})});
       const out=await r.json();
       if(r.ok){const p=JSON.parse(out.output_text||"{}");aiSummary=p.summary||null;aiConfidence=Number(p.confidence)||null;}
     }catch(_){}
