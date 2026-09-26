@@ -47,9 +47,3 @@ test("allows deterministic state transitions", () => {
   assert.equal(running.status, "running");
   assert.equal(completed.status, "completed");
 });
-  const running = transitionTask(task, "running");
-  const completed = transitionTask(running, "completed");
-
-  assert.equal(running.status, "running");
-  assert.equal(completed.status, "completed");
-});
