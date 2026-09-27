@@ -7,12 +7,14 @@ active_task: P0-control-plane-unify-and-worker-loop
 ## CURRENT
 Architecture/control-plane baseline is committed.
 Performance memory is compact and verified.
+Control-plane state is consolidated: NOW is live state; SUMMARY is orientation; MASTER-ARCHITECTURE is mother architecture.
 Worker runtime adapter is implemented but external runtime credentials are missing.
 
 ## DONE
 - Low-token context firewall verified.
 - Worker adapter + CI path verified.
 - Behavioral memory + cold history archive verified.
+- Redundant STATE.md and ARCHITECTURE-BASELINE.md removed after consolidation.
 
 ## BLOCKED
 - XAI_API_KEY missing for Grok runtime.
