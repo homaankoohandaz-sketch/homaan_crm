@@ -1,8 +1,8 @@
 # BuildWise AI — SUMMARY CHECK — 2026-09-27
 
-**Reference date:** 2026-09-27  
-**Branch checked:** `buildwise-implementation`  
-**Repository:** `homaankoohandaz-sketch/homaan_crm`  
+**Reference date:** 2026-09-27
+**Branch checked:** `buildwise-implementation`
+**Repository:** `homaankoohandaz-sketch/homaan_crm`
 **Purpose:** تاریخچهٔ قابل استناد وضعیت فنی اپ در این تاریخ.
 
 ## Status Legend
@@ -29,11 +29,13 @@
 | Removed superseded root engines | [✓] PASS | Consolidation evidence |
 | Exact-content duplicate audit | [✓] PASS | Previous audit: 0 exact duplicate groups |
 | No new archive/backup copies created | [✓] PASS | Consolidation created canonical files only |
-| Local `npm test` | [⛔] BLOCKED | Runtime environment had no GitHub network access |
-| Latest branch CI | [~] NOT VERIFIED | Latest implementation runtime evidence still pending |
+| Unified task engine | [✓] PASS | `src/core/task-engine.js` + focused contract test |
+| Task persistence adapter | [~] PARTIAL | `src/core/task-repository.js` + `tests/task-repository.test.js`; reconstructed local contract test PASS; branch CI not yet reported |
+| Local `npm test` | [⛔] BLOCKED | Runtime environment has no GitHub repository network access |
+| Latest branch CI | [~] NOT VERIFIED | No workflow/status result returned for latest commit yet |
 | Current Netlify production deploy | [✓] READY | Netlify project read reports READY |
 | Current Netlify deploy is latest implementation branch | [✗] NO | Production is `main`; implementation is `buildwise-implementation` |
-| Branch relationship | [✗] DIVERGED | GitHub compare: implementation 298 commits ahead / main 67 behind from merge base |
+| Branch relationship | [✗] DIVERGED | GitHub compare confirms substantial divergence |
 | Release reconciliation PR | [~] PENDING | Reviewed PR path required; no blind merge/force-update |
 | Latest implementation Runtime/UI verification | [ ] TODO | Requires reconciled production deploy and browser verification |
 
@@ -49,7 +51,7 @@ Current production branch:
 
 ## Release Gate — 2026-09-27
 
-**Status: [~] PARTIAL — consolidation is complete, but production synchronization and Runtime/UI verification remain pending.**
+**Status: [~] PARTIAL — implementation work continues, but production synchronization and Runtime/UI verification remain pending.**
 
 Required order:
 1. Review PR from `buildwise-implementation` → `main`.
