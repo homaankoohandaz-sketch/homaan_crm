@@ -26,44 +26,38 @@
 | Canonical analysis UI | [✓] PASS | `src/ui/analysis-engine.js` |
 | Canonical procurement engine | [✓] PASS | `src/domains/procurement/engine.js` |
 | Canonical sales engine | [✓] PASS | `src/domains/sales/engine.js` |
-| Removed superseded root engines | [✓] PASS | Removed construction/accounting/KPI/contract/decision/workflow/graph/AI UI root duplicates |
-| Removed compatibility duplicate | [✓] PASS | `buildwise-fixes.js` removed and no longer referenced |
-| Old deleted engine references in `index.html` | [✓] PASS | 0 active references found |
-| Netlify config aligned with canonical importer | [✓] PASS | Cache header changed to canonical path |
+| Removed superseded root engines | [✓] PASS | Consolidation evidence |
 | Exact-content duplicate audit | [✓] PASS | Previous audit: 0 exact duplicate groups |
 | No new archive/backup copies created | [✓] PASS | Consolidation created canonical files only |
-| Local `npm test` | [⛔] BLOCKED | Runtime environment had no GitHub network access; repo could not be cloned locally |
-| Latest branch CI | [~] NOT VERIFIED | Existing workflows target main/release branches; no run was returned for the latest implementation commit |
-| Current Netlify production deploy | [✓] READY | Netlify reports production deploy state READY |
-| Current Netlify deploy is latest implementation branch | [✗] NO | Current READY deploy is `main`, commit `71ee074b...`, not the current `buildwise-implementation` head |
-| Latest implementation Runtime/UI verification | [ ] TODO | Requires deployment of current branch and browser verification |
+| Local `npm test` | [⛔] BLOCKED | Runtime environment had no GitHub network access |
+| Latest branch CI | [~] NOT VERIFIED | Latest implementation runtime evidence still pending |
+| Current Netlify production deploy | [✓] READY | Netlify project read reports READY |
+| Current Netlify deploy is latest implementation branch | [✗] NO | Production is `main`; implementation is `buildwise-implementation` |
+| Branch relationship | [✗] DIVERGED | GitHub compare: implementation 298 commits ahead / main 67 behind from merge base |
+| Release reconciliation PR | [~] PENDING | Reviewed PR path required; no blind merge/force-update |
+| Latest implementation Runtime/UI verification | [ ] TODO | Requires reconciled production deploy and browser verification |
 
 ## Current App Link
 
-Production Netlify site currently available:
+Production Netlify site:
 https://buildwis-ai.netlify.app
 
-Current deploy:
-- State: READY
-- Branch: main
-- Current deploy URL: https://main--buildwis-ai.netlify.app
-- This deploy is **not** treated as verification of the current `buildwise-implementation` branch.
+Current production branch:
+- `main`
+- READY deploy
+- Not accepted as verification of `buildwise-implementation`.
 
 ## Release Gate — 2026-09-27
 
-**Status: [~] PARTIAL — code consolidation complete; latest Runtime/UI release verification pending.**
+**Status: [~] PARTIAL — consolidation is complete, but production synchronization and Runtime/UI verification remain pending.**
 
-The application must not be marked fully DONE until the current branch is deployed and:
-1. App loads without console/runtime errors.
-2. Main navigation works.
-3. Authentication path works.
-4. Core modules open.
-5. Construction calculation works.
-6. Import path works.
-7. Graph/decision/business engines load.
-8. Mobile layout is checked.
-9. Netlify deployment points to the current implementation commit.
-10. Final regression/security checks pass.
+Required order:
+1. Review PR from `buildwise-implementation` → `main`.
+2. Merge only if GitHub confirms it is safely mergeable and required checks/evidence support the merge.
+3. Verify Netlify production deploy uses the resulting commit.
+4. Browser/runtime/UI smoke test.
+5. Final regression/security verification.
+6. Record final evidence before marking DONE.
 
 ## Canonical Rule
 
@@ -71,4 +65,3 @@ From this date forward:
 **one capability = one canonical implementation = one runtime reference.**
 
 No parallel replacement should be created unless the canonical owner is explicitly changed and the old implementation is migrated/deleted.
-
