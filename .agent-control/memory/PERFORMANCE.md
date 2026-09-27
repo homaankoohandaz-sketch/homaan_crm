@@ -2,6 +2,8 @@
 
 ## Snapshot
 state: SYNCED
+release_reconcile_pr: #11
+release_reconcile_head: 8f3e154bf7f42ff9d1465531a723f1c8226a5a4a
 updated: 2026-09-27
 branch: buildwise-implementation
 head_basis: 7262e08ff3d8a14fa22b0db2aad8a7c1d6764d66
@@ -23,3 +25,5 @@ memory_rule: NOW first; then BRIEF + last 5; HISTORY is cold archive
 Append ONE compact event after every meaningful task:
 timestamp | task | agent | commit | status | paths | tests | decision/impact | next
 Never store secrets. Never mark DONE without evidence.
+
+2026-09-27 | release-reconcile-snapshot | chatgpt | 8f3e154 | IN_PROGRESS | release-reconcile-20260927 + PR #11 | PR mergeable=true; CI queued/in-progress | replaced dirty PR #10 path with clean snapshot branch from main; no force update | wait CI, then review/merge only if all gates pass
