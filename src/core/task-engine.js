@@ -108,4 +108,42 @@ export function isTaskOverdue(task, now = new Date().toISOString()) {
   return Date.parse(task.deadline) < Date.parse(now);
 }
 
+export function setTaskStarred(task, starred, { now = new Date().toISOString() } = {}) {
+  if (!task || typeof task !== 'object') throw new TypeError('task is required');
+  return {
+    ...task,
+    starred: Boolean(starred),
+    updated_at: now,
+  };
+}
+
+export function setTaskPriority(task, priority, { now = new Date().toISOString() } = {}) {
+  if (!task || typeof task !== 'object') throw new TypeError('task is required');
+  assertAllowed(priority, PRIORITIES, 'priority');
+  return {
+    ...task,
+    priority,
+    updated_at: now,
+  };
+}
+
+export function configureTaskNotification(
+  task,
+  { enabled, reminder_at = null, notification_status = null, now = new Date().toISOString() } = {},
+) {
+  if (!task || typeof task !== 'object') throw new TypeError('task is required');
+  if (reminder_at != null) requireDateString(reminder_at, 'reminder_at');
+
+  const notificationEnabled = Boolean(enabled);
+  return {
+    ...task,
+    notification_enabled: notificationEnabled,
+    reminder_at: notificationEnabled ? reminder_at : null,
+    notification_status: notificationEnabled
+      ? (notification_status ?? (reminder_at ? 'scheduled' : null))
+      : null,
+    updated_at: now,
+  };
+}
+
 export { CONTEXT_TYPES, SUBJECT_TYPES, PRIORITIES, STATUSES, RESPONSES };
