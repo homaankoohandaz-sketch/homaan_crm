@@ -71,7 +71,12 @@ Impact: New work must attach to the canonical architecture and existing domains.
 Decision: n8n is optional and never a hard dependency.
 
 ## D-017 — Completion standard
-Decision: DONE means implemented + tested + runtime verified + UI verified where applicable + security verified where applicable.
+DONE means implemented + tested + runtime verified + UI verified where applicable + security verified where applicable.
+
+## D-018 — Production branch synchronization
+Decision: The production Netlify site and the current implementation branch must not silently diverge. When production serves a different branch, reconcile through a reviewed PR and verification rather than a blind merge or force update.
+Evidence: On 2026-09-27 GitHub compare reported `main` and `buildwise-implementation` as diverged (298 commits ahead / 67 behind from the merge base); Netlify production reported the current deploy as `main`.
+Impact: Release verification is blocked until the reconciled commit is deployed and runtime/UI smoke-tested. Unified Task Engine remains paused until this gate is resolved.
 
 ## Decision change protocol
 When a later decision changes one of these: append a new decision; identify the superseded decision; update PHASE-CURRENT-ARCHITECTURE.md; update MASTER-ARCHITECTURE.md; update SUMMARY.md; never delete the historical decision.
