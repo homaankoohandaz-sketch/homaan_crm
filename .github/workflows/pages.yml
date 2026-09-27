@@ -5,6 +5,7 @@ on:
     branches: [main, buildwise-implementation]
   workflow_dispatch:
 
+# Re-verified for BuildWise implementation preview deployment.
 permissions:
   contents: read
   pages: write
