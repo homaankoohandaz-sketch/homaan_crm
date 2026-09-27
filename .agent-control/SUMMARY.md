@@ -62,6 +62,14 @@ Do not develop new features in old duplicate files such as `index_FINAL.html`, `
 ## Current execution state
 The control plane is present and the worker runtime is bounded. External worker activation still requires verified runtime credentials/evidence. Do not claim a worker is live from documentation alone.
 
+## Release synchronization gate
+- Production Netlify site is currently associated with the `main` branch.
+- Current consolidation work is on `buildwise-implementation`.
+- GitHub reports these branches as **diverged**, not fast-forwardable.
+- Therefore: do not force-update `main`, do not merge blindly, and do not treat the current production site as verification of the implementation branch.
+- Required path: reviewed PR from `buildwise-implementation` → `main` → CI/merge verification → Netlify production deploy verification → browser/runtime/UI smoke test.
+- Unified Task Engine is paused until this release synchronization gate is resolved.
+
 ## Change ledger
 - 2026-09-26: Created SUMMARY as the compact orientation note and MASTER-ARCHITECTURE as the mother architecture reference.
 - 2026-09-26: Declared legacy duplicate index files non-development targets and removed them from the active branch.
@@ -71,3 +79,4 @@ The control plane is present and the worker runtime is bounded. External worker 
 - 2026-09-27: Consolidated construction calculations, import v1/v2, procurement, sales, shared business engines, graph, AI workspace, normalization, analysis UI and compatibility CSS into canonical locations; superseded files removed after reference/syntax checks. Latest runtime workflow verification was unavailable.
 - 2026-09-27: Control-plane memory upgraded to NOW-first progressive disclosure; old history remains cold archive.
 - 2026-09-27: Execution state was consolidated into NOW.md; STATE.md is no longer a separate startup source.
+- 2026-09-27: Release synchronization became a blocking gate after confirming Netlify production serves `main` while the consolidated implementation is on divergent `buildwise-implementation`. Blind merge/force-update is prohibited; reviewed PR is the canonical reconciliation path.
