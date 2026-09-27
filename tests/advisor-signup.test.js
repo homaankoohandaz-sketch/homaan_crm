@@ -18,6 +18,7 @@ assert.match(migration, /role, active, email/);
 assert.match(migration, /'advisor', false/);
 assert.match(migration, /on_auth_user_created_provision_advisor/);
 assert.match(migration, /security definer/);
+assert.match(migration, /revoke execute.*from public, anon, authenticated/);
 assert.doesNotMatch(migration, /requested_role.*(?:owner|manager|builder)/);
 
 console.log('advisor signup contract: PASS');
