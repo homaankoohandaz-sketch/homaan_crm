@@ -6,7 +6,6 @@ const requiredArtifacts = [
   'src/core/data-normalization.js',
   'src/ui/ai-workspace.js',
   'src/domains/crm/data-import.js',
-  'src/domains/crm/data-import-v2.js',
   'src/ui/analysis-engine.js',
   '.agent-control/BUILDWISE-AGENT-SPECIFICATION-v1.md',
   'BUILDWISE-100-CHECKLIST.md'
