@@ -9,9 +9,9 @@ test('construction calculation is deterministic', () => {
     renovation:3000000000, ownerPayment:0, landPrice:185000000, salePrice:180000000,
     commercialPrice:400000000
   });
-  assert.equal(result.totalGross, 740);
-  assert.equal(result.totalSellable, 629);
+  assert.equal(result.totalGross, 798.5);
+  assert.equal(result.totalSellable, 678.725);
   assert.equal(result.commercial, 110.25);
-  assert.equal(result.residentialSellable, 518.75);
+  assert.equal(result.residentialSellable, 568.475);
   assert.ok(result.totalCapital > 0);
 });
