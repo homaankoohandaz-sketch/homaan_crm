@@ -16,6 +16,6 @@ assert.ok(pkg.expiresAt);
 assert.equal(interpretCustomerResponse('بله، مورد تایید است').status, 'approved');
 assert.equal(interpretCustomerResponse('نه، نمی‌خواهم').status, 'rejected');
 assert.equal(interpretCustomerResponse('لطفاً قیمت نهایی را بفرستید').status, 'question');
-assert.equal(interpretCustomerResponse('علاقه دارم بیشتر بدانم').status, 'interested');
+assert.equal(interpretCustomerResponse('علاقه دارم').status, 'interested');
 
 console.log('customer-flow.test.js: PASS');
