@@ -5,6 +5,9 @@ import {
   completeTask,
   moveTaskToTomorrow,
   isTaskOverdue,
+  setTaskStarred,
+  setTaskPriority,
+  configureTaskNotification,
 } from '../src/core/task-engine.js';
 
 const baseInput = {
@@ -74,3 +77,40 @@ assert.throws(
 );
 
 console.log('task engine contract: PASS');
+
+
+const starred = setTaskStarred(created, true, {
+  now: '2026-09-27T09:15:00.000Z',
+});
+assert.equal(starred.starred, true);
+assert.equal(starred.updated_at, '2026-09-27T09:15:00.000Z');
+
+const reprioritized = setTaskPriority(starred, 'critical', {
+  now: '2026-09-27T09:20:00.000Z',
+});
+assert.equal(reprioritized.priority, 'critical');
+assert.equal(reprioritized.updated_at, '2026-09-27T09:20:00.000Z');
+
+const notified = configureTaskNotification(reprioritized, {
+  enabled: true,
+  reminder_at: '2026-09-28T09:30:00.000Z',
+  now: '2026-09-27T09:25:00.000Z',
+});
+assert.equal(notified.notification_enabled, true);
+assert.equal(notified.reminder_at, '2026-09-28T09:30:00.000Z');
+assert.equal(notified.notification_status, 'scheduled');
+
+assert.throws(
+  () => setTaskPriority(created, 'urgent'),
+  /Invalid priority/,
+);
+
+assert.throws(
+  () => configureTaskNotification(created, {
+    enabled: true,
+    reminder_at: 'not-a-date',
+  }),
+  /reminder_at must be a valid date/,
+);
+
+console.log('task engine mutation contracts: PASS');
