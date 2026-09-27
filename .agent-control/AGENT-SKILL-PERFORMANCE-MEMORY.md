@@ -25,6 +25,14 @@ After every meaningful task, append ONE compact record to PERFORMANCE.md:
 Include positive result, negative result, failed approach/idea, useful approach, and blocker when relevant.
 Keep each record <= 300 characters when practical. Never include secrets.
 
+## Consolidation rule
+- One canonical file/module per responsibility.
+- Never create v2/v3/FINAL/NEW copies of the same responsibility.
+- Extend the canonical implementation when scope is the same.
+- Split only for a genuinely different product phase/domain, independent lifecycle, or necessary isolation to prevent unsafe coupling.
+- Merge by migrating references → test → verify → remove the superseded file.
+- Do not preserve duplicate code as backups.
+
 ## NOW.md rule
 NOW.md is the hot operational memory, not a history log.
 It must stay short and answer only:
