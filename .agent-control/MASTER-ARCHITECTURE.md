@@ -70,7 +70,7 @@ Root-level legacy engines/pages are transitional. Do not add new root-level feat
 6. No production/destructive/auth/security/billing action without the required human gate.
 7. Never claim DONE without implementation + tests + runtime evidence.
 8. When two files implement the same role, choose one canonical file and migrate/remove the duplicate; do not maintain both indefinitely.
-9. Stable decisions belong here; execution status belongs in SUMMARY/STATE.
+9. Stable decisions belong here; execution status belongs in NOW. Do not create another status/state file.
 
 ## 6. Current decisions
 - BuildWise remains a unified REOS, not a collection of independent apps.
@@ -80,14 +80,17 @@ Root-level legacy engines/pages are transitional. Do not add new root-level feat
 - Supabase live state is verified independently from GitHub.
 - The master checklist is acceptance truth; it is not a daily context dump.
 
-## 7. Token-control rule
+## 7. Consolidation rule
+One canonical implementation per responsibility. Do not create v2/v3/FINAL/NEW copies when extending the same responsibility. Split only for a genuinely different product phase/domain, independent lifecycle, or necessary isolation to prevent unsafe coupling. Merge by migrating references, testing, verifying, then removing the superseded implementation. Phase separation is a valid reason to split; code chronology is not.
+
+## 8. Token-control rule
 Never scan the whole repository for routine work. Start with SUMMARY → MASTER-ARCHITECTURE → relevant phase → exact task → minimum allowed files.
 
-## 8. Change rule
+## 9. Change rule
 Every architecture or structural change must update `.agent-control/SUMMARY.md` with a one-line ledger entry.
 
 
-## 9. Current architecture phase — 2026-09-27
+## 10. Current architecture phase — 2026-09-27
 
 The current architecture phase is tracked separately in `.agent-control/PHASE-CURRENT-ARCHITECTURE.md`.
 
