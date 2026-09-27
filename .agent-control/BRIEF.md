@@ -13,7 +13,7 @@ control_hub: homaankoohandaz-sketch/ai-agent-coworking
 - BuildWise is beyond initial architecture; master checklist v2 has 675 requirements.
 - Supabase beuestoewletjsgmigmf is ACTIVE_HEALTHY; 10 Edge Functions exist.
 - Netlify buildwise-ai-h exists but is not a product dependency.
-- Low-token context firewall is implemented and GitHub Actions unit test passed on 2026-09-26.
+- Low-token context firewall is implemented and GitHub Actions unit test is green on current head.
 - No durable Codex environment is registered in this ChatGPT session.
 - Grok/Claude/Gemini runtime execution is not independently verified here.
 - Bounded worker runtime adapter is implemented; it refuses execution when an external worker command/credential is absent.
@@ -49,12 +49,12 @@ Human approval required for production, secrets/auth, destructive DB/schema, bil
 - Unified task-engine lifecycle is canonical.
 - `src/core/task-repository.js` now provides the persistence boundary over the existing generic repository.
 - `tests/task-repository.test.js` covers create/respond/star/complete/missing-task/validation.
-- Reconstructed local contract test PASS; GitHub workflow/status evidence for the latest commit is still pending.
+- CI diagnosis fixed the test fixture's Supabase update-chain emulation; current BuildWise Unit Tests, Application Validation, worker runtime, phase map and GitHub Pages deploy are green.
 
 ## Next
-1. Obtain branch CI evidence for the latest implementation commit.
-2. Review/resolve PR #10 safely; never force-update `main`.
-3. Verify resulting Netlify deploy and browser/runtime behavior.
+1. Review/resolve PR #10 safely; never force-update `main`.
+2. Verify browser/runtime behavior on the ready Netlify preview.
+3. Resolve remaining auth/test-account blocker for authenticated CRUD.
 4. Only then continue further task-engine/API work.
 
 ## Runtime truth — Supabase
