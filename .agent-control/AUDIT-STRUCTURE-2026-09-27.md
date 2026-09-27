@@ -44,3 +44,5 @@ Repository tree audited: 205 files / 42 directories.
 4. Run full reference/orphan/duplicate audit again.
 5. Start Unified Task Engine only after the above gate passes.
 
+
+- 2026-09-27: Final consolidation pass: merged shared accounting/KPI/contract/decision/workflow engines into `src/core/business-engines.js`; merged graph engine/store/sync into `src/domains/intelligence/graph.js`; merged advisor/deal/contextual AI UI into `src/ui/ai-workspace.js`; moved normalization, analysis UI and data import into canonical `src/` locations; absorbed compatibility CSS into `buildwise-app.js`; removed superseded root files and updated `index.html`. No archive/backup copies were created. Runtime workflow checks were not available for this commit.
