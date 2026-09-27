@@ -2,7 +2,7 @@
 
 updated: 2026-09-27
 branch: buildwise-implementation
-active_task: TASK-011-UNIFIED-TASK-ENGINE-CORE
+active_task: P0-control-plane-unify-and-worker-loop
 
 ## CURRENT
 Architecture/control-plane baseline is committed.
@@ -13,6 +13,7 @@ Release sync is now the immediate gate: production Netlify currently serves `mai
 
 ## DONE
 - TASK-011 Unified Task Engine core extended and focused runtime-verified.
+- TEST-SUITE-COVERAGE expanded `npm test` to include all four existing ESM unit suites.
 - Worker adapter + CI path verified.
 - Behavioral memory + cold history archive verified.
 - Redundant STATE.md and ARCHITECTURE-BASELINE.md removed after consolidation.
@@ -30,7 +31,7 @@ Release sync is now the immediate gate: production Netlify currently serves `mai
 3. Verify Netlify production points to the resulting commit.
 4. After safe reconciliation, run browser/runtime smoke verification.
 5. Record outcome in PERFORMANCE.md and SUMMARY-CHECK-2026-09-27.md.
-6. Continue Unified Task Engine with persistence/API integration only after this core contract is reviewed and tested.
+6. Continue Unified Task Engine persistence/API integration only after release synchronization is resolved.
 
 ## DO NOT
 - Re-read the whole repository for context recovery.
