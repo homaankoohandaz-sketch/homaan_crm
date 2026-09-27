@@ -3,35 +3,29 @@ import fs from 'node:fs';
 
 const index = fs.readFileSync(new URL('../index.html', import.meta.url), 'utf8');
 
-const expectedOrder = [
+const expectedRuntimeOrder = [
   './buildwise-app.js',
-  './data-normalization.js',
-  './graph-store.js',
-  './graph-engine.js',
-  './graph-sync.js',
-  './contract-engine.js',
-  './decision-engines.js',
-  './construction-engine.js',
-  './workflow-engine.js',
-  './kpi-engine.js',
-  './procurement-engine.js',
-  './project-accounting-engine.js',
-  './builder-sales-engine.js',
-  './data-import.js',
-  './data-import-v2.js',
-  './analysis-engine-ui.js',
-  './advisor-module.js',
-  './deal-workspace.js',
-  './hoomaan-ai-ui.js',
+  './src/core/data-normalization.js',
+  './src/domains/intelligence/graph.js',
+  './src/core/business-engines.js',
+  './src/domains/procurement/engine.js',
+  './src/domains/sales/engine.js',
+  './src/domains/crm/data-import.js',
+  './src/ui/analysis-engine.js',
+  './src/ui/ai-workspace.js',
 ];
 
 let cursor = -1;
-for (const src of expectedOrder) {
+for (const src of expectedRuntimeOrder) {
   const next = index.indexOf('src="' + src + '"');
   assert.ok(next > cursor, 'runtime script order broken: ' + src);
   cursor = next;
 }
 
+assert.ok(
+  index.includes('import("./src/domains/construction/browser-adapter.js")'),
+  'construction browser adapter must be loaded'
+);
 assert.ok(!index.includes('src="./phase-app.js"'), 'legacy phase-app.js must not be loaded');
 assert.ok(fs.existsSync(new URL('../PHASE_CODE_MAP.md', import.meta.url)));
 
