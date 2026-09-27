@@ -1,8 +1,8 @@
-name: Deploy CRM to GitHub Pages
+name: Deploy BuildWise AI to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    branches: [main, buildwise-implementation]
   workflow_dispatch:
 
 permissions:
@@ -16,9 +16,6 @@ concurrency:
 
 jobs:
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

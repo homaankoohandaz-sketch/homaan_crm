@@ -1,26 +1,54 @@
-# BRIEF (read this first — max ~25 lines)
+# BUILDWISE BRIEF — execution state
 
-updated: 2026-09-26
-project: BuildWise AI+H | repo: homaankoohandaz-sketch/homaan_crm
+Orientation source: `.agent-control/SUMMARY.md`
+Architecture source: `.agent-control/MASTER-ARCHITECTURE.md`
 
-## Now
-status: TASK2 CLOSED PARTIAL | TASK3 PARTIAL (schema+UI wiring; auth CRUD not verified)
-active: idle — await Master on auth account or next scope
-next: Task3 auth runtime verify when credentials available; else Master authorize next slice
+updated: 2026-09-27
+project: BuildWise AI | branch: buildwise-implementation
+code_truth: GitHub
+coordination_truth: .agent-control
+control_hub: homaankoohandaz-sketch/ai-agent-coworking
 
-## TASK2
-CLOSED = PARTIAL (no test account for auth UI)
+## Current state
+- BuildWise is beyond initial architecture; master checklist v2 has 675 requirements.
+- Supabase beuestoewletjsgmigmf is ACTIVE_HEALTHY; 10 Edge Functions exist.
+- Netlify buildwise-ai-h exists but is not a product dependency.
+- Low-token context firewall is implemented and GitHub Actions unit test passed on 2026-09-26.
+- No durable Codex environment is registered in this ChatGPT session.
+- Grok/Claude/Gemini runtime execution is not independently verified here.
+- Replit connector is available, but no BuildWise Replit app is registered.
+- Bounded worker runtime adapter is implemented; it refuses execution when an external worker command/credential is absent.
+- Worker registry is evidence-based: Grok/Gemini are blocked until live runtime evidence exists; Claude remains handoff-only; Codex remains blocked.
+- Release-sync warning is operationally important: Netlify production currently serves `main`, while current consolidation work is on `buildwise-implementation`. Do not merge these branches blindly because they have diverged.
 
-## TASK3 (smallest slice)
-- Live schema already has parent_task_id, predecessor_ids, project_wbs, project_milestones
-- project-control Schedule tab wired: task parent/pred, WBS form, milestone form, lists, Gantt labels
-- No migration; hierarchy untouched
-- Auth insert/select not verified (no credentials)
+## Team
+- ChatGPT: Master Operator — architecture, decomposition, routing, synthesis, conflict control.
+- Workers: use only when runtime + permissions + successful non-production evidence are verified.
+- n8n: optional, never a hard dependency.
 
-## Who does what
-- Grok: implementation bridge
-- ChatGPT: Master
-- Claude: review via handoff
+## Startup order — minimum token
+1. Read `.agent-control/NOW.md` first.
+2. Read BRIEF.md only for project orientation.
+3. Read PERFORMANCE.md snapshot + last 5 events.
+4. Read the active task contract.
+5. Inspect only minimum allowed files.
+6. Never replay full history to recover context.
 
-## Handoff
-HEAD | TASK | RESULT | NEXT
+## Token rule
+Use progressive disclosure: NOW → BRIEF → PERFORMANCE → task → minimum code. Stable prompt first, variable context last. Default max_iterations=3.
+
+## Scope rule
+Allowed files are a hard boundary. Extra files require SCOPE_ESCALATION.
+
+## Handoff rule
+Every worker handoff records MODEL_USED, BASE_SHA, scope, evidence, tests, risks and next action.
+
+## Gates
+Human approval required for production, secrets/auth, destructive DB/schema, billing, irreversible Git, material legal/financial actions.
+
+## Next
+Architecture-first baseline is committed. Worker loop is wired through the verified CI workflow. Current external activation blockers are missing XAI_API_KEY and ANTHROPIC_API_KEY GitHub Actions secrets. No key should be pasted into chat.
+Immediate release gate: reconcile `buildwise-implementation` with `main` through a reviewed PR, then verify the resulting Netlify production deploy and browser/runtime behavior.
+
+## Runtime truth — Supabase
+Git is code truth; Supabase is independent runtime truth for live schema/RLS/functions/security advisors. Record live changes back into the ledger. Distinguish REPO / LIVE / DRIFT / VERIFIED.

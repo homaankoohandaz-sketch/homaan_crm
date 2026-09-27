@@ -1,0 +1,8 @@
+{
+  "name": "buildwise-ai",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node tests/engines.test.js && node tests/architecture-contract.test.js && node tests/graph-decision.test.js && node tests/contract-engine.test.js && node tests/construction-control.test.js && node tests/buildwise-integrity.test.js && node tests/agent-control-worker-registry.test.js && node tests/auth-architecture.test.js && node tests/context-pack.test.js && node tests/customer-flow.test.js && node tests/phase-code-map.test.js && node tests/task-engine.test.js && node tests/unit/construction-calculations.test.mjs && node tests/unit/feasibility-engine.test.mjs && node tests/unit/repository.test.mjs && node tests/unit/scenario-engine.test.mjs"
+  }
+}

@@ -1,0 +1,54 @@
+version: 1
+modules:
+  platform:
+    purpose: auth, roles, capabilities, quotas, audit, settings
+    depends_on: []
+  crm:
+    purpose: people, phones, owners, builders, properties, files, requests, leads, deals, activities, promotions
+    depends_on: [platform]
+  land:
+    purpose: land/property calculation, feasibility, scenarios
+    depends_on: [platform, crm]
+  valuation:
+    purpose: market evidence, comparables, valuation
+    depends_on: [crm]
+  deal_intelligence:
+    purpose: matching, deal radar, opportunity detection
+    depends_on: [crm, valuation, land]
+  architecture:
+    purpose: architecture ideas, facade ideas, plans, media outputs
+    depends_on: [land, crm]
+  project_control:
+    purpose: project hierarchy, WBS, schedule, BOQ, procurement, progress, risk, quality, HSE
+    depends_on: [platform, crm]
+  portals:
+    purpose: consultant, builder and owner/customer workspaces
+    depends_on: [platform, crm, land, architecture]
+  ai:
+    purpose: assistants, routing, tool execution, memory, audit
+    depends_on: [platform, crm]
+  accounting:
+    purpose: project accounting and financial ledger
+    depends_on: [platform, project_control]
+    release_blocking: false
+  public_website:
+    purpose: product presentation/marketing website
+    depends_on: []
+    release_blocking: false
+
+manager_surface:
+  full_operational_visibility: true
+
+consultant_surface:
+  modules: [files, personal_dashboard, land, architecture_facade_only]
+
+builder_surface:
+  modules: [builder_dashboard, files_upload, promotions_own, project_control, architecture_idea]
+
+owner_surface:
+  modules: [own_files, own_requests, land_property, architecture_building]
+
+security:
+  ui_hiding_is_not_authorization: true
+  server_capability_check_required: true
+  rls_required_for_cross_user_data: true
