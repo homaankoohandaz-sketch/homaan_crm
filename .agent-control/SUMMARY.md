@@ -66,3 +66,5 @@ The control plane is present and the worker runtime is bounded. External worker 
 - 2026-09-27: Consolidated import v1/v2 into canonical `data-import.js`, preserving remote sources, market import, resilient batching and raw-row archival; deleted `data-import-v2.js`; syntax/reference/tree audit passed. Next dependency: migrate remaining root engines by verified domain ownership.
 
 - 2026-09-27: Final consolidation pass: merged shared accounting/KPI/contract/decision/workflow engines into `src/core/business-engines.js`; merged graph engine/store/sync into `src/domains/intelligence/graph.js`; merged advisor/deal/contextual AI UI into `src/ui/ai-workspace.js`; moved normalization, analysis UI and data import into canonical `src/` locations; absorbed compatibility CSS into `buildwise-app.js`; removed superseded root files and updated `index.html`. No archive/backup copies were created. Runtime workflow checks were not available for this commit.
+
+- 2026-09-27 Summary Check: `.agent-control/SUMMARY-CHECK-2026-09-27.md` is the dated reference for consolidation, verification, deployment and release-gate status.
