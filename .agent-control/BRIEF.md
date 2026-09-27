@@ -16,10 +16,9 @@ control_hub: homaankoohandaz-sketch/ai-agent-coworking
 - Low-token context firewall is implemented and GitHub Actions unit test passed on 2026-09-26.
 - No durable Codex environment is registered in this ChatGPT session.
 - Grok/Claude/Gemini runtime execution is not independently verified here.
-- Replit connector is available, but no BuildWise Replit app is registered.
 - Bounded worker runtime adapter is implemented; it refuses execution when an external worker command/credential is absent.
 - Worker registry is evidence-based: Grok/Gemini are blocked until live runtime evidence exists; Claude remains handoff-only; Codex remains blocked.
-- Release-sync warning is operationally important: Netlify production currently serves `main`, while current consolidation work is on `buildwise-implementation`. Do not merge these branches blindly because they have diverged.
+- Production currently serves `main`; current consolidation work is on `buildwise-implementation`. Do not merge these branches blindly.
 
 ## Team
 - ChatGPT: Master Operator — architecture, decomposition, routing, synthesis, conflict control.
@@ -46,9 +45,17 @@ Every worker handoff records MODEL_USED, BASE_SHA, scope, evidence, tests, risks
 ## Gates
 Human approval required for production, secrets/auth, destructive DB/schema, billing, irreversible Git, material legal/financial actions.
 
+## Latest implementation slice
+- Unified task-engine lifecycle is canonical.
+- `src/core/task-repository.js` now provides the persistence boundary over the existing generic repository.
+- `tests/task-repository.test.js` covers create/respond/star/complete/missing-task/validation.
+- Reconstructed local contract test PASS; GitHub workflow/status evidence for the latest commit is still pending.
+
 ## Next
-Architecture-first baseline is committed. Worker loop is wired through the verified CI workflow. Current external activation blockers are missing XAI_API_KEY and ANTHROPIC_API_KEY GitHub Actions secrets. No key should be pasted into chat.
-Immediate release gate: reconcile `buildwise-implementation` with `main` through a reviewed PR, then verify the resulting Netlify production deploy and browser/runtime behavior.
+1. Obtain branch CI evidence for the latest implementation commit.
+2. Review/resolve PR #10 safely; never force-update `main`.
+3. Verify resulting Netlify deploy and browser/runtime behavior.
+4. Only then continue further task-engine/API work.
 
 ## Runtime truth — Supabase
 Git is code truth; Supabase is independent runtime truth for live schema/RLS/functions/security advisors. Record live changes back into the ledger. Distinguish REPO / LIVE / DRIFT / VERIFIED.
