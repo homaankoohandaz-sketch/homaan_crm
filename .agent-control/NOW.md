@@ -12,6 +12,9 @@ Worker runtime adapter is implemented but external runtime credentials are missi
 Release sync is now the immediate gate: production Netlify currently serves `main`, while the current implementation is `buildwise-implementation`.
 
 ## DONE
+- Advisor signup contract corrected to the actual Supabase DB-trigger architecture; focused contract test updated.
+- Netlify PR #10 preview verified READY at commit `ff14037d3cdd41c4cd057c7eadfb962f55d01e03`.
+- Live Supabase advisor trigger RPC execution revoked for `anon` and `authenticated`; security advisor confirmed the related warning cleared.
 - TASK-011 Unified Task Engine core extended and focused runtime-verified.
 - TEST-SUITE-COVERAGE expanded `npm test` to include all four existing ESM unit suites.
 - Worker adapter + CI path verified.
@@ -27,6 +30,9 @@ Release sync is now the immediate gate: production Netlify currently serves `mai
 - Production release is blocked until `main` and the verified implementation are safely reconciled and the resulting Netlify deploy is runtime/UI verified.
 
 ## NEXT
+1. Release synchronization remains the gate: PR #10 is divergent and `mergeable=false`; resolve deliberately without force-updating `main`.
+2. After reconciliation, verify production Netlify and browser/runtime/auth smoke.
+3. Continue Unified Task Engine persistence/API integration after release synchronization.
 1. Reviewed PR #10 (`buildwise-implementation` → `main`) is open; never force-update `main`.
 2. Review PR #10; GitHub currently reports mergeable=false, so do not merge until conflicts are safely resolved.
 3. Verify Netlify production points to the resulting commit.
