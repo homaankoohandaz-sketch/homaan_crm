@@ -19,6 +19,7 @@ control_hub: homaankoohandaz-sketch/ai-agent-coworking
 - Replit connector is available, but no BuildWise Replit app is registered.
 - Bounded worker runtime adapter is implemented; it refuses execution when an external worker command/credential is absent.
 - Worker registry is evidence-based: Grok/Gemini are blocked until live runtime evidence exists; Claude remains handoff-only; Codex remains blocked.
+- Release-sync warning is operationally important: Netlify production currently serves `main`, while current consolidation work is on `buildwise-implementation`. Do not merge these branches blindly because they have diverged.
 
 ## Team
 - ChatGPT: Master Operator — architecture, decomposition, routing, synthesis, conflict control.
@@ -47,6 +48,7 @@ Human approval required for production, secrets/auth, destructive DB/schema, bil
 
 ## Next
 Architecture-first baseline is committed. Worker loop is wired through the verified CI workflow. Current external activation blockers are missing XAI_API_KEY and ANTHROPIC_API_KEY GitHub Actions secrets. No key should be pasted into chat.
+Immediate release gate: reconcile `buildwise-implementation` with `main` through a reviewed PR, then verify the resulting Netlify production deploy and browser/runtime behavior.
 
 ## Runtime truth — Supabase
 Git is code truth; Supabase is independent runtime truth for live schema/RLS/functions/security advisors. Record live changes back into the ledger. Distinguish REPO / LIVE / DRIFT / VERIFIED.
