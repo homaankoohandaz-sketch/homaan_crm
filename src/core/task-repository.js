@@ -1,4 +1,12 @@
 import { createRepository } from './data/repository.js';
+
+function persistencePayload(task) {
+  const { id, ...rest } = task;
+  return {
+    ...(typeof id === 'number' || /^\\d+$/.test(String(id)) ? { id: Number(id) } : {}),
+    ...rest,
+  };
+}
 import {
   createTask,
   respondToTask,
@@ -22,7 +30,7 @@ export function createTaskRepository(client, { table = 'tasks' } = {}) {
     },
 
     async create(input, options) {
-      return repository.create(createTask(input, options));
+      return repository.create(persistencePayload(createTask(input, options)));
     },
 
     async respond(id, response, options) {
