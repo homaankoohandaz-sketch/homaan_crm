@@ -30,6 +30,7 @@ class Query {
     this.rows = rows;
     this.filters = [];
     this.payload = null;
+    this.operation = null;
   }
 
   select() { return this; }
@@ -47,21 +48,27 @@ class Query {
   }
 
   single() {
+    if (this.operation === 'update') {
+      const id = this.filters.find(([column]) => column === 'id')?.[1];
+      const current = this.rows.get(id);
+      const row = current ? { ...current, ...this.payload } : null;
+      if (row) this.rows.set(id, row);
+      return Promise.resolve({ data: row, error: null });
+    }
     const row = this.payload ?? this.find();
     return Promise.resolve({ data: row ?? null, error: null });
   }
 
   insert(payload) {
+    this.operation = 'insert';
     this.payload = payload;
     this.rows.set(payload.id, payload);
     return this;
   }
 
   update(payload) {
-    const id = this.filters.find(([column]) => column === 'id')?.[1];
-    const current = this.rows.get(id);
-    this.payload = current ? { ...current, ...payload } : null;
-    if (this.payload) this.rows.set(id, this.payload);
+    this.operation = 'update';
+    this.payload = payload;
     return this;
   }
 
