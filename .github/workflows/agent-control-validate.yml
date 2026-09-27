@@ -8,7 +8,7 @@ on:
       - '.agent-control/**'
       - '.github/workflows/agent-control-validate.yml'
   push:
-    branches: [main, agent-control-plane]
+    branches: [main, agent-control-plane, buildwise-implementation]
     paths:
       - 'AGENTS.md'
       - 'CLAUDE.md'
