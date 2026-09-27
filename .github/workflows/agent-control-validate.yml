@@ -24,7 +24,7 @@ jobs:
         run: |
           test -f AGENTS.md
           test -f CLAUDE.md
-          test -f .agent-control/STATE.md
+          test -f .agent-control/NOW.md
           test -f .agent-control/PROTOCOL.md
           test -f .agent-control/config/agents.json
           test -f .agent-control/config/tasks.schema.json
