@@ -9,6 +9,7 @@ active_task: P0-release-sync-and-control-plane-memory
 memory_rule: NOW first; then BRIEF + last 5; HISTORY is cold archive
 
 ## Recent events
+2026-09-27 | unified-task-engine-core | chatgpt | 7e31851 | VERIFIED_PARTIAL | src/core/task-engine.js + tests/task-engine.test.js | focused Node test PASS; full suite pending due environment network limitation | canonical task lifecycle core added; no separate CRM/construction/procurement task engines | review core, then persistence/API slice
 2026-09-27 | release-pr-opened | chatgpt | b7ae040 | BLOCKED | PR #10 + release gate | GitHub PR created; mergeable=false | safe reconciliation path opened; Netlify branch setting unavailable through connected Netlify tool | resolve conflicts or change Netlify branch through an authenticated UI/API
 2026-09-27 | release-sync-audit | chatgpt | eff720a | VERIFIED_PARTIAL | .agent-control/NOW.md + BRIEF.md + SUMMARY.md + DECISIONS.md | Git write/read verified; GitHub compare + Netlify project read verified | production serves main while implementation branch is diverged; blind merge/force-update prohibited; reviewed PR is canonical path | reconcile branches, deploy, runtime verify
 2026-09-27 | consolidation-policy | chatgpt | 2f99500 | VERIFIED | control-plane docs | Git read-back verified | removed redundant STATE + ARCHITECTURE-BASELINE; one canonical file per responsibility; phase split only when justified | audit next
