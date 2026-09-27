@@ -11,51 +11,25 @@ control_hub: homaankoohandaz-sketch/ai-agent-coworking
 
 ## Current state
 - BuildWise is beyond initial architecture; master checklist v2 has 675 requirements.
-- Supabase beuestoewletjsgmigmf is ACTIVE_HEALTHY; 10 Edge Functions exist.
-- Netlify buildwise-ai-h exists but is not a product dependency.
-- Low-token context firewall is implemented and GitHub Actions unit test is green on current head.
+- Supabase beuestoewletjsgmigmf is ACTIVE_HEALTHY; 10 Edge Functions are ACTIVE.
+- Netlify PR #10 preview is READY.
+- Current branch CI is green: unit tests, application validation, control-plane validation, worker runtime, phase map and GitHub Pages deploy.
+- Task repository test fixture was corrected and verified in CI.
+- Stale agent-lab workflow was removed.
 - No durable Codex environment is registered in this ChatGPT session.
-- Grok/Claude/Gemini runtime execution is not independently verified here.
-- Bounded worker runtime adapter is implemented; it refuses execution when an external worker command/credential is absent.
-- Worker registry is evidence-based: Grok/Gemini are blocked until live runtime evidence exists; Claude remains handoff-only; Codex remains blocked.
-- Production currently serves `main`; current consolidation work is on `buildwise-implementation`. Do not merge these branches blindly.
+- Authenticated Browser CRUD remains unverified because no test account/credentials are available.
+- PR #10 remains mergeable=false; main and buildwise-implementation are diverged 359 ahead / 67 behind. Never force-update main.
 
-## Team
-- ChatGPT: Master Operator — architecture, decomposition, routing, synthesis, conflict control.
-- Workers: use only when runtime + permissions + successful non-production evidence are verified.
-- n8n: optional, never a hard dependency.
-
-## Startup order — minimum token
-1. Read `.agent-control/NOW.md` first.
-2. Read BRIEF.md only for project orientation.
-3. Read PERFORMANCE.md snapshot + last 5 events.
-4. Read the active task contract.
-5. Inspect only minimum allowed files.
-6. Never replay full history to recover context.
-
-## Token rule
-Use progressive disclosure: NOW → BRIEF → PERFORMANCE → task → minimum code. Stable prompt first, variable context last. Default max_iterations=3.
-
-## Scope rule
-Allowed files are a hard boundary. Extra files require SCOPE_ESCALATION.
-
-## Handoff rule
-Every worker handoff records MODEL_USED, BASE_SHA, scope, evidence, tests, risks and next action.
-
-## Gates
-Human approval required for production, secrets/auth, destructive DB/schema, billing, irreversible Git, material legal/financial actions.
-
-## Latest implementation slice
-- Unified task-engine lifecycle is canonical.
-- `src/core/task-repository.js` now provides the persistence boundary over the existing generic repository.
-- `tests/task-repository.test.js` covers create/respond/star/complete/missing-task/validation.
-- CI diagnosis fixed the test fixture's Supabase update-chain emulation; current BuildWise Unit Tests, Application Validation, worker runtime, phase map and GitHub Pages deploy are green.
+## Live Supabase gate
+- Security advisor currently reports 4 public SECURITY DEFINER functions executable by anon: manager_edit_record, reos_sync_property_graph, route_new_public_request, route_public_request.
+- manager_edit_record and reos_sync_property_graph already perform manager checks internally.
+- route_new_public_request is a trigger helper; route_public_request performs assignment writes.
+- Do not change production grants/functions without human approval. This is a release-security review item.
+- Performance advisor also reports unused indexes and multiple permissive RLS policies; these are backlog/optimization unless a specific authorization defect is found.
 
 ## Next
-1. Review/resolve PR #10 safely; never force-update `main`.
-2. Verify browser/runtime behavior on the ready Netlify preview.
-3. Resolve remaining auth/test-account blocker for authenticated CRUD.
-4. Only then continue further task-engine/API work.
-
-## Runtime truth — Supabase
-Git is code truth; Supabase is independent runtime truth for live schema/RLS/functions/security advisors. Record live changes back into the ledger. Distinguish REPO / LIVE / DRIFT / VERIFIED.
+1. Resolve PR #10 divergence deliberately; do not blind merge.
+2. Verify browser/runtime behavior on the ready preview.
+3. Obtain a safe test account or other approved auth verification path.
+4. Review the 4 SECURITY DEFINER/anon findings and prepare a minimal grant-hardening migration; apply only after human approval.
+5. Continue task-engine/API work only after release gates are clear.
