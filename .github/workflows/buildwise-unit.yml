@@ -27,20 +27,29 @@ jobs:
           ref: buildwise-implementation
           fetch-depth: 0
       - name: Gate worker credentials
+        id: credentials
         run: |
           set -euo pipefail
-          test -n "${XAI_API_KEY:-}" || { echo "MISSING XAI_API_KEY"; exit 20; }
-          test -n "${ANTHROPIC_API_KEY:-}" || { echo "MISSING ANTHROPIC_API_KEY"; exit 21; }
+          if [ -z "${XAI_API_KEY:-}" ] || [ -z "${ANTHROPIC_API_KEY:-}" ]; then
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "Worker credentials are not configured; autonomous worker execution is skipped."
+          else
+            echo "available=true" >> "$GITHUB_OUTPUT"
+            echo "Worker credentials are present."
+          fi
       - name: Install Grok Build
+        if: steps.credentials.outputs.available == 'true'
         run: |
           curl -fsSL https://x.ai/cli/install.sh | bash
           echo "$HOME/.grok/bin" >> "$GITHUB_PATH"
           grok --version
       - name: Install Claude Code
+        if: steps.credentials.outputs.available == 'true'
         run: |
           npm install -g @anthropic-ai/claude-code
           claude --version
       - name: Execute active task
+        if: steps.credentials.outputs.available == 'true'
         shell: bash
         run: |
           set -euo pipefail
