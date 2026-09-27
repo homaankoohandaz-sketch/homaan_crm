@@ -36,7 +36,7 @@ test('repository builds safe CRUD boundary', async () => {
   assert.deepEqual(calls, [
     'from:crm_people','select','limit','eq',
     'from:crm_people','select','eq',
-    'from:crm_people','insert',
-    'from:crm_people','update'
+    'from:crm_people','insert','select',
+    'from:crm_people','update','eq','select'
   ]);
 });
