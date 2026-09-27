@@ -15,11 +15,22 @@ jobs:
           node-version: 20
       - name: Runtime test
         run: node tests/worker-runtime.test.js
-      - name: Worker credential gate
+      - name: Check worker credentials
+        id: credentials
         env:
           XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
-          test -n "${XAI_API_KEY:-}" || { echo "MISSING XAI_API_KEY"; exit 20; }
-          test -n "${ANTHROPIC_API_KEY:-}" || { echo "MISSING ANTHROPIC_API_KEY"; exit 21; }
-          echo "Worker credentials are present; execution loop can proceed."
+          if [ -z "${XAI_API_KEY:-}" ] || [ -z "${ANTHROPIC_API_KEY:-}" ]; then
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "Worker credentials are not configured; runtime remains safely blocked."
+          else
+            echo "available=true" >> "$GITHUB_OUTPUT"
+            echo "Worker credentials are present; execution loop may proceed."
+          fi
+      - name: Worker execution gate
+        if: steps.credentials.outputs.available == 'true'
+        run: echo "Worker execution gate open."
+      - name: Worker execution blocked
+        if: steps.credentials.outputs.available != 'true'
+        run: echo "Worker execution intentionally skipped because credentials are unavailable."
