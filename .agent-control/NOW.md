@@ -2,7 +2,7 @@
 
 updated: 2026-09-27
 branch: buildwise-implementation
-active_task: P0-control-plane-unify-and-worker-loop
+active_task: PHASE-03-unified-task-engine-persistence
 
 ## CURRENT
 Architecture/control-plane baseline is committed.
@@ -16,6 +16,8 @@ Release sync is now the immediate gate: production Netlify currently serves `mai
 - Netlify PR #10 preview verified READY at commit `ff14037d3cdd41c4cd057c7eadfb962f55d01e03`.
 - Live Supabase advisor trigger RPC execution revoked for `anon` and `authenticated`; security advisor confirmed the related warning cleared.
 - TASK-011 Unified Task Engine core extended and focused runtime-verified.
+- Unified Task Engine repository persistence adapter implemented; canonical task fields are now persisted without breaking the existing `tasks` table shape.
+- Additive Supabase migration added for canonical task-engine fields, indexes, and validation constraints; not applied to production in this coding pass.
 - TEST-SUITE-COVERAGE expanded `npm test` to include all four existing ESM unit suites.
 - Worker adapter + CI path verified.
 - 2026-09-27 CI repair verified on GitHub: unit suite, application validation, phase map, worker runtime and GitHub Pages deployment all passed on the implementation branch.
@@ -32,7 +34,7 @@ Release sync is now the immediate gate: production Netlify currently serves `mai
 ## NEXT
 1. Release synchronization remains the gate: PR #10 is divergent and `mergeable=false`; resolve deliberately without force-updating `main`.
 2. After reconciliation, verify production Netlify and browser/runtime/auth smoke.
-3. Continue Unified Task Engine persistence/API integration after release synchronization.
+3. Unified Task Engine persistence/API integration is implemented on the implementation branch; production release sync remains separate.
 1. Reviewed PR #10 (`buildwise-implementation` → `main`) is open; never force-update `main`.
 2. Review PR #10; GitHub currently reports mergeable=false, so do not merge until conflicts are safely resolved.
 3. Verify Netlify production points to the resulting commit.
