@@ -4,11 +4,12 @@
 state: SYNCED_WITH_PARTIAL_RUNTIME
 updated: 2026-09-27
 branch: buildwise-implementation
-head_basis: a59865de7781d115bd79b5d626a7be0d274a7c27
+head_basis: 7fb96c83aa5243075852f16b59248f6edf728608
 active_task: P0-control-plane-unify-and-worker-loop
 memory_rule: NOW first; then BRIEF + last 5; HISTORY is cold archive
 
 ## Recent events
+2026-09-27 | ci-diagnosis-and-fix | chatgpt | 1ed4c162 | VERIFIED | tests/task-repository.test.js + .github/workflows/agent-control-validate.yml + stale agent-lab workflow removal | BuildWise Unit Tests PASS; Application Validation PASS; Worker Runtime PASS; Phase Code Map PASS; GitHub Pages deploy PASS; Netlify preview ready | fixed fake Supabase update-chain fixture; removed stale workflow referencing absent agent-lab directory; enabled control-plane validation on implementation branch | review PR #10, then browser/auth verification
 2026-09-27 | task-persistence-adapter | chatgpt | a59865de | VERIFIED_PARTIAL | src/core/task-repository.js + tests/task-repository.test.js + package.json | reconstructed local contract test PASS; GitHub workflow/status not yet emitted for this commit | canonical task-engine lifecycle now has a Supabase repository boundary; no schema migration | wait for CI evidence, then release synchronization
 2026-09-27 | test-suite-coverage | chatgpt | b18e86c | VERIFIED_PARTIAL | package.json | GitHub write accepted; local runtime unavailable; branch CI evidence pending | npm test now includes all four existing ESM unit suites | inspect branch CI result
 2026-09-27 | unified-task-engine-core | chatgpt | 7e31851 | VERIFIED_PARTIAL | src/core/task-engine.js + tests/task-engine.test.js | focused Node test PASS; full suite pending due environment network limitation | canonical task lifecycle core added; no separate CRM/construction/procurement task engines | review core, then persistence/API slice
