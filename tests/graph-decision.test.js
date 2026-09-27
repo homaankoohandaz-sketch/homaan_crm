@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+globalThis.window = globalThis;
 const graph=fs.readFileSync('src/domains/intelligence/graph.js','utf8').replace('(window);','(globalThis);'); eval(graph);
 const g=BuildWiseGraph.buildGraph({people:[{id:1}],properties:[{id:2}],relationships:[{from_type:'people',from_id:1,to_type:'properties',to_id:2,relation:'owns'}]});
 assert.equal(BuildWiseGraph.neighbors(g,'people',1,'owns').length,1); assert.equal(BuildWiseGraph.pathExists(g,{type:'people',id:1},{type:'properties',id:2}),true);
