@@ -1,10 +1,10 @@
-version: 2
+version: 3
 policy: autonomous
-active_task: TASK-000-ARCHITECTURE-BASELINE
+active_task: P0-control-plane-unify-and-worker-loop
 
 tasks:
   - id: TASK-000-ARCHITECTURE-BASELINE
-    status: IN_PROGRESS
+    status: VERIFIED_PARTIAL
     depends_on: []
     owner: architecture
     worker: grok
@@ -69,6 +69,26 @@ tasks:
     status: QUEUED
     depends_on: [TASK-005-OWNER-BUILDER-PORTALS, TASK-006-PROJECT-CONTROL-VERTICAL, TASK-007-DEAL-INTELLIGENCE]
     owner: master
+    worker: grok
+    reviewer: claude
+  - id: TASK-011-UNIFIED-TASK-ENGINE-CORE
+    status: DONE_FOCUSED
+    depends_on: []
+    owner: core
+    worker: chatgpt
+    reviewer: claude
+    release_blocking: true
+  - id: TEST-SUITE-COVERAGE
+    status: VERIFIED_PARTIAL
+    depends_on: []
+    owner: qa
+    worker: chatgpt
+    reviewer: claude
+    release_blocking: false
+  - id: P0-control-plane-unify-and-worker-loop
+    status: READY
+    depends_on: []
+    owner: control_plane
     worker: grok
     reviewer: claude
 
