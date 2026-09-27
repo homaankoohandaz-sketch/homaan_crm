@@ -3,7 +3,7 @@
 Orientation source: `.agent-control/SUMMARY.md`
 Architecture source: `.agent-control/MASTER-ARCHITECTURE.md`
 
-updated: 2026-09-26
+updated: 2026-09-27
 project: BuildWise AI | branch: buildwise-implementation
 code_truth: GitHub
 coordination_truth: .agent-control
@@ -18,21 +18,23 @@ control_hub: homaankoohandaz-sketch/ai-agent-coworking
 - Grok/Claude/Gemini runtime execution is not independently verified here.
 - Replit connector is available, but no BuildWise Replit app is registered.
 - Bounded worker runtime adapter is implemented; it refuses execution when an external worker command/credential is absent.
-- Worker registry is now evidence-based: Grok/Gemini are blocked until live runtime evidence exists; Claude remains handoff-only; Codex remains blocked.
+- Worker registry is evidence-based: Grok/Gemini are blocked until live runtime evidence exists; Claude remains handoff-only; Codex remains blocked.
 
 ## Team
 - ChatGPT: Master Operator — architecture, decomposition, routing, synthesis, conflict control.
 - Workers: use only when runtime + permissions + successful non-production evidence are verified.
 - n8n: optional, never a hard dependency.
 
-## Startup order
-1. Resolve repo + target branch.
-2. Read BRIEF → latest PERFORMANCE → active task → minimum allowed files.
-3. For worker handoff, use `node tools/build-context-pack.mjs <task-file>`.
-4. Claim exact scope before modification.
+## Startup order — minimum token
+1. Read `.agent-control/NOW.md` first.
+2. Read BRIEF.md only for project orientation.
+3. Read PERFORMANCE.md snapshot + last 5 events.
+4. Read the active task contract.
+5. Inspect only minimum allowed files.
+6. Never replay full history to recover context.
 
 ## Token rule
-Never replay full history. Use compact state + task + diff. Default max_iterations=3. Stable prompt first, variable context last.
+Use progressive disclosure: NOW → BRIEF → PERFORMANCE → task → minimum code. Stable prompt first, variable context last. Default max_iterations=3.
 
 ## Scope rule
 Allowed files are a hard boundary. Extra files require SCOPE_ESCALATION.
@@ -44,7 +46,7 @@ Every worker handoff records MODEL_USED, BASE_SHA, scope, evidence, tests, risks
 Human approval required for production, secrets/auth, destructive DB/schema, billing, irreversible Git, material legal/financial actions.
 
 ## Next
-Architecture-first baseline is committed. Worker loop is wired through the verified CI workflow. The only current external activation blocker is missing XAI_API_KEY and ANTHROPIC_API_KEY GitHub Actions secrets. No key should be pasted into chat.
+Architecture-first baseline is committed. Worker loop is wired through the verified CI workflow. Current external activation blockers are missing XAI_API_KEY and ANTHROPIC_API_KEY GitHub Actions secrets. No key should be pasted into chat.
 
 ## Runtime truth — Supabase
 Git is code truth; Supabase is independent runtime truth for live schema/RLS/functions/security advisors. Record live changes back into the ledger. Distinguish REPO / LIVE / DRIFT / VERIFIED.
