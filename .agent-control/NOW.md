@@ -12,7 +12,7 @@ Worker runtime adapter is implemented but external runtime credentials are missi
 Release sync is now the immediate gate: production Netlify currently serves `main`, while the current implementation is `buildwise-implementation`.
 
 ## DONE
-- Low-token context firewall verified.
+- TASK-011 Unified Task Engine core extended and focused runtime-verified.
 - Worker adapter + CI path verified.
 - Behavioral memory + cold history archive verified.
 - Redundant STATE.md and ARCHITECTURE-BASELINE.md removed after consolidation.
