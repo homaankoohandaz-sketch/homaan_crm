@@ -4,11 +4,12 @@
 state: SYNCED_WITH_PARTIAL_RUNTIME
 updated: 2026-09-27
 branch: buildwise-implementation
-head_basis: 7fb96c83aa5243075852f16b59248f6edf728608
+head_basis: c661b2c41faa36a829dc543a2a05392d54e833b0
 active_task: P0-control-plane-unify-and-worker-loop
 memory_rule: NOW first; then BRIEF + last 5; HISTORY is cold archive
 
 ## Recent events
+2026-09-27 | live-security-audit | chatgpt | c661b2c4 | VERIFIED_PARTIAL | Supabase advisors + function definitions + BRIEF | project ACTIVE_HEALTHY; 10 functions ACTIVE; 4 anon-executable SECURITY DEFINER findings confirmed; no production change applied | auth/security gate requires human approval before grant hardening | prepare minimal migration, then browser/auth verification
 2026-09-27 | ci-diagnosis-and-fix | chatgpt | 1ed4c162 | VERIFIED | tests/task-repository.test.js + .github/workflows/agent-control-validate.yml + stale agent-lab workflow removal | BuildWise Unit Tests PASS; Application Validation PASS; Worker Runtime PASS; Phase Code Map PASS; GitHub Pages deploy PASS; Netlify preview ready | fixed fake Supabase update-chain fixture; removed stale workflow referencing absent agent-lab directory; enabled control-plane validation on implementation branch | review PR #10, then browser/auth verification
 2026-09-27 | task-persistence-adapter | chatgpt | a59865de | VERIFIED_PARTIAL | src/core/task-repository.js + tests/task-repository.test.js + package.json | reconstructed local contract test PASS; GitHub workflow/status not yet emitted for this commit | canonical task-engine lifecycle now has a Supabase repository boundary; no schema migration | wait for CI evidence, then release synchronization
 2026-09-27 | test-suite-coverage | chatgpt | b18e86c | VERIFIED_PARTIAL | package.json | GitHub write accepted; local runtime unavailable; branch CI evidence pending | npm test now includes all four existing ESM unit suites | inspect branch CI result
