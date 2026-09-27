@@ -1,0 +1,109 @@
+version: 3
+policy: autonomous
+active_task: P0-control-plane-unify-and-worker-loop
+
+tasks:
+  - id: TASK-000-ARCHITECTURE-BASELINE
+    status: VERIFIED_PARTIAL
+    depends_on: []
+    owner: architecture
+    worker: grok
+    reviewer: claude
+  - id: TASK-001-PLATFORM-AUTH-CAPABILITIES
+    status: QUEUED
+    depends_on: [TASK-000-ARCHITECTURE-BASELINE]
+    owner: platform
+    worker: grok
+    reviewer: claude
+  - id: TASK-002-CRM-MVP
+    status: QUEUED
+    depends_on: [TASK-001-PLATFORM-AUTH-CAPABILITIES]
+    owner: crm
+    worker: grok
+    reviewer: claude
+  - id: TASK-003-LAND-CALCULATION
+    status: QUEUED
+    depends_on: [TASK-002-CRM-MVP]
+    owner: land
+    worker: grok
+    reviewer: claude
+  - id: TASK-004-RLS-ROLE-HARDENING
+    status: QUEUED
+    depends_on: [TASK-002-CRM-MVP]
+    owner: qa_security
+    worker: grok
+    reviewer: claude
+  - id: TASK-005-OWNER-BUILDER-PORTALS
+    status: QUEUED
+    depends_on: [TASK-003-LAND-CALCULATION, TASK-004-RLS-ROLE-HARDENING]
+    owner: app
+    worker: grok
+    reviewer: claude
+  - id: TASK-006-PROJECT-CONTROL-VERTICAL
+    status: QUEUED
+    depends_on: [TASK-004-RLS-ROLE-HARDENING]
+    owner: project_control
+    worker: grok
+    reviewer: claude
+  - id: TASK-007-DEAL-INTELLIGENCE
+    status: QUEUED
+    depends_on: [TASK-002-CRM-MVP, TASK-003-LAND-CALCULATION]
+    owner: deal_intelligence
+    worker: grok
+    reviewer: claude
+  - id: TASK-008-ACCOUNTING-SEPARATE
+    status: QUEUED
+    depends_on: [TASK-006-PROJECT-CONTROL-VERTICAL]
+    owner: finance
+    worker: grok
+    reviewer: claude
+    release_blocking: false
+  - id: TASK-009-PUBLIC-WEBSITE-SEPARATE
+    status: QUEUED
+    depends_on: []
+    owner: website
+    worker: grok
+    reviewer: claude
+    release_blocking: false
+  - id: TASK-010-REMAINING-CHECKLIST
+    status: QUEUED
+    depends_on: [TASK-005-OWNER-BUILDER-PORTALS, TASK-006-PROJECT-CONTROL-VERTICAL, TASK-007-DEAL-INTELLIGENCE]
+    owner: master
+    worker: grok
+    reviewer: claude
+  - id: TASK-011-UNIFIED-TASK-ENGINE-CORE
+    status: DONE_FOCUSED
+    depends_on: []
+    owner: core
+    worker: chatgpt
+    reviewer: claude
+    release_blocking: true
+  - id: TEST-SUITE-COVERAGE
+    status: VERIFIED_PARTIAL
+    depends_on: []
+    owner: qa
+    worker: chatgpt
+    reviewer: claude
+    release_blocking: false
+  - id: P0-control-plane-unify-and-worker-loop
+    status: READY
+    depends_on: []
+    owner: control_plane
+    worker: grok
+    reviewer: claude
+
+parallel_lanes:
+  - QA/security
+  - tests
+  - data_import
+  - valuation
+  - architecture_visual
+  - deployment
+  - accounting
+  - public_website
+
+advance_rule:
+  only_verified_dependencies: true
+  no_user_intervention_between_tasks: true
+  max_worker_iterations: 3
+  done_requires: implementation_tests_runtime_evidence

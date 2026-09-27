@@ -1,0 +1,11 @@
+import assert from "node:assert/strict";
+import fs from "node:fs";
+import {spawnSync} from "node:child_process";
+const script="tools/build-context-pack.mjs";
+assert.ok(fs.existsSync(script));
+const r=spawnSync(process.execPath,[script],{encoding:"utf8",env:{...process.env,BUILDWISE_CONTEXT_MAX_CHARS:"12000"}});
+assert.equal(r.status,0,r.stderr);
+assert.ok(r.stdout.length<=12000);
+assert.match(r.stdout,/BUILDWISE BRIEF|BuildWise Performance Memory/);
+assert.doesNotMatch(r.stdout,/BUILDWISE-AGENT-SPECIFICATION-v1|buildwise-app\.js/);
+console.log("context-pack.test: PASS");

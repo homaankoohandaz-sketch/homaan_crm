@@ -15,7 +15,7 @@ jobs:
       - name: Syntax check
         run: |
           node --check buildwise-app.js
-          node --check data-import.js
+          node --check src/domains/crm/data-import.js
       - name: Basic source checks
         run: |
           test -s index.html

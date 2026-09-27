@@ -24,6 +24,6 @@
     Cache-Control = "no-cache, no-store, must-revalidate"
 
 [[headers]]
-  for = "/data-import.js"
+  for = "/src/domains/crm/data-import.js"
   [headers.values]
     Cache-Control = "no-cache, no-store, must-revalidate"
