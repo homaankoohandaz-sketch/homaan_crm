@@ -2,7 +2,7 @@
 
 updated: 2026-09-27
 branch: buildwise-implementation
-active_task: P0-release-sync-and-control-plane-memory
+active_task: TASK-011-UNIFIED-TASK-ENGINE-CORE
 
 ## CURRENT
 Architecture/control-plane baseline is committed.
@@ -30,7 +30,7 @@ Release sync is now the immediate gate: production Netlify currently serves `mai
 3. Verify Netlify production points to the resulting commit.
 4. After safe reconciliation, run browser/runtime smoke verification.
 5. Record outcome in PERFORMANCE.md and SUMMARY-CHECK-2026-09-27.md.
-6. Only then resume Unified Task Engine.
+6. Continue Unified Task Engine with persistence/API integration only after this core contract is reviewed and tested.
 
 ## DO NOT
 - Re-read the whole repository for context recovery.
