@@ -12,7 +12,7 @@ Build and maintain Homaan CRM through coordinated AI agents. This repository is 
 - HUMAN: final authority for destructive, security-sensitive, financial, production, or irreversible changes.
 
 ## Mandatory protocol
-1. Read `.agent-control/STATE.md` before work.
+1. Read `.agent-control/NOW.md` before work.
 2. Read the relevant task in `.agent-control/tasks/`.
 3. Claim the task and affected files before editing.
 4. Never edit a file claimed by another active agent.
