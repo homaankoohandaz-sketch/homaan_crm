@@ -27,3 +27,4 @@ timestamp | task | agent | commit | status | paths | tests | decision/impact | n
 Never store secrets. Never mark DONE without evidence.
 
 2026-09-27 | release-reconcile-snapshot | chatgpt | 8f3e154 | IN_PROGRESS | release-reconcile-20260927 + PR #11 | PR mergeable=true; CI queued/in-progress | replaced dirty PR #10 path with clean snapshot branch from main; no force update | wait CI, then review/merge only if all gates pass
+2026-09-27 | ci-stale-path-repair | chatgpt | 7ca1284 | IN_PROGRESS | .github/workflows/buildwise-qa.yml + agent-control-validate.yml + AGENTS.md | prior failures diagnosed; corrected stale importer/STATE references; new CI runs active | do not restore deleted STATE or duplicate importer | wait current CI; then PR #11 gate review
