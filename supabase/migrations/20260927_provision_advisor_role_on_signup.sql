@@ -16,6 +16,6 @@ begin
 end;
 $$;
 
-revoke execute on function public.provision_advisor_role_on_signup() from public;
+revoke execute on function public.provision_advisor_role_on_signup() from public, anon, authenticated;
 drop trigger if exists on_auth_user_created_provision_advisor on auth.users;
 create trigger on_auth_user_created_provision_advisor after insert on auth.users for each row execute function public.provision_advisor_role_on_signup();
