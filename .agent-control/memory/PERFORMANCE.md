@@ -4,8 +4,8 @@
 state: SYNCED
 updated: 2026-09-27
 branch: buildwise-implementation
-head_basis: eff720abb389dff4db7d94a78672fe3733b7ac2d
-active_task: P0-release-sync-and-control-plane-memory
+head_basis: 7262e08ff3d8a14fa22b0db2aad8a7c1d6764d66
+active_task: P0-control-plane-unify-and-worker-loop
 memory_rule: NOW first; then BRIEF + last 5; HISTORY is cold archive
 
 ## Recent events
