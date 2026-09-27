@@ -25,10 +25,10 @@ Release sync is now the immediate gate: production Netlify currently serves `mai
 - Production release is blocked until `main` and the verified implementation are safely reconciled and the resulting Netlify deploy is runtime/UI verified.
 
 ## NEXT
-1. Reconcile `buildwise-implementation` with `main` via a reviewed PR; never force-update `main`.
-2. Merge only if GitHub reports the PR mergeable and CI/evidence supports it.
+1. Reviewed PR #10 (`buildwise-implementation` → `main`) is open; never force-update `main`.
+2. Review PR #10; GitHub currently reports mergeable=false, so do not merge until conflicts are safely resolved.
 3. Verify Netlify production points to the resulting commit.
-4. Run browser/runtime smoke verification.
+4. After safe reconciliation, run browser/runtime smoke verification.
 5. Record outcome in PERFORMANCE.md and SUMMARY-CHECK-2026-09-27.md.
 6. Only then resume Unified Task Engine.
 
