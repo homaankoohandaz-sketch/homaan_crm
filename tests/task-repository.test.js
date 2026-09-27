@@ -84,6 +84,8 @@ test('task repository persists canonical task lifecycle changes', async () => {
 
   const created = await repo.create(baseTask, { now: '2026-09-27T09:00:00.000Z' });
   assert.equal(created.status, 'open');
+  assert.equal(created.task_type, 'deal');
+  assert.equal(created.due_date, '2026-09-28T00:00:00.000Z');
 
   const answered = await repo.respond('task-001', 'yes', {
     now: '2026-09-27T09:05:00.000Z',
@@ -114,4 +116,18 @@ test('task repository validates before persistence', async () => {
     () => repo.create({ ...baseTask, priority: 'urgent' }),
     /Invalid priority/,
   );
+});
+
+
+test('task repository maps canonical task fields to the live tasks schema', async () => {
+  const client = createFakeClient();
+  const repo = createTaskRepository(client);
+  await repo.create({ ...baseTask, scheduled_time: '10:30', deadline: '2026-09-28T18:00:00.000Z' });
+  const persisted = client.rows.get('task-001');
+  assert.equal(persisted.task_type, 'deal');
+  assert.equal(persisted.due_date, '2026-09-28T18:00:00.000Z');
+  assert.equal(persisted.lead_id, null);
+  assert.equal(persisted.property_id, null);
+  assert.equal(persisted.context_type, undefined);
+  assert.equal(persisted.subject_type, undefined);
 });
