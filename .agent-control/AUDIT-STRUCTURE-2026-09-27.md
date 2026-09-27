@@ -16,10 +16,15 @@ Repository tree audited: 205 files / 42 directories.
 2. `src/domains/construction/browser-adapter.js` is now loaded by `index.html`.
 3. `construction-engine.js` is now a UI/persistence adapter and no longer contains the duplicate calculation implementation.
 4. The import implementations were consolidated into `data-import.js`; `data-import-v2.js` was deleted after its capabilities were merged. `index.html` now has one import entry point.
+5. `procurement-engine.js` was migrated to `src/domains/procurement/engine.js`; `index.html` points to the canonical engine; root duplicate deleted.
+6. `builder-sales-engine.js` was migrated to `src/domains/sales/engine.js`; `index.html` points to the canonical engine; root duplicate deleted.
 
 ## Verification
 - Transformed `construction-engine.js`: syntax check PASS.
 - Canonical `data-import.js`: syntax check PASS.
+- Canonical Procurement and Sales engines: syntax checks PASS.
+- Root Procurement/Sales engine files: confirmed absent after migration.
+- Repository re-audit: 0 exact duplicate-content groups.
 - Repository search: no active code reference to `data-import-v2.js`; remaining textual reference is audit documentation only.
 - `index.html`: duplicate import script removed.
 - `index.html`: canonical construction adapter reference confirmed.
