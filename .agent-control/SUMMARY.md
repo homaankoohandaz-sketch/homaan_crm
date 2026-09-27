@@ -67,7 +67,8 @@ The control plane is present and the worker runtime is bounded. External worker 
 - Current consolidation work is on `buildwise-implementation`.
 - GitHub reports these branches as **diverged**, not fast-forwardable.
 - Therefore: do not force-update `main`, do not merge blindly, and do not treat the current production site as verification of the implementation branch.
-- Required path: reviewed PR from `buildwise-implementation` → `main` → CI/merge verification → Netlify production deploy verification → browser/runtime/UI smoke test.
+- Required path: reviewed PR #10 from `buildwise-implementation` → `main` → resolve merge conflicts safely → CI/merge verification → Netlify production deploy verification → browser/runtime/UI smoke test.
+- PR #10 is open; GitHub currently reports `mergeable=false`. Do not merge or force-update `main` until that is resolved.
 - Unified Task Engine is paused until this release synchronization gate is resolved.
 
 ## Change ledger
