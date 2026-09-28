@@ -62,6 +62,22 @@ Do not develop new features in old duplicate files such as `index_FINAL.html`, `
 ## Current execution state
 The control plane is present and the worker runtime is bounded. External worker activation still requires verified runtime credentials/evidence. Do not claim a worker is live from documentation alone.
 
+## GROK — HARD DO-NOT RULES
+These rules apply to Grok on every BuildWise task unless the Master explicitly overrides them:
+- Do NOT start a new task automatically. Execute only the exact task/scope authorized by Master.
+- Do NOT overwrite, revert, force-push, reset, or rebuild another agent's work. Inspect current HEAD/diff first.
+- Do NOT create duplicate/v2/v3/FINAL/NEW implementations when a canonical file/module already exists.
+- Do NOT modify `main`, force-update it, or merge branches blindly. Preserve the release gate.
+- Do NOT apply production Supabase migrations, grants, functions, RLS/security changes, or destructive DB changes without explicit human/Master approval.
+- Do NOT commit secrets, passwords, tokens, test credentials, or personal credentials.
+- Do NOT mark work DONE from code existence alone. Require tests + verification/evidence.
+- Do NOT claim runtime/worker/auth/deploy success from documentation alone; verify it.
+- Do NOT delete, replace, or “clean up” existing code unless the task explicitly requires it and the replacement is verified.
+- Do NOT work in parallel on files another agent is actively modifying; stop and reconcile first.
+- Do NOT change architecture, schema, contracts, or canonical ownership without recording the decision and impact in `.agent-control/`.
+- Do NOT leave untested changes. Add/fix focused tests and run the relevant verification.
+- After meaningful work, update the control-plane summary/ledger with actor, exact scope, result, evidence, and next step.
+
 ## Recent CI repair
 - 2026-09-28: CI exposed a WBS ready-queue defect where completed task IDs remained eligible. Fixed `getReadyWbsItems` to exclude completed IDs; branch CI is being re-run.
 
@@ -112,3 +128,4 @@ The control plane is present and the worker runtime is bounded. External worker 
 - 2026-09-28: Added canonical `src/domains/construction/boq.js` for BOQ line totals and category aggregation, with duplicate-line validation and a focused test wired into `npm test`.
 - 2026-09-28: Added canonical `src/domains/construction/boq-repository.js` to persist calculated BOQ data under existing `construction_projects.assumptions.projectBoq`, with focused persistence coverage wired into `npm test`.
 - 2026-09-28: CI caught a WBS ready-item regression where phase/WBS containers were returned as executable items; fixed `getReadyWbsItems` to return only task/milestone nodes.
+- 2026-09-28: Added explicit Grok hard do-not rules to prevent duplicate work, destructive changes, unapproved production changes, unverified DONE claims, and agent collisions.
