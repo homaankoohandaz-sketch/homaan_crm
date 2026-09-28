@@ -1,4 +1,4 @@
-/* Phase04 hierarchy UI bridge — relational tables only (no assumptions JSON) */
+/* Phase04 hierarchy + schedule dependency UI bridge — relational only */
 (function () {
   function ensureTab() {
     const tabs = document.querySelector('nav.tabs');
@@ -47,7 +47,7 @@
     const tree = await hierarchyTree();
     c.innerHTML =
       '<section class="panel"><h3>سلسله‌مراتب (canonical relational)</h3>' +
-      '<p class="muted">Project → Complex → Building → Floor → Unit — جداول live</p>' +
+      '<p class="muted">Project → Complex → Building → Floor → Unit</p>' +
       '<form class="form" data-form="complex"><label>نام مجتمع<input name="name" required></label><label>کد<input name="code"></label><div class="full"><button class="primary">ثبت مجتمع</button></div></form>' +
       '<form class="form" data-form="building"><label>complex_id<input name="complex_id" type="number" required></label><label>نام ساختمان<input name="name" required></label><label>طبقات<input name="floors_planned" type="number"></label><div class="full"><button class="primary">ثبت ساختمان</button></div></form>' +
       '<form class="form" data-form="floor"><label>building_id<input name="building_id" type="number" required></label><label>شماره طبقه<input name="floor_number" type="number" required></label><label>نام<input name="name"></label><div class="full"><button class="primary">ثبت طبقه</button></div></form>' +
@@ -55,6 +55,21 @@
       '</section><section class="panel"><h3>درخت</h3><div class="list">' +
       tree +
       '</div></section>';
+  }
+
+  function enhanceScheduleForm() {
+    const content = document.getElementById('content');
+    if (!content) return;
+    const form = content.querySelector('form[data-form="task"]');
+    if (!form || form.querySelector('[name="parent_task_id"]')) return;
+    const extra = document.createElement('div');
+    extra.className = 'full';
+    extra.innerHTML =
+      '<div class="form" style="margin:0">' +
+      '<label>parent_task_id<input name="parent_task_id" type="number" placeholder="اختیاری"></label>' +
+      '<label>predecessor_ids<input name="predecessor_ids" placeholder="مثلا 1,2"></label>' +
+      '</div>';
+    form.insertBefore(extra, form.querySelector('.full'));
   }
 
   document.addEventListener('submit', async function (e) {
@@ -81,14 +96,47 @@
       e.stopImmediatePropagation();
       return post('project_units', { floor_id: Number(o.floor_id), unit_code: o.unit_code, unit_type: o.unit_type || null, status: 'available' }, 'unit');
     }
+    if (f.dataset.form === 'task' && (o.parent_task_id || o.predecessor_ids)) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      const preds = String(o.predecessor_ids || '')
+        .split(',')
+        .map((x) => Number(x.trim()))
+        .filter((n) => Number.isFinite(n) && n > 0);
+      return post(
+        'project_schedule_tasks',
+        {
+          project_id: pid,
+          title: o.title,
+          planned_start: o.planned_start,
+          planned_finish: o.planned_finish,
+          duration_days: o.duration_days || null,
+          progress: o.progress || 0,
+          priority: o.priority || 'normal',
+          description: o.description || null,
+          status: 'planned',
+          is_critical: false,
+          parent_task_id: o.parent_task_id ? Number(o.parent_task_id) : null,
+          predecessor_ids: preds.length ? preds : null
+        },
+        'schedule_task'
+      );
+    }
   }, true);
 
   const _show = window.show;
   if (typeof _show === 'function') {
     window.show = async function (t) {
       if (t === 'hierarchy') return renderHierarchyTab();
-      return _show(t);
+      const r = await _show(t);
+      if (t === 'schedule') setTimeout(enhanceScheduleForm, 0);
+      return r;
     };
+  }
+
+  const obs = new MutationObserver(() => enhanceScheduleForm());
+  if (document.getElementById('content')) {
+    obs.observe(document.getElementById('content'), { childList: true, subtree: true });
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ensureTab);
