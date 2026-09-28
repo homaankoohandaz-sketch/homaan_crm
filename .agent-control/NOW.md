@@ -1,54 +1,35 @@
 # BuildWise NOW — hot execution state
 
-updated: 2026-09-27
+updated: 2026-09-28
 branch: buildwise-implementation
-active_task: PHASE-03-unified-task-engine-persistence
+active_task: PHASE-04-project-hierarchy
 
 ## CURRENT
-Architecture/control-plane baseline is committed.
-Performance memory is compact and verified.
-Control-plane state is consolidated: NOW is live state; SUMMARY is orientation; MASTER-ARCHITECTURE is mother architecture.
-Worker runtime adapter is implemented but external runtime credentials are missing.
-Release sync is now the immediate gate: production Netlify currently serves `main`, while the current implementation is `buildwise-implementation`.
+Phase 04 implementation has started on the canonical construction domain. The first bounded slice is project hierarchy: Project → Complex → Building → Phase → Floor → Unit.
 
 ## DONE
-- Advisor signup contract corrected to the actual Supabase DB-trigger architecture; focused contract test updated.
-- Netlify PR #10 preview verified READY at commit `ff14037d3cdd41c4cd057c7eadfb962f55d01e03`.
-- Live Supabase advisor trigger RPC execution revoked for `anon` and `authenticated`; security advisor confirmed the related warning cleared.
-- TASK-011 Unified Task Engine core extended and focused runtime-verified.
-- Unified Task Engine repository persistence adapter implemented; canonical task fields are now persisted without breaking the existing `tasks` table shape.
-- Additive Supabase migration added for canonical task-engine fields, indexes, and validation constraints; not applied to production in this coding pass.
-- TEST-SUITE-COVERAGE expanded `npm test` to include all four existing ESM unit suites.
-- Worker adapter + CI path verified.
-- 2026-09-27 CI repair verified on GitHub: unit suite, application validation, phase map, worker runtime and GitHub Pages deployment all passed on the implementation branch.
-- Behavioral memory + cold history archive verified.
-- Redundant STATE.md and ARCHITECTURE-BASELINE.md removed after consolidation.
-- 2026-09-27 branch/deploy divergence was confirmed from GitHub + Netlify.
+- Phase 04 project hierarchy model implemented in `src/domains/construction/project-model.js`.
+- Hierarchy validation covers duplicate IDs, missing parents and invalid parent type.
+- Deterministic child ordering implemented.
+- Focused unit test added and passed in an isolated Node runtime.
+- Test script now includes the Phase 04 project model test.
+- Existing Unified Task Engine core and persistence slice remain intact.
 
-## BLOCKED
-- XAI_API_KEY missing for Grok runtime.
-- ANTHROPIC_API_KEY missing for Claude runtime.
-- No durable Codex environment registered here.
-- Production release is blocked until `main` and the verified implementation are safely reconciled and the resulting Netlify deploy is runtime/UI verified.
+## BLOCKED / RELEASE GATE
+- Production release remains blocked by divergent `main` and `buildwise-implementation`.
+- PR #10 must be reconciled deliberately; never force-update `main`.
+- Supabase task-engine migration remains unapplied in production.
+- External worker credentials/runtime are still unavailable.
 
 ## NEXT
-1. Release synchronization remains the gate: PR #10 is divergent and `mergeable=false`; resolve deliberately without force-updating `main`.
-2. After reconciliation, verify production Netlify and browser/runtime/auth smoke.
-3. Unified Task Engine persistence/API integration is implemented on the implementation branch; production release sync remains separate.
-1. Reviewed PR #10 (`buildwise-implementation` → `main`) is open; never force-update `main`.
-2. Review PR #10; GitHub currently reports mergeable=false, so do not merge until conflicts are safely resolved.
-3. Verify Netlify production points to the resulting commit.
-4. After safe reconciliation, run browser/runtime smoke verification.
-5. Record outcome in PERFORMANCE.md and SUMMARY-CHECK-2026-09-27.md.
-6. Continue Unified Task Engine persistence/API integration only after release synchronization is resolved.
+1. Implement Phase 04 project persistence against the existing Supabase project-control schema.
+2. Add WBS linkage as the next bounded construction slice.
+3. Add schedule/milestone linkage after WBS persistence.
+4. Run branch CI and update evidence.
+5. Keep production reconciliation separate; do not let the release gate stop implementation work on the branch.
 
 ## DO NOT
-- Re-read the whole repository for context recovery.
-- Rebuild the control plane.
-- Create a duplicate Netlify project.
-- Force-push or force-update `main`.
-- Merge divergent branches blindly.
-- Claim DONE without implementation + test + evidence.
-
-## STARTUP
-NOW.md → BRIEF.md → PERFORMANCE last 5 → task contract → minimum allowed files.
+- Create duplicate project/task systems.
+- Add new root-level construction engines.
+- Change production schema without the required release gate.
+- Claim DONE without implementation + test + runtime evidence.
