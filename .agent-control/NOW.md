@@ -18,6 +18,7 @@ Phase 04 implementation has started on the canonical construction domain. The fi
 - Project persistence adapter implemented against existing `construction_projects`; hierarchy is stored under `assumptions.projectHierarchy` without schema duplication.
 - Persistence contract test added.
 - Canonical schedule derivation added from WBS dependencies; schedule test wired into npm test.
+- Schedule/milestone persistence added under existing project assumptions; no new project table/schema introduced.
 - Existing Unified Task Engine core and persistence slice remain intact.
 
 ## BLOCKED / RELEASE GATE
