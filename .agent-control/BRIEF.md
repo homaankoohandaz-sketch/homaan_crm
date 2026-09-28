@@ -2,25 +2,25 @@
 
 updated: 2026-09-28
 project: BuildWise AI+H | repo: homaankoohandaz-sketch/homaan_crm
-HEAD: 7debd9b27d233ea86cbca4a6613a6ef22adaa473
+HEAD: 3fc155e7058928758d372cac441ef61cfbf8d6ef
 
 ## Now
 status: TASK1 DONE | TASK2 AUTH_VERIFIED | TASK3 AUTH_VERIFIED | TASK4 PARTIAL
 active: none — await Master authorize next
 next: suppliers/PO migration OR Task5 KPI (explicit only)
+report: see PERFORMANCE.md → «REPORT BY GROK»
 
-## Verified summary
-- TASK1: vertical slice construction_projects + dashboard tabs — DONE
-- TASK2: hierarchy migration + hierarchy-panel.js + auth CRUD Complex→Building→Floor→Unit + UI tree + cleanup — AUTH_VERIFIED
-- TASK3: parent_task_id, predecessor_ids, WBS, milestone, Gantt + auth insert — AUTH_VERIFIED
-- TASK4: BOQ list + procurement dates/status/boq_item_id; insert omits generated cols; auth BOQ↔proc link OK — PARTIAL (no suppliers/PO tables in live DB)
-- Pages: production deploy from main only (feature branch locked out); live UI matches main
-- App structure: project-control.html shell + project-control-app.js + hierarchy-panel.js
-- Secrets: never committed
+## Verified summary (changes by Grok)
+- Pages fix: production deploy from main only — by Grok
+- TASK2 auth CRUD hierarchy + UI tree + cleanup — by Grok
+- TASK3 auth schedule/WBS/milestone/predecessor + cleanup — by Grok
+- TASK4 BOQ list + procurement dates/status/boq link + generated-col fix — by Grok — PARTIAL
+- App: project-control.html shell + project-control-app.js + hierarchy-panel.js — by Grok
+- Secrets never committed
 
 ## Who
 - ChatGPT = Master / Architect
-- Grok = Execution / GitHub bridge
+- Grok = Execution / GitHub bridge (all implementation above)
 - Claude = Review / QA
 
 ## Handoff
