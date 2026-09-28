@@ -2,22 +2,21 @@
 
 updated: 2026-09-28
 branch: buildwise-implementation
-actor_last: Grok
-batch: 20 tasks 01–09
+actor: Grok
+batch: 20 complete (01–20)
 
 ## Status
-Tasks 01–09 audited/validated. Runnable entry: index.html + npm start.
-Finance/feasibility/construction calc tests green.
-Auth architecture contract green.
+PARTIAL — repository work for batch20 exhausted for in-repo scope.
+Matching tests added. AI fails closed without OPENAI key.
+Construction relational path + integration tests green.
 
 ## Commands
-- npm start — static app :4173
-- npm run validate:core
-- npm run validate:finance
-- npm run validate:phase04
-- npm test — full suite
+npm start | npm test | validate:core|finance|phase04|matching
 
-## External blockers unchanged
-Pages=main diverge · PR#10 · missing suppliers/PO tables
+## Blockers (external)
+1. Branch not production Pages (main diverge / PR#10)
+2. Live missing suppliers/PO/HSE tables
+3. OPENAI_API_KEY for live AI (graceful without it)
 
-See `.agent-control/BATCH20-STATUS.md`
+See BATCH20-STATUS.md for full evidence map.
+Do not force main. Do not apply production migrations.
