@@ -1,0 +1,80 @@
+name: BuildWise Grok Worker
+
+on:
+  workflow_dispatch:
+    inputs:
+      task_file:
+        description: "Control-plane task file"
+        required: true
+        default: ".agent-control/tasks/AUTONOMOUS-BATCH-20.md"
+      branch:
+        description: "Implementation branch"
+        required: true
+        default: "buildwise-implementation"
+
+permissions:
+  contents: write
+
+jobs:
+  worker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout implementation branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.branch }}
+          fetch-depth: 0
+
+      - name: Install Grok Build
+        run: npm install -g @xai-official/grok
+
+      - name: Run autonomous Grok batch
+        env:
+          XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+          TASK_FILE: ${{ inputs.task_file }}
+        run: |
+          set -euo pipefail
+          test -n "${XAI_API_KEY:-}" || { echo "XAI_API_KEY GitHub secret is missing"; exit 2; }
+          test -f "$TASK_FILE" || { echo "Task file not found: $TASK_FILE"; exit 2; }
+          PROMPT="$(cat "$TASK_FILE")
+
+          Follow the task contract exactly.
+          Execute every numbered task sequentially in this single worker run.
+          Do not stop after one task or after the first green test.
+          Before each task inspect the current repository state produced by previous tasks.
+          Work only within the task file's stated constraints.
+          Do not modify production secrets, auth configuration, migrations, or weaken RLS.
+          Do not create accounts or bypass security.
+          Run focused tests after each task and the final relevant test/build suite.
+          Commit coherent changes and push them to the requested branch.
+          Passing tests alone is not sufficient for DONE.
+          Before finishing, report STATUS, MODEL_USED, BASE_SHA, HEAD, CHANGED, TESTS, BUILD, E2E, EVIDENCE, RISKS, NEXT.
+          If one task is blocked, record the blocker and continue with the next unblocked task.
+          "
+          grok --no-auto-update -p "$PROMPT" -m grok-4.7 --max-turns 60 --always-approve --output-format json | tee grok-result.json
+
+      - name: Enforce safety scope
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only && git diff --name-only --cached || true)"
+          if [ -z "$changed" ]; then
+            echo "No uncommitted changes produced by worker."
+            exit 0
+          fi
+          echo "$changed"
+          while IFS= read -r file; do
+            case "$file" in
+              .github/workflows/*|.git/*|.env|.env.*|supabase/migrations/*|*.pem|*.key|*secret*|*credentials*)
+                echo "FORBIDDEN_SCOPE: $file"
+                exit 3
+                ;;
+              *) ;;
+            esac
+          done <<< "$changed"
+
+      - name: Final repository verification
+        run: |
+          set -euo pipefail
+          git status --short
+          git log -5 --oneline
