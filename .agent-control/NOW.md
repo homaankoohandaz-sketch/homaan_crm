@@ -3,31 +3,28 @@
 updated: 2026-09-28
 branch: buildwise-implementation
 actor_last: Grok
-active_task: PHASE04 integration continuum
+HEAD_tip: 4ff11eea7565d6fd293e05d13c35a7ecddccefbf
 
-## COMPLETED (this batch)
-- progress-repository: derives KPI from project_schedule_tasks (no assumptions JSON)
-- phase04-integration.test: hierarchy → schedule → progress → boq → procurement
-- schedule UI: parent_task_id + predecessor_ids fields via hierarchy bridge
-- npm test includes phase04-integration.test.mjs
-- Local validation: 13/13 Phase04-related tests pass
+## COMPLETED
+Phase04 relational unification continuum:
+- hierarchy / schedule / boq / procurement / progress → relational tables
+- progress derived from schedule task %
+- phase04-integration test (hierarchy→schedule→progress→boq→procurement)
+- hierarchy UI + schedule parent/predecessor fields
+- index.html loads suite-links.js → project-control.html entry from CRM
+- Local tests: 13/13 Phase04-related pass
 
-## CANONICAL PHASE04 PATH
-UI (project-control + hierarchy bridge)
-→ domain (model/wbs/schedule/progress/boq)
-→ repos (relational tables)
-→ Supabase session auth
+## INTEGRATION PATH (branch)
+index (CRM) → suite-links → project-control.html → hierarchy bridge → relational tables + auth session
 
-## REMAINING BLOCKERS (external / release)
-1. This branch is not production Pages (main diverge) — full browser E2E of branch UI needs preview
-2. Production merge / PR#10 reconcile — Human gate
-3. suppliers/PO/HSE tables missing in live DB — schema gate (no prod apply)
+## REMAINING EXTERNAL BLOCKERS
+1. Branch not deployed as production Pages (main diverge) — browser E2E of THIS branch needs Netlify/GitHub preview
+2. PR#10 / main reconcile — Human
+3. Live missing tables: suppliers, PO, HSE, corrective — no production schema apply
 
 ## EVIDENCE
-- node --test: 13 pass (hierarchy, schedule, boq, project, procurement, progress, phase04-integration)
-- HEAD after push: see latest commit on buildwise-implementation
+- node --test Phase04 suite: 13 pass
+- Commits: 7701d62, 8473718, 66dee5d, 4ff11ee
 
-## NEXT (in-repo, non-production)
-- Ensure CRM index link to project-control is present on this branch
-- Optional: Netlify preview verification if available
-- Do not force main
+## NEXT IN-REPO (if unblocked)
+Preview deploy verification only; no force main
