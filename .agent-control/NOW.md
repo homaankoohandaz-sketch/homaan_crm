@@ -18,6 +18,7 @@ Phase 04 implementation is progressing on the canonical construction domain. The
 - Progress/KPI model and progress snapshot persistence implemented under existing project assumptions.
 - BOQ calculation foundation implemented with line totals, category totals and duplicate-line validation.
 - BOQ persistence adapter now stores the calculated BOQ under existing `construction_projects.assumptions.projectBoq`; no new project table/schema introduced.
+- Procurement persistence adapter implemented against the existing `project_procurement` table with input normalization, status validation, project scoping and focused tests.
 - CI caught a WBS ready-item regression: container nodes (phase/WBS) were incorrectly returned as executable items. Fixed `getReadyWbsItems` to return only task/milestone nodes.
 - Focused BOQ persistence coverage added and wired into `npm test`.
 - Fixed the CI-discovered task repository identifier persistence bug; CI re-verification is tracked.
@@ -36,7 +37,7 @@ Phase 04 implementation is progressing on the canonical construction domain. The
 - External worker credentials/runtime are still unavailable.
 
 ## NEXT
-1. Implement the next bounded Phase 04 slice: procurement persistence/control using the existing project-control data model.
+1. Implement the next bounded Phase 04 slice: procurement UI wiring on top of the existing project-control data model.
 2. Add focused unit/contract tests and wire them into `npm test`.
 3. Run branch CI and update evidence.
 4. Continue Phase 04 without changing production schema or release state.

@@ -68,6 +68,9 @@ The control plane is present and the worker runtime is bounded. External worker 
 ## Recent CI repairs
 - 2026-09-28: CI exposed a schedule `maxDate` initialization defect that nullified dependency and project finish dates. Fixed date aggregation to ignore empty values and use the first real date as the baseline.
 
+## Recent implementation
+- 2026-09-28: Added canonical `src/domains/construction/procurement-repository.js` over the existing `project_procurement` table. It normalizes procurement records, validates status/item/project fields, scopes reads by project and has focused tests wired into `npm test`.
+
 ## Release synchronization gate
 - Production Netlify site is currently associated with the `main` branch.
 - Current implementation is on `buildwise-implementation`.
