@@ -35,6 +35,8 @@ Phase 04 implementation is progressing on the canonical construction domain. The
 
 - Phase 08 content foundation added: canonical channel/objective/facts brief model with validation and focused tests.
 
+- Phase 06 media registry foundation added: canonical asset model for photo/plan/3D/video/document with project/unit linkage and validation.
+
 ## BLOCKED / RELEASE GATE
 - Production release remains blocked by divergent `main` and `buildwise-implementation`.
 - PR #10 must be reconciled deliberately; never force-update `main`.
