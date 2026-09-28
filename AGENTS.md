@@ -3,6 +3,15 @@
 ## Mission
 Build and maintain Homaan CRM through coordinated AI agents. This repository is the source of truth for code; `.agent-control/` is the source of truth for coordination.
 
+## Canonical execution protocol
+All agents MUST follow:
+`.agent-control/AGENT_EXECUTION_PROTOCOL.md`
+
+Canonical flow:
+`Source → Decision → Task → Reconcile → Implement → Test → Runtime Verify → Evidence → State → Done`
+
+The protocol is the behavioral authority for agent execution. Material decisions that change the protocol must be recorded and then added to the protocol. No silent override.
+
 ## Agent roles
 - ARCHITECT: architecture, requirements, decisions; does not implement unless explicitly assigned.
 - CODEX: implementation, debugging, tests.
@@ -13,13 +22,14 @@ Build and maintain Homaan CRM through coordinated AI agents. This repository is 
 
 ## Mandatory protocol
 1. Read `.agent-control/STATE.md` before work.
-2. Read the relevant task in `.agent-control/tasks/`.
-3. Claim the task and affected files before editing.
-4. Never edit a file claimed by another active agent.
-5. Record important decisions in `.agent-control/memory/`.
-6. Run the required verification before declaring done.
-7. Write a handoff in `.agent-control/handoffs/` when another agent must continue.
-8. Never expose secrets, tokens, private keys, or credentials in memory, commits, logs, or prompts.
+2. Read `.agent-control/AGENT_EXECUTION_PROTOCOL.md`.
+3. Read the relevant task in `.agent-control/tasks/`.
+4. Claim the task and affected files before editing.
+5. Never edit a file claimed by another active agent.
+6. Record important decisions in `.agent-control/memory/`.
+7. Run the required verification before declaring done.
+8. Write a handoff in `.agent-control/handoffs/` when another agent must continue.
+9. Never expose secrets, tokens, private keys, or credentials in memory, commits, logs, or prompts.
 
 ## Git rules
 - Prefer one branch/worktree per task.
@@ -33,11 +43,12 @@ BuildWise is now organized around `.agent-control/SUMMARY.md` and `.agent-contro
 ### Mandatory orientation
 1. Read `.agent-control/SUMMARY.md` first.
 2. Read `.agent-control/MASTER-ARCHITECTURE.md` next.
-3. Read only the relevant `docs/PHASES/*.md` file.
-4. Then read the exact assigned task and minimum allowed files.
-5. Do not scan the whole repository for routine work.
-6. Do not implement new work in legacy duplicate index files (`index_FINAL.html`, `index_legacy.html`, `index3 2.html`).
-7. Every structural/code change must add one short entry to `.agent-control/SUMMARY.md`.
+3. Read `.agent-control/AGENT_EXECUTION_PROTOCOL.md`.
+4. Read only the relevant `docs/PHASES/*.md` file.
+5. Then read the exact assigned task and minimum allowed files.
+6. Do not scan the whole repository for routine work.
+7. Do not implement new work in legacy duplicate index files (`index_FINAL.html`, `index_legacy.html`, `index3 2.html`).
+8. Every structural/code change must add one short entry to `.agent-control/SUMMARY.md`.
 
 ## Authentication contract
 - BuildWise application authentication is Supabase Auth; browser code may use only the publishable/anon key.
