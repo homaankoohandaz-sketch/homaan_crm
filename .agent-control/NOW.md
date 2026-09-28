@@ -11,6 +11,8 @@ Phase 04 implementation has started on the canonical construction domain. The fi
 - Phase 04 project hierarchy model implemented in `src/domains/construction/project-model.js`.
 - Hierarchy validation covers duplicate IDs, missing parents and invalid parent type.
 - Deterministic child ordering implemented.
+- Canonical WBS model implemented with dependency validation and adapter to the existing BuildWise Workflow engine.
+- Focused WBS contract test added and wired into npm test.
 - Focused unit test added and passed in an isolated Node runtime.
 - Test script now includes the Phase 04 project model test.
 - Existing Unified Task Engine core and persistence slice remain intact.
@@ -23,8 +25,8 @@ Phase 04 implementation has started on the canonical construction domain. The fi
 
 ## NEXT
 1. Implement Phase 04 project persistence against the existing Supabase project-control schema.
-2. Add WBS linkage as the next bounded construction slice.
-3. Add schedule/milestone linkage after WBS persistence.
+2. Persist the existing project hierarchy against the current construction project data model.
+3. Add schedule/milestone persistence after WBS integration.
 4. Run branch CI and update evidence.
 5. Keep production reconciliation separate; do not let the release gate stop implementation work on the branch.
 
