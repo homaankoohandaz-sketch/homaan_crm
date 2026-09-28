@@ -1,6 +1,6 @@
 # BuildWise AI — Decision Ledger
 
-Updated: 2026-09-27
+Updated: 2026-09-28
 
 This is the durable memory index for architectural decisions.
 New decisions are appended; old decisions are not silently rewritten.
@@ -75,8 +75,19 @@ DONE means implemented + tested + runtime verified + UI verified where applicabl
 
 ## D-018 — Production branch synchronization
 Decision: The production Netlify site and the current implementation branch must not silently diverge. When production serves a different branch, reconcile through a reviewed PR and verification rather than a blind merge or force update.
-Evidence: On 2026-09-27 GitHub compare reported `main` and `buildwise-implementation` as diverged (298 commits ahead / 67 behind from the merge base); Netlify production reported the current deploy as `main`.
-Impact: Release verification is blocked until the reconciled commit is deployed and runtime/UI smoke-tested. Unified Task Engine remains paused until this gate is resolved.
+Evidence: On 2026-09-27 GitHub compare reported main and buildwise-implementation as diverged; Netlify production reported the current deploy as main.
+Impact: Release verification is blocked until the reconciled commit is deployed and runtime/UI smoke-tested.
+
+## D-019 — Decision-as-time / repository law
+Decision: A material decision is not authoritative until it is recorded in the canonical GitHub control-plane documents.
+Rules:
+- Conversation is not the source of truth.
+- Existing canonical documents are updated before new files are created.
+- No duplicate decision/spec/status files for the same responsibility.
+- Missing repository evidence means the decision is unrecorded.
+- Later changes append a superseding decision; history is retained.
+- Agents must never claim a decision, implementation or verification exists without repository evidence.
+Impact: Every decision consumes explicit repository time and prevents repeated rediscovery and rework.
 
 ## Decision change protocol
 When a later decision changes one of these: append a new decision; identify the superseded decision; update PHASE-CURRENT-ARCHITECTURE.md; update MASTER-ARCHITECTURE.md; update SUMMARY.md; never delete the historical decision.
