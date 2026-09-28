@@ -23,6 +23,9 @@ Phase 04 implementation is progressing on the canonical construction domain. The
 - Fixed the CI-discovered task repository identifier persistence bug; CI re-verification is tracked.
 - Existing Unified Task Engine core and persistence slice remain intact.
 
+## TEST REPAIR LOG
+- CI exposed a WBS ready-queue defect: completed task IDs were still returned as ready. `getReadyWbsItems` now excludes completed IDs before dependency evaluation.
+
 ## BLOCKED / RELEASE GATE
 - Production release remains blocked by divergent `main` and `buildwise-implementation`.
 - PR #10 must be reconciled deliberately; never force-update `main`.

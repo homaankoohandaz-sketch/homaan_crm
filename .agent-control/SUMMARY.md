@@ -62,6 +62,9 @@ Do not develop new features in old duplicate files such as `index_FINAL.html`, `
 ## Current execution state
 The control plane is present and the worker runtime is bounded. External worker activation still requires verified runtime credentials/evidence. Do not claim a worker is live from documentation alone.
 
+## Recent CI repair
+- 2026-09-28: CI exposed a WBS ready-queue defect where completed task IDs remained eligible. Fixed `getReadyWbsItems` to exclude completed IDs; branch CI is being re-run.
+
 ## Release synchronization gate
 - Production Netlify site is currently associated with the `main` branch.
 - Current implementation is on `buildwise-implementation`.

@@ -72,6 +72,7 @@ export function getReadyWbsItems(items, completedIds = []) {
   const completed = new Set(completedIds.map(String));
   return items.filter(item =>
     (item.type === 'task' || item.type === 'milestone') &&
+    !completed.has(String(item.id)) &&
     item.status !== 'done' &&
     (item.depends_on ?? []).every(dep => completed.has(String(dep)))
   ).sort((a,b) => (a.sort_order ?? 0) - (b.sort_order ?? 0));
