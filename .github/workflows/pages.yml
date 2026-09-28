@@ -2,10 +2,11 @@ name: Deploy BuildWise AI to GitHub Pages
 
 on:
   push:
-    branches: [main, buildwise-implementation]
+    branches: [main]
   workflow_dispatch:
 
-# Re-verified for BuildWise implementation preview deployment.
+# Production GitHub Pages deploys only from main.
+# Feature branches must not overwrite the live site.
 permissions:
   contents: read
   pages: write
@@ -17,6 +18,10 @@ concurrency:
 
 jobs:
   deploy:
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
