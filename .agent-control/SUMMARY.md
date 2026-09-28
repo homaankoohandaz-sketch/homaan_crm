@@ -5,6 +5,9 @@ Branch: buildwise-implementation
 
 ## Canonical governance
 - Repository law is now explicit: every material decision must move through Conversation → Decision → Repository record → Implementation → Test → Runtime verification → State update.
+- Canonical agent behavioral reference: `.agent-control/AGENT_EXECUTION_PROTOCOL.md`.
+- All agents must follow Source → Decision → Task → Reconcile → Implement → Test → Runtime Verify → Evidence → State → Done.
+- Any material decision that changes agent behavior, execution order, verification, evidence, authority, stop conditions, or DONE criteria must update the execution protocol and the appropriate decision ledger.
 - Canonical architecture/decision documents must be updated before creating another file for the same responsibility.
 - Missing GitHub evidence means a decision is unrecorded; agents must not claim otherwise.
 - No duplicate v2/v3/FINAL/NEW specifications or status files for an existing responsibility.
@@ -12,6 +15,7 @@ Branch: buildwise-implementation
 
 ## Architecture baseline
 - Canonical mother architecture: .agent-control/MASTER-ARCHITECTURE.md
+- Canonical agent execution protocol: .agent-control/AGENT_EXECUTION_PROTOCOL.md
 - Current architecture phase: .agent-control/PHASE-CURRENT-ARCHITECTURE.md
 - Decision ledger: .agent-control/DECISIONS.md
 - Execution state: .agent-control/STATE.md
@@ -38,3 +42,6 @@ Integration test covers chain hierarchy→schedule→progress→boq→procuremen
 
 ## Release gate
 main diverged — never force-update main. Preview this branch for UI E2E.
+
+## Governance ledger
+- 2026-09-28: Added and registered canonical `.agent-control/AGENT_EXECUTION_PROTOCOL.md`; linked it from `AGENTS.md`; protocol is now the behavioral reference for all BuildWise agents.
