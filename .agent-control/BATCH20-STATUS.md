@@ -94,3 +94,12 @@ Full product E2E on production-equivalent deploy of this branch is **not** claim
    ROOT: external secret
    FIXED: orchestrator graceful without key
    REMAINS: live AI calls need secret in Edge env
+
+
+## 2026-09-28 verification refresh
+- Live Supabase project: ACTIVE_HEALTHY.
+- Live public schema currently contains project_procurement/project_commitments but no project_suppliers, purchase_orders, project_hse, or project_corrective_actions.
+- Supabase security advisor currently reports 4 anon-executable SECURITY DEFINER functions plus 25 authenticated-executable SECURITY DEFINER functions and leaked-password protection disabled. No production security change applied.
+- Netlify buildwis-ai production deploy is READY on main commit 71ee074b233e62e5e56ed38f4893038c4f69d301; this is not the current implementation HEAD.
+- GitHub Pages workflow is main-only, so it cannot serve buildwise-implementation as a preview.
+- Authenticated browser CRUD remains unverified on this branch.
