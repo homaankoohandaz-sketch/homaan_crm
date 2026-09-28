@@ -3,38 +3,35 @@
 updated: 2026-09-28
 branch: buildwise-implementation
 actor_last: Grok
-active_task: none (await Master path A/B/C after audit)
+active_task: PHASE04 relational unification — PARTIAL
 
 ## CURRENT
-Grok completed read-only E2E readiness audit (phases 01–09, live DB probe, Pages smoke).
-No product code changed in this batch (collision-safe; release gates active).
+Phase 04 canonical persistence is relational for hierarchy/schedule/BOQ/procurement.
+JSON assumptions path removed from project/schedule/boq repositories for hierarchy/schedule/boq blobs.
 
-## DONE (prior on this branch — other agents + CI)
-- Phase 04 domain: hierarchy, WBS, schedule, progress, BOQ, procurement-repository, control model + unit tests in npm test
-- Phase 05 finance foundation + tests
-- Phase 06 media-assets + tests
-- Phase 08 content-brief + tests
-- CI repairs: WBS ready queue, schedule maxDate, task-repository IDs, buildwise-app syntax
+## DONE THIS TASK
+- hierarchy-repository.js → project_complexes/buildings/floors/units
+- schedule-repository.js → project_schedule_tasks/milestones/wbs
+- boq-repository.js → project_boq_items (no generated budget_amount)
+- project-repository.js → no projectHierarchy in assumptions
+- procurement-repository.js already relational (unchanged)
+- Unit tests: hierarchy/schedule/boq/project/procurement — 10/10 pass locally
+- project-control.html loads project-control-hierarchy.js
+- BOQ/proc UI posts omit generated columns
 
-## VERIFIED BY GROK (this batch)
-- Live tables present/missing mapped (suppliers/PO/hse/corrective MISSING)
-- procurement-repository does NOT insert generated total_price (good)
-- Pages HTTP 200: index, visual-project, media, project-control
-- Auth CRUD on main/Pages earlier: hierarchy/schedule/BOQ/proc (evidence in main PERFORMANCE; not this branch deploy)
+## TESTS RUN (local Node)
+pass 10 / fail 0 — hierarchy, schedule, boq, project, procurement repository contracts
 
-## BLOCKED / RELEASE GATE
-1. main vs buildwise-implementation diverge — never force main
-2. Production Supabase: SECURITY DEFINER/anon review; unapplied task-engine migration
-3. Dual hierarchy persistence (assumptions JSON vs relational tables)
-4. External worker credentials unavailable
+## RUNTIME
+- Live tables used by repos already exist (prior Master migration)
+- Auth CRUD on same tables verified earlier on main/Pages
+- Implementation branch not production Pages deploy — UI bridge verified by code presence on branch
 
-## NEXT (Master pick one)
-A. Bounded Phase 04: wire browser-adapter/project-control on THIS branch only (no main)
-B. Document PR#10 reconcile steps for Human (no merge)
-C. Draft additive migration for suppliers/PO on branch only — DO NOT apply to production
+## REMAINING GAPS
+- progress-repository still assumptions-based (out of strict dual-path hierarchy/schedule/boq; optional next)
+- parent_task_id / predecessor fields in UI schedule form still minimal on this branch
+- Full browser E2E of hierarchy tab requires preview deploy of this branch (not main Pages)
+- Production merge still blocked by diverge
 
-## DO NOT
-- Create duplicate project/task systems or v2/FINAL files
-- Change production schema/grants/RLS
-- Claim DONE without tests + runtime evidence
-- Touch main without explicit Human override
+## NEXT
+Preview deploy OR Master merge policy; optional progress-repository relational migrate
