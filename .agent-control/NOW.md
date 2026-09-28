@@ -21,6 +21,7 @@ Phase 04 implementation has started on the canonical construction domain. The fi
 - Schedule/milestone persistence added under existing project assumptions; no new project table/schema introduced.
 - Progress/KPI model added: weighted completion, remaining work, completed-item count and forecast-vs-baseline schedule variance.
 - Progress snapshot persistence added under existing project assumptions.
+- BOQ calculation foundation added with line totals, category totals and duplicate-line validation; persistence remains the next BOQ slice.
 - Fixed the CI-discovered task repository identifier persistence bug; CI rerun is required before calling the test suite green.
 - Existing Unified Task Engine core and persistence slice remain intact.
 
