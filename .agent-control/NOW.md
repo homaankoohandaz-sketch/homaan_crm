@@ -14,7 +14,9 @@ Phase 04 implementation has started on the canonical construction domain. The fi
 - Canonical WBS model implemented with dependency validation and adapter to the existing BuildWise Workflow engine.
 - Focused WBS contract test added and wired into npm test.
 - Focused unit test added and passed in an isolated Node runtime.
-- Test script now includes the Phase 04 project model test.
+- Test script now includes the Phase 04 project model and persistence tests.
+- Project persistence adapter implemented against existing `construction_projects`; hierarchy is stored under `assumptions.projectHierarchy` without schema duplication.
+- Persistence contract test added.
 - Existing Unified Task Engine core and persistence slice remain intact.
 
 ## BLOCKED / RELEASE GATE
