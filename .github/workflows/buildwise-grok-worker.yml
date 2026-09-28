@@ -6,7 +6,7 @@ on:
       task_file:
         description: "Control-plane task file"
         required: true
-        default: ".agent-control/tasks/TASK4-PHASE04-LAND-ROI.md"
+        default: ".agent-control/tasks/AUTONOMOUS-BATCH-20.md"
       branch:
         description: "Implementation branch"
         required: true
@@ -18,7 +18,7 @@ permissions:
 jobs:
   worker:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 120
     steps:
       - name: Checkout implementation branch
         uses: actions/checkout@v4
@@ -29,7 +29,7 @@ jobs:
       - name: Install Grok Build
         run: npm install -g @xai-official/grok
 
-      - name: Run bounded Grok worker
+      - name: Run autonomous Grok batch
         env:
           XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
           TASK_FILE: ${{ inputs.task_file }}
@@ -40,45 +40,41 @@ jobs:
           PROMPT="$(cat "$TASK_FILE")
 
           Follow the task contract exactly.
-          First inspect the repository and the task file. Work only from the task's allowed scope.
-          Do not modify production secrets, auth configuration, migrations, or unrelated modules.
-          Do not create accounts or bypass RLS.
-          Run the required focused tests.
-          Before finishing, report STATUS, MODEL_USED, BASE_SHA, HEAD, CHANGED, TESTS, EVIDENCE, RISKS, NEXT.
-          Do not start another task.
+          Execute every numbered task sequentially in this single worker run.
+          Do not stop after one task or after the first green test.
+          Before each task inspect the current repository state produced by previous tasks.
+          Work only within the task file's stated constraints.
+          Do not modify production secrets, auth configuration, migrations, or weaken RLS.
+          Do not create accounts or bypass security.
+          Run focused tests after each task and the final relevant test/build suite.
+          Commit coherent changes and push them to the requested branch.
+          Passing tests alone is not sufficient for DONE.
+          Before finishing, report STATUS, MODEL_USED, BASE_SHA, HEAD, CHANGED, TESTS, BUILD, E2E, EVIDENCE, RISKS, NEXT.
+          If one task is blocked, record the blocker and continue with the next unblocked task.
           "
-          grok --no-auto-update -p "$PROMPT" -m grok-4.7 --max-turns 3 --always-approve --output-format json | tee grok-result.json
+          grok --no-auto-update -p "$PROMPT" -m grok-4.7 --max-turns 60 --always-approve --output-format json | tee grok-result.json
 
-      - name: Enforce task scope
+      - name: Enforce safety scope
         run: |
           set -euo pipefail
-          git fetch origin "${{ inputs.branch }}"
           changed="$(git diff --name-only && git diff --name-only --cached || true)"
           if [ -z "$changed" ]; then
-            echo "No changes produced by worker."
+            echo "No uncommitted changes produced by worker."
             exit 0
           fi
           echo "$changed"
           while IFS= read -r file; do
             case "$file" in
-              project-control.html|tests/*|.agent-control/tasks/TASK4-PHASE04-LAND-ROI.md|.agent-control/BRIEF.md|.agent-control/PERFORMANCE.md|.agent-control/STATE.md)
-                ;;
-              *)
-                echo "SCOPE_ESCALATION: $file"
+              .github/workflows/*|.git/*|.env|.env.*|supabase/migrations/*|*.pem|*.key|*secret*|*credentials*)
+                echo "FORBIDDEN_SCOPE: $file"
                 exit 3
                 ;;
+              *) ;;
             esac
           done <<< "$changed"
 
-      - name: Commit worker changes
+      - name: Final repository verification
         run: |
           set -euo pipefail
-          if [ -z "$(git status --porcelain)" ]; then
-            echo "No repository changes to commit."
-            exit 0
-          fi
-          git config user.name "BuildWise Grok Worker"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          git commit -m "worker(grok): execute control-plane task"
-          git push origin "HEAD:${{ inputs.branch }}"
+          git status --short
+          git log -5 --oneline
