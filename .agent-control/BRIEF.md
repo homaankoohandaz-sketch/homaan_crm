@@ -4,25 +4,20 @@ updated: 2026-09-28
 project: BuildWise AI+H | repo: homaankoohandaz-sketch/homaan_crm
 
 ## Now
-status: Pages FIXED (main deployed) | TASK2/3 still PARTIAL (no auth test account)
-active: idle — await Master test account or next scope
-next: auth UI verify when credentials available
+status: TASK2 AUTH RUNTIME VERIFIED | TASK3 AUTH RUNTIME VERIFIED
+active: idle — await Master close formal DONE or next task
+next: Master may mark TASK2/3 DONE; authorize Task4+ if ready
 
-## Deploy access fix (2026-09-28)
-- Root cause: buildwise-implementation overwrote live Pages (old UI, no hierarchy)
-- Fix: pages.yml on that branch → deploy only from main (+ job if main)
-- Redeploy main workflow_dispatch SUCCESS → live site has hierarchy + TASK3 markers
-- Supabase RLS / CRM login: unchanged (no anon open, no auth bypass)
+## Auth runtime (2026-09-28 Grok)
+- Login OK (owner)
+- Project: چوگیا (id=1)
+- Hierarchy CRUD: Complex→Building→Floor→Unit insert/select/UI tree + cleanup
+- Schedule: task + parent + predecessor_ids; WBS; milestone; Gantt labels
+- Cleanup: test rows removed
+- Credentials NOT stored in repo
 
-## Tasks
-- TASK1 DONE (code)
-- TASK2 CLOSED PARTIAL — auth Browser CRUD not verified
-- TASK3 PARTIAL — Schedule/WBS/milestone wired on main + Pages; auth not verified
+## Deploy
+- Pages fixed to main; hierarchy tab live
 
 ## Who
-- Grok: execution bridge
-- ChatGPT: Master
-- Claude: review
-
-## Handoff
-HEAD | RESULT | NEXT
+- Grok: execution | ChatGPT: Master | Claude: review
