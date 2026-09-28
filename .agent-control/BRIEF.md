@@ -4,20 +4,16 @@ updated: 2026-09-28
 project: BuildWise AI+H | repo: homaankoohandaz-sketch/homaan_crm
 
 ## Now
-status: TASK2 AUTH RUNTIME VERIFIED | TASK3 AUTH RUNTIME VERIFIED
-active: idle — await Master close formal DONE or next task
-next: Master may mark TASK2/3 DONE; authorize Task4+ if ready
+status: TASK2/3 AUTH OK | TASK4 PARTIAL (BOQ↔procurement UI + insert)
+active: idle — await Master next
+next: suppliers/PO tables still missing; or Task5 KPI
 
-## Auth runtime (2026-09-28 Grok)
-- Login OK (owner)
-- Project: چوگیا (id=1)
-- Hierarchy CRUD: Complex→Building→Floor→Unit insert/select/UI tree + cleanup
-- Schedule: task + parent + predecessor_ids; WBS; milestone; Gantt labels
-- Cleanup: test rows removed
-- Credentials NOT stored in repo
-
-## Deploy
-- Pages fixed to main; hierarchy tab live
+## TASK4 slice
+- UI: BOQ list, procurement dates/status/boq_item_id
+- App split: project-control.html shell + project-control-app.js
+- Insert: omit generated budget_amount/total_price
+- Auth test: BOQ+procurement insert+link+cleanup OK on project 1
+- No new migration (no suppliers/PO tables in live DB)
 
 ## Who
-- Grok: execution | ChatGPT: Master | Claude: review
+Grok execution | ChatGPT Master | Claude review

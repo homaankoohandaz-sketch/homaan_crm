@@ -1,18 +1,15 @@
-# Performance Memory — Shared Change Ledger
+# Performance Memory
 
 ## CURRENT
-status: TASK2/3 AUTH_VERIFIED
-head: main (post pages fix)
-active_task: none
-last_verified: 2026-09-28 Grok auth CRUD hierarchy+schedule on project 1
-next: Master formal DONE close or authorize next
+status: TASK4 PARTIAL
+head: c1c295726f313b560ae57954e6782e3f7edd728a
+last_verified: 2026-09-28 Grok auth BOQ/proc insert
+next: Master authorize suppliers/PO or Task5
 
 ## LAST EVENTS
-2026-09-28 | auth-runtime-verify | Grok | live Pages | AUTH_OK | hierarchy+schedule+wbs+ms CRUD; UI tree; cleanup | project چوگیا | no secrets committed | Master close DONE?
-2026-09-28 | pages-access-fix | Grok | main deploy | DONE | feature branch locked out of Pages | hierarchy live | — | —
-2026-09-26 | TASK3-schedule-wbs | Grok | 3212af61 | PARTIAL→now auth ok | UI wiring | verified | — | —
-2026-09-26 | TASK2-close | Grok | aa224859 | PARTIAL→now auth ok | hierarchy | verified | — | —
-2026-09-25 | TASK1-audit | Grok | 5b50d342 | DONE | vertical slice | — | — | —
+2026-09-28 | TASK4-boq-proc | Grok | c1c29572 | PARTIAL | app.js lists+fields; generated cols fixed | auth insert OK; UI forms live | no suppliers table | next Master
+2026-09-28 | auth-runtime | Grok | live | AUTH_OK | hierarchy+schedule | — | — | —
+2026-09-28 | pages-fix | Grok | main only | DONE | — | — | — | —
 
 ## RULE
-Append one compact event after each meaningful change. Keep latest 5. Never store passwords.
+One compact event; no passwords.
