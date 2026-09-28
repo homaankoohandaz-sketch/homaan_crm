@@ -7,7 +7,7 @@ function addDays(iso, days) {
 }
 
 function maxDate(values) {
-  return values.reduce((max, value) => value > max ? value : max, null);
+  return values.filter(Boolean).reduce((max, value) => max === null || value > max ? value : max, null);
 }
 
 export function buildSchedule(wbsItems, { start_date = new Date().toISOString().slice(0, 10) } = {}) {

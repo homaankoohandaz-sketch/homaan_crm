@@ -65,6 +65,9 @@ The control plane is present and the worker runtime is bounded. External worker 
 ## Recent CI repair
 - 2026-09-28: CI exposed a WBS ready-queue defect where completed task IDs remained eligible. Fixed `getReadyWbsItems` to exclude completed IDs; branch CI is being re-run.
 
+## Recent CI repairs
+- 2026-09-28: CI exposed a schedule `maxDate` initialization defect that nullified dependency and project finish dates. Fixed date aggregation to ignore empty values and use the first real date as the baseline.
+
 ## Release synchronization gate
 - Production Netlify site is currently associated with the `main` branch.
 - Current implementation is on `buildwise-implementation`.
