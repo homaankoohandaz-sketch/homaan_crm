@@ -1,6 +1,6 @@
 # TASK-012 — Phase 04 Project Hierarchy
 
-Status: IMPLEMENTED / FOCUSED-TEST-PASS
+Status: IMPLEMENTED / PERSISTENCE-TEST-ADDED
 Date: 2026-09-28
 Branch: buildwise-implementation
 
@@ -14,6 +14,8 @@ Project → Complex → Building → Phase → Floor → Unit.
 - Hierarchy validation for duplicate IDs, missing parents and invalid parent type.
 - Child retrieval with deterministic sort order.
 - Focused unit test under tests/unit/project-model.test.mjs.
+- Canonical persistence adapter under src/domains/construction/project-repository.js.
+- Persistence contract test under tests/unit/project-repository.test.mjs, wired into npm test.
 
 ## Verification
 - Isolated Node runtime test: PASS.
