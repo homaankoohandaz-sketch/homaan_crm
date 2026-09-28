@@ -31,6 +31,8 @@ Phase 04 implementation is progressing on the canonical construction domain. The
 ## TEST REPAIR LOG
 - CI exposed a schedule date aggregation defect: `maxDate` compared ISO strings against `null`, producing null for dependency finishes and project finish. Fixed `maxDate` to ignore empty values and initialize from the first real date.
 
+- Phase 05 finance foundation added: project accounting summary (commitments/payments/cash flow) and sales offer floor/margin calculations, with focused tests wired into `npm test`.
+
 ## BLOCKED / RELEASE GATE
 - Production release remains blocked by divergent `main` and `buildwise-implementation`.
 - PR #10 must be reconciled deliberately; never force-update `main`.

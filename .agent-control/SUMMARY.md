@@ -74,6 +74,9 @@ The control plane is present and the worker runtime is bounded. External worker 
 ## Recent implementation
 - 2026-09-28: Added `src/domains/construction/control.js` for canonical RFI, quality, HSE, risk and corrective-action record normalization; focused tests are wired into `npm test`.
 
+## Recent implementation
+- 2026-09-28: Added `src/domains/finance/project-finance.js` for project accounting summaries and sales offer calculations; focused tests are wired into `npm test`.
+
 ## Release synchronization gate
 - Production Netlify site is currently associated with the `main` branch.
 - Current implementation is on `buildwise-implementation`.
