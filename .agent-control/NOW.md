@@ -33,6 +33,8 @@ Phase 04 implementation is progressing on the canonical construction domain. The
 
 - Phase 05 finance foundation added: project accounting summary (commitments/payments/cash flow) and sales offer floor/margin calculations, with focused tests wired into `npm test`.
 
+- Phase 08 content foundation added: canonical channel/objective/facts brief model with validation and focused tests.
+
 ## BLOCKED / RELEASE GATE
 - Production release remains blocked by divergent `main` and `buildwise-implementation`.
 - PR #10 must be reconciled deliberately; never force-update `main`.
