@@ -89,9 +89,24 @@ Never scan the whole repository for routine work. Start with SUMMARY → MASTER-
 ## 9. Change rule
 Every architecture or structural change must update `.agent-control/SUMMARY.md` with a one-line ledger entry.
 
+## 10. Decision-as-time rule — MANDATORY
+**Every decision costs time. Therefore a decision is not considered real until it is recorded in the repository.**
 
-## 10. Current architecture phase — 2026-09-27
+The canonical workflow is:
 
+**Conversation → Decision → Repository record → Implementation → Test → Runtime verification → State update**
+
+Rules:
+1. A material product, architecture, data-model, workflow, security, agent, deployment or task-planning decision must not remain only in chat.
+2. The final decision must be written to the canonical repository document before implementation proceeds.
+3. Existing canonical documents must be updated before creating a new document. Do not create another file merely to record a decision that belongs in an existing ledger/specification.
+4. A later decision must explicitly supersede the earlier decision; historical decisions are retained.
+5. If a decision cannot be found in GitHub, agents must treat it as **unrecorded**, not assume it is authoritative.
+6. Agents must not claim that a decision was registered, implemented or verified unless the repository evidence exists.
+7. When a decision changes architecture, update `DECISIONS.md`, `MASTER-ARCHITECTURE.md`, the owning phase, and `SUMMARY.md` as required by the change protocol.
+8. The 850-task master reference is a planning/acceptance source only when its exact committed version is present and verifiable in GitHub. Agents must never invent missing task numbers.
+
+## 11. Current architecture phase — 2026-09-27
 The current architecture phase is tracked separately in `.agent-control/PHASE-CURRENT-ARCHITECTURE.md`.
 
 The next cross-domain implementation slice is the **Unified Task Engine**: CRM/file/customer follow-up, construction/workshop follow-up, and procurement/purchasing follow-up. Shared capabilities are assignment, calendar, notification, reminder, priority, starred promotion, Yes/No response, completion, move-to-tomorrow and audit.
