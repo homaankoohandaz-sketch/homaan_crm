@@ -19,6 +19,9 @@ Phase 04 implementation has started on the canonical construction domain. The fi
 - Persistence contract test added.
 - Canonical schedule derivation added from WBS dependencies; schedule test wired into npm test.
 - Schedule/milestone persistence added under existing project assumptions; no new project table/schema introduced.
+- Progress/KPI model added: weighted completion, remaining work, completed-item count and forecast-vs-baseline schedule variance.
+- Progress snapshot persistence added under existing project assumptions.
+- Fixed the CI-discovered task repository identifier persistence bug; CI rerun is required before calling the test suite green.
 - Existing Unified Task Engine core and persistence slice remain intact.
 
 ## BLOCKED / RELEASE GATE
