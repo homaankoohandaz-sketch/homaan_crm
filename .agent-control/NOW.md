@@ -18,6 +18,7 @@ Phase 04 implementation is progressing on the canonical construction domain. The
 - Progress/KPI model and progress snapshot persistence implemented under existing project assumptions.
 - BOQ calculation foundation implemented with line totals, category totals and duplicate-line validation.
 - BOQ persistence adapter now stores the calculated BOQ under existing `construction_projects.assumptions.projectBoq`; no new project table/schema introduced.
+- CI caught a WBS ready-item regression: container nodes (phase/WBS) were incorrectly returned as executable items. Fixed `getReadyWbsItems` to return only task/milestone nodes.
 - Focused BOQ persistence coverage added and wired into `npm test`.
 - Fixed the CI-discovered task repository identifier persistence bug; CI re-verification is tracked.
 - Existing Unified Task Engine core and persistence slice remain intact.

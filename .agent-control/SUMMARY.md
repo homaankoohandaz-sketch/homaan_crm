@@ -90,3 +90,4 @@ The control plane is present and the worker runtime is bounded. External worker 
 - 2026-09-28: Added canonical `src/domains/construction/progress.js` for weighted progress, remaining percentage, completion count and schedule variance KPI. Added progress calculation and persistence tests and wired them into `npm test`.
 - 2026-09-28: Added canonical `src/domains/construction/boq.js` for BOQ line totals and category aggregation, with duplicate-line validation and a focused test wired into `npm test`.
 - 2026-09-28: Added canonical `src/domains/construction/boq-repository.js` to persist calculated BOQ data under existing `construction_projects.assumptions.projectBoq`, with focused persistence coverage wired into `npm test`.
+- 2026-09-28: CI caught a WBS ready-item regression where phase/WBS containers were returned as executable items; fixed `getReadyWbsItems` to return only task/milestone nodes.
