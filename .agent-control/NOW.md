@@ -17,6 +17,7 @@ Phase 04 implementation has started on the canonical construction domain. The fi
 - Test script now includes the Phase 04 project model and persistence tests.
 - Project persistence adapter implemented against existing `construction_projects`; hierarchy is stored under `assumptions.projectHierarchy` without schema duplication.
 - Persistence contract test added.
+- Canonical schedule derivation added from WBS dependencies; schedule test wired into npm test.
 - Existing Unified Task Engine core and persistence slice remain intact.
 
 ## BLOCKED / RELEASE GATE
