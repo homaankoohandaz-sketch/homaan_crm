@@ -19,6 +19,7 @@ Phase 04 implementation is progressing on the canonical construction domain. The
 - BOQ calculation foundation implemented with line totals, category totals and duplicate-line validation.
 - BOQ persistence adapter now stores the calculated BOQ under existing `construction_projects.assumptions.projectBoq`; no new project table/schema introduced.
 - Procurement persistence adapter implemented against the existing `project_procurement` table with input normalization, status validation, project scoping and focused tests.
+- Construction control model added for RFI, quality, HSE, risk and corrective-action records with bounded validation and risk scoring.
 - CI caught a WBS ready-item regression: container nodes (phase/WBS) were incorrectly returned as executable items. Fixed `getReadyWbsItems` to return only task/milestone nodes.
 - Focused BOQ persistence coverage added and wired into `npm test`.
 - Fixed the CI-discovered task repository identifier persistence bug; CI re-verification is tracked.
