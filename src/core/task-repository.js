@@ -3,7 +3,7 @@ import { createRepository } from './data/repository.js';
 function persistencePayload(task) {
   const { id, ...rest } = task;
   return {
-    ...(typeof id === 'number' || (typeof id === 'string' && /^\d+$/.test(id)) ? { id: Number(id) } : {}),
+    ...(id != null ? { id } : {}),
     ...rest,
   };
 }
