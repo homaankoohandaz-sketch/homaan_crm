@@ -1,35 +1,38 @@
 import { createRepository } from '../../core/data/repository.js';
-import { calculateBoq } from './boq.js';
 
-const TABLE = 'construction_projects';
-
-export function createProjectBoqRepository(client) {
-  const repository = createRepository(client, TABLE);
-
-  return Object.freeze({
-    async save(projectId, items) {
-      if (projectId == null || projectId === '') throw new TypeError('projectId is required');
-      const calculation = calculateBoq(items);
-      const row = await repository.getById(projectId);
-      if (!row) return null;
-
-      const assumptions = {
-        ...(row.assumptions && typeof row.assumptions === 'object' ? row.assumptions : {}),
-        projectBoq: calculation
-      };
-      return hydrate(await repository.updateById(projectId, { assumptions }));
-    },
-
-    async get(projectId) {
-      return hydrate(await repository.getById(projectId));
-    }
-  });
+function req(v, name) {
+  if (v == null || v === '') throw new TypeError(`${name} is required`);
 }
 
-function hydrate(row) {
-  if (!row) return null;
-  return {
-    ...row,
-    boq: row.assumptions?.projectBoq ?? null
-  };
+export function createProjectBoqRepository(client) {
+  if (!client?.from) throw new TypeError('Supabase client is required');
+  const items = createRepository(client, 'project_boq_items');
+
+  return Object.freeze({
+    async createItem(input = {}) {
+      req(input.project_id, 'project_id');
+      req(String(input.item_name || '').trim(), 'item_name');
+      // Do not insert generated budget_amount
+      return items.create({
+        project_id: input.project_id,
+        code: input.code ?? null,
+        item_name: String(input.item_name).trim(),
+        category: input.category ?? null,
+        specification: input.specification ?? null,
+        unit: input.unit ?? null,
+        planned_qty: Number(input.planned_qty) || 0,
+        unit_budget: Number(input.unit_budget) || 0,
+        wbs_id: input.wbs_id ?? null
+      });
+    },
+
+    async listItems(projectId) {
+      req(projectId, 'project_id');
+      return items.list({
+        filters: [{ column: 'project_id', value: projectId }],
+        orderBy: { column: 'id' },
+        limit: 200
+      });
+    }
+  });
 }

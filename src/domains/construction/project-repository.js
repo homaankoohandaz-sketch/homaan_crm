@@ -6,10 +6,12 @@ function serialize(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new TypeError('project is required');
   }
-  const assumptions = {
-    ...(input.assumptions && typeof input.assumptions === 'object' ? input.assumptions : {}),
-    projectHierarchy: Array.isArray(input.hierarchy) ? input.hierarchy : []
-  };
+  // Canonical project row only. Hierarchy is NOT stored in assumptions (relational hierarchy-repository).
+  const assumptions =
+    input.assumptions && typeof input.assumptions === 'object' && !Array.isArray(input.assumptions)
+      ? { ...input.assumptions }
+      : {};
+  delete assumptions.projectHierarchy;
 
   return {
     ...(input.id ? { id: input.id } : {}),
@@ -29,12 +31,7 @@ function serialize(input) {
 
 function hydrate(row) {
   if (!row) return null;
-  return {
-    ...row,
-    hierarchy: Array.isArray(row.assumptions?.projectHierarchy)
-      ? row.assumptions.projectHierarchy
-      : []
-  };
+  return { ...row };
 }
 
 export function createProjectRepository(client) {
