@@ -1,30 +1,23 @@
-# BuildWise NOW — hot execution state
+# BuildWise NOW
 
 updated: 2026-09-28
 branch: buildwise-implementation
 actor_last: Grok
-HEAD_tip: 4ff11eea7565d6fd293e05d13c35a7ecddccefbf
+batch: 20 tasks 01–09
 
-## COMPLETED
-Phase04 relational unification continuum:
-- hierarchy / schedule / boq / procurement / progress → relational tables
-- progress derived from schedule task %
-- phase04-integration test (hierarchy→schedule→progress→boq→procurement)
-- hierarchy UI + schedule parent/predecessor fields
-- index.html loads suite-links.js → project-control.html entry from CRM
-- Local tests: 13/13 Phase04-related pass
+## Status
+Tasks 01–09 audited/validated. Runnable entry: index.html + npm start.
+Finance/feasibility/construction calc tests green.
+Auth architecture contract green.
 
-## INTEGRATION PATH (branch)
-index (CRM) → suite-links → project-control.html → hierarchy bridge → relational tables + auth session
+## Commands
+- npm start — static app :4173
+- npm run validate:core
+- npm run validate:finance
+- npm run validate:phase04
+- npm test — full suite
 
-## REMAINING EXTERNAL BLOCKERS
-1. Branch not deployed as production Pages (main diverge) — browser E2E of THIS branch needs Netlify/GitHub preview
-2. PR#10 / main reconcile — Human
-3. Live missing tables: suppliers, PO, HSE, corrective — no production schema apply
+## External blockers unchanged
+Pages=main diverge · PR#10 · missing suppliers/PO tables
 
-## EVIDENCE
-- node --test Phase04 suite: 13 pass
-- Commits: 7701d62, 8473718, 66dee5d, 4ff11ee
-
-## NEXT IN-REPO (if unblocked)
-Preview deploy verification only; no force main
+See `.agent-control/BATCH20-STATUS.md`
