@@ -23,3 +23,5 @@ memory_rule: NOW first; then BRIEF + last 5; HISTORY is cold archive
 Append ONE compact event after every meaningful task:
 timestamp | task | agent | commit | status | paths | tests | decision/impact | next
 Never store secrets. Never mark DONE without evidence.
+
+2026-09-28 | release-gate-refresh | chatgpt | 3afa8137 | VERIFIED_PARTIAL | NOW.md, STATE.md, BRIEF.md, BATCH20-STATUS.md, live Supabase advisors, Netlify deploy metadata | Supabase ACTIVE_HEALTHY; production deploy remains main; latest CI reruns queued/in-progress on control-plane refresh | synchronized stale control-plane claims; no production DB/security change | wait for CI completion; then feature-branch browser E2E / auth path / procurement schema / security review / PR#10
