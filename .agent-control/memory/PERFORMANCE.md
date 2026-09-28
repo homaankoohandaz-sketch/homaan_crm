@@ -17,6 +17,8 @@ memory_rule: NOW first; then BRIEF + last 5; HISTORY is cold archive
 2026-09-27 | release-pr-opened | chatgpt | b7ae040 | BLOCKED | PR #10 + release gate | GitHub PR created; mergeable=false | safe reconciliation path opened; Netlify branch setting unavailable through connected Netlify tool | resolve conflicts or change Netlify branch through an authenticated UI/API
 2026-09-27 | release-sync-audit | chatgpt | eff720a | VERIFIED_PARTIAL | .agent-control/NOW.md + BRIEF.md + SUMMARY.md + DECISIONS.md | Git write/read verified; GitHub compare + Netlify project read verified | production serves main while implementation branch is diverged; blind merge/force-update prohibited; reviewed PR is canonical path | reconcile branches, deploy, runtime verify
 
+2026-09-28 | grok-batch20-audit | chatgpt | 213fe1cb | VERIFIED_PARTIAL | .agent-control/NOW.md + BATCH20-STATUS.md + SUMMARY.md + latest CI runs | Batch 20 reports tasks 01–20 complete/audited for in-repo scope; latest HEAD has successful unit/control-plane/phase-map CI; no dedicated Grok Worker run is visible for this HEAD, so worker execution is not claimed from Actions evidence | keep release blockers explicit; do not mark product DONE | preview/browser E2E → PR#10 reconciliation → production/security gates
+
 ## Rule
 Append ONE compact event after every meaningful task:
 timestamp | task | agent | commit | status | paths | tests | decision/impact | next
