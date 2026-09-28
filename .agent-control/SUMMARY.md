@@ -1,6 +1,6 @@
 # BuildWise AI — SUMMARY
 
-Updated: 2026-09-27
+Updated: 2026-09-28
 Branch: buildwise-implementation
 
 ## Single source of orientation
@@ -64,29 +64,20 @@ The control plane is present and the worker runtime is bounded. External worker 
 
 ## Release synchronization gate
 - Production Netlify site is currently associated with the `main` branch.
-- Current consolidation work is on `buildwise-implementation`.
-- GitHub reports these branches as **diverged**, not fast-forwardable.
-- Therefore: do not force-update `main`, do not merge blindly, and do not treat the current production site as verification of the implementation branch.
-- Required path: reviewed PR #10 from `buildwise-implementation` → `main` → resolve merge conflicts safely → CI/merge verification → Netlify production deploy verification → browser/runtime/UI smoke test.
-- PR #10 is open; GitHub currently reports `mergeable=false`. Do not merge or force-update `main` until that is resolved.
-- Unified Task Engine is paused until this release synchronization gate is resolved.
+- Current implementation is on `buildwise-implementation`.
+- GitHub reports these branches as diverged.
+- Do not force-update `main`, merge blindly, or treat production as verification of the implementation branch.
+- Reviewed PR #10 remains the reconciliation path.
+- Production release remains blocked until safe reconciliation, deploy verification and browser/runtime/UI smoke verification.
 
 ## Change ledger
-- 2026-09-26: Created SUMMARY as the compact orientation note and MASTER-ARCHITECTURE as the mother architecture reference.
-- 2026-09-26: Declared legacy duplicate index files non-development targets and removed them from the active branch.
-- 2026-09-26: Retired the obsolete 100-point checklist as an execution reference.
-- 2026-09-27: Added architecture phase map and durable decision ledger; next implementation slice is Unified Task Engine.
-- 2026-09-27: Structural audit found 205 files / 42 directories; 0 exact-content duplicate groups, but several duplicate/overlapping implementations requiring canonicalization.
-- 2026-09-27: Consolidated construction calculations, import v1/v2, procurement, sales, shared business engines, graph, AI workspace, normalization, analysis UI and compatibility CSS into canonical locations; superseded files removed after reference/syntax checks. Latest runtime workflow verification was unavailable.
-- 2026-09-27: Control-plane memory upgraded to NOW-first progressive disclosure; old history remains cold archive.
-- 2026-09-27: Advisor self-registration contract was aligned with the DB-trigger architecture; the live SECURITY DEFINER trigger function was explicitly revoked from anon/authenticated RPC execution and Supabase security advisor confirmed that finding cleared.
-- 2026-09-27: Execution state was consolidated into NOW.md; STATE.md is no longer a separate startup source.
-- 2026-09-27: Release synchronization became a blocking gate after confirming Netlify production serves `main` while the consolidated implementation is on divergent `buildwise-implementation`. Blind merge/force-update is prohibited; reviewed PR is the canonical reconciliation path.
-- 2026-09-27: Started Unified Task Engine implementation in canonical `src/core/task-engine.js`. Added focused contract test `tests/task-engine.test.js` and included it in the repository test script. Core lifecycle now covers create, Yes/No response, completion, move-to-tomorrow, overdue detection, context/subject/priority validation. Focused Node test passed; full repository suite remains pending because this environment cannot clone/fetch the repository runtime locally.
-- 2026-09-27: Extended Unified Task Engine core with Starred/Promotion, priority mutation, and notification/reminder configuration; added TASK-011 completion record and focused runtime verification (`task engine focused contract: PASS`). Full repository suite remains unclaimed because this environment cannot mount the repository runtime.
-- 2026-09-27: Expanded `npm test` to include all four existing ESM unit suites: construction calculations, feasibility engine, repository and scenario engine. GitHub accepted the change; CI evidence is pending the next branch workflow run.
-- 2026-09-27: GitHub Actions CI was repaired against the canonical `src/` tree. Stale root-path tests, malformed literal-\\n JS fixtures, obsolete checklist assertions, and stale construction/repository/customer-flow expectations were corrected. GitHub verified Unit Tests, Application Validation, Phase Code Map, Worker Runtime, and GitHub Pages deployment successfully on `bd06d4c`. External worker execution remains intentionally blocked without XAI/Anthropic secrets.
-
-- 2026-09-27: Unified Task Engine persistence batch implemented: repository adapter now persists canonical task fields, and additive Supabase migration `20260927210000_task_engine_persistence.sql` defines the required columns, constraints and indexes. Production schema was not changed in this pass; migration application remains an explicit release/runtime step.
-
-- 2026-09-27 verification: live Supabase foreign-key catalog checked; all FK constraints are `convalidated=true`. Targeted orphan checks across CRM, deals, matching, customer shares, and construction hierarchy returned 0 orphan rows. The new task-engine migration is additive and remains unapplied to production pending release verification.
+- 2026-09-26: Created SUMMARY as compact orientation and MASTER-ARCHITECTURE as the mother architecture reference.
+- 2026-09-26: Declared legacy duplicate index files non-development targets and retired the obsolete 100-point checklist.
+- 2026-09-27: Added architecture phase map and durable decision ledger; Unified Task Engine became the next cross-domain implementation slice.
+- 2026-09-27: Consolidated construction calculations, import v1/v2, procurement, sales, shared engines, graph, AI workspace, normalization, analysis UI and compatibility CSS into canonical locations.
+- 2026-09-27: Control-plane memory upgraded to NOW-first progressive disclosure; STATE.md was retired as a separate startup source.
+- 2026-09-27: Advisor self-registration contract aligned with DB-trigger architecture; related SECURITY DEFINER RPC exposure was removed and the Supabase advisor finding cleared.
+- 2026-09-27: Release synchronization became a blocking production gate after confirming production Netlify serves `main` while `buildwise-implementation` is divergent.
+- 2026-09-27: Unified Task Engine core implemented and focused-tested; persistence adapter and additive Supabase migration implemented. Production migration remains unapplied pending release/runtime verification.
+- 2026-09-27: GitHub CI repair verified Unit Tests, Application Validation, Phase Code Map, Worker Runtime and GitHub Pages deployment on the implementation branch.
+- 2026-09-28: Phase 04 Project & Construction Control started. Added canonical `src/domains/construction/project-model.js` for Project → Complex → Building → Phase → Floor → Unit, with hierarchy validation and deterministic child ordering. Added `tests/unit/project-model.test.mjs` and included it in `npm test`. Focused Node runtime test passed. Supabase persistence and WBS/schedule linkage are the next bounded implementation tasks.
