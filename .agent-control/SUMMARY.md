@@ -9,13 +9,12 @@ Branch: buildwise-implementation
 - All agents follow Source → Decision → Task → Reconcile → Implement → Test → Runtime Verify → Evidence → State → Done.
 - Canonical architecture/decision documents are updated before creating another file for the same responsibility.
 - Missing GitHub evidence means a decision is unrecorded.
-- No duplicate v2/v3/FINAL/NEW specifications for an existing responsibility.
+- No duplicate specifications for an existing responsibility.
 
 ## Active task baseline
-- Canonical active registry: `.agent-control/MASTER-TASK-REGISTRY-805.md`.
-- Active task range: 001–805.
-- 806+ is inactive.
-- Legacy 001–675 registry is archived and must not be used for execution.
+- Canonical active registry: `.agent-control/MASTER-CHECKLIST-v3-850.md`.
+- This is the sole active acceptance/source-of-truth register.
+- Task sequencing and acceptance mapping must reference this file only.
 
 ## Existing implementation baseline
 - Tasks 001–020: existing implementation/audit baseline; do not rebuild.
