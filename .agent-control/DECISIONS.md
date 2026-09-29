@@ -89,11 +89,15 @@ Rules:
 - Agents must never claim a decision, implementation or verification exists without repository evidence.
 Impact: Every decision consumes explicit repository time and prevents repeated rediscovery and rework.
 
-## D-020 — Canonical 805-task baseline
-Decision: User instruction supersedes the previously reconstructed 805 registry. No generated or reconstructed task registry is authoritative.
-Current requirement: the exact final Master Checklist v3 must be supplied or retrieved and then uploaded as the sole canonical 805-task reference.
-Until that exact source is available, no inferred 676–805 task text may be treated as canonical.
-The previously generated MASTER-TASK-REGISTRY-805.md and generated 001–675 archive were removed on 2026-09-29 at the user's instruction.
+## D-020 — Canonical Master Checklist v3
+Decision: The supplied BuildWise Master Checklist v3 is the sole canonical acceptance/source-of-truth register.
+Canonical file: `.agent-control/MASTER-CHECKLIST-v3-850.md`.
+All task sequencing, acceptance mapping, implementation status and agent task references must use that file.
+No generated, reconstructed, archived, intermediate, or competing master checklist may be used as an execution registry.
+
+## D-021 — Checklist-source discipline
+Decision: Task-count history and alternate checklist registries must not govern execution. Control-plane documents must reference the canonical Master Checklist v3 only.
+Impact: No alternate task-count baseline, duplicate registry, or historical checklist may be presented as active project law.
 
 ## Decision change protocol
 When a later decision changes one of these: append a new decision; identify the superseded decision; update PHASE-CURRENT-ARCHITECTURE.md; update MASTER-ARCHITECTURE.md; update SUMMARY.md; never delete the historical decision.
