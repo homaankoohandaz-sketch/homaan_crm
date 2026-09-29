@@ -90,11 +90,10 @@ Rules:
 Impact: Every decision consumes explicit repository time and prevents repeated rediscovery and rework.
 
 ## D-020 — Canonical 805-task baseline
-Decision: BuildWise AI active execution is permanently bounded to tasks 001–805. No 806–850 tasks are active.
-Canonical registry: .agent-control/MASTER-TASK-REGISTRY-805.md
-Legacy archive: .agent-control/archive/MASTER-CHECKLIST-001-675.ARCHIVED.md
-The 001–675 portion is preserved from the supplied Master Checklist v2. The 676–805 portion is the normalized Access Governance extension established by the final decision set: Settings/Versioning, Global/Organization/Module/Project/Role/User scopes, CRM/Project Control/Accounting/Procurement/Sales/AI settings, Role/Permission Registry, RBAC/ABAC/ReBAC, Field Permissions, Audit, MFA, Delegation, Policy Engine and Production Security Gate.
-Impact: All future task routing, batching, reconciliation and status reporting must use 001–805 only. The legacy 675 registry must not be used for execution.
+Decision: User instruction supersedes the previously reconstructed 805 registry. No generated or reconstructed task registry is authoritative.
+Current requirement: the exact final Master Checklist v3 must be supplied or retrieved and then uploaded as the sole canonical 805-task reference.
+Until that exact source is available, no inferred 676–805 task text may be treated as canonical.
+The previously generated MASTER-TASK-REGISTRY-805.md and generated 001–675 archive were removed on 2026-09-29 at the user's instruction.
 
 ## Decision change protocol
 When a later decision changes one of these: append a new decision; identify the superseded decision; update PHASE-CURRENT-ARCHITECTURE.md; update MASTER-ARCHITECTURE.md; update SUMMARY.md; never delete the historical decision.
