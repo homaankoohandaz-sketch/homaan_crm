@@ -1,6 +1,6 @@
 # BuildWise AI — Decision Ledger
 
-Updated: 2026-09-28
+Updated: 2026-09-29
 
 This is the durable memory index for architectural decisions.
 New decisions are appended; old decisions are not silently rewritten.
@@ -88,6 +88,13 @@ Rules:
 - Later changes append a superseding decision; history is retained.
 - Agents must never claim a decision, implementation or verification exists without repository evidence.
 Impact: Every decision consumes explicit repository time and prevents repeated rediscovery and rework.
+
+## D-020 — Canonical 805-task baseline
+Decision: BuildWise AI active execution is permanently bounded to tasks 001–805. No 806–850 tasks are active.
+Canonical registry: .agent-control/MASTER-TASK-REGISTRY-805.md
+Legacy archive: .agent-control/archive/MASTER-CHECKLIST-001-675.ARCHIVED.md
+The 001–675 portion is preserved from the supplied Master Checklist v2. The 676–805 portion is the normalized Access Governance extension established by the final decision set: Settings/Versioning, Global/Organization/Module/Project/Role/User scopes, CRM/Project Control/Accounting/Procurement/Sales/AI settings, Role/Permission Registry, RBAC/ABAC/ReBAC, Field Permissions, Audit, MFA, Delegation, Policy Engine and Production Security Gate.
+Impact: All future task routing, batching, reconciliation and status reporting must use 001–805 only. The legacy 675 registry must not be used for execution.
 
 ## Decision change protocol
 When a later decision changes one of these: append a new decision; identify the superseded decision; update PHASE-CURRENT-ARCHITECTURE.md; update MASTER-ARCHITECTURE.md; update SUMMARY.md; never delete the historical decision.
