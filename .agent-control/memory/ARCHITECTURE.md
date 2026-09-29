@@ -16,7 +16,7 @@ Production deployment, destructive migrations, secrets/authentication changes, a
 A shared memory mechanism alone is insufficient. The system also needs task ownership and file/resource locking.
 
 ## Decision A-006 — Canonical product checklist
-There is exactly ONE canonical BuildWise master checklist. The latest agreed master reference is the 850-item specification. The older 675-item checklist and the intermediate 715-item expansion are historical inputs, not parallel execution backlogs.
+There is exactly ONE canonical BuildWise master checklist. The canonical master reference is the supplied Master Checklist v3 in `.agent-control/MASTER-CHECKLIST-v3-850.md`. It is the only execution and acceptance registry.
 - Never create a second competing master checklist.
 - Never renumber existing canonical items merely to make phase folders convenient.
 - New requirements are added only through the canonical checklist/change-control process.
