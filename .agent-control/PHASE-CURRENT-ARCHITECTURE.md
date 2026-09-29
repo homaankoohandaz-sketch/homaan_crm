@@ -6,7 +6,7 @@ Parent: buildwise-implementation
 
 ## Purpose
 This file is the compact, inspectable architecture map for the current BuildWise phase.
-It is intentionally separate from the 675-item acceptance checklist.
+It is intentionally separate from the canonical Master Checklist v3 acceptance register.
 
 Architecture decides structure.
 Master Checklist decides acceptance.
@@ -154,10 +154,10 @@ A low-priority task may still be starred.
 - .agent-control/DECISIONS.md — durable decision ledger
 - .agent-control/STATE.md — live execution state
 - docs/PHASES/ — implementation-phase scope
-- Master Checklist v2 — acceptance truth
+- Master Checklist v3 — acceptance truth
 
 ## Change protocol
-Any future architecture decision must update this file if structure changes; add a dated entry to .agent-control/DECISIONS.md; add one short ledger entry to .agent-control/SUMMARY.md; create/update a bounded implementation task; map acceptance to the Master Checklist; never silently replace an existing decision.
+Any future architecture decision must update this file if structure changes; add a dated entry to .agent-control/DECISIONS.md; add one short ledger entry to .agent-control/SUMMARY.md; create/update a bounded implementation task; map acceptance only to `.agent-control/MASTER-CHECKLIST-v3-850.md`; never silently replace an existing decision.
 
 ## Current non-goals
 Do not rebuild the application from scratch; replace the existing CRM; introduce a second architecture; make n8n mandatory; declare external workers live without runtime evidence; or move business logic back into legacy root files.
