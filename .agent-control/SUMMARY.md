@@ -80,3 +80,15 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Added and wired Project Control UI slice project-accounting-221-235.js.
 - 221-235 remain PARTIAL pending browser/runtime verification.
 - Next task: 236.
+
+## 2026-09-30 — Real Estate Cost / Price Engine 236-264
+- Retained the existing Construction Cost Engine for task 236; no duplicate responsibility created.
+- Added material current-price and daily-price aggregation, with explicit source/timestamp lineage and no unsupported external live-feed claim.
+- Added construction current/base cost and inflation factor using the existing project cost-index data.
+- Added CRM land valuation, market comparable inputs, and combined land valuation; existing CRM records with Divar source can participate where present.
+- Added total project cost, gross/useful-area calculations with 80% default, useful-m² costs, unit allocation, unit profitability, developer margin, investor/owner return allocation, and five-point sale-price sensitivity scenarios.
+- Applied Supabase migration real_estate_cost_price_236_264.
+- SQL transactional verification passed with expected fixture arithmetic; all fixtures rolled back.
+- Added project-cost-236-264.js and wired Project Control to the new views.
+- Browser/runtime UI verification remains pending; 237-264 are PARTIAL, not DONE.
+- Next task: 265.
