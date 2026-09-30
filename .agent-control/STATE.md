@@ -54,3 +54,32 @@ PARTIAL / release-gated.
 - Next Task: 051
 - Continue sequentially through the 850 registry.
 - Do not rebuild completed/reconciled CRM paths.
+
+
+## Batch 51-70
+- 051 Original Raw Data: canonical CRM operations now preserves source objects for export/audit workflows.
+- 052 Import Batch Tracking: batch lifecycle primitive added (started/completed/error count).
+- 053 Duplicate Detection: duplicate phone candidates remain detection-only; no merge authority.
+- 054 Same Phone Preservation: same-phone candidates explicitly return mergeAllowed=false.
+- 055 Activity Timeline: canonical activity event/timeline primitives added.
+- 056 Data Export: column-selectable record export added.
+- 057 JSON Backup: JSON serialization added from canonical export path.
+- 058 Manager Data Editing: arbitrary-field record edit primitive added without field whitelist.
+- 059 Manager Audit Trail: immutable audit-entry/append primitives added.
+- 060 Arbitrary Excel Column Editor: arbitrary imported-field edit primitive added; UI/runtime integration remains partial.
+- 061 Import Error Isolation: raw rows are retained independently from normalization errors.
+- 062 Import Preview: existing preview reconciled; no duplicate preview path created.
+- 063 Import Validation: existing validation reconciled; error isolation added.
+- 064 Import Rollback: non-destructive rollback-plan primitive added; execution remains gated.
+- 065 Data Quality Dashboard: quality metrics primitive added; dashboard UI remains partial.
+- 066 Land Analysis: canonical analysis primitives added without replacing existing feasibility path.
+- 067 Development Feasibility: land analysis supports buildable/useful area and cost/revenue scenario inputs; full municipal evidence remains separate.
+- 068 Municipal Regulation Evidence: remains TODO; no unsupported external regulatory data was invented.
+- 069 Participation Analysis: canonical participation share/profit calculation added.
+- 070 Barter Analysis: canonical value-balance calculation added.
+
+## Batch 51-70 Verification
+- Isolated Node runtime: PASS for CRM operations, data-quality primitives, land/participation/barter analysis.
+- Full repository runtime: still unavailable from current environment; no DONE claim made from isolated runtime alone.
+- New implementation commits: dbcbfa777268235287eae565994715833bb654a3, f669cfd584b51035b994840090276dd3fabe7bde, d002b1fc4e16518935d5bdd2a922b63f322e9a7c, 77ce4deb1b2a7aa5dd6a3b3b50cd7aae79a3caf4.
+- Next Task: 071.
