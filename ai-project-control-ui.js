@@ -6,14 +6,15 @@ import { buildAiProjectControlReport } from './ai-project-control-engine.js';
     if(!window.db||!window.pid) return;
     const content=document.querySelector('#content');
     if(!content) return;
-    const [t,p,r] = await Promise.all([
+    const [t,p,r,projectRow] = await Promise.all([
       db.from('project_schedule_tasks').select('*').eq('project_id',window.pid).order('planned_start',{ascending:true}).limit(500),
       db.from('project_procurement').select('*').eq('project_id',window.pid).limit(500),
-      db.from('project_resources').select('*').eq('project_id',window.pid).limit(500)
+      db.from('project_resources').select('*').eq('project_id',window.pid).limit(500),
+      db.from('construction_projects').select('*').eq('id',window.pid).single()
     ]);
     if(t.error){toast(t.error.message);return;}
     const tasks=(t.data||[]).map(x=>({...x,resource_ids:Array.isArray(x.constraints?.resource_ids)?x.constraints.resource_ids:[]}));
-    const report=buildAiProjectControlReport({tasks,procurement:p.data||[],resources:r.data||[]});
+    const report=buildAiProjectControlReport({tasks,procurement:p.data||[],resources:r.data||[],project:projectRow.data||{}});
     const existing=document.getElementById('ai-project-control-panel');
     if(existing) existing.remove();
     const panel=document.createElement('section');
@@ -22,9 +23,9 @@ import { buildAiProjectControlReport } from './ai-project-control-engine.js';
     panel.innerHTML='<h3>AI Project Control · 161–180</h3>'+
       '<p class="muted">تحلیل خواندنی است؛ هیچ تغییر مستقیمی در Master Schedule انجام نمی‌شود.</p>'+
       '<div class="list">'+
-      '<div class="item"><b>162–165 Schedule / Critical Path</b><br>تاخیر: '+report.schedule.overdue.length+' · بحرانی: '+report.schedule.criticalOverdue+' · Dependency missing: '+report.dependency.missing.length+' · Cycle: '+report.dependency.cycles.length+'</div>'+
-      '<div class="item"><b>166–167 Procurement / Material</b><br>Material conflicts: '+report.material.conflicts.length+'</div>'+
-      '<div class="item"><b>170–180 Parallel Work / Conflict</b><br>Resource: '+report.resource.sharedResourceConflicts.length+' · Team: '+report.resource.teamConflicts.length+'</div>'+
+      '<div class="item"><b>161–165 Schedule / Critical Path</b><br>تاخیر: '+report.schedule.overdue.length+' · بحرانی: '+report.schedule.criticalOverdue+' · CPM: '+report.criticalPath.durationDays+' روز · Dependency missing: '+report.dependency.missing.length+' · Cycle: '+report.dependency.cycles.length+'</div>'+
+      '<div class="item"><b>166–169 Procurement / Material / Cost / Recovery</b><br>Material conflicts: '+report.material.conflicts.length+' · High procurement predictions: '+report.procurementPrediction.filter(x=>x.predictedRisk===\'high\').length+' · Cost variance: '+Number(report.cost.variancePercent||0).toFixed(1)+'%</div>'+
+      '<div class="item"><b>170–180 Parallel Work / Conflict</b><br>Parallel candidates: '+report.parallelSuggestions.length+' · Resource: '+report.resource.sharedResourceConflicts.length+' · Team: '+report.resource.teamConflicts.length+' · Physical: '+report.physical.conflicts.length+' · Equipment: '+report.equipment.equipment.length+' · Material: '+report.material.conflicts.length+' · Unassigned crew tasks: '+report.crew.unassignedTaskCount+'</div>'+
       '<div class="item"><b>AI Assistant / Recommendations</b><ul>'+report.recommendations.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul></div>'+
       (report.alerts.length?'<div class="item"><b>Alerts</b>'+report.alerts.map(x=>'<div>'+esc(x.severity)+' · '+esc(x.title)+' · '+Number(x.count||1)+'</div>').join('')+'</div>':'<div class="item">No AI control alerts detected.</div>')+
       '</div>';
