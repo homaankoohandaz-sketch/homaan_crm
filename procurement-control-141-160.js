@@ -47,7 +47,6 @@
         {n:'notes',label:'شرح',ta:true,full:true}
       ])+
       formP('inventory','145 · موجودی مصالح',[
-        {n:'procurement_id',label:'Purchase ID (اختیاری)',type:'number'},
         {n:'material_key',label:'کلید ماده',req:true},
         {n:'material_name',label:'نام ماده',req:true},
         {n:'unit',label:'واحد'},
@@ -64,6 +63,7 @@
         {n:'notes',label:'شرح',ta:true,full:true}
       ])+
       formP('price','148–157 · قیمت و منبع',[
+        {n:'procurement_id',label:'Purchase ID (اختیاری)',type:'number'},
         {n:'material_key',label:'کلید ماده',req:true},
         {n:'material_name',label:'نام ماده',req:true},
         {n:'unit',label:'واحد'},
