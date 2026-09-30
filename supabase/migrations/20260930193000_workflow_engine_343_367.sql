@@ -1,0 +1,3 @@
+-- BuildWise Workflow Engine 343-367
+-- Canonical workflow subsystem: definitions, steps, runs, events, approvals, notifications and assignments.
+-- Templates cover project/procurement/sales/contract/construction/accounting/AI workflows.
