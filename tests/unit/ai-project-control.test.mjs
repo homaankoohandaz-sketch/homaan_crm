@@ -8,7 +8,11 @@ import {
   buildAiProjectControlReport,
   detectPhysicalInterference,
   detectSharedEquipmentConflicts,
-  suggestParallelActivities
+  suggestParallelActivities,
+  analyzeCriticalPath,
+  analyzeCostOverrun,
+  analyzeCrewAvailability,
+  analyzeProcurementPrediction
 } from '../../ai-project-control-engine.js';
 
 test('detects overdue schedule tasks and schedule slippage', () => {
@@ -70,4 +74,22 @@ test('detects physical workfront and equipment conflicts and proposes safe paral
   assert.equal(detectPhysicalInterference(tasks).conflicts.length,1);
   assert.equal(detectSharedEquipmentConflicts(tasks).equipment.length,1);
   assert.ok(suggestParallelActivities(tasks).some(x=>x.taskA===1&&x.taskB===3));
+});
+
+
+test('calculates critical path, cost overrun, crew availability and procurement risk', () => {
+  const cp=analyzeCriticalPath([
+    {id:1,duration_days:5,predecessor_ids:[]},
+    {id:2,duration_days:7,predecessor_ids:[1]},
+    {id:3,duration_days:2,predecessor_ids:[1]}
+  ]);
+  assert.deepEqual(cp.taskIds,[1,2]);
+  assert.equal(cp.durationDays,12);
+  const cost=analyzeCostOverrun([{planned_cost:100,actual_cost:130}],{current_budget:100,actual_cost:130});
+  assert.equal(cost.overrun,true);
+  assert.equal(Math.round(cost.variancePercent),30);
+  const crew=analyzeCrewAvailability([{id:1,responsible_user:null,progress:0}],[{resource_type:'crew',active:true}]);
+  assert.equal(crew.unassignedTaskCount,1);
+  const prediction=analyzeProcurementPrediction([{id:1,forecast_required_date:'2026-10-05',status:'ordered'}],new Date('2026-09-30'));
+  assert.equal(prediction[0].predictedRisk,'high');
 });
