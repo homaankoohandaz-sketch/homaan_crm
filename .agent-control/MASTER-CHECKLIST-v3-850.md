@@ -530,35 +530,35 @@ G — PROFESSIONAL PROJECT ACCOUNTING
 
 220 [~] Committed vs Actual
 
-221 [ ] Forecast at Completion
+221 [~] Forecast at Completion
 
-222 [ ] Cash Flow
+222 [~] Cash Flow
 
-223 [ ] Project Receivables
+223 [~] Project Receivables
 
-224 [ ] Project Payables
+224 [~] Project Payables
 
-225 [ ] Contractor Payments
+225 [~] Contractor Payments
 
-226 [ ] Supplier Payments
+226 [~] Supplier Payments
 
-227 [ ] Advance Payments
+227 [~] Advance Payments
 
-228 [ ] Retention
+228 [~] Retention
 
-229 [ ] Installments
+229 [~] Installments
 
-230 [ ] Payment Schedule
+230 [~] Payment Schedule
 
-231 [ ] Payment Approval
+231 [~] Payment Approval
 
-232 [ ] Invoice Upload
+232 [~] Invoice Upload
 
-233 [ ] Receipt Upload
+233 [~] Receipt Upload
 
-234 [ ] Accounting Document Archive
+234 [~] Accounting Document Archive
 
-235 [ ] Financial Audit Trail
+235 [~] Financial Audit Trail
 
 
 ==================================================
