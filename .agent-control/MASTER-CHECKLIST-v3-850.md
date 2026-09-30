@@ -799,55 +799,55 @@ K — PROJECT KPI / CONTROL CENTER
 L — WORKFLOW ENGINE
 ==================================================
 
-343 [ ] Workflow Engine
+343 [~] Workflow Engine
 
-344 [ ] Visual Workflow Builder
+344 [~] Visual Workflow Builder
 
-345 [ ] Trigger
+345 [~] Trigger
 
-346 [ ] Condition
+346 [~] Condition
 
-347 [ ] Action
+347 [~] Action
 
-348 [ ] Approval
+348 [~] Approval
 
-349 [ ] Notification
+349 [~] Notification
 
-350 [ ] Assignment
+350 [~] Assignment
 
-351 [ ] Escalation
+351 [~] Escalation
 
-352 [ ] Deadline
+352 [~] Deadline
 
-353 [ ] Recurring Workflow
+353 [~] Recurring Workflow
 
-354 [ ] Conditional Workflow
+354 [~] Conditional Workflow
 
-355 [ ] Project Workflow Templates
+355 [~] Project Workflow Templates
 
-356 [ ] Procurement Workflow
+356 [~] Procurement Workflow
 
-357 [ ] Sales Workflow
+357 [~] Sales Workflow
 
-358 [ ] Contract Workflow
+358 [~] Contract Workflow
 
-359 [ ] Construction Workflow
+359 [~] Construction Workflow
 
-360 [ ] Accounting Workflow
+360 [~] Accounting Workflow
 
-361 [ ] AI Workflow
+361 [~] AI Workflow
 
-362 [ ] Human Approval Workflow
+362 [~] Human Approval Workflow
 
-363 [ ] Workflow History
+363 [~] Workflow History
 
-364 [ ] Workflow Audit
+364 [~] Workflow Audit
 
-365 [ ] Custom Workflow per Project
+365 [~] Custom Workflow per Project
 
-366 [ ] Custom Workflow per Builder
+366 [~] Custom Workflow per Builder
 
-367 [ ] Custom Workflow per User
+367 [~] Custom Workflow per User
 
 
 ==================================================
