@@ -100,8 +100,56 @@ export function suggestParallelActivities(tasks){
   return suggestions.slice(0,20);
 }
 
+
+export function analyzeCriticalPath(tasks){
+  const byId=new Map(tasks.map(t=>[Number(t.id),t]));
+  const memo=new Map(), visiting=new Set();
+  const walk=id=>{
+    if(memo.has(id)) return memo.get(id);
+    if(visiting.has(id)) return {duration:0,path:[],cycle:true};
+    visiting.add(id);
+    const t=byId.get(id), dur=Math.max(0,Number(t?.duration_days||0));
+    let best={duration:dur,path:[id],cycle:false};
+    for(const p of normalizeIds(t?.predecessor_ids).filter(x=>byId.has(x))){
+      const prev=walk(p);
+      if(prev.cycle) best.cycle=true;
+      if(prev.duration+dur>best.duration) best={duration:prev.duration+dur,path:[...prev.path,id],cycle:best.cycle||prev.cycle};
+    }
+    visiting.delete(id); memo.set(id,best); return best;
+  };
+  let best={duration:0,path:[],cycle:false};
+  for(const t of tasks){const r=walk(Number(t.id));if(r.duration>best.duration)best=r;}
+  return {durationDays:best.duration,taskIds:best.path,cycleDetected:best.cycle};
+}
+
+export function analyzeCostOverrun(tasks, project={}){
+  const plannedTasks=tasks.reduce((s,t)=>s+Number(t.planned_cost||0),0);
+  const actualTasks=tasks.reduce((s,t)=>s+Number(t.actual_cost||0),0);
+  const planned=Number(project.current_budget||project.baseline_budget||plannedTasks);
+  const actual=Number(project.actual_cost||actualTasks);
+  const variance=actual-planned;
+  return {planned,actual,variance,variancePercent:planned>0?(variance/planned)*100:0,overrun:variance>0};
+}
+
+export function analyzeCrewAvailability(tasks, resources){
+  const crews=resources.filter(r=>String(r.resource_type||'').toLowerCase().includes('crew')&&r.active!==false);
+  const assigned=new Set(tasks.map(t=>String(t.responsible_user||'')).filter(Boolean));
+  return {activeCrewCount:crews.length,assignedUserCount:assigned.size,unassignedTaskCount:tasks.filter(t=>!t.responsible_user&&Number(t.progress||0)<100).length};
+}
+
+export function analyzeProcurementPrediction(procurement, now=new Date()){
+  const today=new Date(now); today.setUTCHours(0,0,0,0);
+  return procurement.map(p=>{
+    const required=asDate(p.forecast_required_date||p.required_date);
+    const ordered=String(p.status||'').toLowerCase();
+    const open=!['delivered','received','cancelled','closed'].includes(ordered);
+    const days=required?Math.ceil((required-today)/DAY):null;
+    return {...p,daysToRequired:days,predictedRisk:open&&days!==null&&days<=7?'high':open&&days!==null&&days<=21?'medium':'low'};
+  });
+}
+
 export function buildAiProjectControlReport({tasks=[],procurement=[],resources=[],now=new Date()}){
-  const schedule=analyzeSchedule(tasks,now);
+  const schedule=analyzeSchedule(tasks,now); const criticalPath=analyzeCriticalPath(tasks); const cost=analyzeCostOverrun(tasks,arguments[0]?.project||{}); const crew=analyzeCrewAvailability(tasks,resources); const procurementPrediction=analyzeProcurementPrediction(procurement,now);
   const dependency=detectDependencyConflicts(tasks);
   const resource=detectResourceConflicts(tasks); const physical=detectPhysicalInterference(tasks); const equipment=detectSharedEquipmentConflicts(tasks); const parallelSuggestions=suggestParallelActivities(tasks);
   const material=detectMaterialConflicts(
