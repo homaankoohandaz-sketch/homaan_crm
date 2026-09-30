@@ -1,44 +1,56 @@
 # Agent Control State
 
-status: BATCH20-39 EXECUTED | DECISION LAYER HARDENED | FULL REPO RUNTIME BLOCKED
+status: BATCH31-50 EXECUTED | CRM RECONCILED | ISOLATED RUNTIME PASS | FULL REPO RUNTIME BLOCKED
 project: BuildWise AI
 branch: buildwise-implementation
-active_task: checklist-31-39 reconciliation
-last_batch: 20-39
+active_task: checklist-51-70
+last_batch: 31-50
 
 ## Current truth
 - Code truth: GitHub branch buildwise-implementation.
 - Coordination truth: .agent-control/.
-- No force-update of main.
-- Release remains gated; implementation work is not production deployment.
 - MASTER-CHECKLIST-v3-850.md is the sole task acceptance register.
-- MASTER-ARCHITECTURE.md remains unchanged and authoritative.
+- MASTER-ARCHITECTURE.md remains authoritative and unchanged.
+- No force-update of main.
 
-## Batch 20-39
-- 020 AI Decision Layer: hardened deterministic decision/evidence path.
-- 021 Action Engine: existing implementation reconciled; no duplicate path created.
-- 022 Feedback/Learning Loop: append-only feedback primitive retained; learning automation remains TODO.
-- 023 Human Approval Layer: approval gate retained and production execution requires explicit approval.
-- 024 Audit/Versioning: existing control-plane evidence retained; full runtime audit verification pending.
-- 025 Security/Permissions: production permission gate hardened; role matrix exposed for verification.
-- 026 Model Router: deterministic routeModel implementation verified in isolated runtime.
-- 027 Agent Registry: existing worker registry retained; no new worker/control plane created.
-- 028 Tool Registry: existing architecture path retained; no duplicate registry created.
-- 029 Agent Permission Matrix: permission matrix implemented in canonical decision layer; isolated tests pass.
-- 030 Master Decision Loop: canonical 13-stage sequence implemented with resumable progression; isolated tests pass.
-- 031–039 CRM entities: existing canonical repositories reconciled; remain PARTIAL pending broader integration/runtime verification.
+## Batch 31-50
+- 031 People: canonical crm_people repository retained and extended with typed search.
+- 032 Owners: represented through crm_people.person_type=owner; no duplicate owner repository created.
+- 033 Buyers: represented through crm_people.person_type=buyer; no duplicate buyer repository created.
+- 034 Investors: represented through crm_people.person_type=investor; no duplicate investor repository created.
+- 035 Builders: represented through crm_people.person_type=builder; no duplicate builder repository created.
+- 036 Suppliers: no dedicated supplier entity/type exists in current live schema; remains PARTIAL.
+- 037 Contractors: no dedicated contractor entity/type exists in current live schema; remains PARTIAL.
+- 038 Properties: existing canonical properties table/repository path retained; 1,750 live rows observed.
+- 039 Lands: existing land/feasibility path retained; no duplicate domain created.
+- 040 Leads: existing leads repository retained; live table has 5 rows.
+- 041 Public Requests: existing public_requests table/path retained.
+- 042 Deals: existing deals table/path retained; live table has 1 row.
+- 043 Contacts/Phones: crm_person_private + crm_identity_events retained; phone hash is generated in live schema.
+- 044 Search: canonical local search/query helper added.
+- 045 Advanced Filters: canonical local filter operators added; repository boundary extended with ilike/neq/is.
+- 046 Excel Import: existing canonical import path retained.
+- 047 Google Sheets Import: existing canonical import path retained.
+- 048 Multi-Sheet Import: existing importer reads all workbook sheets.
+- 049 Preserve Every Excel Column: raw source object preservation retained.
+- 050 Preserve Every Excel Row: source row metadata preservation retained.
 
-## Evidence
-- Added tests/decision-layer.test.js.
-- Isolated Node runtime verification: PASS for routing, production approval gating, permission matrix, evidence decisioning, feedback append, and full loop completion.
-- Full repository test suite/runtime could not be executed because the current execution environment has no connected repository working tree/network access.
-- No DONE status is claimed from isolated tests alone.
+## Additional reconciliation
+- Import duplicate detection was corrected to be non-destructive and candidate-only.
+- Duplicate detection no longer treats surname/phone as merge authority; property-code candidates are explicitly reported.
+- Persian phone-column aliases are now recognized after normalization.
+- Added tests/crm-import-query.test.js.
 
-## Release decision
+## Tests / Runtime
+- Isolated Node runtime: PASS — crm search/filter + import normalization + validation + raw preservation + duplicate-candidate detection.
+- JS syntax checks: PASS for changed CRM helper/import files.
+- Live Supabase schema inspection: PASS; project ACTIVE_HEALTHY.
+- Full repository runtime remains unavailable from the current environment; no DONE is claimed solely from isolated tests.
+
+## Release
 PARTIAL / release-gated.
 
 ## Next
-- Next Task: 031
+- Next Task: 051
 - Continue sequentially through the 850 registry.
-- Do not rebuild Tasks 020–030; reconcile only if new evidence exposes a defect.
-- Full repository/runtime verification remains a separate release gate when a connected runtime becomes available.
+- Do not rebuild completed/reconciled CRM paths.
