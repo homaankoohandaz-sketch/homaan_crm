@@ -53,3 +53,11 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Added focused tests and wired them into npm test.
 - AI writes alerts to existing project_ai_alerts; it does not mutate the master schedule.
 - Runtime/browser verification remains pending; 161-180 are PARTIAL.
+
+
+## 2026-09-30 — 181-200
+- Added AI workspace conflict, zoning, floor parallelism, trade sequencing, what-if simulation, schedule optimization and cost/time trade-off analysis.
+- Added human approval gate for critical AI changes and preserved read-only master-schedule safety.
+- Added project accounting core: ledger, budget versions/lines, revised budget, actual, committed, forecast, remaining and total project cost summary.
+- Added accounting + AI approval migrations and transactional schema verification.
+- Browser/runtime verification remains pending; 181-200 are PARTIAL.
