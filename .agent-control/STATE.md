@@ -3,8 +3,8 @@
 status: BATCH31-50 EXECUTED | CRM RECONCILED | ISOLATED RUNTIME PASS | FULL REPO RUNTIME BLOCKED
 project: BuildWise AI
 branch: buildwise-implementation
-active_task: checklist-51-70
-last_batch: 31-50
+active_task: checklist-141-160
+last_batch: 141-160
 
 ## Current truth
 - Code truth: GitHub branch buildwise-implementation.
@@ -115,3 +115,21 @@ PARTIAL / release-gated.
 ## Next
 - Next Task: 141
 - Continue sequentially through procurement approval/order/delivery/inventory, reconciling existing schema before extending it.
+
+
+## Batch 141-160 — Procurement Control
+- 141 Purchase Approval: approval records + procurement approval state implemented.
+- 142 Purchase Order: PO entity, numbering, supplier, dates, quantity and generated total implemented.
+- 143 Delivery Tracking: delivery records and procurement received/rejected quantities implemented.
+- 144 Partial Delivery: accepted/rejected partial quantities and delivery percentage implemented.
+- 145 Material Inventory: project material inventory with reserved quantity and reorder point implemented.
+- 146 Material Consumption: consumption records with inventory decrement and insufficient-stock guard implemented.
+- 147 Material Shortage Alert: UI flags inventory at/below reorder point as SHORTAGE.
+- 148-157 Price lineage: purchase/current price, variance, history, Toman/USD, source and timestamp fields/table implemented.
+- 155 Live Material Price: current price/history surface is implemented; no external live feed is claimed.
+- 158 Purchase Forecast: forecast date and quantity fields implemented.
+- 159 Optimal Purchase Timing: recommended purchase date field implemented.
+- 160 Procurement Risk: 0-100 score and low/medium/high/critical classification implemented.
+- Runtime browser verification for the implementation branch is still required; tasks 141-160 remain PARTIAL, not DONE.
+- Supabase migration applied: 20260930145935 project_control_procurement_141_160.
+- Implementation commits: d0dd4e43f42f74353f619f3628332daa906c820b, 8a45ec5fd0282e121dd9755e2595a0fe071e928e, 6eb0c9c4ae6f28dbc705c1cc9f31a9be20554e43, 97fc7ab4e4bf509aa3f631e4853c8dd25328b56a.
