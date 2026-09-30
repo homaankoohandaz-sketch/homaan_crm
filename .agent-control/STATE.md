@@ -168,3 +168,21 @@ PARTIAL / release-gated.
 
 ## Next
 - Next Task: 221
+
+
+## Batch 221-235 — Project Accounting Payments / Cash Flow / Documents
+- 221: Forecast at Completion view added.
+- 222: project cash-flow view added.
+- 223-224: receivables and payables views added.
+- 225-226: contractor and supplier payment views added.
+- 227: advance-payment aggregation added.
+- 228: retention tracking added.
+- 229-230: installment and payment-calendar structures added.
+- 231: payment approval structure added.
+- 232-234: invoice/receipt upload metadata and document archive added.
+- 235: accounting audit view added.
+- Supabase migration applied successfully: project_accounting_221_235.
+- SQL integration fixture verified payment/installment/payable paths; fixture rows were removed.
+- Project Control UI slice added and wired: project-accounting-221-235.js.
+- Browser/runtime UI verification remains pending; 221-235 are PARTIAL, not DONE.
+- Next: 236.
