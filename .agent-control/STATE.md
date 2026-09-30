@@ -143,3 +143,11 @@ PARTIAL / release-gated.
 - Applied migration workflow_engine_343_367 and transactionally tested a 9-step workflow including start/event/history/audit; fixture rolled back.
 - External notification delivery, scheduler/cron execution and full browser runtime remain unverified; 343-367 are PARTIAL.
 - Next Task: 368.
+
+## 2026-09-30 — Deal Control 368-376
+- Extended existing deal_workspaces/deals; no duplicate deal workspace subsystem.
+- Added persistent timeline events, deal actions, follow-ups, risk scoring, participation calculations and payment schedules.
+- Added deal_workspace_control aggregation view and Project Control UI deal-control-368-376.js.
+- Transactional fixture verified timeline/action/follow-up/risk/participation/payment aggregation; rolled back.
+- Browser runtime remains unverified; 368-376 PARTIAL.
+- Next task: 377.
