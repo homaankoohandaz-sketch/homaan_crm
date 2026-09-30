@@ -132,3 +132,14 @@ PARTIAL / release-gated.
 - SQL verification passed with a rolled-back OCR/extraction fixture returning gross 1200, useful 950, 8 units, 10 parking, 8 storage, 5 floors, 400 land area and setbacks JSON.
 - Actual OCR/AI extraction engine, binary file upload/storage runtime, plan-vs-permit comparison and browser runtime are not yet verified; therefore 294-323 remain PARTIAL.
 - Next Task: 324.
+
+## Batch 343-367 — Workflow Engine
+- Implemented one canonical workflow subsystem; no parallel workflow architecture.
+- Added workflow definitions, ordered steps, triggers/conditions/actions, approvals, notifications, assignments, escalations, deadlines and recurring step configuration.
+- Added project/procurement/sales/contract/construction/accounting/AI workflow templates.
+- Added project/builder/user scoping, workflow runs, event history and audit views.
+- Added workflow_start() runtime entry point.
+- Added Project Control UI builder/history/audit surface in workflow-engine-343-367.js.
+- Applied migration workflow_engine_343_367 and transactionally tested a 9-step workflow including start/event/history/audit; fixture rolled back.
+- External notification delivery, scheduler/cron execution and full browser runtime remain unverified; 343-367 are PARTIAL.
+- Next Task: 368.
