@@ -103,3 +103,13 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Smoke verification passed for database objects/views. Existing project has zero units, so populated unit arithmetic could not be executed against real project data.
 - Browser/runtime UI verification remains pending; 265-293 are PARTIAL.
 - Next task: 294.
+
+## 2026-09-30 — Documents / Plan Intelligence / KPI 294-323
+- Extended existing project_documents rather than creating a parallel document subsystem.
+- Added upload/document metadata fields, OCR status/text, extracted plan JSON, document register and plan-data aggregation.
+- Added KPI snapshots and project KPI dashboard covering schedule, cost, procurement and sales.
+- Added project-docs-kpi-294-323.js and wired it into Project Control.
+- Final migration project_documents_kpi_294_323_v4 applied successfully.
+- SQL rollback fixture verified plan extraction: gross 1200, useful 950, 8 units, 10 parking, 8 storage, 5 floors, land 400 and setbacks JSON.
+- Actual binary upload/storage, OCR/AI extraction, plan-vs-permit comparison and browser runtime remain unverified; 294-323 are PARTIAL.
+- Next task: 324.
