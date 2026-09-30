@@ -360,45 +360,45 @@ E — PROCUREMENT / PURCHASING
 
 140 [ ] Purchase Request
 
-141 [ ] Purchase Approval
+141 [~] Purchase Approval
 
-142 [ ] Purchase Order
+142 [~] Purchase Order
 
-143 [ ] Delivery Tracking
+143 [~] Delivery Tracking
 
-144 [ ] Partial Delivery
+144 [~] Partial Delivery
 
-145 [ ] Material Inventory
+145 [~] Material Inventory
 
-146 [ ] Material Consumption
+146 [~] Material Consumption
 
-147 [ ] Material Shortage Alert
+147 [~] Material Shortage Alert
 
-148 [ ] Price at Purchase Date
+148 [~] Price at Purchase Date
 
-149 [ ] Current Material Price
+149 [~] Current Material Price
 
-150 [ ] Price Variance
+150 [~] Price Variance
 
-151 [ ] Material Price History
+151 [~] Material Price History
 
-152 [ ] Toman Price
+152 [~] Toman Price
 
-153 [ ] Dollar Equivalent at Purchase
+153 [~] Dollar Equivalent at Purchase
 
-154 [ ] Current Dollar Equivalent
+154 [~] Current Dollar Equivalent
 
-155 [ ] Live Material Price
+155 [~] Live Material Price
 
-156 [ ] Price Source
+156 [~] Price Source
 
-157 [ ] Price Timestamp
+157 [~] Price Timestamp
 
-158 [ ] Purchase Forecast
+158 [~] Purchase Forecast
 
-159 [ ] Optimal Purchase Timing
+159 [~] Optimal Purchase Timing
 
-160 [ ] Procurement Risk
+160 [~] Procurement Risk
 
 
 ==================================================
