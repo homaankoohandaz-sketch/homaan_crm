@@ -113,74 +113,16 @@ PARTIAL / release-gated.
 - Commits: a7926936026434cd2b607dbfdb096b5fce984704; bd24f7a393ad514480f73ae9ef91c05d9eb02616; 65a688754e4399c410d0343f0e0419a9d41fe2bb; 3e4b563ea68161dee8e680c04357e89efcc7d1db.
 
 ## Next
-- Next Task: 141
-- Continue sequentially through procurement approval/order/delivery/inventory, reconciling existing schema before extending it.
+- Next Task: 294
 
 
-## Batch 141-160 — Procurement Control
-- 141 Purchase Approval: approval records + procurement approval state implemented.
-- 142 Purchase Order: PO entity, numbering, supplier, dates, quantity and generated total implemented.
-- 143 Delivery Tracking: delivery records and procurement received/rejected quantities implemented.
-- 144 Partial Delivery: accepted/rejected partial quantities and delivery percentage implemented.
-- 145 Material Inventory: project material inventory with reserved quantity and reorder point implemented.
-- 146 Material Consumption: consumption records with inventory decrement and insufficient-stock guard implemented.
-- 147 Material Shortage Alert: UI flags inventory at/below reorder point as SHORTAGE.
-- 148-157 Price lineage: purchase/current price, variance, history, Toman/USD, source and timestamp fields/table implemented.
-- 155 Live Material Price: current price/history surface is implemented; no external live feed is claimed.
-- 158 Purchase Forecast: forecast date and quantity fields implemented.
-- 159 Optimal Purchase Timing: recommended purchase date field implemented.
-- 160 Procurement Risk: 0-100 score and low/medium/high/critical classification implemented.
-- Runtime browser verification for the implementation branch is still required; tasks 141-160 remain PARTIAL, not DONE.
-- Supabase migration applied: 20260930145935 project_control_procurement_141_160.
-- Implementation commits: d0dd4e43f42f74353f619f3628332daa906c820b, 8a45ec5fd0282e121dd9755e2595a0fe071e928e, 6eb0c9c4ae6f28dbc705c1cc9f31a9be20554e43, 97fc7ab4e4bf509aa3f631e4853c8dd25328b56a.
-
-
-## Batch 161-180 — AI Project Control
-- Added read-only AI Project Control engine covering schedule/delay, dependency/cycle analysis, critical-path calculation, procurement/material prediction, cost-overrun analysis, recovery recommendations, parallel-work candidates, team/resource conflicts, workfront/physical interference, crew availability, shared equipment and material conflicts.
-- Added Project Control UI entry point and persisted AI alerts via existing project_ai_alerts table.
-- Added focused unit tests and wired them into npm test.
-- Tasks 161-180 are PARTIAL because browser/runtime verification is still pending; no master schedule is silently mutated.
-
-
-## Batch 181-200 — AI Workspace Simulation + Accounting Core
-- 181-184: shared workspace detection, work zoning, floor parallelism and trade sequencing added.
-- 185-187: read-only what-if simulation, schedule optimization analysis and cost/time trade-off calculations added.
-- 188: human approval gate table added for critical AI changes.
-- 189: recommendation evidence/explanation remains explicit in AI report.
-- 190: AI engine/UI remains read-only; no silent master-schedule mutation.
-- 191-200: project ledger, versioned budgets/budget lines, revised/actual/committed/forecast/remaining/total project cost summary added.
-- Accounting schema migration recorded: 20260930170000_project_accounting_191_200.
-- AI approval migration recorded: 20260930171000_ai_change_approval_188.
-- Transactional accounting schema test passed and rolled back.
-- 181-200 remain PARTIAL pending browser/runtime verification.
-
-
-## Batch 201-220 — Project Accounting Cost Dimensions / Currency / Variance
-- 201-211: canonical ledger cost views added for WBS, phase, floor, unit, contractor, supplier, material, purchase, invoice, payment and date.
-- 212-216: Toman normalization, historical USD/gold rates and current USD/gold equivalents added.
-- 217: construction-cost index table + transaction inflation view added.
-- 218-220: budget-vs-actual, committed-vs-actual and forecast-vs-budget variance views added.
-- Supabase migration applied: 20260930151310_project_accounting_201_220.
-- Runtime SQL verification passed: currency conversion and inflation calculation returned expected fixture values; test rows were removed.
-- Project Control UI slice added: project-accounting-201-220.js and wired into project-control.html.
-- Browser/runtime UI verification is still pending; 201-220 remain PARTIAL, not DONE.
-- Commits: f5a7b9f5d23c8f67fffa8e5e93e12d70f6ea838f2, 99221c35018236066e6aa1df3872c896738dc93b, 451f384af1c8874912d84120c1be2fae407899fd, 74d2e20a1256e541d81f7ebb9f98ef55aba81244, b4161e44ed698cb7a0fe13144f14bbc372daef91.
-
-## Next
-- Next Task: 265
-
-
-## Batch 236-264 — Real Estate Cost / Price Engine
-- 236 existing Construction Cost Engine retained as canonical; no duplicate engine created.
-- 237-238: current/live material price surface + daily material-price aggregation added. External feed is not claimed; source/timestamp lineage remains explicit.
-- 239-241: current construction cost, purchase/base cost and inflation factor exposed through project_cost_intelligence using the existing construction-cost index.
-- 242-248: CRM land value, current/comparable market inputs, Divar-source data where already present in CRM, and combined land valuation exposed without inventing external market data.
-- 249-256: total project cost, gross/useful-area metrics, default useful area of 80%, construction/land/total cost per useful m² added.
-- 257-260: unit-level cost allocation and indicative unit profitability added.
-- 261-263: developer margin plus investor/owner return allocation read from explicit project assumptions when present.
-- 264: sale-price sensitivity scenarios added and explicitly presented as scenarios, not guarantees.
-- Supabase migration applied: real_estate_cost_price_236_264.
-- SQL transactional verification passed: 1.25 construction inflation factor, 25B current construction cost, 15B combined land value, 40B total cost, material-current view, and 5 sensitivity rows; fixtures rolled back.
-- Added project-cost-236-264.js and wired it into project-control.html.
-- Browser/runtime UI verification is still pending; 237-264 remain PARTIAL, not DONE.
-- Next Task: 265.
+## Batch 265-293 — Sales Engineering / Offer Builder
+- Added project sales strategy, unit sales matrix, inventory state, customer offers, negotiation history, offer versioning, approvals, and sales profitability views.
+- Pricing model supports base price/m² plus floor, view, orientation and commercial premiums; parking, storage, terrace and garden values; cash discount and installment premium.
+- Offer types support sale, pre-sale, and participation.
+- Added project_sales_inventory, project_unit_sales_matrix, project_offer_current_versions and project_sales_profitability views.
+- Added project-sales-265-293.js and wired it into Project Control; print preview uses browser print as the current proposal screen/PDF path.
+- Supabase migration applied: sales_engine_265_293.
+- Database object/view smoke verification passed. The project currently has zero project_units, so a populated unit-level arithmetic fixture could not be retained; no production rows were created.
+- Browser/runtime UI verification remains pending; 265-293 are PARTIAL, not DONE.
+- Next Task: 294.
