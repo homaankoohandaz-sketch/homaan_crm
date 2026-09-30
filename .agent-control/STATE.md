@@ -4,7 +4,7 @@ status: BATCH31-50 EXECUTED | CRM RECONCILED | ISOLATED RUNTIME PASS | FULL REPO
 project: BuildWise AI
 branch: buildwise-implementation
 active_task: checklist-236-264
-last_batch: 236-264
+last_batch: 221-235
 
 ## Current truth
 - Code truth: GitHub branch buildwise-implementation.
@@ -151,3 +151,16 @@ PARTIAL / release-gated.
 - Transactional fixture verified timeline/action/follow-up/risk/participation/payment aggregation; rolled back.
 - Browser runtime remains unverified; 368-376 PARTIAL.
 - Next task: 377.
+
+
+## 2026-09-30 — Project Accounting 201-235
+- Extended canonical `src/domains/finance/project-finance.js`; no duplicate accounting engine created.
+- 201-211: cost ledger aggregation by WBS, phase, floor, unit, contractor, supplier, material, purchase, invoice, payment and date.
+- 212-216: Toman base accounting plus transaction-date and current Dollar/Gold equivalents.
+- 217-220: cost-index inflation adjustment, cost variance, budget-vs-actual and committed-vs-actual.
+- 221-235: forecast-at-completion, cash flow, receivables/payables, contractor/supplier payments, advances, retention, installments, payment schedule/approval, invoice/receipt archive and accounting audit-trail primitives.
+- Added focused unit coverage in `tests/unit/project-finance.test.mjs`.
+- GitHub commits: 8633906a0d25e40881085a05b80df10e230b7c6c, ed2e7c63f9bf300f1d2b8755b19cf65e54e67b5e, 1c77f205ed6b7d307bf55e26dbce75f3e645cfef, 6582550d096c52ccd2a0aa679400a955950ca46f.
+- GitHub source fetch after writes: PASS; updated engine/test blobs verified.
+- Full repository Node runtime/CI remains unavailable from this environment; these tasks remain PARTIAL under the DONE contract.
+- Next task: 236.
