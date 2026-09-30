@@ -10,6 +10,9 @@ export function createRepository(client, table) {
         if (filter.op === 'in') query = query.in(filter.column, filter.value);
         else if (filter.op === 'gte') query = query.gte(filter.column, filter.value);
         else if (filter.op === 'lte') query = query.lte(filter.column, filter.value);
+        else if (filter.op === 'ilike') query = query.ilike(filter.column, filter.value);
+        else if (filter.op === 'neq') query = query.neq(filter.column, filter.value);
+        else if (filter.op === 'is') query = query.is(filter.column, filter.value);
         else query = query.eq(filter.column, filter.value);
       }
       if (orderBy?.column) query = query.order(orderBy.column, { ascending });
