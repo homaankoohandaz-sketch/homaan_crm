@@ -12,7 +12,14 @@ import {
   analyzeCriticalPath,
   analyzeCostOverrun,
   analyzeCrewAvailability,
-  analyzeProcurementPrediction
+  analyzeProcurementPrediction,
+  detectWorkspaceConflicts,
+  suggestWorkZoning,
+  suggestFloorParallelism,
+  suggestTradeSequencing,
+  simulateWhatIf,
+  optimizeSchedule,
+  costTimeTradeoff
 } from '../../ai-project-control-engine.js';
 
 test('detects overdue schedule tasks and schedule slippage', () => {
@@ -92,4 +99,21 @@ test('calculates critical path, cost overrun, crew availability and procurement 
   assert.equal(crew.unassignedTaskCount,1);
   const prediction=analyzeProcurementPrediction([{id:1,forecast_required_date:'2026-10-05',status:'ordered'}],new Date('2026-09-30'));
   assert.equal(prediction[0].predictedRisk,'high');
+});
+
+
+test('supports workspace zoning, floor parallelism, trade sequencing and what-if simulation', () => {
+  const tasks=[
+    {id:1,title:'Structure',planned_start:'2026-10-01',planned_finish:'2026-10-05',duration_days:5,planned_cost:100,actual_cost:100,constraints:{workspace_id:'W1',zone_id:'Z1',floor_id:1,trade:'structure'}},
+    {id:2,title:'MEP',planned_start:'2026-10-03',planned_finish:'2026-10-06',duration_days:4,planned_cost:50,actual_cost:50,constraints:{workspace_id:'W1',zone_id:'Z1',floor_id:1,trade:'mep'}}
+  ];
+  assert.equal(detectWorkspaceConflicts(tasks).conflicts.length,1);
+  assert.equal(suggestWorkZoning(tasks)[0].taskIds.length,2);
+  assert.equal(suggestFloorParallelism(tasks)[0].parallelCandidates.length,2);
+  assert.equal(suggestTradeSequencing(tasks)[0].trade,'structure');
+  const sim=simulateWhatIf({tasks,changes:[{task_id:1,days_delta:2,cost_delta:10}],project:{current_budget:200}});
+  assert.equal(sim.readOnly,true);
+  assert.equal(sim.costVariance,10);
+  assert.equal(optimizeSchedule(tasks).readOnly,true);
+  assert.equal(costTimeTradeoff({options:[{cost_delta:100,days_delta:-5}]})[0].costPerDaySaved,20);
 });
