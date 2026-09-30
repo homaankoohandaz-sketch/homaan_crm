@@ -153,3 +153,18 @@ PARTIAL / release-gated.
 - AI approval migration recorded: 20260930171000_ai_change_approval_188.
 - Transactional accounting schema test passed and rolled back.
 - 181-200 remain PARTIAL pending browser/runtime verification.
+
+
+## Batch 201-220 — Project Accounting Cost Dimensions / Currency / Variance
+- 201-211: canonical ledger cost views added for WBS, phase, floor, unit, contractor, supplier, material, purchase, invoice, payment and date.
+- 212-216: Toman normalization, historical USD/gold rates and current USD/gold equivalents added.
+- 217: construction-cost index table + transaction inflation view added.
+- 218-220: budget-vs-actual, committed-vs-actual and forecast-vs-budget variance views added.
+- Supabase migration applied: 20260930151310_project_accounting_201_220.
+- Runtime SQL verification passed: currency conversion and inflation calculation returned expected fixture values; test rows were removed.
+- Project Control UI slice added: project-accounting-201-220.js and wired into project-control.html.
+- Browser/runtime UI verification is still pending; 201-220 remain PARTIAL, not DONE.
+- Commits: f5a7b9f5d23c8f67fffa8e5e93e12d70f6ea838f2, 99221c35018236066e6aa1df3872c896738dc93b, 451f384af1c8874912d84120c1be2fae407899fd, 74d2e20a1256e541d81f7ebb9f98ef55aba81244, b4161e44ed698cb7a0fe13144f14bbc372daef91.
+
+## Next
+- Next Task: 221
