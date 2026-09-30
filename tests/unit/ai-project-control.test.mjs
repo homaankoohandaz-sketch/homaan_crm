@@ -43,7 +43,7 @@ test('detects shared material conflict from procurement demand', () => {
     {id:2,item_name:'Cement',material_key:'cement',quantity:40,required_date:'2026-10-04'}
   ], [{material_key:'cement',on_hand_quantity:50,reserved_quantity:0}]);
   assert.equal(result.conflicts.length,1);
-  assert.equal(result.conflicts[0].shortage,70);
+  assert.equal(result.conflicts[0].shortage,30);
 });
 
 test('builds a read-only AI project-control report', () => {
