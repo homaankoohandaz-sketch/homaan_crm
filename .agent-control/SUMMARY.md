@@ -36,3 +36,13 @@ Integration test covers hierarchy→schedule→progress→boq→procurement.
 
 ## Release gate
 main diverged — never force-update main. Preview buildwise-implementation for UI E2E.
+
+
+## 2026-09-30 — Procurement 141-160
+- Implemented procurement-control schema and Project Control UI slice for checklist 141-160.
+- Added approval, purchase order, delivery/partial delivery, inventory, consumption, material price history, forecast and risk structures.
+- Added project_procurement_control view for delivery %, outstanding quantity, live price variance and calculated risk level.
+- Supabase migration applied: 20260930145935_project_control_procurement_141_160.
+- Integration SQL test passed transactionally; test data was rolled back.
+- External live material-price feed is NOT claimed; price source/timestamp/history are implemented and current price can be recorded from a source.
+- Browser/runtime verification on buildwise-implementation is still pending, so 141-160 remain PARTIAL.
