@@ -1,6 +1,6 @@
 # BuildWise AI — SUMMARY
 
-Updated: 2026-09-29
+Updated: 2026-09-30
 Branch: buildwise-implementation
 
 ## Canonical governance
@@ -21,6 +21,7 @@ Branch: buildwise-implementation
 - Tasks 011–012: implementation + focused test evidence.
 - Task 010: implementation preserved/audited.
 - Tasks 013–020: primarily audit/release-gate work.
+- 2026-09-30: decision-layer routing, production permission gating, evidence decisioning, feedback append, and canonical decision-loop progression hardened; isolated runtime test passed. Full repository runtime remains unavailable from the current environment.
 
 ## Architecture baseline
 - Mother architecture: .agent-control/MASTER-ARCHITECTURE.md
