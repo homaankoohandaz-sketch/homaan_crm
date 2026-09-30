@@ -113,16 +113,16 @@ PARTIAL / release-gated.
 - Commits: a7926936026434cd2b607dbfdb096b5fce984704; bd24f7a393ad514480f73ae9ef91c05d9eb02616; 65a688754e4399c410d0343f0e0419a9d41fe2bb; 3e4b563ea68161dee8e680c04357e89efcc7d1db.
 
 ## Next
-- Next Task: 294
+- Next Task: 324
 
 
-## Batch 265-293 — Sales Engineering / Offer Builder
-- Added project sales strategy, unit sales matrix, inventory state, customer offers, negotiation history, offer versioning, approvals, and sales profitability views.
-- Pricing model supports base price/m² plus floor, view, orientation and commercial premiums; parking, storage, terrace and garden values; cash discount and installment premium.
-- Offer types support sale, pre-sale, and participation.
-- Added project_sales_inventory, project_unit_sales_matrix, project_offer_current_versions and project_sales_profitability views.
-- Added project-sales-265-293.js and wired it into Project Control; print preview uses browser print as the current proposal screen/PDF path.
-- Supabase migration applied: sales_engine_265_293.
-- Database object/view smoke verification passed. The project currently has zero project_units, so a populated unit-level arithmetic fixture could not be retained; no production rows were created.
-- Browser/runtime UI verification remains pending; 265-293 are PARTIAL, not DONE.
-- Next Task: 294.
+## Batch 294-323 — Project Documents / Plan Intelligence / KPI
+- Reused existing project_documents table and extended it with file/OCR/extraction metadata instead of creating a duplicate document system.
+- Added document register for architectural plans, permits, municipality documents, floor plans, elevations, site plans and renders.
+- Added structured extracted plan-data view for gross area, useful area, units, parking, storage, floors, land area and setbacks.
+- Added project KPI snapshots and dashboard aggregating schedule, cost, procurement and sales indicators.
+- Added project-docs-kpi-294-323.js and wired it into Project Control.
+- Migration project_documents_kpi_294_323_v4 applied successfully after two schema corrections; final migration is valid.
+- SQL verification passed with a rolled-back OCR/extraction fixture returning gross 1200, useful 950, 8 units, 10 parking, 8 storage, 5 floors, 400 land area and setbacks JSON.
+- Actual OCR/AI extraction engine, binary file upload/storage runtime, plan-vs-permit comparison and browser runtime are not yet verified; therefore 294-323 remain PARTIAL.
+- Next Task: 324.
