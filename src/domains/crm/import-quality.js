@@ -3,7 +3,7 @@ import { normalizeRecord, normalizePhone, normalizeNumber } from '../../core/dat
 export function normalizeImportRows(rows = []) {
   return (rows || []).map((row, index) => {
     const r = normalizeRecord(row);
-    const rawPhone = r.mobile || r.phone || r.telephone || null;
+    const rawPhone = r.mobile || r.phone || r.telephone || r.موبایل || r.تلفن || null;
     const mobile = normalizePhone(rawPhone);
     return {
       ...r,
