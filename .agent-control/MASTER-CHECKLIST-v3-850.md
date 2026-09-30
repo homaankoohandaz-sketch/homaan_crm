@@ -445,50 +445,50 @@ F — AI PROJECT CONTROL
 
 180 [~] AI Detect Shared Material Conflict
 
-181 [ ] AI Detect Shared Workspace Conflict
+181 [~] AI Detect Shared Workspace Conflict
 
-182 [ ] AI Suggest Work Zoning
+182 [~] AI Suggest Work Zoning
 
-183 [ ] AI Suggest Floor-by-Floor Parallelism
+183 [~] AI Suggest Floor-by-Floor Parallelism
 
-184 [ ] AI Suggest Trade Sequencing
+184 [~] AI Suggest Trade Sequencing
 
 185 [ ] AI "What if?" Simulation
 
-186 [ ] AI Schedule Optimization
+186 [~] AI Schedule Optimization
 
-187 [ ] AI Cost/Time Trade-off
+187 [~] AI Cost/Time Trade-off
 
-188 [ ] AI Human Approval Before Critical Changes
+188 [~] AI Human Approval Before Critical Changes
 
-189 [ ] AI Explanation of Recommendation
+189 [~] AI Explanation of Recommendation
 
-190 [ ] AI Never silently changes master schedule
+190 [~] AI Never silently changes master schedule
 
 
 ==================================================
 G — PROFESSIONAL PROJECT ACCOUNTING
 ==================================================
 
-191 [ ] Project Accounting Core
+191 [~] Project Accounting Core
 
-192 [ ] Project-specific Ledger
+192 [~] Project-specific Ledger
 
-193 [ ] Project Bank/Cash Accounts
+193 [~] Project Bank/Cash Accounts
 
-194 [ ] Budget
+194 [~] Budget
 
-195 [ ] Revised Budget
+195 [~] Revised Budget
 
-196 [ ] Actual Cost
+196 [~] Actual Cost
 
-197 [ ] Committed Cost
+197 [~] Committed Cost
 
-198 [ ] Forecast Cost
+198 [~] Forecast Cost
 
-199 [ ] Remaining Cost
+199 [~] Remaining Cost
 
-200 [ ] Total Project Cost
+200 [~] Total Project Cost
 
 201 [ ] Cost by WBS
 
