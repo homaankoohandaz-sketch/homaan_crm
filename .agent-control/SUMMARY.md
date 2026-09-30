@@ -71,3 +71,12 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Added Project Control accounting UI slice and wired it to the canonical page.
 - 201-220 remain PARTIAL until browser/runtime UI verification; no DONE claim.
 - Next: 221.
+
+
+## 2026-09-30 — Project Accounting 221-235
+- Added Forecast at Completion, cash flow, receivables, payables, contractor/supplier payments, advances, retention, installments and payment calendar.
+- Added payment approval records plus invoice/receipt document metadata/archive and accounting audit view.
+- Applied and SQL-tested migration project_accounting_221_235; temporary fixtures removed.
+- Added and wired Project Control UI slice project-accounting-221-235.js.
+- 221-235 remain PARTIAL pending browser/runtime verification.
+- Next task: 236.
