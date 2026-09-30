@@ -133,3 +133,10 @@ PARTIAL / release-gated.
 - Runtime browser verification for the implementation branch is still required; tasks 141-160 remain PARTIAL, not DONE.
 - Supabase migration applied: 20260930145935 project_control_procurement_141_160.
 - Implementation commits: d0dd4e43f42f74353f619f3628332daa906c820b, 8a45ec5fd0282e121dd9755e2595a0fe071e928e, 6eb0c9c4ae6f28dbc705c1cc9f31a9be20554e43, 97fc7ab4e4bf509aa3f631e4853c8dd25328b56a.
+
+
+## Batch 161-180 — AI Project Control
+- Added read-only AI Project Control engine covering schedule/delay, dependency/cycle analysis, critical-path calculation, procurement/material prediction, cost-overrun analysis, recovery recommendations, parallel-work candidates, team/resource conflicts, workfront/physical interference, crew availability, shared equipment and material conflicts.
+- Added Project Control UI entry point and persisted AI alerts via existing project_ai_alerts table.
+- Added focused unit tests and wired them into npm test.
+- Tasks 161-180 are PARTIAL because browser/runtime verification is still pending; no master schedule is silently mutated.
