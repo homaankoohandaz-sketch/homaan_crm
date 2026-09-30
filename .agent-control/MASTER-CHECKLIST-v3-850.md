@@ -567,61 +567,61 @@ H — REAL ESTATE COST / PRICE ENGINE
 
 236 [✓] Construction Cost Engine
 
-237 [ ] Live Material Cost Engine
+237 [~] Live Material Cost Engine
 
-238 [ ] Daily Material Price Update
+238 [~] Daily Material Price Update
 
-239 [ ] Construction Cost Current Value
+239 [~] Construction Cost Current Value
 
-240 [ ] Construction Cost at Purchase Date
+240 [~] Construction Cost at Purchase Date
 
-241 [ ] Construction Cost Inflation
+241 [~] Construction Cost Inflation
 
-242 [ ] Land Purchase Price
+242 [~] Land Purchase Price
 
-243 [ ] Current Land Value
+243 [~] Current Land Value
 
-244 [ ] Land Value from CRM
+244 [~] Land Value from CRM
 
-245 [ ] Land Comparable Search
+245 [~] Land Comparable Search
 
-246 [ ] Land Price from Market Sources
+246 [~] Land Price from Market Sources
 
-247 [ ] Land Price from Divar Data Where Legally/Technically Available
+247 [~] Land Price from Divar Data Where Legally/Technically Available
 
-248 [ ] Combined Land Valuation
+248 [~] Combined Land Valuation
 
-249 [ ] Total Project Cost
+249 [~] Total Project Cost
 
-250 [ ] Total Cost per Gross m²
+250 [~] Total Cost per Gross m²
 
-251 [ ] Useful/Net Area %
+251 [~] Useful/Net Area %
 
-252 [ ] Default Useful Area = 80%
+252 [~] Default Useful Area = 80%
 
-253 [ ] Total Useful Area
+253 [~] Total Useful Area
 
-254 [ ] Construction Cost per Useful m²
+254 [~] Construction Cost per Useful m²
 
-255 [ ] Land Cost per Useful m²
+255 [~] Land Cost per Useful m²
 
-256 [ ] Total Cost per Useful m²
+256 [~] Total Cost per Useful m²
 
-257 [ ] Cost per Unit
+257 [~] Cost per Unit
 
-258 [ ] Cost per Saleable Unit
+258 [~] Cost per Saleable Unit
 
-259 [ ] Cost Allocation by Unit
+259 [~] Cost Allocation by Unit
 
-260 [ ] Unit-level Profitability
+260 [~] Unit-level Profitability
 
-261 [ ] Developer Margin
+261 [~] Developer Margin
 
-262 [ ] Investor Return
+262 [~] Investor Return
 
-263 [ ] Owner Return
+263 [~] Owner Return
 
-264 [ ] Sensitivity Analysis
+264 [~] Sensitivity Analysis
 
 
 ==================================================
