@@ -87,6 +87,31 @@ PARTIAL / release-gated.
 - Live Supabase verification: construction_projects=1, project_phases=0, project_wbs=0, project_milestones=0, project_schedule_tasks=0.
 - No duplicate Project Control engine created.
 
+## Batch 121-140 Implementation
+- 121 Actual Progress: implemented as canonical project-control progress primitive.
+- 122 Earned Progress: implemented as explicit earned progress input/output.
+- 123 Delay Detection: implemented with planned/actual date assessment.
+- 124 Delay Reason: not silently inferred; remains TODO for explicit persisted reason taxonomy.
+- 125 Delay Responsibility: remains TODO; no unsupported attribution introduced.
+- 126 Recovery Plan: implemented as proposal object with explicit human approval requirement.
+- 127 Revised Schedule: version primitive supports revised task snapshots; full persistence/UI remains PARTIAL.
+- 128 Multiple Project Versions: implemented as version snapshot primitive; persistence remains PARTIAL.
+- 129 Project Snapshot: implemented as timestamped snapshot primitive.
+- 130 Project Status: snapshot supports explicit project status.
+- 131 Procurement Master Plan: procurement operations foundation added; master-plan persistence/UI remains PARTIAL.
+- 132 Material List: material reference supported through purchase requests; dedicated material master remains PARTIAL.
+- 133 BOQ Integration: no duplicate BOQ engine created; existing BOQ remains canonical and integration remains PARTIAL.
+- 134 Purchase Schedule: required-date field supported in purchase request; full schedule remains PARTIAL.
+- 135 Required Date: implemented in purchase request.
+- 136 Order Date: implemented on purchase order.
+- 137 Delivery Date: implemented on delivery record.
+- 138 Supplier: supplierId supported on purchase request.
+- 139 Supplier Comparison: remains TODO.
+- 140 Purchase Request: implemented with request state.
+- Focused isolated Node runtime: project-progress-121-130 PASS; procurement-131-140 PASS.
+- Full repository npm/CI runtime: not executed here; therefore none of these are marked DONE under the project DONE contract.
+- Commits: a7926936026434cd2b607dbfdb096b5fce984704; bd24f7a393ad514480f73ae9ef91c05d9eb02616; 65a688754e4399c410d0343f0e0419a9d41fe2bb; 3e4b563ea68161dee8e680c04357e89efcc7d1db.
+
 ## Next
-- Next Task: 121
-- Continue sequentially; implement only after reconciling existing Project Control paths.
+- Next Task: 141
+- Continue sequentially through procurement approval/order/delivery/inventory, reconciling existing schema before extending it.
