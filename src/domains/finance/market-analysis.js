@@ -1,0 +1,5 @@
+export function compareGold(v,p,g=0){v=pos(v);p=pos(p);g=pos(g);return{propertyValue:v,goldPricePerGram:p,propertyValueInGoldGrams:p?v/p:null,goldHeldValue:g*p,differenceVsGold:p?v-g*p:null}}
+export function compareDollar(v,r,u=0){v=pos(v);r=pos(r);u=pos(u);return{propertyValue:v,dollarRate:r,propertyValueInDollars:r?v/r:null,dollarHeldValue:u*r,differenceVsDollar:r?v-u*r:null}}
+export function scenarioForecast(xs=[]){return(xs||[]).map((s,i)=>({id:s.id??i+1,base:pos(s.base),growth:Number(s.growth)||0,periods:Math.max(0,Number(s.periods)||0),projected:pos(s.base)*Math.pow(1+(Number(s.growth)||0),Math.max(0,Number(s.periods)||0))}))}
+export function riskFlags({margin=null,liquidity=null,dataFreshnessDays=null}={}){const f=[];if(margin!=null&&Number(margin)<0)f.push('negative_margin');if(liquidity!=null&&Number(liquidity)<0)f.push('negative_liquidity');if(dataFreshnessDays!=null&&Number(dataFreshnessDays)>30)f.push('stale_market_data');return f}
+function pos(v){const n=Number(v);return Number.isFinite(n)&&n>0?n:0}
