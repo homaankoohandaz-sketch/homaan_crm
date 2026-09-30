@@ -123,3 +123,14 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Applied migration project_kpi_324_342 and transactionally tested catalog, alerts, snapshot, trends and drill-down; fixtures rolled back.
 - Browser/runtime UI verification remains pending; 324-342 are PARTIAL.
 - Next task: 343.
+
+
+## 2026-09-30 — Workflow Engine 343-367
+- Canonical workflow subsystem added; no duplicate engine.
+- Definitions, ordered steps, trigger/condition/action, approval, notification, assignment, escalation, deadline and recurring configuration.
+- Project/procurement/sales/contract/construction/accounting/AI templates.
+- Workflow runs, event history, audit, project/builder/user scoping and workflow_start() entry point.
+- Project Control UI wired via workflow-engine-343-367.js.
+- Transactional 9-step workflow test passed and rolled back.
+- Scheduler/external delivery/browser runtime remain unverified; 343-367 PARTIAL.
+- Next task: 368.
