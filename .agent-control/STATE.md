@@ -140,3 +140,16 @@ PARTIAL / release-gated.
 - Added Project Control UI entry point and persisted AI alerts via existing project_ai_alerts table.
 - Added focused unit tests and wired them into npm test.
 - Tasks 161-180 are PARTIAL because browser/runtime verification is still pending; no master schedule is silently mutated.
+
+
+## Batch 181-200 — AI Workspace Simulation + Accounting Core
+- 181-184: shared workspace detection, work zoning, floor parallelism and trade sequencing added.
+- 185-187: read-only what-if simulation, schedule optimization analysis and cost/time trade-off calculations added.
+- 188: human approval gate table added for critical AI changes.
+- 189: recommendation evidence/explanation remains explicit in AI report.
+- 190: AI engine/UI remains read-only; no silent master-schedule mutation.
+- 191-200: project ledger, versioned budgets/budget lines, revised/actual/committed/forecast/remaining/total project cost summary added.
+- Accounting schema migration recorded: 20260930170000_project_accounting_191_200.
+- AI approval migration recorded: 20260930171000_ai_change_approval_188.
+- Transactional accounting schema test passed and rolled back.
+- 181-200 remain PARTIAL pending browser/runtime verification.
