@@ -405,45 +405,45 @@ E — PROCUREMENT / PURCHASING
 F — AI PROJECT CONTROL
 ==================================================
 
-161 [ ] AI Project Assistant
+161 [~] AI Project Assistant
 
-162 [ ] AI Schedule Analysis
+162 [~] AI Schedule Analysis
 
-163 [ ] AI Delay Detection
+163 [~] AI Delay Detection
 
-164 [ ] AI Dependency Analysis
+164 [~] AI Dependency Analysis
 
-165 [ ] AI Critical Path Analysis
+165 [~] AI Critical Path Analysis
 
-166 [ ] AI Procurement Prediction
+166 [~] AI Procurement Prediction
 
-167 [ ] AI Material Shortage Prediction
+167 [~] AI Material Shortage Prediction
 
-168 [ ] AI Cost Overrun Prediction
+168 [~] AI Cost Overrun Prediction
 
-169 [ ] AI Schedule Recovery Suggestions
+169 [~] AI Schedule Recovery Suggestions
 
-170 [ ] AI Parallel Work Analysis
+170 [~] AI Parallel Work Analysis
 
-171 [ ] AI Team Conflict Detection
+171 [~] AI Team Conflict Detection
 
-172 [ ] AI Workfront Analysis
+172 [~] AI Workfront Analysis
 
-173 [ ] AI Crew Availability Analysis
+173 [~] AI Crew Availability Analysis
 
-174 [ ] AI Suggest Parallel Teams
+174 [~] AI Suggest Parallel Teams
 
-175 [ ] AI Suggest Safe Parallel Activities
+175 [~] AI Suggest Safe Parallel Activities
 
-176 [ ] AI Detect Activity Dependencies
+176 [~] AI Detect Activity Dependencies
 
-177 [ ] AI Detect Physical Interference
+177 [~] AI Detect Physical Interference
 
-178 [ ] AI Detect Resource Conflict
+178 [~] AI Detect Resource Conflict
 
-179 [ ] AI Detect Shared Equipment Conflict
+179 [~] AI Detect Shared Equipment Conflict
 
-180 [ ] AI Detect Shared Material Conflict
+180 [~] AI Detect Shared Material Conflict
 
 181 [ ] AI Detect Shared Workspace Conflict
 
