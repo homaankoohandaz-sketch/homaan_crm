@@ -92,3 +92,39 @@ test('project accounting cost ledger covers dimensions, equivalents and variance
   assert.equal(result.costVariance.budgetVsActualToman, 0);
   assert.equal(result.costVariance.committedVsActualToman, 5000000);
 });
+
+
+test('project payment control covers forecast, cash flow, approvals and audit archives', () => {
+  const f = createProjectFinanceModel();
+  const result = f.paymentControl({
+    actualCost: 100,
+    committedCost: 50,
+    remainingCost: 25,
+    receivables: [{ amount: 200, outstanding: 80 }],
+    payables: [{ amount: 120, outstanding: 40 }],
+    payments: [
+      { id: 'p1', amount: 60, partyType: 'contractor', approvalStatus: 'approved', dueDate: '2026-10-01' },
+      { id: 'p2', amount: 30, partyType: 'supplier', approvalStatus: 'pending', dueDate: '2026-09-30' }
+    ],
+    advances: [{ amount: 20 }],
+    retentions: [{ amount: 10 }],
+    installments: [{ amount: 50, paid: 20, outstanding: 30 }],
+    invoices: [{ invoiceNumber: 'INV-1', documentId: 'DOC-1', occurredAt: '2026-09-30', actorId: 'u1' }],
+    receipts: [{ receiptNumber: 'REC-1', documentId: 'DOC-2', occurredAt: '2026-09-30', actorId: 'u1' }]
+  });
+
+  assert.equal(result.forecastAtCompletion, 175);
+  assert.deepEqual(result.cashFlow, { inflows: 200, outflows: 120, net: 80 });
+  assert.equal(result.receivables.outstanding, 80);
+  assert.equal(result.payables.outstanding, 40);
+  assert.equal(result.contractorPayments[0].id, 'p1');
+  assert.equal(result.supplierPayments[0].id, 'p2');
+  assert.equal(result.advancePayments, 20);
+  assert.equal(result.retention, 10);
+  assert.deepEqual(result.installments, { count: 1, total: 50, paid: 20, outstanding: 30 });
+  assert.equal(result.paymentSchedule[0].id, 'p2');
+  assert.deepEqual(result.paymentApproval, { approved: 1, pending: 1 });
+  assert.equal(result.invoiceArchive[0].documentId, 'DOC-1');
+  assert.equal(result.receiptArchive[0].documentId, 'DOC-2');
+  assert.equal(result.accountingAuditTrail.length, 4);
+});
