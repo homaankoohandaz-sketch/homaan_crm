@@ -50,36 +50,32 @@ last_batch: 31-50
 ## Release
 PARTIAL / release-gated.
 
+## Batch 71-100 Reconciliation / Implementation
+- 071-075 Matching: implementation files exist in `src/domains/matching/scoring.js`; focused tests were added, but runtime verification for the repository test file was not executed in this environment.
+- 076 Valuation Engine: existing implementation retained; no duplicate valuation engine created.
+- 077 Comparable Evidence: remains PARTIAL; no unsupported comparable evidence was invented.
+- 078 Construction Cost Engine: canonical construction calculation path retained; root duplicate was not recreated.
+- 079 ROI / Profit Scenarios: existing finance paths retained; no duplicate scenario engine created.
+- 080-081 Gold/Dollar Comparison: canonical `src/domains/finance/market-analysis.js` extended.
+- 082 Historical Market Analysis: historical comparison primitive added.
+- 083 Live Market Snapshot: timestamped market snapshot primitive added; this is not a live external feed.
+- 084 Scenario Forecasting: scenario output explicitly marked non-guarantee.
+- 085 Liquidity Analysis: remains TODO.
+- 086 Deal Risk Analysis: existing risk flag primitive retained.
+- 087 Market Data Timestamp: snapshot timestamp/sourceTimestamp added.
+- 088-089 Daily Gold/Dollar Update: no scheduled external feed implemented; remain TODO.
+- 090 Property Price vs Gold: explicit property-vs-gold primitive added.
+- 091 Property Price vs Dollar: explicit property-vs-dollar primitive added.
+- 092 Property Value in 18K Gold Grams: explicit grams primitive added.
+- 093-096 Historical 6/12/18/24 month series support added; source observations remain caller-supplied.
+- 097 Historical Performance Chart: data-series support exists; visual chart remains TODO.
+- 098 Future Scenario Chart: scenario-series support exists; visual chart remains TODO.
+- 099 Proposal-Ready Investment Analysis: structured investment-analysis output added.
+- 100 Forecast/Scenario vs Guarantee: output explicitly carries guarantee=false and disclaimer.
+- Commits: matching 6b742cad2963489b7f00c552f95ea5a94b29b52f; matching tests b2ad97058b2bea3bef440a79852750a8be40c4b1; market analysis 36939c8f4907fc039dc4dc003dd1da66a4338c06; market tests 11deeeec1bef348a0bd85682ee1d74e3f3570ec7.
+- Isolated runtime: market-analysis tests PASS after fixing historical direction and floating-point assertion.
+- Full repository runtime: unavailable from current environment.
+
 ## Next
-- Next Task: 051
-- Continue sequentially through the 850 registry.
-- Do not rebuild completed/reconciled CRM paths.
-
-
-## Batch 51-70
-- 051 Original Raw Data: canonical CRM operations now preserves source objects for export/audit workflows.
-- 052 Import Batch Tracking: batch lifecycle primitive added (started/completed/error count).
-- 053 Duplicate Detection: duplicate phone candidates remain detection-only; no merge authority.
-- 054 Same Phone Preservation: same-phone candidates explicitly return mergeAllowed=false.
-- 055 Activity Timeline: canonical activity event/timeline primitives added.
-- 056 Data Export: column-selectable record export added.
-- 057 JSON Backup: JSON serialization added from canonical export path.
-- 058 Manager Data Editing: arbitrary-field record edit primitive added without field whitelist.
-- 059 Manager Audit Trail: immutable audit-entry/append primitives added.
-- 060 Arbitrary Excel Column Editor: arbitrary imported-field edit primitive added; UI/runtime integration remains partial.
-- 061 Import Error Isolation: raw rows are retained independently from normalization errors.
-- 062 Import Preview: existing preview reconciled; no duplicate preview path created.
-- 063 Import Validation: existing validation reconciled; error isolation added.
-- 064 Import Rollback: non-destructive rollback-plan primitive added; execution remains gated.
-- 065 Data Quality Dashboard: quality metrics primitive added; dashboard UI remains partial.
-- 066 Land Analysis: canonical analysis primitives added without replacing existing feasibility path.
-- 067 Development Feasibility: land analysis supports buildable/useful area and cost/revenue scenario inputs; full municipal evidence remains separate.
-- 068 Municipal Regulation Evidence: remains TODO; no unsupported external regulatory data was invented.
-- 069 Participation Analysis: canonical participation share/profit calculation added.
-- 070 Barter Analysis: canonical value-balance calculation added.
-
-## Batch 51-70 Verification
-- Isolated Node runtime: PASS for CRM operations, data-quality primitives, land/participation/barter analysis.
-- Full repository runtime: still unavailable from current environment; no DONE claim made from isolated runtime alone.
-- New implementation commits: dbcbfa777268235287eae565994715833bb654a3, f669cfd584b51035b994840090276dd3fabe7bde, d002b1fc4e16518935d5bdd2a922b63f322e9a7c, 77ce4deb1b2a7aa5dd6a3b3b50cd7aae79a3caf4.
-- Next Task: 071.
+- Next Task: 101
+- Continue sequentially; reconcile existing Project/Construction Control implementation before creating any new Project Control engine.
