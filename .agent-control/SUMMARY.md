@@ -61,3 +61,13 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Added project accounting core: ledger, budget versions/lines, revised budget, actual, committed, forecast, remaining and total project cost summary.
 - Added accounting + AI approval migrations and transactional schema verification.
 - Browser/runtime verification remains pending; 181-200 are PARTIAL.
+
+
+## 2026-09-30 — Project Accounting 201-220
+- Implemented canonical cost allocation views for WBS, phase, floor, unit, contractor, supplier, material, purchase, invoice, payment and date.
+- Added historical USD/gold rate lineage, Toman normalization, current equivalents and construction-cost inflation tracking.
+- Added budget/actual, committed/actual and forecast/budget variance reporting.
+- Applied Supabase migration 20260930151310_project_accounting_201_220 and verified currency/inflation SQL with temporary fixtures; fixtures removed.
+- Added Project Control accounting UI slice and wired it to the canonical page.
+- 201-220 remain PARTIAL until browser/runtime UI verification; no DONE claim.
+- Next: 221.
