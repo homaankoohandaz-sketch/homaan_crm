@@ -148,10 +148,52 @@ export function analyzeProcurementPrediction(procurement, now=new Date()){
   });
 }
 
+
+export function detectWorkspaceConflicts(tasks){
+  const conflicts=[];
+  for(let i=0;i<tasks.length;i++) for(let j=i+1;j<tasks.length;j++){
+    const a=tasks[i],b=tasks[j];
+    if(!overlap(asDate(a.planned_start),asDate(a.planned_finish),asDate(b.planned_start),asDate(b.planned_finish))) continue;
+    const az=String(a.constraints?.workspace_id||a.constraints?.workspace||'');
+    const bz=String(b.constraints?.workspace_id||b.constraints?.workspace||'');
+    if(az && bz && az===bz) conflicts.push({taskA:a.id,taskB:b.id,workspace:az});
+  }
+  return {conflicts};
+}
+export function suggestWorkZoning(tasks){
+  const byZone=new Map();
+  for(const t of tasks){const zone=String(t.constraints?.zone_id||t.constraints?.workfront||'unassigned'); if(!byZone.has(zone))byZone.set(zone,[]);byZone.get(zone).push(t.id);}
+  return [...byZone].map(([zone,taskIds])=>({zone,taskIds}));
+}
+export function suggestFloorParallelism(tasks){
+  const groups=new Map();
+  for(const t of tasks){const floor=t.constraints?.floor_id??t.floor_id??'unassigned';if(!groups.has(String(floor)))groups.set(String(floor),[]);groups.get(String(floor)).push(t);}
+  return [...groups].map(([floor,items])=>({floor,taskIds:items.map(x=>x.id),parallelCandidates:items.filter(x=>Number(x.progress||0)<100).map(x=>x.id)}));
+}
+export function suggestTradeSequencing(tasks){
+  const order=['structure','mep','mechanical','electrical','plumbing','walls','facade','finishing','painting'];
+  return tasks.map(t=>({id:t.id,title:t.title,trade:String(t.constraints?.trade||t.trade||'').toLowerCase(),sequence:Math.max(0,order.indexOf(String(t.constraints?.trade||t.trade||'').toLowerCase()))})).sort((a,b)=>a.sequence-b.sequence);
+}
+export function simulateWhatIf({tasks=[],changes=[],project={}}){
+  const clone=tasks.map(t=>({...t}));
+  for(const ch of changes){const t=clone.find(x=>Number(x.id)===Number(ch.task_id));if(!t)continue;if(ch.days_delta){const d=new Date(t.planned_finish+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+Number(ch.days_delta));t.planned_finish=d.toISOString().slice(0,10);}if(ch.cost_delta)t.actual_cost=Number(t.actual_cost||0)+Number(ch.cost_delta);}
+  const schedule=analyzeSchedule(clone,new Date());
+  const cost=analyzeCostOverrun(clone,project);
+  return {readOnly:true,scenario:'what-if',changes,delayCount:schedule.overdue.length,costVariance:cost.variance,costVariancePercent:cost.variancePercent,tasks:clone};
+}
+export function optimizeSchedule(tasks){
+  const dependencies=detectDependencyConflicts(tasks);
+  const conflicts=detectResourceConflicts(tasks);
+  return {readOnly:true,blockedByDependencies:dependencies.missing.length+dependencies.cycles.length,conflicts:conflicts.sharedResourceConflicts.length+conflicts.teamConflicts.length,candidateCount:suggestParallelActivities(tasks).length};
+}
+export function costTimeTradeoff({baseCost=0,baseDays=0,options=[]}){
+  return options.map(o=>({...o,costDelta:Number(o.cost_delta||0),daysDelta:Number(o.days_delta||0),costPerDaySaved:Number(o.days_delta<0&&o.cost_delta>0?o.cost_delta/Math.abs(o.days_delta):0)}));
+}
+
 export function buildAiProjectControlReport({tasks=[],procurement=[],resources=[],project={},now=new Date()}){
   const schedule=analyzeSchedule(tasks,now); const criticalPath=analyzeCriticalPath(tasks); const cost=analyzeCostOverrun(tasks,project); const crew=analyzeCrewAvailability(tasks,resources); const procurementPrediction=analyzeProcurementPrediction(procurement,now);
   const dependency=detectDependencyConflicts(tasks);
-  const resource=detectResourceConflicts(tasks); const physical=detectPhysicalInterference(tasks); const equipment=detectSharedEquipmentConflicts(tasks); const parallelSuggestions=suggestParallelActivities(tasks);
+  const resource=detectResourceConflicts(tasks); const workspace=detectWorkspaceConflicts(tasks); const zoning=suggestWorkZoning(tasks); const floorParallelism=suggestFloorParallelism(tasks); const tradeSequencing=suggestTradeSequencing(tasks); const physical=detectPhysicalInterference(tasks); const equipment=detectSharedEquipmentConflicts(tasks); const parallelSuggestions=suggestParallelActivities(tasks);
   const material=detectMaterialConflicts(
     procurement.map(p=>({id:p.id,material_key:p.material_key||p.item_name,item_name:p.item_name,quantity:Number(p.quantity||p.forecast_quantity||0),required_date:p.forecast_required_date||p.required_date})),
     resources.filter(r=>String(r.resource_type||'').toLowerCase().includes('material')).map(r=>({material_key:r.material_key||r.name,on_hand_quantity:r.on_hand_quantity||r.actual_qty,reserved_quantity:r.reserved_quantity}))
@@ -159,7 +201,7 @@ export function buildAiProjectControlReport({tasks=[],procurement=[],resources=[
   const alerts=[];
   if(schedule.overdue.length) alerts.push({type:'delay',severity:schedule.criticalOverdue?'critical':'high',title:'Schedule delay detected',count:schedule.overdue.length});
   if(dependency.missing.length||dependency.cycles.length) alerts.push({type:'dependency',severity:'high',title:'Dependency conflict detected',missing:dependency.missing.length,cycles:dependency.cycles.length});
-  if(physical.conflicts.length) alerts.push({type:'physical_interference',severity:'high',title:'Physical workfront interference detected',count:physical.conflicts.length}); if(equipment.equipment.length) alerts.push({type:'equipment_conflict',severity:'high',title:'Shared equipment conflict detected',count:equipment.equipment.length}); if(resource.sharedResourceConflicts.length||resource.teamConflicts.length) alerts.push({type:'resource_conflict',severity:'high',title:'Parallel work resource conflict',count:resource.sharedResourceConflicts.length+resource.teamConflicts.length});
+  if(workspace.conflicts.length) alerts.push({type:'workspace_conflict',severity:'high',title:'Shared workspace conflict detected',count:workspace.conflicts.length}); if(physical.conflicts.length) alerts.push({type:'physical_interference',severity:'high',title:'Physical workfront interference detected',count:physical.conflicts.length}); if(equipment.equipment.length) alerts.push({type:'equipment_conflict',severity:'high',title:'Shared equipment conflict detected',count:equipment.equipment.length}); if(resource.sharedResourceConflicts.length||resource.teamConflicts.length) alerts.push({type:'resource_conflict',severity:'high',title:'Parallel work resource conflict',count:resource.sharedResourceConflicts.length+resource.teamConflicts.length});
   if(material.conflicts.length) alerts.push({type:'material_conflict',severity:'high',title:'Shared material shortage detected',count:material.conflicts.length});
   return {
     readOnly:true,
