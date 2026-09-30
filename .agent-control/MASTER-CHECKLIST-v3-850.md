@@ -490,45 +490,45 @@ G — PROFESSIONAL PROJECT ACCOUNTING
 
 200 [~] Total Project Cost
 
-201 [ ] Cost by WBS
+201 [~] Cost by WBS
 
-202 [ ] Cost by Phase
+202 [~] Cost by Phase
 
-203 [ ] Cost by Floor
+203 [~] Cost by Floor
 
-204 [ ] Cost by Unit
+204 [~] Cost by Unit
 
-205 [ ] Cost by Contractor
+205 [~] Cost by Contractor
 
-206 [ ] Cost by Supplier
+206 [~] Cost by Supplier
 
-207 [ ] Cost by Material
+207 [~] Cost by Material
 
-208 [ ] Cost by Purchase
+208 [~] Cost by Purchase
 
-209 [ ] Cost by Invoice
+209 [~] Cost by Invoice
 
-210 [ ] Cost by Payment
+210 [~] Cost by Payment
 
-211 [ ] Cost by Date
+211 [~] Cost by Date
 
-212 [ ] Toman Accounting
+212 [~] Toman Accounting
 
-213 [ ] Dollar Equivalent
+213 [~] Dollar Equivalent
 
-214 [ ] Gold Equivalent
+214 [~] Gold Equivalent
 
-215 [ ] Historical Exchange Rate at Transaction Date
+215 [~] Historical Exchange Rate at Transaction Date
 
-216 [ ] Current Equivalent Value
+216 [~] Current Equivalent Value
 
-217 [ ] Cost Inflation Tracking
+217 [~] Cost Inflation Tracking
 
-218 [ ] Cost Variance
+218 [~] Cost Variance
 
-219 [ ] Budget vs Actual
+219 [~] Budget vs Actual
 
-220 [ ] Committed vs Actual
+220 [~] Committed vs Actual
 
 221 [ ] Forecast at Completion
 
