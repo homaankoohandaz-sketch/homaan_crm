@@ -61,10 +61,49 @@ export function detectMaterialConflicts(demands,inventory){
   return {conflicts};
 }
 
+
+export function detectPhysicalInterference(tasks){
+  const conflicts=[];
+  for(let i=0;i<tasks.length;i++) for(let j=i+1;j<tasks.length;j++){
+    const a=tasks[i],b=tasks[j];
+    if(!overlap(asDate(a.planned_start),asDate(a.planned_finish),asDate(b.planned_start),asDate(b.planned_finish))) continue;
+    const az=String(a.constraints?.zone_id||a.constraints?.workfront||'');
+    const bz=String(b.constraints?.zone_id||b.constraints?.workfront||'');
+    if(az && bz && az===bz) conflicts.push({taskA:a.id,taskB:b.id,zone:az});
+  }
+  return {conflicts};
+}
+
+export function detectSharedEquipmentConflicts(tasks){
+  const equipment=[];
+  for(let i=0;i<tasks.length;i++) for(let j=i+1;j<tasks.length;j++){
+    const a=tasks[i],b=tasks[j];
+    if(!overlap(asDate(a.planned_start),asDate(a.planned_finish),asDate(b.planned_start),asDate(b.planned_finish))) continue;
+    const ae=new Set((a.constraints?.equipment_ids||[]).map(String));
+    for(const e of (b.constraints?.equipment_ids||[]).map(String)) if(ae.has(e)) equipment.push({taskA:a.id,taskB:b.id,equipmentId:e});
+  }
+  return {equipment};
+}
+
+export function suggestParallelActivities(tasks){
+  const suggestions=[];
+  for(let i=0;i<tasks.length;i++) for(let j=i+1;j<tasks.length;j++){
+    const a=tasks[i],b=tasks[j];
+    if(!a.planned_start||!a.planned_finish||!b.planned_start||!b.planned_finish) continue;
+    if(overlap(asDate(a.planned_start),asDate(a.planned_finish),asDate(b.planned_start),asDate(b.planned_finish))) continue;
+    const ar=new Set((a.resource_ids||[]).map(String));
+    const br=new Set((b.resource_ids||[]).map(String));
+    const shared=[...ar].filter(x=>br.has(x));
+    if(shared.length) continue;
+    suggestions.push({taskA:a.id,taskB:b.id,reason:'No date overlap and no shared declared resource'});
+  }
+  return suggestions.slice(0,20);
+}
+
 export function buildAiProjectControlReport({tasks=[],procurement=[],resources=[],now=new Date()}){
   const schedule=analyzeSchedule(tasks,now);
   const dependency=detectDependencyConflicts(tasks);
-  const resource=detectResourceConflicts(tasks);
+  const resource=detectResourceConflicts(tasks); const physical=detectPhysicalInterference(tasks); const equipment=detectSharedEquipmentConflicts(tasks); const parallelSuggestions=suggestParallelActivities(tasks);
   const material=detectMaterialConflicts(
     procurement.map(p=>({id:p.id,material_key:p.material_key||p.item_name,item_name:p.item_name,quantity:Number(p.quantity||p.forecast_quantity||0),required_date:p.forecast_required_date||p.required_date})),
     resources.filter(r=>String(r.resource_type||'').toLowerCase().includes('material')).map(r=>({material_key:r.material_key||r.name,on_hand_quantity:r.on_hand_quantity||r.actual_qty,reserved_quantity:r.reserved_quantity}))
@@ -72,7 +111,7 @@ export function buildAiProjectControlReport({tasks=[],procurement=[],resources=[
   const alerts=[];
   if(schedule.overdue.length) alerts.push({type:'delay',severity:schedule.criticalOverdue?'critical':'high',title:'Schedule delay detected',count:schedule.overdue.length});
   if(dependency.missing.length||dependency.cycles.length) alerts.push({type:'dependency',severity:'high',title:'Dependency conflict detected',missing:dependency.missing.length,cycles:dependency.cycles.length});
-  if(resource.sharedResourceConflicts.length||resource.teamConflicts.length) alerts.push({type:'resource_conflict',severity:'high',title:'Parallel work resource conflict',count:resource.sharedResourceConflicts.length+resource.teamConflicts.length});
+  if(physical.conflicts.length) alerts.push({type:'physical_interference',severity:'high',title:'Physical workfront interference detected',count:physical.conflicts.length}); if(equipment.equipment.length) alerts.push({type:'equipment_conflict',severity:'high',title:'Shared equipment conflict detected',count:equipment.equipment.length}); if(resource.sharedResourceConflicts.length||resource.teamConflicts.length) alerts.push({type:'resource_conflict',severity:'high',title:'Parallel work resource conflict',count:resource.sharedResourceConflicts.length+resource.teamConflicts.length});
   if(material.conflicts.length) alerts.push({type:'material_conflict',severity:'high',title:'Shared material shortage detected',count:material.conflicts.length});
   return {
     readOnly:true,
@@ -82,7 +121,7 @@ export function buildAiProjectControlReport({tasks=[],procurement=[],resources=[
     recommendations:[
       ...(schedule.overdue.length?['Review delayed activities and recovery options.']:[]),
       ...(dependency.missing.length||dependency.cycles.length?['Repair dependency graph before relying on critical-path analysis.']:[]),
-      ...(resource.sharedResourceConflicts.length||resource.teamConflicts.length?['Re-sequence or reassign conflicting parallel activities.']:[]),
+      ...(physical.conflicts.length?['Separate conflicting activities by workfront or zone.']:[]), ...(equipment.equipment.length?['Re-sequence activities sharing the same equipment.']:[]), ...(resource.sharedResourceConflicts.length||resource.teamConflicts.length?['Re-sequence or reassign conflicting parallel activities.']:[]),
       ...(material.conflicts.length?['Advance procurement or rebalance material allocation.']:[])
     ]
   };
