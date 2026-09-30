@@ -148,8 +148,8 @@ export function analyzeProcurementPrediction(procurement, now=new Date()){
   });
 }
 
-export function buildAiProjectControlReport({tasks=[],procurement=[],resources=[],now=new Date()}){
-  const schedule=analyzeSchedule(tasks,now); const criticalPath=analyzeCriticalPath(tasks); const cost=analyzeCostOverrun(tasks,arguments[0]?.project||{}); const crew=analyzeCrewAvailability(tasks,resources); const procurementPrediction=analyzeProcurementPrediction(procurement,now);
+export function buildAiProjectControlReport({tasks=[],procurement=[],resources=[],project={},now=new Date()}){
+  const schedule=analyzeSchedule(tasks,now); const criticalPath=analyzeCriticalPath(tasks); const cost=analyzeCostOverrun(tasks,project); const crew=analyzeCrewAvailability(tasks,resources); const procurementPrediction=analyzeProcurementPrediction(procurement,now);
   const dependency=detectDependencyConflicts(tasks);
   const resource=detectResourceConflicts(tasks); const physical=detectPhysicalInterference(tasks); const equipment=detectSharedEquipmentConflicts(tasks); const parallelSuggestions=suggestParallelActivities(tasks);
   const material=detectMaterialConflicts(
