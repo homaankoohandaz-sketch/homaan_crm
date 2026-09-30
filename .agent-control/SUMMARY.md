@@ -46,3 +46,10 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Integration SQL test passed transactionally; test data was rolled back.
 - External live material-price feed is NOT claimed; price source/timestamp/history are implemented and current price can be recorded from a source.
 - Browser/runtime verification on buildwise-implementation is still pending, so 141-160 remain PARTIAL.
+
+
+## 2026-09-30 — AI Project Control 161-180
+- Added deterministic/read-only AI project-control engine and UI for schedule, delay, dependencies, CPM, procurement prediction, material shortage, cost overrun, recovery suggestions, parallel-work candidates, team/resource/workfront/physical/equipment/material conflicts and crew availability.
+- Added focused tests and wired them into npm test.
+- AI writes alerts to existing project_ai_alerts; it does not mutate the master schedule.
+- Runtime/browser verification remains pending; 161-180 are PARTIAL.
