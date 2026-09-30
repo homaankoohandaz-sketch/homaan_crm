@@ -92,3 +92,14 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Added project-cost-236-264.js and wired Project Control to the new views.
 - Browser/runtime UI verification remains pending; 237-264 are PARTIAL, not DONE.
 - Next task: 265.
+
+## 2026-09-30 — Sales Engine / Offer Builder 265-293
+- Added sales strategy and unit pricing model on top of existing Project/Unit/Cost Intelligence structures.
+- Added premium components: floor, view, orientation, commercial; fixed values: parking, storage, terrace, garden; payment-term pricing for cash/installment.
+- Added inventory statuses available/reserved/sold, sale/pre-sale/participation offer types, customer offers, negotiation records, versioning and approvals.
+- Added unit sales matrix, inventory, current offer version and profitability views.
+- Added project-sales-265-293.js and wired Project Control; browser print is the current proposal/PDF-screen mechanism.
+- Migration sales_engine_265_293 applied successfully.
+- Smoke verification passed for database objects/views. Existing project has zero units, so populated unit arithmetic could not be executed against real project data.
+- Browser/runtime UI verification remains pending; 265-293 are PARTIAL.
+- Next task: 294.
