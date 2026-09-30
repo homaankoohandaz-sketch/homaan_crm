@@ -113,3 +113,13 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - SQL rollback fixture verified plan extraction: gross 1200, useful 950, 8 units, 10 parking, 8 storage, 5 floors, land 400 and setbacks JSON.
 - Actual binary upload/storage, OCR/AI extraction, plan-vs-permit comparison and browser runtime remain unverified; 294-323 are PARTIAL.
 - Next task: 324.
+
+
+## 2026-09-30 — KPI Engine / Control Center 324-342
+- Extended the canonical KPI path instead of creating a parallel subsystem.
+- Added live KPI catalog for quality, HSE documentation, sales, cash flow, contractor, supplier, productivity, progress, delay, cost overrun, procurement delay, unit sales, ROI and profit margin.
+- Added custom KPI definitions, thresholds, alerts, trend data, drill-down and snapshot refresh.
+- Added project-kpi-324-342.js and wired it into Project Control.
+- Applied migration project_kpi_324_342 and transactionally tested catalog, alerts, snapshot, trends and drill-down; fixtures rolled back.
+- Browser/runtime UI verification remains pending; 324-342 are PARTIAL.
+- Next task: 343.
