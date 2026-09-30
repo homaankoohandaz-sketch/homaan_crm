@@ -5,7 +5,10 @@ import {
   detectDependencyConflicts,
   detectResourceConflicts,
   detectMaterialConflicts,
-  buildAiProjectControlReport
+  buildAiProjectControlReport,
+  detectPhysicalInterference,
+  detectSharedEquipmentConflicts,
+  suggestParallelActivities
 } from '../../ai-project-control-engine.js';
 
 test('detects overdue schedule tasks and schedule slippage', () => {
@@ -55,4 +58,16 @@ test('builds a read-only AI project-control report', () => {
   });
   assert.equal(report.readOnly,true);
   assert.ok(report.alerts.some(x=>x.type==='delay'));
+});
+
+
+test('detects physical workfront and equipment conflicts and proposes safe parallel work', () => {
+  const tasks=[
+    {id:1,planned_start:'2026-10-01',planned_finish:'2026-10-05',constraints:{zone_id:'Z1',equipment_ids:['lift-1']},resource_ids:[]},
+    {id:2,planned_start:'2026-10-03',planned_finish:'2026-10-06',constraints:{zone_id:'Z1',equipment_ids:['lift-1']},resource_ids:[]},
+    {id:3,planned_start:'2026-10-07',planned_finish:'2026-10-10',constraints:{zone_id:'Z2',equipment_ids:['lift-2']},resource_ids:[]}
+  ];
+  assert.equal(detectPhysicalInterference(tasks).conflicts.length,1);
+  assert.equal(detectSharedEquipmentConflicts(tasks).equipment.length,1);
+  assert.ok(suggestParallelActivities(tasks).some(x=>x.taskA===1&&x.taskB===3));
 });
