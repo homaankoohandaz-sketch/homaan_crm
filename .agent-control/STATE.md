@@ -112,8 +112,14 @@ PARTIAL / release-gated.
 - Full repository npm/CI runtime: not executed here; therefore none of these are marked DONE under the project DONE contract.
 - Commits: a7926936026434cd2b607dbfdb096b5fce984704; bd24f7a393ad514480f73ae9ef91c05d9eb02616; 65a688754e4399c410d0343f0e0419a9d41fe2bb; 3e4b563ea68161dee8e680c04357e89efcc7d1db.
 
-## Next
-- Next Task: 324
+## Batch 324-342 — KPI Engine
+- Extended canonical project_kpi_snapshots/KPI dashboard; no duplicate KPI subsystem.
+- Added KPI catalog: quality, HSE documentation, sales, cash flow, contractor, supplier, productivity, progress, delay, cost overrun, procurement delay, unit sales, ROI and profit margin.
+- Added custom KPI definitions, thresholds, alert evaluation, trend data and drill-down data.
+- Added snapshot refresh function and Project Control UI slice project-kpi-324-342.js.
+- Supabase migration project_kpi_324_342 applied and transactionally tested; fixtures rolled back.
+- Browser/runtime UI verification remains pending; 324-342 are PARTIAL.
+- Next Task: 343.
 
 
 ## Batch 294-323 — Project Documents / Plan Intelligence / KPI
