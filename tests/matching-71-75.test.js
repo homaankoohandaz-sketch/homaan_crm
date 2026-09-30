@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import { scoreMatch,rankMatches,matchInvestors,matchBuilders,matchSuppliers,matchProperties,detectOpportunities } from '../src/domains/matching/scoring.js';
+const a=scoreMatch({region:1,budget:100},{region:1,budget:100},{region:2,budget:3});assert.equal(a.score,1);
+assert.equal(rankMatches({region:1},[{region:2},{region:1}],{region:1})[0].candidate.region,1);
+assert.equal(matchInvestors({region:1,budget:100},[{region:1,budget:100}]).length,1);
+assert.equal(matchBuilders({region:1,capacity:10},[{region:1,capacity:10}]).length,1);
+assert.equal(matchSuppliers({region:1,material:'cement'},[{region:1,material:'cement'}]).length,1);
+assert.equal(matchProperties({region:1,budget:100},[{region:1,budget:100}]).length,1);
+assert.equal(detectOpportunities({investors:[{region:1,budget:100}],properties:[{region:1,budget:100}]}).length,1);
+console.log('matching-71-75: passed');
