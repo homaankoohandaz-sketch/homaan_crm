@@ -151,6 +151,95 @@ export function createProjectFinanceModel() {
           budgetUtilizationPct: budget ? actual / budget * 100 : 0
         }
       };
+    },
+
+    paymentControl(input = {}) {
+      const receivables = rows(input.receivables);
+      const payables = rows(input.payables);
+      const payments = rows(input.payments);
+      const advances = rows(input.advances);
+      const retentions = rows(input.retentions);
+      const installments = rows(input.installments);
+      const receipts = rows(input.receipts);
+      const invoices = rows(input.invoices);
+
+      const sum = (items, field = 'amount') =>
+        items.reduce((total, row) => total + positive(row?.[field]), 0);
+
+      const totalReceivables = sum(receivables);
+      const totalPayables = sum(payables);
+      const totalPaid = sum(payments);
+      const totalAdvances = sum(advances);
+      const totalRetention = sum(retentions);
+      const totalInstallments = sum(installments);
+      const approvedPayments = payments.filter(x => x?.approvalStatus === 'approved');
+      const pendingPayments = payments.filter(x => x?.approvalStatus === 'pending');
+
+      const forecastAtCompletion =
+        positive(input.actualCost) +
+        positive(input.committedCost) +
+        Math.max(0, positive(input.remainingCost));
+
+      return {
+        forecastAtCompletion,
+        cashFlow: {
+          inflows: totalReceivables,
+          outflows: totalPayables,
+          net: totalReceivables - totalPayables
+        },
+        receivables: {
+          count: receivables.length,
+          total: totalReceivables,
+          outstanding: sum(receivables, 'outstanding')
+        },
+        payables: {
+          count: payables.length,
+          total: totalPayables,
+          outstanding: sum(payables, 'outstanding')
+        },
+        contractorPayments: payments.filter(x => x?.partyType === 'contractor'),
+        supplierPayments: payments.filter(x => x?.partyType === 'supplier'),
+        advancePayments: totalAdvances,
+        retention: totalRetention,
+        installments: {
+          count: installments.length,
+          total: totalInstallments,
+          paid: sum(installments, 'paid'),
+          outstanding: sum(installments, 'outstanding')
+        },
+        paymentSchedule: payments
+          .map((x, index) => ({
+            id: x?.id ?? index + 1,
+            dueDate: x?.dueDate ?? null,
+            amount: positive(x?.amount),
+            approvalStatus: x?.approvalStatus ?? 'pending',
+            status: x?.status ?? 'scheduled'
+          }))
+          .sort((a, b) => String(a.dueDate ?? '').localeCompare(String(b.dueDate ?? ''))),
+        paymentApproval: {
+          approved: approvedPayments.length,
+          pending: pendingPayments.length
+        },
+        invoiceArchive: invoices.map((x, index) => ({
+          id: x?.id ?? index + 1,
+          invoiceNumber: x?.invoiceNumber ?? null,
+          documentId: x?.documentId ?? null,
+          status: x?.status ?? 'archived'
+        })),
+        receiptArchive: receipts.map((x, index) => ({
+          id: x?.id ?? index + 1,
+          receiptNumber: x?.receiptNumber ?? null,
+          documentId: x?.documentId ?? null,
+          status: x?.status ?? 'archived'
+        })),
+        accountingAuditTrail: [...invoices, ...receipts, ...payments].map((x, index) => ({
+          eventId: x?.eventId ?? index + 1,
+          type: x?.type ?? (x?.receiptNumber ? 'receipt' : x?.invoiceNumber ? 'invoice' : 'payment'),
+          documentId: x?.documentId ?? null,
+          occurredAt: x?.occurredAt ?? null,
+          actorId: x?.actorId ?? null
+        }))
+      };
     }
   });
 }
