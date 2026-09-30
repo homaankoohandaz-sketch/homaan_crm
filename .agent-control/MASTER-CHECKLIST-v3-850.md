@@ -691,70 +691,70 @@ I — SALES ENGINE / BUILDER OFFER
 J — PLAN / PERMIT / RENDER INTELLIGENCE
 ==================================================
 
-294 [ ] Upload Architectural Plan
+294 [~] Upload Architectural Plan
 
-295 [ ] Upload Permit
+295 [~] Upload Permit
 
-296 [ ] Upload Municipality Documents
+296 [~] Upload Municipality Documents
 
-297 [ ] Upload Floor Plans
+297 [~] Upload Floor Plans
 
-298 [ ] Upload Elevations
+298 [~] Upload Elevations
 
-299 [ ] Upload Site Plan
+299 [~] Upload Site Plan
 
-300 [ ] Upload Render / Facade
+300 [~] Upload Render / Facade
 
-301 [ ] Project Document OCR
+301 [~] Project Document OCR
 
-302 [ ] AI Plan Understanding
+302 [~] AI Plan Understanding
 
-303 [ ] AI Extract Gross Area
+303 [~] AI Extract Gross Area
 
-304 [ ] AI Extract Useful Area
+304 [~] AI Extract Useful Area
 
-305 [ ] AI Extract Unit Count
+305 [~] AI Extract Unit Count
 
-306 [ ] AI Extract Parking Count
+306 [~] AI Extract Parking Count
 
-307 [ ] AI Extract Storage Count
+307 [~] AI Extract Storage Count
 
-308 [ ] AI Extract Floor Count
+308 [~] AI Extract Floor Count
 
-309 [ ] AI Extract Land Area
+309 [~] AI Extract Land Area
 
-310 [ ] AI Extract Setbacks
+310 [~] AI Extract Setbacks
 
-311 [ ] AI Compare Plan vs Permit
+311 [~] AI Compare Plan vs Permit
 
-312 [ ] AI Detect Missing Information
+312 [~] AI Detect Missing Information
 
-313 [ ] Render Gallery
+313 [~] Render Gallery
 
-314 [ ] Unit Gallery
+314 [~] Unit Gallery
 
-315 [ ] Project Presentation Page
+315 [~] Project Presentation Page
 
-316 [ ] Automatic Sales Presentation
+316 [~] Automatic Sales Presentation
 
-317 [ ] Customer Room / Showroom
+317 [~] Customer Room / Showroom
 
-318 [ ] Shareable Project Link
+318 [~] Shareable Project Link
 
 
 ==================================================
 K — PROJECT KPI / CONTROL CENTER
 ==================================================
 
-319 [ ] KPI Engine
+319 [~] KPI Engine
 
-320 [ ] Project KPI Dashboard
+320 [~] Project KPI Dashboard
 
-321 [ ] Schedule KPI
+321 [~] Schedule KPI
 
-322 [ ] Cost KPI
+322 [~] Cost KPI
 
-323 [ ] Procurement KPI
+323 [~] Procurement KPI
 
 324 [ ] Quality KPI
 
