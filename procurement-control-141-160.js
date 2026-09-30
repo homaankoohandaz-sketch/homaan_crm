@@ -116,7 +116,23 @@
         r=await db.from('project_material_consumption').insert({project_id:window.pid,material_inventory_id:id,quantity:qty,consumed_at:n('consumed_at'),procurement_id:n('procurement_id')?Number(o.procurement_id):null,boq_item_id:n('boq_item_id')?Number(o.boq_item_id):null,notes:n('notes')});
         if(!r.error) r=await db.from('project_material_inventory').update({on_hand_quantity:Number(q.data.on_hand_quantity)-qty,updated_at:new Date().toISOString()}).eq('id',id).eq('project_id',window.pid);
       } else if(f.dataset.pform==='price'){
-        r=await db.from('project_material_prices').insert({material_key:o.material_key,material_name:o.material_name,unit:n('unit'),price_toman:Number(o.price_toman||0),price_usd:Number(o.price_usd||0),effective_at:n('effective_at')||new Date().toISOString(),source:o.source,source_url:n('source_url'),is_live:String(o.is_live).toLowerCase()==='true',notes:n('notes')}); if(!r.error && n('procurement_id')){const pid2=Number(o.procurement_id), purchaseAt=String(o.effective_at||'').slice(0,10)||null; r=await db.from('project_procurement').update({current_price_toman:Number(o.price_toman||0),current_price_usd:Number(o.price_usd||0),current_price_timestamp:n('effective_at')||new Date().toISOString(),current_price_source:o.source,price_variance_toman:Number(o.price_toman||0)-Number((await db.from('project_procurement').select('purchase_price_toman').eq('id',pid2).eq('project_id',window.pid).single()).data?.purchase_price_toman||0),price_variance_percent:Number((await db.from('project_procurement').select('purchase_price_toman').eq('id',pid2).eq('project_id',window.pid).single()).data?.purchase_price_toman||0)>0?((Number(o.price_toman||0)-Number((await db.from('project_procurement').select('purchase_price_toman').eq('id',pid2).eq('project_id',window.pid).single()).data?.purchase_price_toman||0))/Number((await db.from('project_procurement').select('purchase_price_toman').eq('id',pid2).eq('project_id',window.pid).single()).data?.purchase_price_toman||1))*100:0}).eq('id',pid2).eq('project_id',window.pid);}
+        r=await db.from('project_material_prices').insert({material_key:o.material_key,material_name:o.material_name,unit:n('unit'),price_toman:Number(o.price_toman||0),price_usd:Number(o.price_usd||0),effective_at:n('effective_at')||new Date().toISOString(),source:o.source,source_url:n('source_url'),is_live:String(o.is_live).toLowerCase()==='true',notes:n('notes')});
+        if(!r.error && n('procurement_id')){
+          const pid2=Number(o.procurement_id);
+          const current=await db.from('project_procurement').select('purchase_price_toman').eq('id',pid2).eq('project_id',window.pid).single();
+          if(current.error){r=current; } else {
+            const purchase=Number(current.data.purchase_price_toman||0);
+            const currentPrice=Number(o.price_toman||0);
+            r=await db.from('project_procurement').update({
+              current_price_toman:currentPrice,
+              current_price_usd:Number(o.price_usd||0),
+              current_price_timestamp:n('effective_at')||new Date().toISOString(),
+              current_price_source:o.source,
+              price_variance_toman:currentPrice-purchase,
+              price_variance_percent:purchase>0?((currentPrice-purchase)/purchase)*100:0
+            }).eq('id',pid2).eq('project_id',window.pid);
+          }
+        }
       } else if(f.dataset.pform==='forecast'){
         const id=Number(o.procurement_id), score=Math.max(0,Math.min(100,Number(o.procurement_risk_score||0)));
         r=await db.from('project_procurement').update({forecast_required_date:n('forecast_required_date'),forecast_quantity:Number(o.forecast_quantity||0),recommended_purchase_date:n('recommended_purchase_date'),procurement_risk_score:score,procurement_risk_level:o.procurement_risk_level||'low'}).eq('id',id).eq('project_id',window.pid);
