@@ -756,43 +756,43 @@ K — PROJECT KPI / CONTROL CENTER
 
 323 [~] Procurement KPI
 
-324 [ ] Quality KPI
+324 [~] Quality KPI
 
-325 [ ] HSE KPI
+325 [~] HSE KPI
 
-326 [ ] Sales KPI
+326 [~] Sales KPI
 
-327 [ ] Cash Flow KPI
+327 [~] Cash Flow KPI
 
-328 [ ] Contractor KPI
+328 [~] Contractor KPI
 
-329 [ ] Supplier KPI
+329 [~] Supplier KPI
 
-330 [ ] Productivity KPI
+330 [~] Productivity KPI
 
-331 [ ] Progress KPI
+331 [~] Progress KPI
 
-332 [ ] Delay KPI
+332 [~] Delay KPI
 
-333 [ ] Cost Overrun KPI
+333 [~] Cost Overrun KPI
 
-334 [ ] Procurement Delay KPI
+334 [~] Procurement Delay KPI
 
-335 [ ] Unit Sales KPI
+335 [~] Unit Sales KPI
 
-336 [ ] ROI KPI
+336 [~] ROI KPI
 
-337 [ ] Profit Margin KPI
+337 [~] Profit Margin KPI
 
-338 [ ] Custom KPI Builder
+338 [~] Custom KPI Builder
 
-339 [ ] KPI Thresholds
+339 [~] KPI Thresholds
 
-340 [ ] KPI Alerts
+340 [~] KPI Alerts
 
-341 [ ] KPI Trend Charts
+341 [~] KPI Trend Charts
 
-342 [ ] KPI Drill-down
+342 [~] KPI Drill-down
 
 
 ==================================================
