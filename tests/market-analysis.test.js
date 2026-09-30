@@ -1,7 +1,15 @@
 import assert from 'node:assert/strict';
-import {compareGold,compareDollar,scenarioForecast,riskFlags} from '../src/domains/finance/market-analysis.js';
+import {compareGold,compareDollar,scenarioForecast,riskFlags,marketSnapshot,historicalComparison,propertyVsGold,propertyVsDollar,propertyValueIn18KGrams,historicalSeries,investmentAnalysis} from '../src/domains/finance/market-analysis.js';
 assert.equal(compareGold(1000,10).propertyValueInGoldGrams,100);
 assert.equal(compareDollar(1000,10).propertyValueInDollars,100);
 assert.equal(scenarioForecast([{base:100,growth:.1,periods:2}])[0].projected,121);
+assert.equal(scenarioForecast([{base:100,growth:.1,periods:2}])[0].basis,'scenario_not_guarantee');
 assert.deepEqual(riskFlags({margin:-1,dataFreshnessDays:31}),['negative_margin','stale_market_data']);
-console.log('market-76-90: passed');
+assert.equal(marketSnapshot({propertyValue:100,goldPricePerGram:2,dollarRate:5}).propertyValue,100);
+assert.equal(historicalComparison([{monthsAgo:12,value:100},{monthsAgo:0,value:120}],12).changePercent,20);
+assert.equal(propertyVsGold(1000,10).goldGrams,100);
+assert.equal(propertyVsDollar(1000,10).dollars,100);
+assert.equal(propertyValueIn18KGrams(1000,20).grams18K,50);
+assert.equal(historicalSeries([{monthsAgo:6,value:100},{monthsAgo:0,value:120}],[6])[0].months,6);
+assert.equal(investmentAnalysis({valuation:100,capital:80,profit:20}).guarantee,false);
+console.log('market-analysis: passed');
