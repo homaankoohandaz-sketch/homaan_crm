@@ -3,8 +3,8 @@
 status: BATCH31-50 EXECUTED | CRM RECONCILED | ISOLATED RUNTIME PASS | FULL REPO RUNTIME BLOCKED
 project: BuildWise AI
 branch: buildwise-implementation
-active_task: checklist-141-160
-last_batch: 141-160
+active_task: checklist-236-264
+last_batch: 236-264
 
 ## Current truth
 - Code truth: GitHub branch buildwise-implementation.
@@ -167,22 +167,20 @@ PARTIAL / release-gated.
 - Commits: f5a7b9f5d23c8f67fffa8e5e93e12d70f6ea838f2, 99221c35018236066e6aa1df3872c896738dc93b, 451f384af1c8874912d84120c1be2fae407899fd, 74d2e20a1256e541d81f7ebb9f98ef55aba81244, b4161e44ed698cb7a0fe13144f14bbc372daef91.
 
 ## Next
-- Next Task: 221
+- Next Task: 265
 
 
-## Batch 221-235 — Project Accounting Payments / Cash Flow / Documents
-- 221: Forecast at Completion view added.
-- 222: project cash-flow view added.
-- 223-224: receivables and payables views added.
-- 225-226: contractor and supplier payment views added.
-- 227: advance-payment aggregation added.
-- 228: retention tracking added.
-- 229-230: installment and payment-calendar structures added.
-- 231: payment approval structure added.
-- 232-234: invoice/receipt upload metadata and document archive added.
-- 235: accounting audit view added.
-- Supabase migration applied successfully: project_accounting_221_235.
-- SQL integration fixture verified payment/installment/payable paths; fixture rows were removed.
-- Project Control UI slice added and wired: project-accounting-221-235.js.
-- Browser/runtime UI verification remains pending; 221-235 are PARTIAL, not DONE.
-- Next: 236.
+## Batch 236-264 — Real Estate Cost / Price Engine
+- 236 existing Construction Cost Engine retained as canonical; no duplicate engine created.
+- 237-238: current/live material price surface + daily material-price aggregation added. External feed is not claimed; source/timestamp lineage remains explicit.
+- 239-241: current construction cost, purchase/base cost and inflation factor exposed through project_cost_intelligence using the existing construction-cost index.
+- 242-248: CRM land value, current/comparable market inputs, Divar-source data where already present in CRM, and combined land valuation exposed without inventing external market data.
+- 249-256: total project cost, gross/useful-area metrics, default useful area of 80%, construction/land/total cost per useful m² added.
+- 257-260: unit-level cost allocation and indicative unit profitability added.
+- 261-263: developer margin plus investor/owner return allocation read from explicit project assumptions when present.
+- 264: sale-price sensitivity scenarios added and explicitly presented as scenarios, not guarantees.
+- Supabase migration applied: real_estate_cost_price_236_264.
+- SQL transactional verification passed: 1.25 construction inflation factor, 25B current construction cost, 15B combined land value, 40B total cost, material-current view, and 5 sensitivity rows; fixtures rolled back.
+- Added project-cost-236-264.js and wired it into project-control.html.
+- Browser/runtime UI verification is still pending; 237-264 remain PARTIAL, not DONE.
+- Next Task: 265.
