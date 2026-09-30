@@ -76,6 +76,17 @@ PARTIAL / release-gated.
 - Isolated runtime: market-analysis tests PASS after fixing historical direction and floating-point assertion.
 - Full repository runtime: unavailable from current environment.
 
+## Batch 101-120 Reconciliation
+- 101 Project Management Core: live schema and project-control architecture exist; acceptance remains PARTIAL until end-to-end runtime evidence.
+- 102 Project hierarchy: canonical hierarchy implementation and live project-control schema exist; prior authenticated runtime evidence covers hierarchy.
+- 103-111 Dashboard/master plan/calendar/WBS/MSP/Gantt/milestones/dependencies/predecessors: schema/UI evidence exists from prior Grok work; current live database has 1 project but 0 phases/WBS/milestones/schedule tasks, so these remain PARTIAL pending populated-data runtime verification.
+- 112-114 Critical Path/CPM/Float: schema has `is_critical` and predecessor data, but no verified CPM/float implementation found; remain TODO.
+- 115-118 Baseline/actual/variance: project and schedule tables contain baseline/actual/progress fields; calculation/runtime acceptance remains TODO/PARTIAL.
+- 119-122 Progress metrics: project/schedule tables contain progress and planned_progress; earned-progress calculation not verified.
+- 123-130 Delay/recovery/version/snapshot/status: no verified canonical implementation found; remain TODO.
+- Live Supabase verification: construction_projects=1, project_phases=0, project_wbs=0, project_milestones=0, project_schedule_tasks=0.
+- No duplicate Project Control engine created.
+
 ## Next
-- Next Task: 101
-- Continue sequentially; reconcile existing Project/Construction Control implementation before creating any new Project Control engine.
+- Next Task: 121
+- Continue sequentially; implement only after reconciling existing Project Control paths.
