@@ -628,63 +628,63 @@ H — REAL ESTATE COST / PRICE ENGINE
 I — SALES ENGINE / BUILDER OFFER
 ==================================================
 
-265 [ ] Builder Sales Engineering
+265 [~] Builder Sales Engineering
 
-266 [ ] Developer Offer Builder
+266 [~] Developer Offer Builder
 
-267 [ ] Project Sales Strategy
+267 [~] Project Sales Strategy
 
-268 [ ] Unit Sales Matrix
+268 [~] Unit Sales Matrix
 
-269 [ ] Unit Price Calculator
+269 [~] Unit Price Calculator
 
-270 [ ] Price per m²
+270 [~] Price per m²
 
-271 [ ] Total Unit Price
+271 [~] Total Unit Price
 
-272 [ ] Floor Premium
+272 [~] Floor Premium
 
-273 [ ] View Premium
+273 [~] View Premium
 
-274 [ ] Orientation Premium
+274 [~] Orientation Premium
 
-275 [ ] Parking Value
+275 [~] Parking Value
 
-276 [ ] Storage Value
+276 [~] Storage Value
 
-277 [ ] Terrace Value
+277 [~] Terrace Value
 
-278 [ ] Garden Value
+278 [~] Garden Value
 
-279 [ ] Commercial Premium
+279 [~] Commercial Premium
 
-280 [ ] Payment Terms
+280 [~] Payment Terms
 
-281 [ ] Cash Price
+281 [~] Cash Price
 
-282 [ ] Installment Price
+282 [~] Installment Price
 
-283 [ ] Discount Calculation
+283 [~] Discount Calculation
 
-284 [ ] Pre-sale / Participation distinction
+284 [~] Pre-sale / Participation distinction
 
-285 [ ] Builder's Proposed Sales Structure
+285 [~] Builder's Proposed Sales Structure
 
-286 [ ] Sales Inventory
+286 [~] Sales Inventory
 
-287 [ ] Available / Reserved / Sold
+287 [~] Available / Reserved / Sold
 
-288 [ ] Customer Offer
+288 [~] Customer Offer
 
-289 [ ] Negotiation Workspace
+289 [~] Negotiation Workspace
 
-290 [ ] Offer Versioning
+290 [~] Offer Versioning
 
-291 [ ] Offer Approval
+291 [~] Offer Approval
 
-292 [ ] Sales Proposal PDF/Screen
+292 [~] Sales Proposal PDF/Screen
 
-293 [ ] Customer-facing Profitability Proposal
+293 [~] Customer-facing Profitability Proposal
 
 
 ==================================================
