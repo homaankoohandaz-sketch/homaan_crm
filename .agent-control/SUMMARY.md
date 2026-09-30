@@ -134,3 +134,11 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Transactional 9-step workflow test passed and rolled back.
 - Scheduler/external delivery/browser runtime remain unverified; 343-367 PARTIAL.
 - Next task: 368.
+
+## 2026-09-30 — Deal Control 368-376
+- Extended existing deal_workspaces/deals; no duplicate deal workspace subsystem.
+- Added persistent timeline events, deal actions, follow-ups, risk scoring, participation calculations and payment schedules.
+- Added deal_workspace_control aggregation view and Project Control UI deal-control-368-376.js.
+- Transactional fixture verified timeline/action/follow-up/risk/participation/payment aggregation; rolled back.
+- Browser runtime remains unverified; 368-376 PARTIAL.
+- Next task: 377.
