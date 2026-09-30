@@ -1,0 +1,6 @@
+export function progressSnapshot({planned=0,actual=0,earned=0}={}){const p=number(planned),a=number(actual),e=number(earned);return{plannedProgress:p,actualProgress:a,earnedProgress:e,actualVariance:a-p,earnedVariance:e-p}}
+export function delayAssessment({plannedFinish,actualFinish=null,today=null}={}){const p=Date.parse(plannedFinish),a=Date.parse(actualFinish||today||new Date().toISOString());if(!Number.isFinite(p)||!Number.isFinite(a))return{delayed:false,delayDays:0,reason:'invalid_dates'};const d=(a-p)/86400000;return{delayed:d>0,delayDays:Math.max(0,d)}}
+export function buildRecoveryPlan({activities=[],targetDate=null}={}){return{targetDate,activities:(activities||[]).map((x,i)=>({...x,id:x.id??i+1,status:x.status||'proposed'})),requiresHumanApproval:true}}
+export function createScheduleVersion({version=1,label='baseline',tasks=[]}={}){return{version:Number(version)||1,label,tasks:structuredClone(tasks||[]),createdAt:new Date().toISOString()}}
+export function projectSnapshot({projectId,status='active',progress={},scheduleVersion=null}={}){return{projectId,status,progress,scheduleVersion,capturedAt:new Date().toISOString()}}
+function number(v){const n=Number(v);return Number.isFinite(n)?n:0}
