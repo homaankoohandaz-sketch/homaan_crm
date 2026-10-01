@@ -1,10 +1,10 @@
 # Agent Control State
 
-status: BATCH368-376 EXECUTED | DEAL CONTROL RECONCILED | ISOLATED RUNTIME PASS | FULL REPO RUNTIME BLOCKED
+status: BATCH386-400 IMPLEMENTED | ADVISOR OPS RECONCILED | CI RUNTIME PENDING | FULL REPO RUNTIME BLOCKED
 project: BuildWise AI
 branch: buildwise-implementation
-active_task: checklist-377-385
-last_batch: 368-376
+active_task: checklist-401-415
+last_batch: 386-400
 
 ## Current truth
 - Code truth: GitHub branch buildwise-implementation.
@@ -163,3 +163,14 @@ PARTIAL / release-gated.
 - Full npm test remains BLOCKED by an existing repository reference to missing `tests/unit/market-intelligence.test.mjs`; this is unrelated to the 377-385 implementation.
 - Browser/runtime and live Supabase migration verification are still pending; 377-385 remain PARTIAL.
 - Next task: 386.
+
+
+## 2026-10-01 — Advisor Operations 386-400
+- Reused canonical public_requests and crm_followups; no duplicate request/follow-up entities were created.
+- Added advisor request assignment/response, promotion, hot-slot, KPI snapshot and scorecard persistence.
+- Added canonical `src/domains/crm/advisor-control.js` with routing, workload, KPI and scorecard logic plus auditable promotion/hot-slot/transfer primitives.
+- Added focused tests in `tests/unit/advisor-control.test.mjs` and wired them into the repository test command.
+- Added migration `20261001140000_advisor_operations_386_400.sql` with RLS and advisor operations control view.
+- CI was blocked by an existing syntax defect in `procurement-control-141-160.js`; the defect was fixed minimally and a fresh CI run is now in progress.
+- 386-400 remain PARTIAL pending final CI result, browser/runtime and live Supabase verification.
+- Next task: 401.
