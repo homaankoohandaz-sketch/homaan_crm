@@ -3,7 +3,7 @@
  * 147 shortage · 148–157 price lineage · 158 forecast · 159 timing · 160 risk
  */
 (function(){
-  const escP = window.esc || (x=>String(x??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const escP = window.esc || (x=>String(x??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])));
   const moneyP = window.money || (x=>Number(x||0).toLocaleString('fa-IR'));
   const formP=(kind,title,fields)=>`<section class="panel"><h3>${title}</h3><form class="form" data-pform="${kind}">${fields.map(f=>`<label class="${f.full?'full':''}">${f.label}${f.ta?`<textarea name="${f.n}" rows="3"></textarea>`:`<input name="${f.n}" type="${f.type||'text'}" ${f.req?'required':''}>`}</label>`).join('')}<div class="full"><button class="primary">ثبت</button></div></form></section>`;
 
