@@ -1107,27 +1107,27 @@ S — UI / UX
 
 479 [ ] Feature Parity Mobile/Desktop
 
-480 [ ] AI-first UX
+480 [~] AI-first UX
 
-481 [ ] Minimal Technical Language
+481 [~] Minimal Technical Language
 
-482 [ ] No Internal Prompts Exposed
+482 [~] No Internal Prompts Exposed
 
-483 [ ] No Model Names Exposed
+483 [~] No Model Names Exposed
 
-484 [ ] No Tool Names Exposed
+484 [~] No Tool Names Exposed
 
-485 [ ] Contextual AI Button per Section
+485 [~] Contextual AI Button per Section
 
-486 [ ] AI Embedded in Background
+486 [~] AI Embedded in Background
 
-487 [ ] AI Auto-placement
+487 [~] AI Auto-placement
 
-488 [ ] AI Auto-fill
+488 [~] AI Auto-fill
 
-489 [ ] AI Only Appears When Useful
+489 [~] AI Only Appears When Useful
 
-490 [ ] Persistent Workspace UI
+490 [~] Persistent Workspace UI
 
 491 [ ] Notion-like Workspace
 
