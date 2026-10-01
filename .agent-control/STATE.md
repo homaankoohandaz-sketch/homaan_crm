@@ -3,8 +3,8 @@
 status: BATCH386-400 IMPLEMENTED | ADVISOR OPS RECONCILED | CI RUNTIME PENDING | FULL REPO RUNTIME BLOCKED
 project: BuildWise AI
 branch: buildwise-implementation
-active_task: checklist-431-445
-last_batch: 425-430
+active_task: checklist-446-460
+last_batch: 431-444
 
 ## Current truth
 - Code truth: GitHub branch buildwise-implementation.
@@ -192,3 +192,12 @@ PARTIAL / release-gated.
 - Added `tests/unit/ai-intelligence-layer.test.mjs` and wired it into the project test suite.
 - 425-430 remain PARTIAL pending CI, live Supabase and runtime verification.
 - Next task: 431.
+
+
+## 2026-10-01 — Agent Control Plane 431-444
+- Reconciled existing worker registry, task contract and execution protocol; no duplicate agent registry or task-contract architecture.
+- Added canonical `src/agent-control/control-plane.js` for contract validation, model/worker routing, tool-scope authorization, result validation, evidence handoff and failure recovery.
+- Added `tests/agent-control-plane.test.mjs` and wired it into the project suite.
+- 431-444 remain PARTIAL pending CI/runtime verification.
+- 445 Codex Worker remains BLOCKED because no independently verified Codex runtime is connected.
+- Next task: 446.
