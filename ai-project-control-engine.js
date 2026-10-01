@@ -216,3 +216,55 @@ export function buildAiProjectControlReport({tasks=[],procurement=[],resources=[
     ]
   };
 }
+
+
+export function createBaseline(tasks = [], project = {}, capturedAt = new Date().toISOString()) {
+  return {
+    version: 1,
+    captured_at: capturedAt,
+    project: {
+      id: project.id ?? null,
+      budget: Number(project.current_budget ?? project.baseline_budget ?? 0),
+    },
+    tasks: tasks.map(t => ({
+      id: Number(t.id),
+      planned_start: t.planned_start ?? null,
+      planned_finish: t.planned_finish ?? null,
+      duration_days: Number(t.duration_days ?? 0),
+      planned_cost: Number(t.planned_cost ?? 0),
+      progress: Number(t.progress ?? 0),
+    })),
+  };
+}
+
+export function calculateVariance(tasks = [], baseline = {}) {
+  const baselineById = new Map((baseline.tasks || []).map(t => [Number(t.id), t]));
+  const dayDiff = (a, b) => {
+    if (!a || !b) return null;
+    const diff = (new Date(a + 'T00:00:00Z') - new Date(b + 'T00:00:00Z')) / DAY;
+    return Number.isFinite(diff) ? diff : null;
+  };
+  const rows = tasks.map(t => {
+    const b = baselineById.get(Number(t.id));
+    const costVariance = b ? Number(t.actual_cost ?? 0) - Number(b.planned_cost ?? 0) : null;
+    return {
+      id: Number(t.id),
+      finishVarianceDays: b ? dayDiff(t.planned_finish, b.planned_finish) : null,
+      startVarianceDays: b ? dayDiff(t.planned_start, b.planned_start) : null,
+      durationVarianceDays: b ? Number(t.duration_days ?? 0) - Number(b.duration_days ?? 0) : null,
+      costVariance,
+      progressVariance: b ? Number(t.progress ?? 0) - Number(b.progress ?? 0) : null,
+      baselineFound: Boolean(b),
+    };
+  });
+  const costVariance = rows.reduce((s, r) => s + Number(r.costVariance || 0), 0);
+  const scheduleVarianceDays = rows.reduce((s, r) => s + Number(r.finishVarianceDays || 0), 0);
+  return {
+    baselineVersion: baseline.version ?? null,
+    taskCount: rows.length,
+    baselineTaskCount: (baseline.tasks || []).length,
+    costVariance,
+    scheduleVarianceDays,
+    tasks: rows,
+  };
+}
