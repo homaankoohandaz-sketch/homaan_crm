@@ -1066,33 +1066,33 @@ R — CONSTRUCTION CONTROL
 
 461 [~] Supplier Commitment
 
-462 [ ] RFI
+462 [~] RFI
 
-463 [ ] Submittal
+463 [~] Submittal
 
-464 [ ] Quality
+464 [~] Quality
 
-465 [ ] HSE
+465 [~] HSE
 
-466 [ ] Risk
+466 [~] Risk
 
-467 [ ] Corrective Action
+467 [~] Corrective Action
 
-468 [ ] Site Diary
+468 [~] Site Diary
 
-469 [ ] Daily Report
+469 [~] Daily Report
 
-470 [ ] Crew Management
+470 [~] Crew Management
 
-471 [ ] Equipment Management
+471 [~] Equipment Management
 
-472 [ ] Material Management
+472 [~] Material Management
 
-473 [ ] Work Progress Photos
+473 [~] Work Progress Photos
 
-474 [ ] Geotagged Progress
+474 [~] Geotagged Progress
 
-475 [ ] Before / After Progress
+475 [~] Before / After Progress
 
 476 [ ] AI Progress Verification
 
