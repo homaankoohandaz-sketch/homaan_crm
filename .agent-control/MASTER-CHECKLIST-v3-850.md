@@ -1094,7 +1094,7 @@ R — CONSTRUCTION CONTROL
 
 475 [~] Before / After Progress
 
-476 [ ] AI Progress Verification
+476 [~] AI Progress Verification
 
 
 ==================================================
