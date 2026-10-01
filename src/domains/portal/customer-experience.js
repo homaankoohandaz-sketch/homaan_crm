@@ -82,7 +82,7 @@ export function createCustomerExperience() {
         proceeds,
         profit,
         roiPct: investment ? profit / investment * 100 : 0,
-        annualizedRoiPct: num(scenario.years) > 0 ? ((Math.pow(proceeds / investment, 1 / num(scenario.years)) - 1) * 100) : 0
+        annualizedRoiPct: investment > 0 && proceeds >= 0 && num(scenario.years) > 0 ? ((Math.pow(proceeds / investment, 1 / num(scenario.years)) - 1) * 100) : 0
       };
     },
 
