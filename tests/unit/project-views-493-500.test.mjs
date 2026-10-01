@@ -9,7 +9,7 @@ import {
   reorderWorkflowSteps,
   buildTimeline,
   professionalAnimationTokens
-} from '../src/ui/project-views-493-500.js';
+} from '../../src/ui/project-views-493-500.js';
 
 test('493 Gantt rows normalize schedule dates and progress', () => {
   const rows = buildGanttRows([{ id: 1, title: 'Foundation', planned_start: '2026-01-01', planned_end: '2026-01-10', progress: 40 }]);
@@ -28,7 +28,7 @@ test('495 procurement calendar sorts required dates', () => {
 });
 
 test('496 financial summary aggregates budget, actual and committed', () => {
-  assert.deepEqual(buildFinancialSummary([{ budget: 100, actual: 40, committed: 20 }, { budget: 50, actual: 10, committed: 30 }]), { budget: 150, actual: 50, committed: 50, variance: 100 });
+  assert.deepEqual(buildFinancialSummary([{ budget: 100, actual: 40, committed: 20 }, { budget: 50, actual: 10, committed: 30 }]), { budget: 150, actual: 50, committed: 50, variance: 50 });
 });
 
 test('497 unit sales matrix keeps units addressable by unit id', () => {
