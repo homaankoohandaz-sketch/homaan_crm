@@ -1129,9 +1129,9 @@ S — UI / UX
 
 490 [~] Persistent Workspace UI
 
-491 [ ] Notion-like Workspace
+491 [~] Notion-like Workspace
 
-492 [ ] Project Control Center UI
+492 [~] Project Control Center UI
 
 493 [ ] Gantt UI
 
