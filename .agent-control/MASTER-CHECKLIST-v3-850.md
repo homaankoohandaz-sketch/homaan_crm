@@ -872,23 +872,23 @@ M — DEAL / CONTRACT
 
 376 [~] Contract Validation
 
-377 [ ] Contract Templates
+377 [~] Contract Templates
 
-378 [ ] Contract Versioning
+378 [~] Contract Versioning
 
-379 [ ] Contract Attachments
+379 [~] Contract Attachments
 
-380 [ ] Contract Approval
+380 [~] Contract Approval
 
-381 [ ] Contract Signature Workflow
+381 [~] Contract Signature Workflow
 
-382 [ ] Contract Financial Obligations
+382 [~] Contract Financial Obligations
 
-383 [ ] Contract Milestones
+383 [~] Contract Milestones
 
-384 [ ] Contract Breach Alerts
+384 [~] Contract Breach Alerts
 
-385 [ ] Contract-to-Project Link
+385 [~] Contract-to-Project Link
 
 
 ==================================================
