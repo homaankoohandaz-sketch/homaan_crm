@@ -175,3 +175,25 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Added focused tests and wired them into the project suite.
 - 425-430 remain PARTIAL pending CI, live Supabase and runtime verification.
 - Next task: 431.
+
+## 2026-10-01 — Agent Control Plane 431-444
+- Reconciled against the existing worker registry, task contract v1, access matrix and canonical execution protocol.
+- Added `src/agent-control/control-plane.js` for task validation, routing, authorization, result validation, handoff, recovery and dispatch.
+- Added focused agent-control-plane tests and wired them into the suite.
+- 431-444 remain PARTIAL; 445 Codex Worker remains BLOCKED without independently verified Codex runtime.
+- Next task: 446.
+
+## 2026-10-01 — Project Baseline / Construction / UX 446-492
+- Added baseline capture/variance and AI progress-evidence verification to the canonical project-control engine with focused tests.
+- Extended canonical construction control with submittal, site diary, daily report, crew, equipment, material and progress-photo normalization plus tests.
+- Reconciled existing mobile/responsive, AI workspace and project-control UI rather than creating duplicate UI architecture.
+- 446-492 remain PARTIAL pending full CI/browser/runtime evidence.
+- Next task: 493.
+
+## 2026-10-01 — Project Presentation Views 493-500
+- Added `src/ui/project-views-493-500.js` for Gantt, KPI dashboard, procurement calendar, financial dashboard, unit sales matrix, drag/drop workflow, timeline and shared animation tokens.
+- Reused canonical project_schedule_tasks, project_kpi_catalog, project_procurement, project_floors/project_units, buildwise_project_dashboard and project_ai_alerts paths; no duplicate engines created.
+- Added focused tests `tests/unit/project-views-493-500.test.mjs` and wired them into npm test.
+- Isolated focused runtime: PASS — 8/8 tests.
+- Browser/runtime and full repository npm/CI verification remain pending; therefore 493-500 are PARTIAL, not DONE.
+- Current cursor: 501.
