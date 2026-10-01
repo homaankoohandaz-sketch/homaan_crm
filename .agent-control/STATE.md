@@ -209,3 +209,11 @@ PARTIAL / release-gated.
 - Added `tests/ai-project-control-baseline.test.mjs` and wired it into `npm test`.
 - 457-458 are PARTIAL pending focused/full CI confirmation and runtime/Supabase verification.
 - Next task: 461.
+
+
+## 2026-10-01 — Construction Operations 461-475
+- Reused canonical construction control model; no parallel operations subsystem created.
+- Existing supplier commitment remains represented by procurement control; extended construction control with RFI/submittal, site diary, daily report, crew, equipment, material, progress-photo, geotag and before/after normalization.
+- Added `tests/unit/construction-control-operations.test.mjs` and wired it into `npm test`.
+- 461-475 are PARTIAL pending CI/full-suite, live persistence/Supabase and browser/runtime verification.
+- Next task: 476.
