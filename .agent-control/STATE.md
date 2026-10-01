@@ -201,3 +201,11 @@ PARTIAL / release-gated.
 - 431-444 remain PARTIAL pending CI/runtime verification.
 - 445 Codex Worker remains BLOCKED because no independently verified Codex runtime is connected.
 - Next task: 446.
+
+
+## 2026-10-01 — Project Baseline & Variance 457-458
+- Reused canonical `ai-project-control-engine.js`; no parallel project-control subsystem created.
+- Added deterministic baseline snapshot and task/project variance calculations covering start/finish, duration, cost and progress deltas.
+- Added `tests/ai-project-control-baseline.test.mjs` and wired it into `npm test`.
+- 457-458 are PARTIAL pending focused/full CI confirmation and runtime/Supabase verification.
+- Next task: 461.
