@@ -99,5 +99,21 @@ No generated, reconstructed, archived, intermediate, or competing master checkli
 Decision: Task-count history and alternate checklist registries must not govern execution. Control-plane documents must reference the canonical Master Checklist v3 only.
 Impact: No alternate task-count baseline, duplicate registry, or historical checklist may be presented as active project law.
 
+## D-022 — Canonical Customer Experience Specification
+Decision: The Customer Experience requirements are a permanent in-scope BuildWise product requirement and are now recorded canonically in `docs/requirements/CUSTOMER-EXPERIENCE-SPEC-v1.md`.
+Impact:
+- Customer experience remains inside the existing BuildWise/REOS architecture.
+- The specification is additive and does not replace the 850-task acceptance registry.
+- C01–C40 are product-capability identifiers, not a competing task registry.
+- Existing canonical domains and implementations must be extended/reconciled before any parallel customer portal, CRM request, AI, calendar, rating or intelligence subsystem is created.
+- Customer-facing output must enforce field-level permissions, masking, RLS and the internal-data firewall.
+- The requirement must remain discoverable from repository control-plane records, not only from conversation memory.
+
+Repository record:
+`docs/requirements/CUSTOMER-EXPERIENCE-SPEC-v1.md`
+Durable memory:
+`.agent-control/memory/CUSTOMER-EXPERIENCE-DECISION-2026-10-01.md`
+
 ## Decision change protocol
+
 When a later decision changes one of these: append a new decision; identify the superseded decision; update PHASE-CURRENT-ARCHITECTURE.md; update MASTER-ARCHITECTURE.md; update SUMMARY.md; never delete the historical decision.
