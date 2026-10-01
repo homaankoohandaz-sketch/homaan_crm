@@ -167,3 +167,11 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Added focused customer-experience tests and wired them into the project test suite.
 - 406-415 remain PARTIAL pending CI, browser/runtime and live Supabase verification.
 - Next task: 416.
+
+
+## 2026-10-01 — AI Intelligence 425-430
+- Extended the canonical AI layer with financial/procurement/sales intelligence, persistent-memory querying, approval-gated action execution and explanation/evidence output.
+- Added persistent AI memory/action/explanation schema with RLS and control view.
+- Added focused tests and wired them into the project suite.
+- 425-430 remain PARTIAL pending CI, live Supabase and runtime verification.
+- Next task: 431.
