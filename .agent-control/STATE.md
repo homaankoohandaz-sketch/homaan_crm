@@ -153,3 +153,13 @@ PARTIAL / release-gated.
 - Next task: 377.
 
 
+
+
+## 2026-10-01 — Contract Control 377-385
+- Extended the existing canonical BuildWiseContract engine; no parallel contract subsystem.
+- Added deterministic helpers for templates, immutable version snapshots, attachments, approvals, signatures, obligations, milestones, breach alerts and contract-to-project links.
+- Added migration `20261001130000_contract_control_377_385.sql` covering persistent contract control tables, indexes, RLS manager gate and `contract_control` aggregation view.
+- Added focused acceptance coverage to `tests/contract-engine.test.js`; GitHub Unit Test run reached `contract-engine: passed`.
+- Full npm test remains BLOCKED by an existing repository reference to missing `tests/unit/market-intelligence.test.mjs`; this is unrelated to the 377-385 implementation.
+- Browser/runtime and live Supabase migration verification are still pending; 377-385 remain PARTIAL.
+- Next task: 386.
