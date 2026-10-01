@@ -268,3 +268,26 @@ export function calculateVariance(tasks = [], baseline = {}) {
     tasks: rows,
   };
 }
+
+
+export function verifyProgressEvidence(tasks = [], evidence = []) {
+  const byTask = new Map(evidence.map(e => [Number(e.task_id), Number(e.progress)]));
+  const mismatches = [];
+  let verifiedTaskCount = 0;
+  for (const task of tasks) {
+    const id = Number(task.id);
+    if (!byTask.has(id)) continue;
+    verifiedTaskCount += 1;
+    const declared = Number(task.progress || 0);
+    const evidenced = Number(byTask.get(id) || 0);
+    if (declared !== evidenced) mismatches.push({ taskId: id, declared, evidenced });
+  }
+  return {
+    taskCount: tasks.length,
+    evidenceCount: evidence.length,
+    verifiedTaskCount,
+    mismatchCount: mismatches.length,
+    mismatches,
+    verified: mismatches.length === 0
+  };
+}
