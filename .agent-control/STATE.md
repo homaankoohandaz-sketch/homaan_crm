@@ -3,8 +3,8 @@
 status: BATCH386-400 IMPLEMENTED | ADVISOR OPS RECONCILED | CI RUNTIME PENDING | FULL REPO RUNTIME BLOCKED
 project: BuildWise AI
 branch: buildwise-implementation
-active_task: checklist-416-430
-last_batch: 406-415
+active_task: checklist-431-445
+last_batch: 425-430
 
 ## Current truth
 - Code truth: GitHub branch buildwise-implementation.
@@ -183,3 +183,12 @@ PARTIAL / release-gated.
 - Added `tests/unit/customer-experience.test.mjs` and wired it into the repository test command.
 - Existing 401-405 remain PARTIAL; 406-415 are now PARTIAL pending CI, browser/runtime and live Supabase verification.
 - Next task: 416.
+
+
+## 2026-10-01 — AI Intelligence 425-430
+- Reused canonical `src/ai/` gateway/action-contract and existing `ai_audit_events` / `learning_events`; no parallel AI execution or audit architecture.
+- Added `src/ai/intelligence-layer.js` for financial, procurement and sales intelligence, persistent-memory querying, approval-gated action execution and explanation/evidence output.
+- Added `20261001160000_ai_intelligence_425_430.sql` for persistent AI memory, action runs and explanations with RLS and control view.
+- Added `tests/unit/ai-intelligence-layer.test.mjs` and wired it into the project test suite.
+- 425-430 remain PARTIAL pending CI, live Supabase and runtime verification.
+- Next task: 431.
