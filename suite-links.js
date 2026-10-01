@@ -8,5 +8,6 @@
     document.body.appendChild(wrap);
   }
   add();
+  import('./src/ui/project-views-493-500.js').catch(function(){});
   new MutationObserver(add).observe(document.documentElement,{childList:true,subtree:true});
 })();
