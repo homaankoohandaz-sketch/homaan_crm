@@ -1133,19 +1133,19 @@ S — UI / UX
 
 492 [~] Project Control Center UI
 
-493 [ ] Gantt UI
+493 [~] Gantt UI
 
-494 [ ] KPI Dashboard UI
+494 [~] KPI Dashboard UI
 
-495 [ ] Procurement Calendar UI
+495 [~] Procurement Calendar UI
 
-496 [ ] Financial Dashboard UI
+496 [~] Financial Dashboard UI
 
-497 [ ] Unit Sales Matrix UI
+497 [~] Unit Sales Matrix UI
 
-498 [ ] Drag & Drop Workflow UI
+498 [~] Drag & Drop Workflow UI
 
-499 [ ] Timeline UI
+499 [~] Timeline UI
 
 500 [ ] Professional Animation System
 
