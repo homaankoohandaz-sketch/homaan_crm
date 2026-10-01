@@ -20,7 +20,17 @@ global.BuildWiseKPI={project:projectKPI,procurement:procurementKPI,crew:crewKPI}
 function participation(input={}){const land=n(input.land_value),capital=n(input.investor_capital),ownerShare=n(input.owner_share_percent),investorShare=n(input.investor_share_percent),total=ownerShare+investorShare,normalized=total>0?{owner:ownerShare/total*100,investor:investorShare/total*100}:{owner:50,investor:50},valueAtExit=n(input.exit_value),investorReturn=valueAtExit*normalized.investor/100;return {land_value:land,investor_capital:capital,shares:normalized,investor_return:investorReturn,investor_profit:investorReturn-capital,capital_gap:Math.max(0,capital-land),status:capital>0&&valueAtExit>0?'ready':'insufficient_data'}}
 function paymentSchedule(items=[]){return items.map((x,i)=>({...x,index:i+1,amount:n(x.amount),cumulative:items.slice(0,i+1).reduce((s,y)=>s+n(y.amount),0)}))}
 function validateContract(contract={}){const required=['parties','subject','consideration','schedule'],missing=required.filter(k=>contract[k]===undefined||contract[k]===null||contract[k]===''),issues=[];if(!Array.isArray(contract.parties)||contract.parties.length<2)issues.push('parties');if(!Array.isArray(contract.schedule))issues.push('schedule');return {valid:missing.length===0&&issues.length===0,missing,issues}}
-global.BuildWiseContract={participation,paymentSchedule,validate:validateContract};
+function cloneContractValue(value){return JSON.parse(JSON.stringify(value??null))}
+function template(input={}){return {id:input.id??null,name:String(input.name||'Untitled Contract Template'),body:String(input.body||''),variables:cloneContractValue(input.variables||{}),status:input.status||'draft'}}
+function version(input={}){return {id:input.id??null,contract_id:input.contract_id??null,version:Number(input.version||1),snapshot:cloneContractValue(input.snapshot||{}),created_at:input.created_at??null}}
+function attachment(input={}){return {id:input.id??null,contract_id:input.contract_id??null,file_id:input.file_id??null,status:input.status||'active',created_at:input.created_at??null}}
+function approval(input={}){return {id:input.id??null,contract_id:input.contract_id??null,approver_id:input.approver_id??null,status:input.status||'pending',comment:input.comment??null,decided_at:input.decided_at??null}}
+function signature(input={}){return {id:input.id??null,contract_id:input.contract_id??null,signer_id:input.signer_id??null,status:input.status||'pending',signed_at:input.signed_at??null,signature_ref:input.signature_ref??null}}
+function obligation(input={}){return {id:input.id??null,contract_id:input.contract_id??null,title:String(input.title||''),amount:n(input.amount),due_at:input.due_at??null,status:input.status||'open',fulfilled_at:input.fulfilled_at??null}}
+function milestone(input={}){return {id:input.id??null,contract_id:input.contract_id??null,title:String(input.title||''),due_at:input.due_at??null,status:input.status||'pending',completed_at:input.completed_at??null}}
+function breachAlert(input={}){return {id:input.id??null,contract_id:input.contract_id??null,title:String(input.title||''),severity:input.severity||'medium',status:input.status||'open',detected_at:input.detected_at??null,resolved_at:input.resolved_at??null}}
+function linkToProject(input={}){return {contract_id:input.contract_id??null,project_id:input.project_id??null,linked_at:input.linked_at??null}}
+global.BuildWiseContract={participation,paymentSchedule,validate:validateContract,template,version,attachment,approval,signature,obligation,milestone,breachAlert,linkToProject};
 
 /* Decisions */
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
