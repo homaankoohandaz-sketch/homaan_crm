@@ -1,9 +1,24 @@
 # Agent Control State
 
-status: BATCH386-400 IMPLEMENTED | ADVISOR OPS RECONCILED | CI RUNTIME PENDING | FULL REPO RUNTIME BLOCKED
+status: BATCH493-500 IMPLEMENTED | PROJECT VIEWS RECONCILED | RUNTIME PENDING | FULL REPO RUNTIME BLOCKED
 project: BuildWise AI
 branch: buildwise-implementation
-active_task: checklist-446-460
+active_task: checklist-501-524
+last_batch: 493-500
+## Batch 493-500 — Project Presentation Views
+- Added canonical `src/ui/project-views-493-500.js`; no duplicate project-control engine created.
+- 493 Gantt UI: normalized existing project_schedule_tasks data.
+- 494 KPI Dashboard UI: reused canonical project_kpi_catalog.
+- 495 Procurement Calendar UI: reused canonical project_procurement.
+- 496 Financial Dashboard UI: reused existing buildwise_project_dashboard cost aggregation.
+- 497 Unit Sales Matrix UI: reused canonical project_floors/project_units hierarchy.
+- 498 Drag & Drop Workflow UI: added deterministic reorder behavior; persistence is intentionally not claimed until canonical workflow storage/runtime is verified.
+- 499 Timeline UI: reused project_ai_alerts as the current project event stream.
+- 500 Professional Animation System: shared timing/easing tokens installed through the existing suite loader.
+- Focused unit test added: tests/unit/project-views-493-500.test.mjs and wired into npm test.
+- Checklist 493-500 marked PARTIAL: implementation/test evidence exists, browser/runtime verification is still pending.
+- Current cursor: 501.
+
 last_batch: 431-444
 
 ## Current truth
