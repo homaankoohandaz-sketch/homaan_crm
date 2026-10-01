@@ -217,3 +217,11 @@ PARTIAL / release-gated.
 - Added `tests/unit/construction-control-operations.test.mjs` and wired it into `npm test`.
 - 461-475 are PARTIAL pending CI/full-suite, live persistence/Supabase and browser/runtime verification.
 - Next task: 476.
+
+
+## 2026-10-01 — AI Progress Verification 476
+- Reused canonical `ai-project-control-engine.js` and added evidence-vs-declared progress verification.
+- Added `tests/ai-project-control-progress-verification.test.mjs` and wired it into `npm test`.
+- 476 is PARTIAL pending CI and runtime evidence integration.
+- 477-490 remain at their registered states; no UI claim was made without browser verification.
+- Next task: 477.
