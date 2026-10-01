@@ -150,3 +150,12 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Focused contract-engine tests pass in GitHub CI.
 - Full npm suite remains blocked by the pre-existing missing `tests/unit/market-intelligence.test.mjs` reference; browser/runtime and live migration verification remain pending.
 - Master Checklist 377-385 are PARTIAL; next task is 386.
+
+
+## 2026-10-01 — Advisor Operations 386-400
+- Reused canonical public_requests and crm_followups; added advisor assignment/response, promotion, hot-slot, KPI snapshot and scorecard control.
+- Added `src/domains/crm/advisor-control.js` and focused tests `tests/unit/advisor-control.test.mjs`.
+- Added migration `20261001140000_advisor_operations_386_400.sql` with RLS and advisor operations control view.
+- Fixed the existing procurement UI syntax blocker that prevented CI from reaching these changes.
+- Final CI verification is still running; 386-400 remain PARTIAL until CI + runtime evidence are complete.
+- Next task: 401.
