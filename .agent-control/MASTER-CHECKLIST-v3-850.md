@@ -940,25 +940,25 @@ O — CUSTOMER / PORTAL / SHOWROOM
 
 405 [~] Property Photos
 
-406 [ ] Interactive Project Walkthrough
+406 [~] Interactive Project Walkthrough
 
-407 [ ] Floor Plan Viewer
+407 [~] Floor Plan Viewer
 
-408 [ ] Unit Selector
+408 [~] Unit Selector
 
-409 [ ] Unit Price Comparison
+409 [~] Unit Price Comparison
 
-410 [ ] Customer Request Journey
+410 [~] Customer Request Journey
 
-411 [ ] Customer AI Assistant
+411 [~] Customer AI Assistant
 
-412 [ ] Customer-specific Proposal
+412 [~] Customer-specific Proposal
 
-413 [ ] Customer-specific ROI
+413 [~] Customer-specific ROI
 
-414 [ ] Customer Notifications
+414 [~] Customer Notifications
 
-415 [ ] Appointment Workflow
+415 [~] Appointment Workflow
 
 
 ==================================================
