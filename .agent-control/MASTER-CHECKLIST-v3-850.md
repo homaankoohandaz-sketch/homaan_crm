@@ -921,9 +921,9 @@ N — CRM / REQUEST / ADVISOR OPERATIONS
 
 398 [~] Accept / Reject / Transfer
 
-399 [ ] Advisor KPI
+399 [~] Advisor KPI
 
-400 [ ] Advisor Performance Scorecard
+400 [~] Advisor Performance Scorecard
 
 
 ==================================================
