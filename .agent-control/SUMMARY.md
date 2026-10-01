@@ -159,3 +159,11 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Fixed the existing procurement UI syntax blocker that prevented CI from reaching these changes.
 - Final CI verification is still running; 386-400 remain PARTIAL until CI + runtime evidence are complete.
 - Next task: 401.
+
+
+## 2026-10-01 — Customer Experience 406-415
+- Extended the canonical portal/customer architecture with walkthrough, floor-plan, unit selector/comparison, request journey, customer assistant routing, customer-specific proposal/ROI, notifications and appointment workflow.
+- Added persistence migration `20261001150000_customer_experience_406_415.sql` with RLS and appointment control view.
+- Added focused customer-experience tests and wired them into the project test suite.
+- 406-415 remain PARTIAL pending CI, browser/runtime and live Supabase verification.
+- Next task: 416.
