@@ -197,3 +197,10 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Isolated focused runtime: PASS — 8/8 tests.
 - Browser/runtime and full repository npm/CI verification remain pending; therefore 493-500 are PARTIAL, not DONE.
 - Current cursor: 501.
+
+
+## 2026-10-01 — Canonical Customer Experience Specification
+- Recorded `docs/requirements/CUSTOMER-EXPERIENCE-SPEC-v1.md` as the canonical in-scope customer product requirement.
+- Recorded durable decision memory in `.agent-control/memory/CUSTOMER-EXPERIENCE-DECISION-2026-10-01.md`.
+- C01–C40 are capability identifiers, not a second task registry; existing 401–415 and 418–432 are the current relevant master-checklist ranges.
+- Customer privacy, field-level permissions, ±5% customer-facing price range, four-location recommendation limit, visit/calendar flow and verified rating requirements are repository-law inputs for future implementation.
