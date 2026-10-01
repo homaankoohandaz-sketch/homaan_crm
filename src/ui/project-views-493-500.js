@@ -62,8 +62,7 @@ async function queryTable(table, projectId, columns='*', orderBy=null) {
   let q = window.db.from(table).select(columns).eq('project_id', projectId);
   if (orderBy) q = q.order(orderBy.column, { ascending: orderBy.ascending !== false });
   const r = await q;
-  if (r.error) throw r.error;
-  return r.data || [];
+  return r.error ? [] : (r.data || []);
 }
 
 function panel(title, body) {
@@ -92,20 +91,29 @@ export async function renderProcurementCalendarUI(projectId = window.pid) {
 }
 
 export async function renderFinancialDashboardUI(projectId = window.pid) {
-  const rows = await queryTable('project_financials', projectId);
-  const s = buildFinancialSummary(rows);
+  if (!window.db || !projectId) return panel('Financial Dashboard · 496', '<span class="muted">پروژه انتخاب نشده است.</span>');
+  const r = await window.db.rpc('buildwise_project_dashboard', { p_project_id: projectId });
+  const c = r.error ? {} : (r.data?.cost || {});
+  const s = { budget: Number(c.budget || 0), actual: Number(c.actual || 0), committed: Number(c.committed || 0), variance: Number(c.budget || 0) - Number(c.actual || 0) - Number(c.committed || 0) };
   return panel('Financial Dashboard · 496', '<div class="stats"><div class="stat"><span>Budget</span><strong>' + s.budget.toLocaleString('fa-IR') + '</strong></div><div class="stat"><span>Actual</span><strong>' + s.actual.toLocaleString('fa-IR') + '</strong></div><div class="stat"><span>Committed</span><strong>' + s.committed.toLocaleString('fa-IR') + '</strong></div><div class="stat"><span>Remaining</span><strong>' + s.variance.toLocaleString('fa-IR') + '</strong></div></div>');
 }
 
 export async function renderUnitSalesMatrixUI(projectId = window.pid) {
-  const matrix = buildUnitSalesMatrix(await queryTable('project_units', projectId));
+  const floors = await queryTable('project_floors', projectId, 'id,floor_number,name');
+  const floorIds = floors.map(x => x.id);
+  let units = [];
+  if (window.db && floorIds.length) {
+    const r = await window.db.from('project_units').select('*').in('floor_id', floorIds);
+    units = r.error ? [] : (r.data || []).map(u => ({...u, floor: floors.find(f => String(f.id) === String(u.floor_id))?.floor_number ?? u.floor_id, unit_id: u.unit_code ?? u.id, area: u.area_m2}));
+  }
+  const matrix = buildUnitSalesMatrix(units);
   const body = Object.entries(matrix).map(([floor, units]) => '<details open><summary><b>Floor ' + esc(floor) + '</b></summary>' +
     units.map(u => '<div class="metric-line"><span>#' + esc(u.unit_id || u.id) + ' · ' + esc(u.area || '—') + '</span><b>' + esc(u.status || '—') + '</b></div>').join('') + '</details>').join('');
   return panel('Unit Sales Matrix · 497', body || '<span class="muted">واحدی برای نمایش وجود ندارد.</span>');
 }
 
 export async function renderWorkflowUI(projectId = window.pid) {
-  const rows = await queryTable('workflow_steps', projectId);
+  const rows = Array.isArray(window.__buildwiseWorkflowSteps) ? window.__buildwiseWorkflowSteps : [];
   const steps = [...rows].sort((a,b) => Number(a.position ?? 0) - Number(b.position ?? 0));
   const el = panel('Workflow · 498', '<div class="workflow-board"></div>');
   const board = el.querySelector('.workflow-board');
@@ -137,8 +145,8 @@ export async function renderWorkflowUI(projectId = window.pid) {
 }
 
 export async function renderTimelineUI(projectId = window.pid) {
-  const rows = buildTimeline(await queryTable('project_timeline_events', projectId, '*', { column: 'occurred_at' }));
-  return panel('Timeline · 499', rows.map(x => '<div class="metric-line"><span>' + esc(x.occurred_at || x.created_at || '—') + '</span><b>' + esc(x.title || x.event_type || 'Event') + '</b></div>').join('') || '<span class="muted">رویدادی وجود ندارد.</span>');
+  const rows = buildTimeline(await queryTable('project_ai_alerts', projectId, 'id,title,created_at,severity,status'));
+  return panel('Timeline · 499', rows.map(x => '<div class="metric-line"><span>' + esc(x.occurred_at || x.created_at || '—') + '</span><b>' + esc(x.title || x.event_type || 'Event') + '</b><span class="pill">' + esc(x.status || '') + '</span></div>').join('') || '<span class="muted">رویدادی وجود ندارد.</span>');
 }
 
 export function installProfessionalAnimationSystem() {
@@ -158,3 +166,24 @@ window.BuildWiseProjectViews = {
   renderTimelineUI, installProfessionalAnimationSystem
 };
 if (typeof document !== 'undefined') installProfessionalAnimationSystem();
+
+
+export async function renderAllProjectViews(projectId = window.pid) {
+  const target = document.querySelector('#content');
+  if (!target) return;
+  const panels = await Promise.all([
+    renderGanttUI(projectId),
+    renderKpiDashboardUI(projectId),
+    renderProcurementCalendarUI(projectId),
+    renderFinancialDashboardUI(projectId),
+    renderUnitSalesMatrixUI(projectId),
+    renderWorkflowUI(projectId),
+    renderTimelineUI(projectId)
+  ]);
+  const wrapper = document.createElement('div');
+  wrapper.id = 'project-views-493-500';
+  wrapper.append(...panels);
+  target.prepend(wrapper);
+  return wrapper;
+}
+window.BuildWiseProjectViews.renderAllProjectViews = renderAllProjectViews;
