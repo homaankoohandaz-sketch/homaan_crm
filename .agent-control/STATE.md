@@ -248,3 +248,10 @@ PARTIAL / release-gated.
 - Reconciled 480-490 and 491-492 to PARTIAL because implementation exists but browser/runtime parity verification is not complete.
 - 493 onward remains unclaimed until an actual implementation is present and verified.
 - Next task: 493.
+
+
+## 2026-10-01 — Customer Experience Product Record
+- Permanent customer-facing requirements are recorded in `docs/requirements/CUSTOMER-EXPERIENCE-SPEC-v1.md`.
+- Durable decision memory is recorded in `.agent-control/memory/CUSTOMER-EXPERIENCE-DECISION-2026-10-01.md`.
+- This specification is part of the BuildWise build scope and must be read for future Customer/Portal/Showroom work.
+- It is additive to the canonical master registry; C01–C40 must be reconciled to existing/new master task IDs through the registry process, never treated as a second registry.
