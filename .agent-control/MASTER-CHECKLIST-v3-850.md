@@ -1147,7 +1147,7 @@ S — UI / UX
 
 499 [~] Timeline UI
 
-500 [ ] Professional Animation System
+500 [~] Professional Animation System
 
 
 ==================================================
