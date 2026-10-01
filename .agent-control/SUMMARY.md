@@ -142,3 +142,11 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Transactional fixture verified timeline/action/follow-up/risk/participation/payment aggregation; rolled back.
 - Browser runtime remains unverified; 368-376 PARTIAL.
 - Next task: 377.
+
+
+## 2026-10-01 — Contract Control 377-385
+- Extended the canonical BuildWiseContract engine for templates, versioning, attachments, approvals, signatures, obligations, milestones, breach alerts and project links.
+- Added persistent contract-control schema and `contract_control` aggregation view with manager-scoped RLS.
+- Focused contract-engine tests pass in GitHub CI.
+- Full npm suite remains blocked by the pre-existing missing `tests/unit/market-intelligence.test.mjs` reference; browser/runtime and live migration verification remain pending.
+- Master Checklist 377-385 are PARTIAL; next task is 386.
