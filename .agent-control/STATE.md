@@ -3,8 +3,8 @@
 status: BATCH386-400 IMPLEMENTED | ADVISOR OPS RECONCILED | CI RUNTIME PENDING | FULL REPO RUNTIME BLOCKED
 project: BuildWise AI
 branch: buildwise-implementation
-active_task: checklist-401-415
-last_batch: 386-400
+active_task: checklist-416-430
+last_batch: 406-415
 
 ## Current truth
 - Code truth: GitHub branch buildwise-implementation.
@@ -174,3 +174,12 @@ PARTIAL / release-gated.
 - CI was blocked by an existing syntax defect in `procurement-control-141-160.js`; the defect was fixed minimally and a fresh CI run is now in progress.
 - 386-400 remain PARTIAL pending final CI result, browser/runtime and live Supabase verification.
 - Next task: 401.
+
+
+## 2026-10-01 — Customer Experience 406-415
+- Reused the canonical portal/media/customer-flow architecture; no parallel showroom or CRM request subsystem created.
+- Added `src/domains/portal/customer-experience.js` for interactive walkthrough, floor-plan viewer state, unit selection, unit comparison, customer request journey, customer assistant routing, customer-specific proposal/ROI, notifications and appointment workflow primitives.
+- Added `20261001150000_customer_experience_406_415.sql` for experience views, customer notifications and appointment persistence with RLS and control view.
+- Added `tests/unit/customer-experience.test.mjs` and wired it into the repository test command.
+- Existing 401-405 remain PARTIAL; 406-415 are now PARTIAL pending CI, browser/runtime and live Supabase verification.
+- Next task: 416.
