@@ -5,7 +5,8 @@ import {
   createElevationSvg,
   createFloorPlanSvg,
   buildScenarioSet,
-  build4DFrame
+  build4DFrame,
+  createMultiAngleCameras
 } from "../../src/domains/project-visualization/project-visualization.js";
 
 test("682-688: visualization contracts", () => {
@@ -14,7 +15,7 @@ test("682-688: visualization contracts", () => {
   assert.match(createElevationSvg({width:20,floors:4}), /<svg/);
   assert.match(createFloorPlanSvg({rooms:[{x:0,y:0,width:5,height:4,name:"Living"}]}), /Living/);
   assert.equal(buildScenarioSet({id:"base"}, [{id:"alt"}]).length, 2);
-  const frame = build4DFrame([{id:"foundation",startProgress:0,endProgress:25}], 12.5)[0];
+  assert.equal(createMultiAngleCameras({PerspectiveCamera:function(){this.position={set(){}}}}, {count:4}).length, 4);\n  const frame = build4DFrame([{id:"foundation",startProgress:0,endProgress:25}], 12.5)[0];
   assert.equal(frame.visible, true);
   assert.equal(frame.completion, 0.5);
 });
