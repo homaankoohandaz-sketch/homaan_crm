@@ -21,7 +21,7 @@ test("infrastructure deployment contract files exist", () => {
 test("production deployment workflow is main-only and uses Cloudflare Pages", () => {
   const workflow = fs.readFileSync(".github/workflows/cloudflare-pages.yml", "utf8");
   assert.match(workflow, /branches:\s*\[main\]/);
-  assert.match(workflow, /cloudflare\/pages-action@v1/);
+  assert.match(workflow, /cloudflare\/wrangler-action@v4/);
   assert.match(workflow, /CLOUDFLARE_API_TOKEN/);
   assert.match(workflow, /CLOUDFLARE_ACCOUNT_ID/);
 });
@@ -36,6 +36,6 @@ test("deployment health check is fail-closed on a missing URL", () => {
 test("migration workflow never applies production migrations automatically", () => {
   const workflow = fs.readFileSync(".github/workflows/supabase-migration-check.yml", "utf8");
   assert.match(workflow, /pull_request/);
-  assert.match(workflow, /supabase db diff/);
+  assert.match(workflow, /supabase db push --dry-run/);
   assert.doesNotMatch(workflow, /supabase db push/);
 });
