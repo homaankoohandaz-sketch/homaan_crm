@@ -1,10 +1,10 @@
 # Agent Control State
 
-status: BATCH493-500 IMPLEMENTED | PROJECT VIEWS RECONCILED | RUNTIME PENDING | FULL REPO RUNTIME BLOCKED
+status: SECURITY-599-600 IMPLEMENTED | LIVE DB VERIFIED | UI RUNTIME PENDING | FULL REPO RUNTIME BLOCKED
 project: BuildWise AI
 branch: buildwise-implementation
-active_task: checklist-501-524
-last_batch: 493-500
+active_task: checklist-601-608
+last_batch: 599-600
 ## Batch 493-500 — Project Presentation Views
 - Added canonical `src/ui/project-views-493-500.js`; no duplicate project-control engine created.
 - 493 Gantt UI: normalized existing project_schedule_tasks data.
@@ -310,3 +310,18 @@ PARTIAL / release-gated.
 - Focused security regression tests were added for 591-608 and wired into npm test.
 - Netlify deploy-preview status for the latest implementation commits is SUCCESS; browser automation is unavailable in the current execution environment, so no UI/runtime DONE claim is made.
 - Current cursor: 599.
+
+
+## 2026-10-02 — Security Hardening 599-600
+- Audited the 23 authenticated-callable SECURITY DEFINER functions identified by the preflight.
+- Two trigger-only functions (log_lead_request_time, check_report_threshold) were closed to public, anon, and authenticated EXECUTE.
+- The remaining 21 are intentional application/RLS helper RPCs and remain callable; missing active-user gates were added to the project-control/radar/status functions reviewed in this batch.
+- 599: explicit manager-only phone visibility policy retained/persisted for person/property phone fields.
+- 600: properties_client was rebuilt as a narrow security_invoker surface; raw property mobile/emergency_phone plus internal/owner notes are absent.
+- Authenticated direct SELECT on properties was replaced with explicit column grants excluding sensitive phone columns; writes were not removed.
+- crm_mask_phone runtime verified: 09121234567 -> 09•••••4567.
+- Live privilege verification: sensitive property columns SELECT=false; normal property SELECT=true.
+- Security Advisor after rollout: authenticated SECURITY DEFINER 25->21; anon SECURITY DEFINER remains 0; mutable search_path remains 0.
+- telegram_sessions remains the single RLS-no-policy INFO finding and is intentionally service-only.
+- Browser UI verification is still unavailable; 599-600 remain PARTIAL under the project DONE contract.
+- Current cursor: 601.
