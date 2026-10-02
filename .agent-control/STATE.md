@@ -1,6 +1,6 @@
 # Agent Control State
 
-status: CI GREEN | 609-626 VERIFIED
+status: CI GREEN | 609-629 VERIFIED | 630 BLOCKED ON PRODUCTION BROWSER
 project: BuildWise AI
 branch: buildwise-implementation
 active_task: checklist-609-620
@@ -47,10 +47,19 @@ last_batch: 609-615
 - 626 AI Parallel Work Test: PASS — overlapping shared-resource work is blocked; eligible non-overlapping work is suggested.
 - Fresh CI for commit e2a9f3b: Unit 751 PASS, Application Validation 848 PASS, Phase Code Map 528 PASS, Worker Runtime 625 PASS.
 
+## 627-632 — Mobile / PWA / Portal / Release Regression
+- 627 Mobile Test: PASS — Unit 759.
+- 628 PWA Install Test: PASS — manifest icon added and service-worker registration added; Application Validation 856 PASS.
+- 629 Customer Portal Test: PASS — share expiry, response actions, advisor alert and AI classification hooks verified in Unit 759.
+- 630 Production E2E Test: BLOCKED — repository has no currently verified production URL/browser runtime in this execution context; static contract passes, but customer→advisor browser flow is not claimed DONE.
+- 631 Regression Test Suite: PASS — wired into npm test and Unit 759.
+- 632 Security Regression Test: PASS — security gates wired and no skipped security tests detected in Unit 759.
+- Fresh CI for commit 4926e46: Unit 759 PASS, Application Validation 856 PASS, Phase Code Map 536 PASS, Worker Runtime 633 PASS.
+
 ## Checklist source
 - Current project source-of-truth is BUILDWISE-MASTER-CHECKLIST-v3, consolidated range 001-850.
 - 850 is the acceptance/architecture register, not 850 completed features.
 - Completion still requires implementation + test + runtime verification; UI/security verification applies where relevant.
 
 ## Next action
-- Continue with 627–630: Mobile, PWA install, Customer Portal, Production E2E. Preserve the canonical-first rule.
+- Resolve 630 only through a real production browser verification; otherwise continue with 633+ infrastructure without falsely marking E2E complete.
