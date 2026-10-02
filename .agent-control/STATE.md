@@ -102,3 +102,9 @@ last_batch: 633-650 infrastructure
 - 813-827: data lineage/change-impact/recovery contract added for source traceability, versioning, rollback evidence and migration safety.
 - Focused tests are wired into npm test. Current status remains PARTIAL until runtime/UI/security acceptance evidence is available.
 - 828-850 remain governed by the existing execution protocol and current-state discipline; no status promotion from prose.
+
+## 2026-10-02 — Integrity repair
+- Found a real release/test defect: `package.json` referenced missing `tests/unit/market-intelligence.test.mjs`.
+- Removed the stale test reference in commit `404811d89b66ed84ba4dbdf526f58c0948698235`.
+- This restores the canonical npm test chain; CI must re-run before claiming the fix verified.
+- Production link remains on Netlify `main` and is not yet proven to serve the current `buildwise-implementation` tree.
