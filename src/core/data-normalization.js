@@ -46,7 +46,5 @@
     return i.name ? 'name:'+i.name : null;
   };
 
-const BuildWiseNormalize = { digits, normalizeText, normalizeKey, normalizePhone, normalizeNumber, normalizeRecord, identityKeys, duplicateKey };
-if (typeof globalThis !== 'undefined') globalThis.BuildWiseNormalize = BuildWiseNormalize;
-
-export { digits, normalizeText, normalizeKey, normalizePhone, normalizeNumber, normalizeRecord, identityKeys, duplicateKey, BuildWiseNormalize };
+  global.BuildWiseNormalize={digits,normalizeText,normalizeKey,normalizePhone,normalizeNumber,normalizeRecord,identityKeys,duplicateKey};
+})(typeof window !== 'undefined' ? window : globalThis);
