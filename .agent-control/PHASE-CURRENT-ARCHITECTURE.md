@@ -169,3 +169,40 @@ Do not rebuild the application from scratch; replace the existing CRM; introduce
 - Summary updated.
 - Current branch inspectable independently.
 - No production code changed by this architecture-only phase.
+
+## Customer Experience C01–C40 — canonical implementation layer (2026-10-02)
+
+Customer Experience is a cross-domain capability inside the existing REOS architecture, not a second application.
+
+Flow:
+LOGIN → AI ENTRY → REQUIREMENT/PROFILE → INTENT → MARKET/LOCATION → MATCH → FOUR OPTIONS → COMPARE → PROJECT/UNIT → PRICE RANGE/ROI/SCENARIO → REQUEST VISIT → CALENDAR → VISIT → VERIFIED RATING → ADVISOR/DEAL.
+
+Canonical ownership:
+- Identity/authentication: existing AUTH / CRM identity boundary.
+- AI entry, field fill, intent and routing: existing AI Field/Decision layers.
+- Property/land/project/unit: existing canonical domains.
+- Price/ROI/scenario/comparable evidence: existing intelligence/finance engines.
+- Visit/calendar/notification: existing appointment/task/notification boundaries.
+- Ratings/verified reviews/market score: customer-experience persistence added by the C01–C40 migration; no duplicate learning loop.
+- Privacy/masking/internal-data firewall: existing security_field_policies + RLS + customer-safe output contract.
+
+Customer-facing invariants:
+- Maximum four location recommendations.
+- Customer price output is a range capped at ±5% around the supported estimate.
+- Exact internal price, owner phone/address, internal notes, negotiations and sensitive calculations are never customer-facing.
+- Ratings require a verified interaction and one rating per interaction/rating-kind.
+- Public rating aggregation uses verified interactions only.
+- Customer media is permission-aware.
+
+Implementation task:
+.agent-control/tasks/TASK-CUSTOMER-EXPERIENCE-C01-C40.md
+
+Persistence:
+supabase/migrations/20261002230000_customer_experience_c01_c40.sql
+
+Runtime code:
+src/domains/portal/customer-experience.js
+supabase/functions/customer-portal/index.ts
+
+Acceptance:
+C01–C40 remain PARTIAL until focused tests, full CI, live Supabase migration/runtime, browser/UI and applicable security evidence are all verified.
