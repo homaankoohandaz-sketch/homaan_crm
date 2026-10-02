@@ -27,7 +27,7 @@ create or replace function public.rollback_import_batch(p_batch_id text)
 returns jsonb
 language plpgsql
 security definer
-set search_path = public
+set search_path = ''
 as $$
 declare
   deleted_properties integer := 0;
