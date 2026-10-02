@@ -134,3 +134,17 @@ last_batch: 633-650 infrastructure
 - 065 Data Quality Dashboard: completeness/coverage, invalid rows, duplicate groups and error-rate metrics are available from the canonical quality layer.
 - Tests added for all six behaviors. Current branch CI has an unrelated pre-existing migration filename-gate failure; syntax workflow also exposed and was fixed to reference the canonical importer path.
 - Status: 060-065 remain PARTIAL until the new CI run plus live/browser verification confirms runtime acceptance under the repository DONE rule.
+
+
+## 2026-10-03 — Core REOS Acceptance 014/022/026/029/030
+- Task: `.agent-control/tasks/TASK-A-CORE-014-022-026-029-030.md`.
+- 014 Liquidity Engine: DONE — implementation, focused regression, full npm test, CI/runtime execution evidence.
+- 022 Feedback / Learning Loop: DONE — implementation, focused regression, full npm test, CI/runtime execution evidence.
+- 026 Model Router: DONE — implementation, focused regression, full npm test, CI/runtime execution evidence.
+- 029 Agent Permission Matrix: DONE — implementation, focused authorization regression, full npm test, CI/runtime execution evidence.
+- 030 Master Decision Loop: DONE — implementation, evidence gate regression, full npm test, CI/runtime execution evidence.
+- Core hardening: negative liquidity inputs rejected; empty decision evidence rejected.
+- BuildWise Unit Tests run 840: PASS.
+- Application Validation 938: PASS; QA 154: PASS; Agent Control Plane Validation 291: PASS; Phase Code Map 617: PASS.
+- Supabase Migration Gate 19: FAIL, unrelated to this pure-JS task; no migration introduced.
+- Current canonical checklist count: 10 DONE / 456 PARTIAL / 384 TODO / 0 BLOCKED.
