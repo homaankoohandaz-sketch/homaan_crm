@@ -26,3 +26,5 @@ jobs:
         run: node tests/architecture-contract.test.js
       - name: Phase code map test
         run: node tests/phase-code-map.test.js
+      - name: Infrastructure deployment contract test
+        run: node --test tests/infrastructure-deployment.test.mjs
