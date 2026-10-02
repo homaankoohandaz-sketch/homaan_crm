@@ -275,3 +275,12 @@ PARTIAL / release-gated.
 - This batch provides deterministic product foundations for brand, Instagram/social content, launch planning, lead capture and campaign attribution; external social publishing/analytics integrations remain unverified.
 - 525-545 remain PARTIAL pending CI/runtime verification.
 - Current cursor: 546.
+
+
+## 2026-10-02 — AI Content Production Bot 546-575
+- Added canonical `src/marketing/content-bot.js` for prompt-to-asset production jobs, land visualization specifications and channel export profiles.
+- Added safety-oriented brief normalization so generated marketing assets do not silently invent measurements, prices, permits or guarantees.
+- Added focused acceptance test `tests/unit/content-bot-546-575.test.mjs` and wired it into `npm test`.
+- Actual media generation providers, automated voice/video rendering and social publishing are not claimed as implemented; this batch establishes the executable orchestration contract.
+- 546-575 remain PARTIAL pending CI/runtime/provider verification.
+- Current cursor: 576.
