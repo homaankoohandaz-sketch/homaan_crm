@@ -98,3 +98,43 @@ export async function createProjectScene({ container, modelFactory } = {}) {
   renderer.render(scene, camera);
   return { THREE, scene, camera, renderer };
 }
+
+
+export function createMassing({ THREE, scene, width = 20, depth = 15, floors = 5, floorHeight = 3 } = {}) {
+  if (!THREE || !scene) throw new Error("THREE and scene are required");
+  const geometry = new THREE.BoxGeometry(width, floors * floorHeight, depth);
+  const material = new THREE.MeshNormalMaterial({ wireframe: false });
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.position.y = (floors * floorHeight) / 2;
+  scene.add(mesh);
+  return mesh;
+}
+
+export function createMultiAngleCameras(THREE, { radius = 40, height = 20, count = 8 } = {}) {
+  const cameras = [];
+  for (let i = 0; i < Math.max(1, count); i += 1) {
+    const angle = (Math.PI * 2 * i) / Math.max(1, count);
+    const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 5000);
+    camera.position.set(Math.cos(angle) * radius, height, Math.sin(angle) * radius);
+    cameras.push(camera);
+  }
+  return cameras;
+}
+
+export async function create360Scene({ container, panoramaUrl } = {}) {
+  if (!container || !panoramaUrl) throw new Error("container and panoramaUrl are required");
+  const THREE = await loadThree();
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, container.clientWidth / Math.max(1, container.clientHeight), 0.1, 2000);
+  camera.position.set(0, 0, 0.01);
+  const texture = await create360Texture(panoramaUrl);
+  const geometry = new THREE.SphereGeometry(100, 64, 32);
+  geometry.scale(-1, 1, 1);
+  const material = new THREE.MeshBasicMaterial({ map: texture });
+  scene.add(new THREE.Mesh(geometry, material));
+  const renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setSize(container.clientWidth, container.clientHeight);
+  container.replaceChildren(renderer.domElement);
+  renderer.render(scene, camera);
+  return { THREE, scene, camera, renderer, texture };
+}
