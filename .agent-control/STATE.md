@@ -116,3 +116,11 @@ last_batch: 633-650 infrastructure
 - Checklist status after this batch: 5 DONE / 455 PARTIAL / 390 TODO.
 - 14/22/26/29/30 are PARTIAL because runtime/UI acceptance is still required.
 - Live Netlify production remains tied to `main` at an older commit; current implementation branch is not yet the deployed production artifact. Do not mark 630/642 DONE.
+
+## 2026-10-02 — Customer Experience C01-C40 implementation
+- Task: `.agent-control/tasks/TASK-CUSTOMER-EXPERIENCE-C01-C40.md`
+- Implementation: customer experience domain + customer portal privacy enforcement.
+- Persistence: `20261002230000_customer_experience_c01_c40.sql`.
+- Architecture: canonical C01-C40 layer added to `PHASE-CURRENT-ARCHITECTURE.md`.
+- Tests: focused customer-experience suite expanded; CI/live/runtime verification is still required.
+- Status: PARTIAL. Do not mark C01-C40 or 401-415/418-432 DONE yet.
