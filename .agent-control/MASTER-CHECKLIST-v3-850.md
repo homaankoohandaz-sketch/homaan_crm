@@ -1634,13 +1634,13 @@ No prior decision is silently deleted or replaced.
 679 [ ] Project → Result → Room relationship must be persistent
 680 [ ] Room reads only published/analyzed project results
 681 [ ] Architectural AI review must operate on the project result layer
-682 [ ] 2D elevation generator
-683 [ ] 2D floor-plan generator
-684 [ ] Alternative project scenarios
-685 [ ] 3D project view
-686 [ ] 360-degree project view
-687 [ ] Exterior/multi-angle project views
-688 [ ] 4D project view / time-based visualization
+682 [~] 2D elevation generator
+683 [~] 2D floor-plan generator
+684 [~] Alternative project scenarios
+685 [~] 3D project view
+686 [~] 360-degree project view
+687 [~] Exterior/multi-angle project views
+688 [~] 4D project view / time-based visualization
 689 [ ] Floor pricing must be configurable
 690 [ ] Default floor premium range 3–5% must be configurable, not hard-coded
 691 [ ] Architecture → financial model linkage
