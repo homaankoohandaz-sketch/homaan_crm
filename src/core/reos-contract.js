@@ -168,7 +168,7 @@ export function routeModel(task = {}, models = []) {
 export function calculateLiquidity(input = {}) {
   const assets = Number(input.liquidAssets ?? 0);
   const obligations = Number(input.shortTermObligations ?? 0);
-  if (!Number.isFinite(assets) || !Number.isFinite(obligations) || obligations < 0) return { ok:false, code:"INVALID_LIQUIDITY_INPUT" };
+  if (!Number.isFinite(assets) || !Number.isFinite(obligations) || assets < 0 || obligations < 0) return { ok:false, code:"INVALID_LIQUIDITY_INPUT" };
   if (obligations === 0) return { ok:true, ratio:null, status:"NO_OBLIGATIONS" };
   const ratio = assets / obligations;
   return { ok:true, ratio, status: ratio >= 1.5 ? "strong" : ratio >= 1 ? "balanced" : "tight" };
@@ -185,6 +185,7 @@ export function runMasterDecisionLoop(input = {}) {
   const required = ["event","evidence","decision","responsibleParty","nextAction"];
   const missing = required.filter(k => input[k] === undefined || input[k] === null || input[k] === "");
   if (missing.length) return { ok:false, code:"DECISION_LOOP_INPUT_REQUIRED", missing };
+  if (!Array.isArray(input.evidence) || input.evidence.length === 0) return { ok:false, code:"EVIDENCE_REQUIRED", missing:["evidence"] };
   const approvalRequired = input.material === true || input.critical === true;
   if (approvalRequired && input.approvalState !== "approved") return { ok:false, code:"APPROVAL_REQUIRED", missing:[] };
   return { ok:true, stages:["event","interpret","evaluate","decide","approve","execute","deadline","alert","followUp","audit"], nextAction:input.nextAction };
