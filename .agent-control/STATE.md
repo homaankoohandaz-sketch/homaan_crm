@@ -266,3 +266,12 @@ PARTIAL / release-gated.
 - GitHub Actions workflow is configured to trigger on pushes to `buildwise-implementation`, but no workflow run is currently visible for the latest commits; runtime/CI verification therefore remains pending.
 - 501-524 are PARTIAL, not DONE, until CI + browser/runtime verification is confirmed.
 - Current cursor: 525.
+
+
+## 2026-10-02 — Content / Marketing 525-545
+- Reused the existing BuildWise landing surface; no separate marketing application created.
+- Added canonical `src/marketing/content-system.js` covering brand primitives, channel content briefs, launch-calendar ordering and landing→CRM lead-capture normalization.
+- Added focused acceptance test `tests/unit/content-system-525-545.test.mjs` and wired it into `npm test`.
+- This batch provides deterministic product foundations for brand, Instagram/social content, launch planning, lead capture and campaign attribution; external social publishing/analytics integrations remain unverified.
+- 525-545 remain PARTIAL pending CI/runtime verification.
+- Current cursor: 546.
