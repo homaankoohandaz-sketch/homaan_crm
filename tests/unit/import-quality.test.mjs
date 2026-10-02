@@ -47,8 +47,9 @@ test('rollback plan remains non-destructive until explicit execution', () => {
   const plan = rollbackPlan({ batchId: 'batch-1', insertedIds: [1, 2] });
   assert.equal(plan.status, 'planned');
   assert.deepEqual(plan.ids, [1, 2]);
-  assert.equal(plan.destructive, false);
+  assert.equal(plan.destructive, true);
   assert.equal(plan.requiresExecution, true);
+  assert.equal(plan.requiresManager, true);
 });
 
 test('2000+ row import normalization remains complete and deterministic', () => {
