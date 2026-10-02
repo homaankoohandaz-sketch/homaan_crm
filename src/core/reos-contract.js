@@ -75,3 +75,66 @@ export function validateCustomerOutput(output = {}) {
   const missing = required.filter(key => !output[key]);
   return { ok: missing.length === 0, missing };
 }
+
+
+export const DECISION_CONSTITUTION = Object.freeze({
+  sourceTruthHierarchy: ["approved_record","repository_decision","validated_runtime_data","source_document","external_source","user_input","inference"],
+  evidenceStrengths: ["verified","supported","limited","unknown"],
+  reasoningClasses: ["fact","source_fact","calculation","inference","scenario","recommendation","action"],
+  recalculationModes: ["AUTO","MANUAL","APPROVAL_REQUIRED"],
+  failurePolicies: ["retry","fallback","stop","escalate"],
+  executionTraceRequired: true,
+  idempotencyRequired: true,
+  dryRunForSensitiveActions: true,
+  preserveApprovedVersions: true,
+  silentCriticalMutation: false,
+});
+
+export function classifyDecision(value = {}) {
+  const required = ["source","evidence","reasoningClass"];
+  const missing = required.filter(k => value[k] === undefined || value[k] === null || value[k] === "");
+  const validReasoning = DECISION_CONSTITUTION.reasoningClasses.includes(value.reasoningClass);
+  const validEvidence = DECISION_CONSTITUTION.evidenceStrengths.includes(value.evidence);
+  return {
+    ok: missing.length === 0 && validReasoning && validEvidence,
+    missing,
+    code: missing.length ? "DECISION_METADATA_REQUIRED" : (!validReasoning || !validEvidence ? "DECISION_CLASS_INVALID" : "OK"),
+  };
+}
+
+export function validateCriticalChange(change = {}) {
+  const required = ["changeId","beforeVersion","afterVersion","impact","recalculationMode"];
+  const missing = required.filter(k => change[k] === undefined || change[k] === null || change[k] === "");
+  const modeValid = DECISION_CONSTITUTION.recalculationModes.includes(change.recalculationMode);
+  const versioned = change.beforeVersion !== change.afterVersion;
+  return {
+    ok: missing.length === 0 && modeValid && versioned,
+    missing,
+    code: missing.length ? "CHANGE_METADATA_REQUIRED" : (!modeValid ? "RECALCULATION_MODE_INVALID" : (!versioned ? "VERSION_REQUIRED" : "OK")),
+  };
+}
+
+export function validateExecutionTrace(trace = {}) {
+  const required = ["executionId","actor","tool","time","action","result","verification"];
+  const missing = required.filter(k => trace[k] === undefined || trace[k] === null || trace[k] === "");
+  return { ok: missing.length === 0, missing, code: missing.length ? "EXECUTION_TRACE_REQUIRED" : "OK" };
+}
+
+export function validateBoundedTask(task = {}) {
+  const required = ["taskId","allowedReads","allowedWrites","allowedExecutions","prohibitedOperations"];
+  const missing = required.filter(k => task[k] === undefined);
+  const numeric = ["tokenBudget","timeBudgetMs","costBudget","maxIterations"].filter(k => task[k] !== undefined && (!Number.isFinite(task[k]) || task[k] < 0));
+  return { ok: missing.length === 0 && numeric.length === 0, missing, invalidBudgets: numeric, code: missing.length ? "TASK_SCOPE_REQUIRED" : (numeric.length ? "BUDGET_INVALID" : "OK") };
+}
+
+export function validateLineage(value = {}) {
+  const required = ["inputLineage","sourceRecords","sourceVersion","sourceTimestamp"];
+  const missing = required.filter(k => value[k] === undefined || value[k] === null || value[k] === "");
+  return { ok: missing.length === 0, missing, code: missing.length ? "LINEAGE_REQUIRED" : "OK" };
+}
+
+export function validateRecovery(record = {}) {
+  const required = ["before","after","auditTrail"];
+  const missing = required.filter(k => record[k] === undefined || record[k] === null);
+  return { ok: missing.length === 0, missing, code: missing.length ? "RECOVERY_EVIDENCE_REQUIRED" : "OK" };
+}
