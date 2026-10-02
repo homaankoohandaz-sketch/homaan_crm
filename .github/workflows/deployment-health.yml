@@ -1,0 +1,41 @@
+name: BuildWise AI — Production Health Check
+
+on:
+  workflow_dispatch:
+    inputs:
+      production_url:
+        description: "Production URL; must be HTTPS"
+        required: true
+        type: string
+  workflow_run:
+    workflows: ["BuildWise AI — Cloudflare Pages Production"]
+    types: [completed]
+
+permissions:
+  contents: read
+
+jobs:
+  health:
+    if: >
+      (github.event_name == 'workflow_dispatch') ||
+      (github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Resolve production URL
+        id: url
+        env:
+          INPUT_URL: ${{ inputs.production_url }}
+          CONFIGURED_URL: ${{ vars.PRODUCTION_URL }}
+        run: |
+          URL="$INPUT_URL"
+          if [ -z "$URL" ]; then URL="$CONFIGURED_URL"; fi
+          test -n "$URL"
+          case "$URL" in https://*) ;; *) echo "PRODUCTION_URL must use HTTPS"; exit 1 ;; esac
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+
+      - name: HTTP health check
+        env:
+          URL: ${{ steps.url.outputs.url }}
+        run: |
+          curl --fail --silent --show-error --location             --connect-timeout 15 --max-time 30             --retry 2 --retry-delay 2             "$URL" > /tmp/buildwise-health.html
+          grep -Eiq '<title|BuildWise|CRM' /tmp/buildwise-health.html
