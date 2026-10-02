@@ -255,3 +255,14 @@ PARTIAL / release-gated.
 - Durable decision memory is recorded in `.agent-control/memory/CUSTOMER-EXPERIENCE-DECISION-2026-10-01.md`.
 - This specification is part of the BuildWise build scope and must be read for future Customer/Portal/Showroom work.
 - It is additive to the canonical master registry; C01–C40 must be reconciled to existing/new master task IDs through the registry process, never treated as a second registry.
+
+
+## 2026-10-02 — Product Presentation 501-524
+- Reused existing canonical `landing.html`; no parallel marketing app created.
+- Extended landing surface with dashboard/project/Gantt/KPI/AI/sales/customer presentation anchors.
+- Added responsive presentation, PWA manifest linkage, install prompt support, SEO/OG metadata, analytics-ready and conversion-ready hooks.
+- Added focused acceptance test `tests/unit/landing-501-524.test.mjs`.
+- Corrected `npm test` gate by removing the stale reference to missing `tests/unit/market-intelligence.test.mjs`; existing `tests/decision-layer.test.js` remains included.
+- GitHub Actions workflow is configured to trigger on pushes to `buildwise-implementation`, but no workflow run is currently visible for the latest commits; runtime/CI verification therefore remains pending.
+- 501-524 are PARTIAL, not DONE, until CI + browser/runtime verification is confirmed.
+- Current cursor: 525.
