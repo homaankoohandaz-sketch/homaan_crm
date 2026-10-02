@@ -72,7 +72,7 @@ function panel(title, body) {
   return el;
 }
 
-export async function renderGanttUI(projectId = window.pid) {
+export async function renderGanttUI(projectId = globalThis.pid) {
   const tasks = buildGanttRows(await queryTable('project_schedule_tasks', projectId, '*', { column: 'planned_start' }));
   const rows = tasks.map(x => '<div class="metric-line"><b>' + esc(x.title) + '</b><span>' + esc(x.start || '—') + ' → ' + esc(x.end || '—') + ' · ' + x.progress + '%</span></div>').join('');
   return panel('Gantt · 493', rows || '<span class="muted">تسکی برای نمایش وجود ندارد.</span>');
@@ -160,7 +160,7 @@ export function installProfessionalAnimationSystem() {
   return t;
 }
 
-window.BuildWiseProjectViews = {
+globalThis.BuildWiseProjectViews = {
   renderGanttUI, renderKpiDashboardUI, renderProcurementCalendarUI,
   renderFinancialDashboardUI, renderUnitSalesMatrixUI, renderWorkflowUI,
   renderTimelineUI, installProfessionalAnimationSystem
@@ -186,4 +186,4 @@ export async function renderAllProjectViews(projectId = window.pid) {
   target.prepend(wrapper);
   return wrapper;
 }
-window.BuildWiseProjectViews.renderAllProjectViews = renderAllProjectViews;
+globalThis.BuildWiseProjectViews.renderAllProjectViews = renderAllProjectViews;
