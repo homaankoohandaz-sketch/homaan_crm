@@ -1,3 +1,5 @@
+'use strict';
+
 /* BuildWise AI — shared data normalization and entity-resolution primitives.
    Browser-safe, dependency-free. Used before persistence so Excel/manual/API inputs share one shape. */
 (function(global){
@@ -43,5 +45,8 @@
     if(i.phone) return 'phone:'+i.phone;
     return i.name ? 'name:'+i.name : null;
   };
-  global.BuildWiseNormalize={digits,normalizeText,normalizeKey,normalizePhone,normalizeNumber,normalizeRecord,identityKeys,duplicateKey};
-})(window);
+
+const BuildWiseNormalize = { digits, normalizeText, normalizeKey, normalizePhone, normalizeNumber, normalizeRecord, identityKeys, duplicateKey };
+if (typeof globalThis !== 'undefined') globalThis.BuildWiseNormalize = BuildWiseNormalize;
+
+export { digits, normalizeText, normalizeKey, normalizePhone, normalizeNumber, normalizeRecord, identityKeys, duplicateKey, BuildWiseNormalize };
