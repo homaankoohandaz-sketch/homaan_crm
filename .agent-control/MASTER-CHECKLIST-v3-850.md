@@ -181,19 +181,19 @@ B — CRM / DATA MANAGEMENT
 
 059 [~] Manager Audit Trail
 
-060 [ ] Arbitrary Excel Column Editor
+060 [~] Arbitrary Excel Column Editor
      Manager can edit every imported field
 
-061 [ ] Import Error Isolation
+061 [~] Import Error Isolation
      Raw import failure ≠ normalized import failure
 
-062 [ ] Import Preview
+062 [~] Import Preview
 
-063 [ ] Import Validation
+063 [~] Import Validation
 
-064 [ ] Import Rollback
+064 [~] Import Rollback
 
-065 [ ] Data Quality Dashboard
+065 [~] Data Quality Dashboard
 
 
 ==================================================
