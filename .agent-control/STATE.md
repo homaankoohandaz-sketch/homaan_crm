@@ -85,3 +85,12 @@ last_batch: 633-650 infrastructure
 - 650 Environment Separation: PARTIAL — development/preview/production rules documented; provider-side environment configuration remains to be verified.
 - Infrastructure contract test: PASS — GitHub Actions run 868, commit 1bd0d09.
 - No production deployment or destructive production database action was performed.
+
+
+## 2026-10-02 — 651-675 REOS Integration
+- 651-657: integration contract implemented for unified REOS identity, project-control, AI authority, evidence and audit boundaries.
+- 658-663: configurable-project contract defined for workflow/KPI/accounting/procurement/schedule/sales strategy.
+- 664-666: canonical input/calculation/comparison domains defined; existing domain engines remain owners of implementation.
+- 667-674: customer output and unified-product architecture contracts defined; presentation/content/open-source reuse remain dependent on their existing modules.
+- 675: DONE rule remains governed by AGENT_EXECUTION_PROTOCOL; no checklist item is promoted to DONE from contract tests alone.
+- Focused REOS tests are wired into npm test; latest CI for the current branch is in progress.
