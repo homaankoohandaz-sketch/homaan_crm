@@ -1,10 +1,10 @@
 # Agent Control State
 
-status: CI GREEN | 609-629 VERIFIED | 630 BLOCKED ON PRODUCTION BROWSER
+status: CI GREEN | 609-629 VERIFIED | 630 BLOCKED ON PRODUCTION BROWSER | 633-650 INFRA PARTIAL
 project: BuildWise AI
 branch: buildwise-implementation
-active_task: checklist-609-620
-last_batch: 609-615
+active_task: checklist-633-650
+last_batch: 633-650 infrastructure
 
 ## Security 601-608
 - 599-600 were not reopened.
@@ -63,3 +63,25 @@ last_batch: 609-615
 
 ## Next action
 - Resolve 630 only through a real production browser verification; otherwise continue with 633+ infrastructure without falsely marking E2E complete.
+
+## 633-650 — Infrastructure / Deployment
+- 633 GitHub Repository: PARTIAL — repository and control plane are active.
+- 634 buildwise-implementation Branch: PARTIAL — active implementation branch; production remains main-only.
+- 635 GitHub Actions: PARTIAL — CI exists and fresh infrastructure contract test is green.
+- 636 Supabase: PARTIAL — live project verified ACTIVE_HEALTHY (ref beuestoewletjsgmigmf).
+- 637 Edge Functions: PARTIAL — existing functions remain the active API/edge layer.
+- 638 Database Schema: PARTIAL — migration history exists; production migration gate added.
+- 639 Graph Tables: PARTIAL — existing graph/data layer remains in place.
+- 640 AI Orchestrator: PARTIAL — existing Supabase Edge Function remains the canonical AI edge.
+- 641 GitHub Pages: PARTIAL — retained for smoke/demo; not production.
+- 642 Final Production Domain: TODO/BLOCKED — no verified production URL available in this execution context.
+- 643 Cloudflare: PARTIAL — Cloudflare Pages deployment workflow + Wrangler configuration added; account/project/secrets are not yet runtime-verified.
+- 644 Cloudflare Workers if needed: TODO — no Worker introduced because Pages + Supabase Edge Functions cover the current static/API path.
+- 645 Automated Deployment: PARTIAL — main-only Cloudflare Pages workflow implemented; actual Cloudflare deployment awaits configured secrets/project.
+- 646 Deployment Health Check: PARTIAL — fail-closed HTTPS health workflow implemented; production URL variable/runtime not yet verified.
+- 647 Database Migration Pipeline: PARTIAL — migration naming gate and manual, secret-gated dry-run path implemented; no production migration applied by this batch.
+- 648 Backup Strategy: PARTIAL — backup/rollback policy documented; actual scheduled backup runtime not enabled.
+- 649 Rollback Strategy: PARTIAL — Cloudflare rollback path and corrective-migration policy documented; runtime rollback drill not executed.
+- 650 Environment Separation: PARTIAL — development/preview/production rules documented; provider-side environment configuration remains to be verified.
+- Infrastructure contract test: PASS — GitHub Actions run 868, commit 1bd0d09.
+- No production deployment or destructive production database action was performed.
