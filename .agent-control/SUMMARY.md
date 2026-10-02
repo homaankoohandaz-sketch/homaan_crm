@@ -204,3 +204,19 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Recorded durable decision memory in `.agent-control/memory/CUSTOMER-EXPERIENCE-DECISION-2026-10-01.md`.
 - C01–C40 are capability identifiers, not a second task registry; existing 401–415 and 418–432 are the current relevant master-checklist ranges.
 - Customer privacy, field-level permissions, ±5% customer-facing price range, four-location recommendation limit, visit/calendar flow and verified rating requirements are repository-law inputs for future implementation.
+
+
+## 2026-10-02 — Security / Governance 591-608
+- Security hardening applied to the live Supabase project after a measured preflight and transactional dry run.
+- 17→1 RLS-enabled/no-policy findings; the remaining `telegram_sessions` table is intentionally service-only with client grants revoked.
+- 22→0 flagged SECURITY DEFINER views by enabling `security_invoker` and revoking anon SELECT.
+- 4→0 anon-executable SECURITY DEFINER functions; 3→0 mutable search_path findings.
+- 25→23 authenticated SECURITY DEFINER findings remain; they are function-by-function review candidates, not blindly revoked because several are application RPCs and RLS helper functions.
+- Added field-policy, agent-tool-permission and production-action-approval governance tables with RLS.
+- Added `properties_client` safe read surface and changed all eight browser property read paths to it; raw phone-column revocation is intentionally staged until branch deployment/runtime verification.
+- AI audit/alert/approval permissions narrowed to actor/manager/assigned-user boundaries.
+- Verified Google Sheets sync uses `BUILDWISE_SYNC_TOKEN` from Edge Function environment and no hardcoded token.
+- Leaked Password Protection remains WARN because the current Supabase plan does not include that feature; no false DONE claim.
+- Focused security regression tests are wired into npm test.
+- Latest Netlify deploy-preview status: SUCCESS. Browser automation is unavailable here; UI/runtime verification remains pending.
+- Current cursor: 599.
