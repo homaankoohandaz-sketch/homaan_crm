@@ -37,5 +37,5 @@ test("migration workflow never applies production migrations automatically", () 
   const workflow = fs.readFileSync(".github/workflows/supabase-migration-check.yml", "utf8");
   assert.match(workflow, /pull_request/);
   assert.match(workflow, /supabase db push --dry-run/);
-  assert.doesNotMatch(workflow, /supabase db push/);
+  assert.doesNotMatch(workflow, /supabase db push(?! --dry-run)/);
 });
