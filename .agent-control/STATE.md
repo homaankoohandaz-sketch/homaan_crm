@@ -292,3 +292,21 @@ PARTIAL / release-gated.
 - No live gold/dollar/material/property provider was invented; provider-specific feeds remain integration work.
 - 576-590 remain PARTIAL pending live source integration and runtime verification.
 - Current cursor: 591.
+
+
+## 2026-10-02 — Security / Governance 591-608
+- Preflight Security Advisor baseline confirmed: 17 RLS-enabled tables without policies, 22 SECURITY DEFINER views, 25 authenticated SECURITY DEFINER functions, 4 anon SECURITY DEFINER functions, 3 mutable search_path functions, leaked-password protection disabled.
+- Migration `20261002133000_security_governance_591_608.sql` applied and transactionally syntax-tested.
+- 16 missing-policy tables were remediated; `telegram_sessions` remains intentionally service-only with client grants revoked.
+- All 22 flagged public views were changed to `security_invoker=true`; anon SELECT was revoked.
+- Mutable search_path findings reduced 3→0.
+- Anonymous SECURITY DEFINER execution reduced 4→0. Trigger-only public request helpers are no longer client-callable.
+- Added governance foundations: `security_field_policies`, `agent_tool_permissions`, `production_action_approvals`.
+- Added `properties_client` safe read view and routed all 8 client property reads in `buildwise-app.js` through it; the insert path remains on canonical `properties`.
+- AI data permissions hardened: audit events, project AI alerts and AI change approvals now use actor/manager/assigned-user boundaries.
+- Google Sheets sync runtime was inspected: it requires `BUILDWISE_SYNC_TOKEN` from Edge Function environment and contains no hardcoded token fallback.
+- Supabase Security Advisor after remediation: RLS no-policy 17→1; non-invoker views 22→0; anon SECURITY DEFINER 4→0; mutable search_path 3→0; authenticated SECURITY DEFINER 25→23.
+- Remaining intentional/blocked items: `telegram_sessions` is service-only; 23 authenticated SECURITY DEFINER RPCs require per-function client-use audit before revoke; leaked password protection is plan-gated and not enabled on the current plan.
+- Focused security regression tests were added for 591-608 and wired into npm test.
+- Netlify deploy-preview status for the latest implementation commits is SUCCESS; browser automation is unavailable in the current execution environment, so no UI/runtime DONE claim is made.
+- Current cursor: 599.
