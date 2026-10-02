@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { verifyProgressEvidence } from '../../ai-project-control-engine.js';
+import { verifyProgressEvidence } from '../ai-project-control-engine.js';
 
 test('progress verification compares declared progress with evidence', () => {
   const result = verifyProgressEvidence(
