@@ -1,7 +1,7 @@
 import test from 'node:test';
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
-import { normalizeImportRows, validateImportRows, buildImportPreview, findDuplicateCandidates, rollbackPlan, editImportedRecord } from '../../src/domains/crm/import-quality.js';
+import { normalizeImportRows, validateImportRows, buildImportPreview, findDuplicateCandidates, rollbackPlan, editImportedRecord, isolateImportErrors, applyColumnEdits, buildDataQualityDashboard } from '../../src/domains/crm/import-quality.js';
 
 test('import normalization preserves raw rows and normalizes numeric and phone fields', () => {
   const rows = normalizeImportRows([
