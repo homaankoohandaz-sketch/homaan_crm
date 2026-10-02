@@ -263,3 +263,9 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Customer portal output now masks exact internal price and limits customer-visible media types.
 - Added focused C01-C40 customer-experience tests.
 - Acceptance remains PARTIAL until full CI + live Supabase/runtime + browser/UI + applicable security verification are confirmed.
+
+## 2026-10-02 — CRM Import Quality 060-065
+- Implemented the canonical CRM import-quality layer for arbitrary-column editing, row-level error isolation, preview, validation, exact batch rollback and data-quality metrics.
+- Added focused tests covering all six capabilities and wired the canonical importer UI to preview/edit/validate/rollback.
+- Added manager-only rollback migration with batch identity on imported target rows.
+- Status: implementation complete; acceptance remains PARTIAL pending CI/runtime verification.
