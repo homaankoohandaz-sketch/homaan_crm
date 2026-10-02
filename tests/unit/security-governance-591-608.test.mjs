@@ -26,7 +26,7 @@ test("591-608 security migration covers the observed advisor findings", () => {
     "project_offer_current_versions","project_sales_profitability","project_document_register",
     "project_document_plan_data","project_kpi_dashboard"
   ]) assert.match(migration, new RegExp("[\'\"]"+view+"[\'\"]"));
-  assert.match(migration, /execute format\(\'alter view public\\.%I set \\(security_invoker = true\\)\'/);
+  assert.ok(migration.includes("execute format('alter view public.%I set (security_invoker = true)', v)"));
 
   assert.match(migration, /revoke execute on function public\.route_new_public_request\(\) from anon, authenticated/);
   assert.match(migration, /revoke execute on function public\.route_public_request\(uuid\) from anon, authenticated/);
