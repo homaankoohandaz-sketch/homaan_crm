@@ -67,6 +67,12 @@ export function findDuplicateCandidates(rows = []) {
     .map(([key, candidates]) => ({ key, candidates, reason: 'same_property_code' }));
 }
 
+export function editImportedRecord(record, changes = {}) {
+  if (!record || typeof record !== 'object' || Array.isArray(record)) throw new TypeError('record is required');
+  if (!changes || typeof changes !== 'object' || Array.isArray(changes)) throw new TypeError('changes is required');
+  return { ...record, ...changes };
+}
+
 export function rollbackPlan({ batchId, insertedIds = [] } = {}) {
   return {
     status: 'planned',
