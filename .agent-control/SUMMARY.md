@@ -255,3 +255,11 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Fixed stale `package.json` test reference to the non-existent `tests/unit/market-intelligence.test.mjs`.
 - Commit: `404811d89b66ed84ba4dbdf526f58c0948698235`.
 - Next: verify fresh CI, then reconcile the live deployment with the canonical implementation branch.
+## 2026-10-02 — Customer Experience C01-C40 implementation
+- Decision converted to bounded task `.agent-control/tasks/TASK-CUSTOMER-EXPERIENCE-C01-C40.md`.
+- Added the canonical C01-C40 implementation layer to `PHASE-CURRENT-ARCHITECTURE.md`; no parallel customer application/engine created.
+- Extended `src/domains/portal/customer-experience.js` with intent, requirement/profile, location ranking (max 4), customer-safe ±5% price range, evidence/scenario comparison, verified ratings/market score and privacy-safe output contracts.
+- Added migration `20261002230000_customer_experience_c01_c40.sql` for customer profiles/requirements, location recommendations, verified interactions/ratings, proposals, aggregation and privacy policy boundaries.
+- Customer portal output now masks exact internal price and limits customer-visible media types.
+- Added focused C01-C40 customer-experience tests.
+- Acceptance remains PARTIAL until full CI + live Supabase/runtime + browser/UI + applicable security verification are confirmed.
