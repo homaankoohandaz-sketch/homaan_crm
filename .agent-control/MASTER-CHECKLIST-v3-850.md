@@ -1370,9 +1370,9 @@ X — SECURITY / GOVERNANCE
 
 598 [~] Field-level Permissions — governance registry added; final column enforcement staged behind client migration
 
-599 [~] Phone-number visibility rules — client reads moved to properties_client; raw table SELECT revocation pending deployment/runtime verification
+599 [~] Phone-number visibility rules — manager-only field policy persisted; trigger-only RPC execution revoked; authenticated SECURITY DEFINER read gates audited; raw property phone SELECT revoked
 
-600 [~] Sensitive Data Masking — properties_client excludes raw phone fields; final direct-table lock pending deployment/runtime verification
+600 [~] Sensitive Data Masking — properties_client rebuilt without raw phone/internal notes; sensitive property columns are not selectable by authenticated API; phone mask helper runtime-verified
 
 601 [~] AI Data Permissions — AI audit/alerts/approval RLS narrowed to actor/manager/assigned-user boundaries
 
