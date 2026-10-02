@@ -117,3 +117,9 @@ Durable memory:
 ## Decision change protocol
 
 When a later decision changes one of these: append a new decision; identify the superseded decision; update PHASE-CURRENT-ARCHITECTURE.md; update MASTER-ARCHITECTURE.md; update SUMMARY.md; never delete the historical decision.
+
+
+## D-023 — Core REOS acceptance 014/022/026/029/030
+Decision: The canonical implementation for Liquidity, Feedback/Learning, Model Routing, Agent Permission Matrix and Master Decision Loop remains the shared `src/core/reos-contract.js` layer; no parallel engines are permitted.
+Evidence: TASK-A-CORE-014-022-026-029-030, BuildWise Unit Tests run 840, Application Validation run 938, QA run 154, Agent Control Plane Validation run 291, Phase Code Map run 617.
+Impact: Checklist items 014, 022, 026, 029 and 030 may be accepted as DONE under the repository DONE rule; UI/security verification is not applicable to these pure core contracts beyond the permission-gate tests and existing governance boundary.
