@@ -1,6 +1,6 @@
 # Agent Control State
 
-status: CI GREEN | 609-615 VERIFIED | NEXT 616-620
+status: CI GREEN | 609-620 VERIFIED | WORKER SUBJOB QUEUED
 project: BuildWise AI
 branch: buildwise-implementation
 active_task: checklist-609-620
@@ -30,12 +30,13 @@ last_batch: 609-615
 - Autonomous Worker Runtime: PASS — run 619.
 - Regression fixes verified through CI: project-control variance semantics, progress-evidence verification, canonical import test path/coverage, browser/global runtime compatibility, landing analytics/conversion markers, and security-test assertion contracts.
 
-## 616-620
-- 616 Import 2,000+ Row Test: not started; canonical import contract must be identified first.
-- 617 Multi-Sheet Excel Test: not started; same dependency.
-- 618 Full Column Preservation Test: not started; same dependency.
-- 619 Duplicate Test: existing normalization/data-quality paths need branch-compatible canonical implementation before test wiring.
-- 620 Manager Edit Test: existing checklist/package references are present, but the referenced data-quality module is absent/incompatible on this branch; no duplicate implementation was introduced.
+## 616-620 — CRM Import / Data Quality Tests
+- 616 Import 2,000+ Row Test: PASS — 2,001-row normalization regression executed in Unit 748.
+- 617 Multi-Sheet Excel Test: PASS — canonical data-import.js contract verified for all SheetNames, sheet provenance, row numbers and raw data.
+- 618 Full Column Preservation Test: PASS — arbitrary normalized columns and _source_raw preserved.
+- 619 Duplicate Test: PASS — same surname/phone alone produces no merge candidate; duplicate candidate remains property-code based and non-destructive.
+- 620 Manager Edit Test: PASS — canonical editImportedRecord added to import-quality.js; edit preserves untouched fields and original record.
+- Canonical contract: src/domains/crm/import-quality.js + src/core/data-normalization.js; no parallel data-quality.js module introduced.
 
 ## Checklist source
 - Current project source-of-truth is BUILDWISE-MASTER-CHECKLIST-v3, consolidated range 001-850.
@@ -43,4 +44,4 @@ last_batch: 609-615
 - Completion still requires implementation + test + runtime verification; UI/security verification applies where relevant.
 
 ## Next action
-- Execute 616-620 against the canonical `src/domains/crm/import-quality.js` + `src/core/data-normalization.js` contract. Do not create parallel CRM data-quality implementations.
+- Continue with 621–630 in the same canonical-first sequence. Do not reopen 599–600 or duplicate the CRM import path.
