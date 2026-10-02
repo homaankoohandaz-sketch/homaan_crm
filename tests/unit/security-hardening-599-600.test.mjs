@@ -22,11 +22,11 @@ test("599-600 defines explicit field visibility and phone masking", () => {
 test("599-600 removes direct client execution of trigger-only SECURITY DEFINER functions", () => {
   assert.match(
     migration,
-    /revoke execute on function public\.log_lead_request_time\(\) from anon, authenticated/
+    /revoke execute on function public\.log_lead_request_time\(\) from (?:public, )?anon, authenticated/
   );
   assert.match(
     migration,
-    /revoke execute on function public\.check_report_threshold\(\) from anon, authenticated/
+    /revoke execute on function public\.check_report_threshold\(\) from (?:public, )?anon, authenticated/
   );
 });
 
