@@ -96,3 +96,69 @@ test('manager edit changes only requested imported fields and preserves the orig
   assert.deepEqual(original, { id: 7, full_name: 'Ali', custom_field: 'keep' });
   assert.deepEqual(edited, { id: 7, full_name: 'Reza', custom_field: 'keep' });
 });
+
+
+test('import error isolation keeps raw rows and isolates row-level failures', () => {
+  const result = isolateImportErrors([
+    { property_code: 'P-1', mobile: '09121234567' },
+    { property_code: 'P-2', mobile: 'bad' }
+  ]);
+  assert.equal(result.valid.length, 1);
+  assert.equal(result.errors.length, 1);
+  assert.equal(result.errors[0].rowIndex, 2);
+  assert.equal(result.errors[0].code, 'invalid_phone');
+  assert.deepEqual(result.errors[0].raw, { property_code: 'P-2', mobile: 'bad' });
+});
+
+test('import validation reports required columns and duplicate candidates without dropping rows', () => {
+  const result = validateImportRows(
+    [{ property_code: 'P-1', mobile: '09121234567' }, { mobile: 'bad' }],
+    { requiredColumns: ['property_code', 'mobile'] }
+  );
+  assert.equal(result.valid.length, 1);
+  assert.equal(result.invalid.length, 1);
+  assert.equal(result.invalid[0].issues[0].code, 'invalid_phone');
+  assert.equal(result.summary.total, 2);
+  assert.equal(result.summary.invalid, 1);
+});
+
+test('column editor changes arbitrary imported fields without mutating the source row', () => {
+  const rows = [{ property_code: 'P-1', 'ستون اختصاصی': 'A' }];
+  const edited = applyColumnEdits(rows, [{ rowIndex: 0, column: 'ستون اختصاصی', value: 'B' }]);
+  assert.equal(edited[0]['ستون اختصاصی'], 'B');
+  assert.equal(rows[0]['ستون اختصاصی'], 'A');
+});
+
+test('preview includes validation summary, all columns and editable row references', () => {
+  const preview = buildImportPreview(
+    [{ property_code: 'P-1', mobile: '09121234567', custom: 'x' }],
+    { requiredColumns: ['property_code', 'mobile'] }
+  );
+  assert.deepEqual(preview.columns, ['property_code', 'mobile', 'custom']);
+  assert.equal(preview.sample[0]._preview_row, 1);
+  assert.equal(preview.validation.invalid, 0);
+});
+
+test('rollback plan is explicit, bounded to a batch, and requires manager execution', () => {
+  const plan = rollbackPlan({ batchId: 'batch-1', insertedIds: [1, 2] });
+  assert.equal(plan.batchId, 'batch-1');
+  assert.deepEqual(plan.ids, [1, 2]);
+  assert.equal(plan.requiresManager, true);
+  assert.equal(plan.destructive, true);
+  assert.equal(plan.status, 'planned');
+});
+
+test('data quality dashboard reports completeness, errors, duplicates and field coverage', () => {
+  const rows = [
+    { property_code: 'P-1', mobile: '09121234567', region: 1 },
+    { property_code: 'P-1', mobile: 'bad', region: null },
+    { property_code: 'P-2', mobile: '09131234567', region: 6 }
+  ];
+  const dashboard = buildDataQualityDashboard(rows, {
+    requiredColumns: ['property_code', 'mobile', 'region']
+  });
+  assert.equal(dashboard.totalRows, 3);
+  assert.equal(dashboard.invalidRows, 1);
+  assert.equal(dashboard.duplicateGroups, 1);
+  assert.equal(dashboard.fieldCoverage.region, 2 / 3);
+});
