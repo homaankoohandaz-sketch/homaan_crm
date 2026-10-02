@@ -1,0 +1,52 @@
+name: BuildWise AI — Supabase Migration Gate
+
+on:
+  pull_request:
+    paths:
+      - "supabase/migrations/**"
+      - "supabase/config.toml"
+      - ".github/workflows/supabase-migration-check.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  migration-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Validate migration filenames and duplicate versions
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -d supabase/migrations
+          versions=$(find supabase/migrations -maxdepth 1 -type f -name '*.sql' -printf '%f\n'             | sed -E 's/^([0-9]+)_.*/\1/' | sort)
+          test -n "$versions"
+          test "$(printf '%s\n' "$versions" | uniq -d)" = ""
+          while IFS= read -r file; do
+            [[ "$file" =~ ^[0-9]{14}_[a-z0-9_]+\.sql$ ]] || {
+              echo "Invalid migration filename: $file"
+              exit 1
+            }
+          done < <(find supabase/migrations -maxdepth 1 -type f -name '*.sql' -printf '%f\n')
+
+      - name: Production migration preview (manual/secret-gated)
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+        run: |
+          test -n "$SUPABASE_ACCESS_TOKEN"
+          test -n "$SUPABASE_DB_PASSWORD"
+          test -n "$SUPABASE_PROJECT_REF"
+          supabase link --project-ref "$SUPABASE_PROJECT_REF" --password "$SUPABASE_DB_PASSWORD"
+          supabase db push --dry-run
