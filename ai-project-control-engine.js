@@ -258,7 +258,7 @@ export function calculateVariance(tasks = [], baseline = {}) {
     };
   });
   const costVariance = rows.reduce((s, r) => s + Number(r.costVariance || 0), 0);
-  const scheduleVarianceDays = rows.reduce((s, r) => s + Number(r.finishVarianceDays || 0), 0);
+  const scheduleVarianceDays = rows.reduce((max, r) => Math.max(max, Number(r.finishVarianceDays || 0)), 0);
   return {
     baselineVersion: baseline.version ?? null,
     taskCount: rows.length,
