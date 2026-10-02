@@ -10,5 +10,12 @@
   "orientation": "portrait-primary",
   "background_color": "#f7f5f1",
   "theme_color": "#17364a",
-  "icons": []
+  "icons": [
+    {
+      "src": "./icons/buildwise-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
 }
