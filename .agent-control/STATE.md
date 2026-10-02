@@ -94,3 +94,11 @@ last_batch: 633-650 infrastructure
 - 667-674: customer output and unified-product architecture contracts defined; presentation/content/open-source reuse remain dependent on their existing modules.
 - 675: DONE rule remains governed by AGENT_EXECUTION_PROTOCOL; no checklist item is promoted to DONE from contract tests alone.
 - Focused REOS tests are wired into npm test; latest CI for the current branch is in progress.
+
+
+## 2026-10-02 — 750-827 Governance Contracts
+- 750-795: canonical Decision Constitution contract added for source truth, evidence, reasoning classes, assumptions/recalculation, approval, audit, idempotency, bounded permissions and failure handling.
+- 796-812: bounded execution economics contract added for token/time/cost/max-iteration budgets and scoped execution.
+- 813-827: data lineage/change-impact/recovery contract added for source traceability, versioning, rollback evidence and migration safety.
+- Focused tests are wired into npm test. Current status remains PARTIAL until runtime/UI/security acceptance evidence is available.
+- 828-850 remain governed by the existing execution protocol and current-state discipline; no status promotion from prose.
