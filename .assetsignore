@@ -1,0 +1,16 @@
+.git/
+.github/
+.agent-control/
+.codex/
+docs/
+tests/
+supabase/
+node_modules/
+*.md
+*.txt
+*.log
+*.sh
+*.ps1
+package.json
+package-lock.json
+wrangler.toml
