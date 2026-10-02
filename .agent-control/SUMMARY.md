@@ -280,3 +280,13 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Checklist 014, 022, 026, 029 and 030 promoted to [✓] DONE under the repository DONE rule.
 - Migration Gate 19 failed on an unrelated existing migration-gate condition; this task introduced no migration and does not depend on that gate.
 - Task contract: `.agent-control/tasks/TASK-A-CORE-014-022-026-029-030.md`.
+
+
+## 2026-10-03 — Task C/D: Plan Intelligence + Visualization
+- Researched GitHub components for 301–312 and 682–688 and recorded the licensing/architecture decision in D-024.
+- Added BuildWise-owned plan-intelligence adapters for OCR, PDF, DXF, text fact extraction, plan-vs-permit comparison and missing-information detection.
+- Added BuildWise-owned visualization contracts for 2D elevation, 2D floor plan, scenarios, 3D scene bootstrap, 360° texture loading and 4D progress frames.
+- Added browser bridge src/ui/plan-visualization-adapter.js and wired it into index.html.
+- Added focused tests and registered them in npm test.
+- Added docs/architecture/PLAN-VISUALIZATION-TOOLS.md, THIRD-PARTY-NOTICES.md and the Task C/D control-plane task.
+- Acceptance remains PARTIAL: real browser ingestion/rendering and representative PDF/image/DXF runtime verification are still required.
