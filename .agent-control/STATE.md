@@ -1,6 +1,6 @@
 # Agent Control State
 
-status: SYNTAX-FIXED | CI RECHECK PENDING | 616-620 BLOCKED ON CANONICAL IMPORT CONTRACT
+status: CI GREEN | 609-615 VERIFIED | NEXT 616-620
 project: BuildWise AI
 branch: buildwise-implementation
 active_task: checklist-609-620
@@ -19,15 +19,16 @@ last_batch: 609-615
 - Evidence: .agent-control/SECURITY-601-608.md
 
 ## 609-615 — Testing / Release
-- 609 Unit Tests: previously blocked by a real parser error in customer-experience.js.
-- 610 Architecture Contract Tests: previously passing.
-- 611 Graph Tests: previously passing.
-- 612 Decision Engine Tests: previously passing.
-- 613 Contract Engine Tests: previously passing.
-- 614 Release Smoke Test: pending fresh CI/runtime verification.
-- 615 JS Syntax Check: parser error fixed in commit 88c96fc6bd718f700323917fe27398e156ba2779.
-- Local syntax verification: node --check passed for the repaired module.
-- Fresh GitHub workflow lookup currently returns no run for the repair commits; therefore 609-615 remain unverified, not DONE.
+- 609 Unit Tests: PASS — fresh GitHub Actions run 745 completed successfully.
+- 610 Architecture Contract Tests: PASS within Unit 745.
+- 611 Graph Tests: PASS within Unit 745.
+- 612 Decision Engine Tests: PASS within Unit 745.
+- 613 Contract Engine Tests: PASS within Unit 745.
+- 614 Release/Application Validation: PASS — fresh run 842.
+- 615 JS Syntax Check: PASS — fresh Application Validation run 842.
+- Phase Code Map: PASS — run 522.
+- Autonomous Worker Runtime: PASS — run 619.
+- Regression fixes verified through CI: project-control variance semantics, progress-evidence verification, canonical import test path/coverage, browser/global runtime compatibility, landing analytics/conversion markers, and security-test assertion contracts.
 
 ## 616-620
 - 616 Import 2,000+ Row Test: not started; canonical import contract must be identified first.
@@ -42,4 +43,4 @@ last_batch: 609-615
 - Completion still requires implementation + test + runtime verification; UI/security verification applies where relevant.
 
 ## Next action
-- Resolve the canonical CRM import/data-quality implementation on buildwise-implementation, then implement 616-620 against that single path.
+- Execute 616-620 against the canonical `src/domains/crm/import-quality.js` + `src/core/data-normalization.js` contract. Do not create parallel CRM data-quality implementations.
