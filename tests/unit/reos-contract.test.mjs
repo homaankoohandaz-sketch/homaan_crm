@@ -6,6 +6,13 @@ import {
   REOS_DOMAINS,
   REOS_LIFECYCLE,
   validateCustomerOutput,
+  DECISION_CONSTITUTION,
+  classifyDecision,
+  validateCriticalChange,
+  validateExecutionTrace,
+  validateBoundedTask,
+  validateLineage,
+  validateRecovery,
   validateProjectConfiguration,
   validateReosAction,
 } from "../../src/core/reos-contract.js";
@@ -61,4 +68,49 @@ test("lifecycle and approval gates are explicit", () => {
   assert.ok(REOS_APPROVAL_GATES.includes("production"));
   assert.equal(AI_CONTROL.managerFinalAuthority, true);
   assert.equal(AI_CONTROL.silentMasterScheduleMutation, false);
+});
+
+
+test("decision constitution separates evidence and reasoning classes", () => {
+  assert.ok(DECISION_CONSTITUTION.reasoningClasses.includes("source_fact"));
+  assert.equal(classifyDecision({source:"doc:1",evidence:"verified",reasoningClass:"calculation"}).ok, true);
+  assert.equal(classifyDecision({source:"doc:1",evidence:"unknown",reasoningClass:"calculation"}).ok, true);
+  assert.equal(classifyDecision({source:"doc:1",evidence:"verified",reasoningClass:"guess"}).ok, false);
+});
+
+test("critical changes require versioning and explicit recalculation mode", () => {
+  assert.equal(validateCriticalChange({
+    changeId:"c1",beforeVersion:"v1",afterVersion:"v2",
+    impact:["pricing"],recalculationMode:"APPROVAL_REQUIRED"
+  }).ok, true);
+  assert.equal(validateCriticalChange({
+    changeId:"c1",beforeVersion:"v1",afterVersion:"v1",
+    impact:[],recalculationMode:"AUTO"
+  }).ok, false);
+});
+
+test("execution traces and bounded task scopes are explicit", () => {
+  assert.equal(validateExecutionTrace({
+    executionId:"x1",actor:"u1",tool:"crm.search",time:"t",
+    action:"read",result:"ok",verification:"query"
+  }).ok, true);
+  assert.equal(validateBoundedTask({
+    taskId:"t1",allowedReads:["crm"],allowedWrites:[],
+    allowedExecutions:["search"],prohibitedOperations:["delete"],
+    tokenBudget:1000,timeBudgetMs:10000,costBudget:1,maxIterations:3
+  }).ok, true);
+  assert.equal(validateBoundedTask({
+    taskId:"t2",allowedReads:[],allowedWrites:[],
+    allowedExecutions:[],prohibitedOperations:[],maxIterations:-1
+  }).ok, false);
+});
+
+test("important values and recovery actions retain lineage", () => {
+  assert.equal(validateLineage({
+    inputLineage:["cost:1"],sourceRecords:["project:1"],
+    sourceVersion:"v2",sourceTimestamp:"2026-10-02"
+  }).ok, true);
+  assert.equal(validateRecovery({
+    before:{version:"v1"},after:{version:"v2"},auditTrail:["a1"]
+  }).ok, true);
 });
