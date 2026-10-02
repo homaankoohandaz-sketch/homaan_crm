@@ -284,3 +284,11 @@ PARTIAL / release-gated.
 - Actual media generation providers, automated voice/video rendering and social publishing are not claimed as implemented; this batch establishes the executable orchestration contract.
 - 546-575 remain PARTIAL pending CI/runtime/provider verification.
 - Current cursor: 576.
+
+
+## 2026-10-02 — Market / External Data Foundation 576-590
+- Added canonical `src/market/market-data.js` for source registry, reliability/timestamp metadata, immutable market snapshots and external-data fallback selection.
+- Added focused acceptance test `tests/unit/market-data-576-590.test.mjs` and wired it into `npm test`.
+- No live gold/dollar/material/property provider was invented; provider-specific feeds remain integration work.
+- 576-590 remain PARTIAL pending live source integration and runtime verification.
+- Current cursor: 591.
