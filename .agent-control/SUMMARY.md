@@ -234,3 +234,11 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - The remaining 21 SECURITY DEFINER RPCs are intentional application/RLS helpers and require no blind revoke; they remain on the function-by-function review register.
 - Browser UI verification is still unavailable, so 599-600 are PARTIAL rather than DONE under the repository acceptance contract.
 - Current cursor: 601.
+
+
+## 2026-10-02 — REOS Integration Contract 651-675
+- Reconciled the 651-675 FINAL MASTER OBJECTIVE against the canonical MASTER-ARCHITECTURE and existing domain tables; no second REOS engine was created.
+- Added `src/core/reos-contract.js` as the shared integration contract for the intelligence graph, project-control dimensions, per-project configuration, accepted inputs, calculation/comparison domains, AI approval/evidence gates and customer output minimums.
+- Added `tests/unit/reos-contract.test.mjs` and wired it into the canonical npm test suite.
+- Recorded the architectural decision in `.agent-control/memory/REOS-INTEGRATION-DECISION-2026-10-02.md`.
+- Current evidence: focused test is queued through GitHub CI; runtime/browser/UI/security evidence is still required before any 651-675 item can be marked DONE.
