@@ -114,3 +114,39 @@ test("important values and recovery actions retain lineage", () => {
     before:{version:"v1"},after:{version:"v2"},auditTrail:["a1"]
   }).ok, true);
 });
+
+
+test("permission matrix denies out-of-scope writes", async () => {
+  const { validatePermission } = await import("../../src/core/reos-contract.js");
+  assert.equal(validatePermission("advisor",{kind:"write",resource:"accounting"}).ok,false);
+  assert.equal(validatePermission("advisor",{kind:"read",resource:"properties.assigned"}).ok,true);
+});
+
+test("model router chooses the lowest-cost suitable enabled model", async () => {
+  const { routeModel } = await import("../../src/core/reos-contract.js");
+  const r = routeModel({requires:"analysis"},[
+    {id:"expensive",cost:5,reliability:.99,capabilities:["analysis"]},
+    {id:"cheap",cost:1,reliability:.95,capabilities:["analysis"]},
+    {id:"off",enabled:false,cost:0,capabilities:["analysis"]},
+  ]);
+  assert.equal(r.selected.id,"cheap");
+});
+
+test("liquidity calculation exposes ratio and missing-obligation state", async () => {
+  const { calculateLiquidity } = await import("../../src/core/reos-contract.js");
+  assert.equal(calculateLiquidity({liquidAssets:150,shortTermObligations:100}).ratio,1.5);
+  assert.equal(calculateLiquidity({liquidAssets:10,shortTermObligations:0}).status,"NO_OBLIGATIONS");
+});
+
+test("feedback is append-only and requires source/outcome", async () => {
+  const { appendFeedback } = await import("../../src/core/reos-contract.js");
+  assert.equal(appendFeedback({feedbackId:"f1",source:"user",outcome:"accepted"},[]).ok,true);
+  assert.equal(appendFeedback({feedbackId:"f2"},[]).ok,false);
+});
+
+test("master decision loop stops at approval gate for critical actions", async () => {
+  const { runMasterDecisionLoop } = await import("../../src/core/reos-contract.js");
+  const base={event:"e",evidence:["s1"],decision:"d",responsibleParty:"manager",nextAction:"review",critical:true};
+  assert.equal(runMasterDecisionLoop(base).code,"APPROVAL_REQUIRED");
+  assert.equal(runMasterDecisionLoop({...base,approvalState:"approved"}).ok,true);
+});
