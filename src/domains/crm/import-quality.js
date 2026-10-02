@@ -1,4 +1,6 @@
-import { normalizeRecord, normalizePhone, normalizeNumber } from '../../core/data-normalization.js';
+import '../../core/data-normalization.js';
+
+const { normalizeRecord, normalizePhone, normalizeNumber } = globalThis.BuildWiseNormalize;
 
 export function normalizeImportRows(rows = []) {
   return (rows || []).map((row, index) => {
