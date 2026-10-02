@@ -277,10 +277,10 @@ export function verifyProgressEvidence(tasks = [], evidence = []) {
   for (const task of tasks) {
     const id = Number(task.id);
     if (!byTask.has(id)) continue;
-    verifiedTaskCount += 1;
     const declared = Number(task.progress || 0);
     const evidenced = Number(byTask.get(id) || 0);
-    if (declared !== evidenced) mismatches.push({ taskId: id, declared, evidenced });
+    if (declared === evidenced) verifiedTaskCount += 1;
+    else mismatches.push({ taskId: id, declared, evidenced });
   }
   return {
     taskCount: tasks.length,
