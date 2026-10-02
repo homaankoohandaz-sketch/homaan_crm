@@ -148,3 +148,13 @@ last_batch: 633-650 infrastructure
 - Application Validation 938: PASS; QA 154: PASS; Agent Control Plane Validation 291: PASS; Phase Code Map 617: PASS.
 - Supabase Migration Gate 19: FAIL, unrelated to this pure-JS task; no migration introduced.
 - Current canonical checklist count: 10 DONE / 456 PARTIAL / 384 TODO / 0 BLOCKED.
+
+
+## 2026-10-03 — Task C/D implementation
+- Checklist 301–312: retained PARTIAL; existing document/plan persistence is extended by a replaceable adapter layer rather than a parallel document engine.
+- Checklist 682–688: implementation contracts added for elevation, floor plan, scenarios, 3D, 360°, multi-angle and 4D visualization; acceptance remains PARTIAL.
+- Selected components: Tesseract.js, Mozilla PDF.js, dxf-parser, Three.js. MIT Floor Plan Document Intelligence is reference-only.
+- AIFloorPlan was researched but excluded from vendoring because its AGPL-3.0/commercial licensing does not fit the current proprietary application path.
+- DWG remains a worker/conversion boundary; no GPL/AGPL CAD parser was embedded.
+- Browser bridge is wired in index.html.
+- Focused unit tests are now part of npm test; CI evidence is required before any DONE promotion.
