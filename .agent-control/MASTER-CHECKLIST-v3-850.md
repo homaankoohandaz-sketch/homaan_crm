@@ -1354,7 +1354,7 @@ W — MARKET / EXTERNAL DATA
 X — SECURITY / GOVERNANCE
 ==================================================
 
-591 [~] RLS
+591 [~] RLS — 16 missing-policy tables remediated; telegram_sessions intentionally service-only with RLS and no client grant
 
 592 [~] Manager Permissions
 
@@ -1368,27 +1368,27 @@ X — SECURITY / GOVERNANCE
 
 597 [~] Manager Edit Audit
 
-598 [ ] Field-level Permissions
+598 [~] Field-level Permissions — governance registry added; final column enforcement staged behind client migration
 
-599 [ ] Phone-number visibility rules
+599 [~] Phone-number visibility rules — client reads moved to properties_client; raw table SELECT revocation pending deployment/runtime verification
 
-600 [ ] Sensitive Data Masking
+600 [~] Sensitive Data Masking — properties_client excludes raw phone fields; final direct-table lock pending deployment/runtime verification
 
-601 [ ] AI Data Permissions
+601 [~] AI Data Permissions — AI audit/alerts/approval RLS narrowed to actor/manager/assigned-user boundaries
 
-602 [ ] Agent Tool Permissions
+602 [~] Agent Tool Permissions — agent_tool_permissions registry + manager RLS added
 
-603 [ ] Production Action Approval
+603 [~] Production Action Approval — approval registry with pending-request + manager-decision RLS added
 
-604 [ ] Secret Management
+604 [~] Secret Management — existing Vault-backed get_secret verified; no client execute grant
 
-605 [ ] Webhook Secret Remediation
+605 [~] Webhook Secret Remediation — Google Sheets sync uses BUILDWISE_SYNC_TOKEN environment secret; no hardcoded fallback token
 
-606 [ ] Security Advisor Cleanup
+606 [~] Security Advisor Cleanup — 17→1 RLS no-policy, 22→0 non-invoker views, 4→0 anon SECURITY DEFINER, 3→0 mutable search_path
 
-607 [ ] SECURITY DEFINER Review
+607 [~] SECURITY DEFINER Review — 23 authenticated RPC findings remain intentionally exposed pending per-function client-use audit
 
-608 [ ] Permission Regression Tests
+608 [~] Permission Regression Tests — focused governance tests added; full CI/browser/runtime confirmation pending
 
 
 ==================================================
