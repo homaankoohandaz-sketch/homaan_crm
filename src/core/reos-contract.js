@@ -138,3 +138,54 @@ export function validateRecovery(record = {}) {
   const missing = required.filter(k => record[k] === undefined || record[k] === null);
   return { ok: missing.length === 0, missing, code: missing.length ? "RECOVERY_EVIDENCE_REQUIRED" : "OK" };
 }
+
+
+// Core decision-loop contracts for checklist 14, 22, 26, 29, 30.
+export const AGENT_PERMISSION_MATRIX = Object.freeze({
+  owner: { reads: ["*"], writes: ["*"], executions: ["*"], approvals: ["critical"] },
+  manager: { reads: ["*"], writes: ["project","crm","sales","procurement","accounting"], executions: ["safe","approved"], approvals: ["critical"] },
+  advisor: { reads: ["crm.public","properties.assigned","deals.own","room.published"], writes: ["crm.followup","deals.own"], executions: ["safe"], approvals: [] },
+  builder: { reads: ["project.own","properties.own","sales.own","room.published"], writes: ["project.own","sales.own"], executions: ["safe","approved"], approvals: [] },
+});
+
+export function validatePermission(role, operation = {}) {
+  const policy = AGENT_PERMISSION_MATRIX[role];
+  if (!policy) return { ok: false, code: "ROLE_NOT_ALLOWED" };
+  const kind = operation.kind || "read";
+  const allowed = policy[{read:"reads",write:"writes",execute:"executions"}[kind] || "reads"] || [];
+  const resource = operation.resource || "";
+  const ok = allowed.includes("*") || allowed.some(x => resource === x || resource.startsWith(x + "."));
+  return { ok, code: ok ? "OK" : "PERMISSION_DENIED" };
+}
+
+export function routeModel(task = {}, models = []) {
+  const eligible = models.filter(m => m && m.enabled !== false && (!task.allowedModels || task.allowedModels.includes(m.id)) && (!task.requires || (m.capabilities || []).includes(task.requires)));
+  eligible.sort((a,b) => (Number(a.cost ?? 0) - Number(b.cost ?? 0)) || (Number(b.reliability ?? 0) - Number(a.reliability ?? 0)));
+  const selected = eligible[0] || null;
+  return { ok: !!selected, code: selected ? "ROUTED" : "NO_SUITABLE_MODEL", selected };
+}
+
+export function calculateLiquidity(input = {}) {
+  const assets = Number(input.liquidAssets ?? 0);
+  const obligations = Number(input.shortTermObligations ?? 0);
+  if (!Number.isFinite(assets) || !Number.isFinite(obligations) || obligations < 0) return { ok:false, code:"INVALID_LIQUIDITY_INPUT" };
+  if (obligations === 0) return { ok:true, ratio:null, status:"NO_OBLIGATIONS" };
+  const ratio = assets / obligations;
+  return { ok:true, ratio, status: ratio >= 1.5 ? "strong" : ratio >= 1 ? "balanced" : "tight" };
+}
+
+export function appendFeedback(feedback = {}, history = []) {
+  const required = ["feedbackId","source","outcome"];
+  const missing = required.filter(k => feedback[k] === undefined || feedback[k] === null || feedback[k] === "");
+  if (missing.length) return { ok:false, code:"FEEDBACK_REQUIRED", missing, history };
+  return { ok:true, history:[...history, Object.freeze({...feedback, recordedAt: feedback.recordedAt || new Date().toISOString()})] };
+}
+
+export function runMasterDecisionLoop(input = {}) {
+  const required = ["event","evidence","decision","responsibleParty","nextAction"];
+  const missing = required.filter(k => input[k] === undefined || input[k] === null || input[k] === "");
+  if (missing.length) return { ok:false, code:"DECISION_LOOP_INPUT_REQUIRED", missing };
+  const approvalRequired = input.material === true || input.critical === true;
+  if (approvalRequired && input.approvalState !== "approved") return { ok:false, code:"APPROVAL_REQUIRED", missing:[] };
+  return { ok:true, stages:["event","interpret","evaluate","decide","approve","execute","deadline","alert","followUp","audit"], nextAction:input.nextAction };
+}
