@@ -1,6 +1,6 @@
 # Agent Control State
 
-status: SYNTAX-FIXED | 609-615 RECHECK IN PROGRESS | 616-620 NEXT
+status: SYNTAX-FIXED | CI RECHECK PENDING | 616-620 BLOCKED ON CANONICAL IMPORT CONTRACT
 project: BuildWise AI
 branch: buildwise-implementation
 active_task: checklist-609-620
@@ -27,14 +27,19 @@ last_batch: 609-615
 - 614 Release Smoke Test: pending fresh CI/runtime verification.
 - 615 JS Syntax Check: parser error fixed in commit 88c96fc6bd718f700323917fe27398e156ba2779.
 - Local syntax verification: node --check passed for the repaired module.
-- Do not mark 609-615 DONE until CI/runtime evidence confirms the full gate.
+- Fresh GitHub workflow lookup currently returns no run for the repair commits; therefore 609-615 remain unverified, not DONE.
 
-## Next
-- 616 Import 2,000+ Row Test
-- 617 Multi-Sheet Excel Test
-- 618 Full Column Preservation Test
-- 619 Duplicate Test
-- 620 Manager Edit Test
+## 616-620
+- 616 Import 2,000+ Row Test: not started; canonical import contract must be identified first.
+- 617 Multi-Sheet Excel Test: not started; same dependency.
+- 618 Full Column Preservation Test: not started; same dependency.
+- 619 Duplicate Test: existing normalization/data-quality paths need branch-compatible canonical implementation before test wiring.
+- 620 Manager Edit Test: existing checklist/package references are present, but the referenced data-quality module is absent/incompatible on this branch; no duplicate implementation was introduced.
 
-## Prior
-- 493-500 project presentation views implemented on canonical project-control data.
+## Checklist source
+- Current project source-of-truth is BUILDWISE-MASTER-CHECKLIST-v3, consolidated range 001-850.
+- 850 is the acceptance/architecture register, not 850 completed features.
+- Completion still requires implementation + test + runtime verification; UI/security verification applies where relevant.
+
+## Next action
+- Resolve the canonical CRM import/data-quality implementation on buildwise-implementation, then implement 616-620 against that single path.
