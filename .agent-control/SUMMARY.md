@@ -242,3 +242,11 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Added `tests/unit/reos-contract.test.mjs` and wired it into the canonical npm test suite.
 - Recorded the architectural decision in `.agent-control/memory/REOS-INTEGRATION-DECISION-2026-10-02.md`.
 - Current evidence: focused test is queued through GitHub CI; runtime/browser/UI/security evidence is still required before any 651-675 item can be marked DONE.
+
+
+## 2026-10-02 — Decision Constitution / Execution Economics / Lineage 750-827
+- Extended the canonical REOS integration contract rather than creating a parallel governance engine.
+- Added explicit source-of-truth hierarchy, evidence strength, reasoning classes, recalculation modes, failure policy, idempotency, sensitive-action dry-run and approved-version preservation.
+- Added validators for critical changes/versioning, execution traces, bounded task scope/budgets, input lineage and recovery evidence.
+- Added focused tests and kept the contract in the canonical npm test suite.
+- 750-827 are implementation evidence only where covered by these contracts; DONE still requires the checklist acceptance rule including runtime/UI/security evidence where applicable.
