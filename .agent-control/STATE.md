@@ -124,3 +124,13 @@ last_batch: 633-650 infrastructure
 - Architecture: canonical C01-C40 layer added to `PHASE-CURRENT-ARCHITECTURE.md`.
 - Tests: focused customer-experience suite expanded; CI/live/runtime verification is still required.
 - Status: PARTIAL. Do not mark C01-C40 or 401-415/418-432 DONE yet.
+
+## 2026-10-02 — CRM Import Quality 060-065
+- 060 Arbitrary Excel Column Editor: implemented in canonical `src/domains/crm/import-quality.js` and wired into the canonical importer preview.
+- 061 Import Error Isolation: row-level validation/errors remain isolated; one bad row does not invalidate valid rows.
+- 062 Import Preview: preview exposes row/column counts, all discovered columns, sample rows, validation status and duplicate candidates.
+- 063 Import Validation: required-field and phone validation is executed before import; invalid rows stop the batch from being written.
+- 064 Import Rollback: exact batch identity is persisted on normalized target rows; manager-only `rollback_import_batch(text)` removes only that batch.
+- 065 Data Quality Dashboard: completeness/coverage, invalid rows, duplicate groups and error-rate metrics are available from the canonical quality layer.
+- Tests added for all six behaviors. Current branch CI has an unrelated pre-existing migration filename-gate failure; syntax workflow also exposed and was fixed to reference the canonical importer path.
+- Status: 060-065 remain PARTIAL until the new CI run plus live/browser verification confirms runtime acceptance under the repository DONE rule.
