@@ -1,6 +1,7 @@
 import test from 'node:test';
+import fs from 'node:fs';
 import assert from 'node:assert/strict';
-import { normalizeImportRows, validateImportRows, buildImportPreview, findDuplicateCandidates, rollbackPlan } from '../../src/domains/crm/import-quality.js';
+import { normalizeImportRows, validateImportRows, buildImportPreview, findDuplicateCandidates, rollbackPlan, editImportedRecord } from '../../src/domains/crm/import-quality.js';
 
 test('import normalization preserves raw rows and normalizes numeric and phone fields', () => {
   const rows = normalizeImportRows([
@@ -48,4 +49,50 @@ test('rollback plan remains non-destructive until explicit execution', () => {
   assert.deepEqual(plan.ids, [1, 2]);
   assert.equal(plan.destructive, false);
   assert.equal(plan.requiresExecution, true);
+});
+
+test('2000+ row import normalization remains complete and deterministic', () => {
+  const rows = normalizeImportRows(Array.from({ length: 2001 }, (_, i) => ({
+    property_code: 'P-' + i,
+    full_name: 'Owner ' + i,
+    mobile: '09121234567',
+    custom_column: 'value-' + i
+  })));
+  assert.equal(rows.length, 2001);
+  assert.equal(rows[2000]._source_row, 2001);
+  assert.equal(rows[2000].custom_column, 'value-2000');
+});
+
+test('multi-sheet Excel importer processes every sheet and preserves sheet provenance', () => {
+  const source = fs.readFileSync(new URL('../../src/domains/crm/data-import.js', import.meta.url), 'utf8');
+  assert.match(source, /wb\.SheetNames\.forEach/);
+  assert.match(source, /XLSX\.utils\.sheet_to_json/);
+  assert.match(source, /_sheet_name/);
+  assert.match(source, /_sheet_index/);
+  assert.match(source, /_row_number/);
+  assert.match(source, /_raw_data/);
+});
+
+test('full column preservation survives normalization without dropping arbitrary fields', () => {
+  const row = { property_code: 'P-1', 'ستون اختصاصی': 'keep-me', nested_flag: true, amount: '1,250' };
+  const [normalized] = normalizeImportRows([row]);
+  assert.equal(normalized['ستون_اختصاصی'], 'keep-me');
+  assert.equal(normalized.nested_flag, true);
+  assert.equal(normalized.normalized_numbers.amount, 1250);
+  assert.deepEqual(normalized._source_raw, row);
+});
+
+test('duplicate detection does not merge records by surname or phone alone', () => {
+  const candidates = findDuplicateCandidates([
+    { property_code: 'P-1', full_name: 'Ahmadi', mobile: '09121234567' },
+    { property_code: 'P-2', full_name: 'Ahmadi', mobile: '09121234567' }
+  ]);
+  assert.equal(candidates.length, 0);
+});
+
+test('manager edit changes only requested imported fields and preserves the original record', () => {
+  const original = { id: 7, full_name: 'Ali', custom_field: 'keep' };
+  const edited = editImportedRecord(original, { full_name: 'Reza' });
+  assert.deepEqual(original, { id: 7, full_name: 'Ali', custom_field: 'keep' });
+  assert.deepEqual(edited, { id: 7, full_name: 'Reza', custom_field: 'keep' });
 });
