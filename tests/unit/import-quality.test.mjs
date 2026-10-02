@@ -163,3 +163,14 @@ test('data quality dashboard reports completeness, errors, duplicates and field 
   assert.equal(dashboard.duplicateGroups, 1);
   assert.equal(dashboard.fieldCoverage.region, 2 / 3);
 });
+
+
+test('rollback migration is manager-only, exact-batch scoped and search-path pinned', () => {
+  const sql = fs.readFileSync(new URL('../../supabase/migrations/20261002233000_crm_import_quality_060_065.sql', import.meta.url), 'utf8');
+  assert.match(sql, /rollback_import_batch/);
+  assert.match(sql, /public\.is_manager_user\(\)/);
+  assert.match(sql, /set search_path = ''/);
+  assert.match(sql, /where import_batch_id = p_batch_id/);
+  assert.match(sql, /revoke all on function public\.rollback_import_batch\(text\) from public, anon/);
+  assert.match(sql, /grant execute on function public\.rollback_import_batch\(text\) to authenticated/);
+});
