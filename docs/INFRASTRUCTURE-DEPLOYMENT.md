@@ -4,40 +4,48 @@
 
 - Source of truth: GitHub repository.
 - Production branch: `main`.
-- Static edge target: Cloudflare Pages.
-- Database/Auth/early storage: existing Supabase project.
-- Edge/API: existing Supabase Edge Functions.
-- CI: GitHub Actions.
-- GitHub Pages: smoke/demo only, not production.
+- Static web target: Cloudflare Pages.
+- Database/Auth/API edge: existing Supabase project and Edge Functions.
+- CI/CD: GitHub Actions.
+- GitHub Pages: smoke/demo only; not production.
 - Netlify: legacy/diagnostic only.
+
+Cloudflare's current documentation supports Wrangler-based Pages deployment from GitHub Actions and explicit production-branch control. citeturn0search0turn0search1
 
 ## Production deployment gate
 
 1. CI must be green.
-2. Merge to `main).
-3. Cloudflare Pages deployment runs automatically.
-4. Deployment health check must return HTTP success from the configured production URL.
-5. Production E2E task 630 is closed only after the production URL is browser-accessible and runtime-verified.
+2. Merge to `main`.
+3. Cloudflare Pages deployment runs.
+4. Deployment health check returns HTTP success from the configured production URL.
+5. Browser runtime verifies the customer → advisor flow.
+6. Only then can checklist 630 be closed.
 
-## Required secrets / variables
+## Deployment safety
 
-GitHub Actions secrets:
+The deployment uses a root `.assetsignore` so repository control-plane files, tests, documentation, migrations and package metadata are not published as public static assets. Client application assets under the root and `src/` remain deployable.
+
+## Required GitHub secrets
+
 - `CLOUDFLARE_API_TOKEN`
 - `CLOUDFLARE_ACCOUNT_ID`
 - `SUPABASE_ACCESS_TOKEN`
 - `SUPABASE_DB_PASSWORD`
 - `SUPABASE_PROJECT_REF`
 
-GitHub Actions variable:
+Required GitHub Actions variable:
+
 - `PRODUCTION_URL`
 
-No service-role key, database password, AI secret, or deployment token belongs in source control.
+Never commit service-role keys, database passwords, AI provider secrets or deployment tokens.
 
-## Rollout model
+## Environment model
 
-- Feature branches: CI + review.
+- Feature/implementation branches: CI and review.
 - `main`: production deployment.
-- Cloudflare preview deployments may be used before merge.
-- Production deployment is never performed from `buildwise-implementation`.
+- Cloudflare preview deployments: validation before merge.
+- Production Supabase: no reset/seed/destructive local workflows.
 
-Cloudflare's current documentation supports GitHub-based Pages deployment and Wrangler direct-upload CI; this repository uses the latter so the production branch is explicit in GitHub Actions. 
+## Current external gate
+
+No Cloudflare account/project credentials or verified production URL are available to this execution context. Therefore 642, 643, 645 and 646 remain PARTIAL/TODO rather than being falsely marked DONE.
