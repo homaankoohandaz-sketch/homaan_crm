@@ -1,6 +1,6 @@
 # BuildWise AI — SUMMARY
 
-Updated: 2026-09-30
+Updated: 2026-10-02
 Branch: buildwise-implementation
 
 ## Canonical governance
@@ -220,3 +220,17 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Focused security regression tests are wired into npm test.
 - Latest Netlify deploy-preview status: SUCCESS. Browser automation is unavailable here; UI/runtime verification remains pending.
 - Current cursor: 599.
+
+
+## 2026-10-02 — Security Hardening 599-600
+- Audited the 23 authenticated-callable SECURITY DEFINER functions from the security-governance baseline.
+- Closed two trigger-only functions to all API execution: log_lead_request_time() and check_report_threshold().
+- Added missing active-user gates to the reviewed project-control/radar/status RPCs.
+- 599 implemented at the database boundary: manager-only phone policy is explicit for person/property phone fields.
+- 600 implemented for the property client surface: properties_client is narrow and security_invoker; mobile, emergency_phone, owner_notes and internal_notes are excluded.
+- Direct authenticated SELECT on public.properties is now explicit-column only; mobile/emergency_phone are not selectable. Existing write privileges were preserved.
+- Runtime verification passed for column privileges and crm_mask_phone().
+- Security Advisor: authenticated SECURITY DEFINER findings reduced 25 -> 21; anon SECURITY DEFINER 0; mutable search_path 0.
+- The remaining 21 SECURITY DEFINER RPCs are intentional application/RLS helpers and require no blind revoke; they remain on the function-by-function review register.
+- Browser UI verification is still unavailable, so 599-600 are PARTIAL rather than DONE under the repository acceptance contract.
+- Current cursor: 601.
