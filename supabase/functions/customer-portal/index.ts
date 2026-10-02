@@ -13,11 +13,11 @@ async function sha256(value:string){const h=await crypto.subtle.digest("SHA-256"
 
 async function loadShare(token:string){
   const hash=await sha256(token);
-  const {data,error}=await db.from("customer_shares").select("id,title,message,status,expires_at,property_id,deal_id,advisor_id,properties(property_name,property_type,region,neighborhood,built_area,bedrooms,total_price,price_per_meter,description)").eq("token_hash",hash).maybeSingle();
+  const {data,error}=await db.from("customer_shares").select("id,title,message,status,expires_at,property_id,deal_id,advisor_id,properties(property_name,property_type,region,neighborhood,street,built_area,bedrooms,total_price,price_per_meter,description)").eq("token_hash",hash).maybeSingle();
   if(error||!data) return null;
   if(new Date(data.expires_at).getTime()<Date.now() || data.status==="revoked") return null;
   if(data.status==="sent") await db.from("customer_shares").update({status:"viewed",updated_at:new Date().toISOString()}).eq("id",data.id);
-  const {data:assets}=data.property_id ? await db.from("property_documents").select("file_name,file_url,document_type,notes").eq("property_id",data.property_id).limit(20) : {data:[]};
+  const {data:assets}=data.property_id ? await db.from("property_documents").select("file_name,file_url,document_type,notes").eq("property_id",data.property_id).in("document_type",["photo","render","presentation"]).limit(20) : {data:[]};
   const {data:photos}=data.property_id ? await db.from("property_photos").select("file_name,file_url,is_main").eq("property_id",data.property_id).limit(20) : {data:[]};
   return {...data,assets:assets||[],photos:photos||[]};
 }
@@ -52,7 +52,11 @@ Deno.serve(async(req)=>{
       const p=share.properties||{};
       const assets=(share.assets||[]).map((x:any)=>x.file_url?'<a href="'+x.file_url+'" target="_blank">دانلود '+(x.file_name||"فایل")+"</a>":"").join(" · ");
       const photos=(share.photos||[]).filter((x:any)=>x.file_url).map((x:any)=>'<img src="'+x.file_url+'" style="max-width:100%;border-radius:12px;margin:6px">').join("");
-      const safe=JSON.stringify({token,title:share.title,message:share.message,property:p});
+      const estimate=Number(p.total_price)||0;
+      const min=Math.round(estimate*0.95);
+      const max=Math.round(estimate*1.05);
+      const safeProperty={property_name:p.property_name,property_type:p.property_type,region:p.region,neighborhood:p.neighborhood,street:p.street,built_area:p.built_area,bedrooms:p.bedrooms,price_range:{min,max},description:p.description};
+      const safe=JSON.stringify({token,title:share.title,message:share.message,property:safeProperty});
       return html(`<!doctype html><html lang="fa" dir="rtl"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BuildWise</title><body style="font-family:Arial,sans-serif;max-width:680px;margin:auto;padding:24px;background:#f6f7f9"><main style="background:white;padding:24px;border-radius:18px"><h1>BuildWise AI</h1><h2>${share.title}</h2><p>${share.message}</p><h3>${p.property_name||"ملک پیشنهادی"}</h3><p>${[p.property_type,p.neighborhood,p.built_area&&p.built_area+" متر",p.bedrooms&&p.bedrooms+" خواب",p.total_price&&Number(p.total_price).toLocaleString("fa-IR")].filter(Boolean).join(" · ")}</p>${photos}<p>${assets}</p><hr><h3>نظر شما</h3><button onclick="send('approved')">تأیید می‌کنم</button> <button onclick="send('interested')">علاقه‌مندم</button> <button onclick="send('rejected')">مناسب نیست</button><textarea id="m" placeholder="پیام یا توضیح شما" style="width:100%;margin-top:16px;min-height:90px"></textarea><button onclick="send('question')" style="margin-top:8px">ارسال پیام</button><p id="out"></p></main><script>const C=${safe};async function send(c){const m=document.getElementById('m').value||c;const r=await fetch(location.href,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({message:m,choice:c})});const x=await r.json();document.getElementById('out').textContent=x.ok?'پاسخ شما ثبت شد. مشاور در جریان قرار گرفت.':(x.error||'خطا');}</script></body></html>`);
     }
     if(req.method==="POST"){
