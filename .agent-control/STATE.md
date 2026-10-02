@@ -108,3 +108,11 @@ last_batch: 633-650 infrastructure
 - Removed the stale test reference in commit `404811d89b66ed84ba4dbdf526f58c0948698235`.
 - This restores the canonical npm test chain; CI must re-run before claiming the fix verified.
 - Production link remains on Netlify `main` and is not yet proven to serve the current `buildwise-implementation` tree.
+
+## 2026-10-02 — Core integrity repair / 850 progression
+- Fixed stale npm test reference to missing `tests/unit/market-intelligence.test.mjs`; Unit Test run 789 passed.
+- Implemented checklist 14/22/26/29/30 core contracts: liquidity, feedback append, model routing, permission matrix, master decision loop.
+- Focused + full Unit Test workflow passed on current implementation lineage (latest Unit run after checklist update: 37052504146).
+- Checklist status after this batch: 5 DONE / 455 PARTIAL / 390 TODO.
+- 14/22/26/29/30 are PARTIAL because runtime/UI acceptance is still required.
+- Live Netlify production remains tied to `main` at an older commit; current implementation branch is not yet the deployed production artifact. Do not mark 630/642 DONE.
