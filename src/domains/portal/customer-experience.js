@@ -35,7 +35,7 @@ export function createCustomerExperience() {
         rows: [
           ['price', ...items.map(x => num(x.price))],
           ['area', ...items.map(x => num(x.area))],
-          ['pricePerMeter', ...items.map(x => num(x.pricePerMeter || (num(x.price) && num(x.area) ? num(x.price) / num(x.area) : 0))],
+          ['pricePerMeter', ...items.map(x => num(x.pricePerMeter || (num(x.price) && num(x.area) ? num(x.price) / num(x.area) : 0)))],
           ['bedrooms', ...items.map(x => num(x.bedrooms))],
           ['floor', ...items.map(x => num(x.floor))]
         ]
