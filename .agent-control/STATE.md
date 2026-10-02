@@ -1,6 +1,6 @@
 # Agent Control State
 
-status: CI GREEN | 609-620 VERIFIED | WORKER SUBJOB QUEUED
+status: CI GREEN | 609-626 VERIFIED
 project: BuildWise AI
 branch: buildwise-implementation
 active_task: checklist-609-620
@@ -38,10 +38,19 @@ last_batch: 609-615
 - 620 Manager Edit Test: PASS — canonical editImportedRecord added to import-quality.js; edit preserves untouched fields and original record.
 - Canonical contract: src/domains/crm/import-quality.js + src/core/data-normalization.js; no parallel data-quality.js module introduced.
 
+## 621-626 — Project Control Tests
+- 621 Project Accounting Test: PASS — accounting 191–235 surfaces verified in Unit 751.
+- 622 Gantt Test: PASS — schedule overdue-state contract verified in Unit 751.
+- 623 Procurement Test: PASS — approval, PO, delivery, inventory and risk surfaces verified in Unit 751.
+- 624 KPI Test: PASS — catalog, alerts, trends, drill-down and custom builder verified in Unit 751.
+- 625 Workflow Test: PASS — definitions, runs, templates, audit and builder verified in Unit 751.
+- 626 AI Parallel Work Test: PASS — overlapping shared-resource work is blocked; eligible non-overlapping work is suggested.
+- Fresh CI for commit e2a9f3b: Unit 751 PASS, Application Validation 848 PASS, Phase Code Map 528 PASS, Worker Runtime 625 PASS.
+
 ## Checklist source
 - Current project source-of-truth is BUILDWISE-MASTER-CHECKLIST-v3, consolidated range 001-850.
 - 850 is the acceptance/architecture register, not 850 completed features.
 - Completion still requires implementation + test + runtime verification; UI/security verification applies where relevant.
 
 ## Next action
-- Continue with 621–630 in the same canonical-first sequence. Do not reopen 599–600 or duplicate the CRM import path.
+- Continue with 627–630: Mobile, PWA install, Customer Portal, Production E2E. Preserve the canonical-first rule.
