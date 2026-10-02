@@ -269,3 +269,14 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Added focused tests covering all six capabilities and wired the canonical importer UI to preview/edit/validate/rollback.
 - Added manager-only rollback migration with batch identity on imported target rows.
 - Status: implementation complete; acceptance remains PARTIAL pending CI/runtime verification.
+
+
+## 2026-10-03 — Core REOS Acceptance 014/022/026/029/030
+- Reconciled the existing shared `src/core/reos-contract.js`; no duplicate engine was introduced.
+- Hardened Liquidity validation to reject negative assets/obligations and hardened the Master Decision Loop to require non-empty evidence.
+- Added focused regression coverage in `tests/unit/reos-contract.test.mjs`.
+- Full `npm test` passed in BuildWise Unit Tests run 840.
+- Application Validation 938, QA 154, Agent Control Plane Validation 291 and Phase Code Map 617 passed.
+- Checklist 014, 022, 026, 029 and 030 promoted to [✓] DONE under the repository DONE rule.
+- Migration Gate 19 failed on an unrelated existing migration-gate condition; this task introduced no migration and does not depend on that gate.
+- Task contract: `.agent-control/tasks/TASK-A-CORE-014-022-026-029-030.md`.
