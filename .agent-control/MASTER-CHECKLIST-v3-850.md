@@ -70,7 +70,7 @@ A — CORE REOS ARCHITECTURE
 
 013 [~] ROI Engine
 
-014 [ ] Liquidity Engine
+014 [~] Liquidity Engine
 
 015 [~] Contract Engine
 
@@ -86,7 +86,7 @@ A — CORE REOS ARCHITECTURE
 
 021 [~] Action Engine
 
-022 [ ] Feedback / Learning Loop
+022 [~] Feedback / Learning Loop
 
 023 [~] Human Approval Layer
 
@@ -94,15 +94,15 @@ A — CORE REOS ARCHITECTURE
 
 025 [~] Security / Permissions
 
-026 [ ] Model Router
+026 [~] Model Router
 
 027 [~] Agent Registry
 
 028 [~] Tool Registry
 
-029 [ ] Agent Permission Matrix
+029 [~] Agent Permission Matrix
 
-030 [ ] Master Decision Loop
+030 [~] Master Decision Loop
     INPUT
     → IDENTIFY
     → UNDERSTAND
