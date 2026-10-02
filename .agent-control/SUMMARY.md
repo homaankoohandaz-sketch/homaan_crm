@@ -250,3 +250,8 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Added validators for critical changes/versioning, execution traces, bounded task scope/budgets, input lineage and recovery evidence.
 - Added focused tests and kept the contract in the canonical npm test suite.
 - 750-827 are implementation evidence only where covered by these contracts; DONE still requires the checklist acceptance rule including runtime/UI/security evidence where applicable.
+
+## 2026-10-02 — Integrity repair
+- Fixed stale `package.json` test reference to the non-existent `tests/unit/market-intelligence.test.mjs`.
+- Commit: `404811d89b66ed84ba4dbdf526f58c0948698235`.
+- Next: verify fresh CI, then reconcile the live deployment with the canonical implementation branch.
