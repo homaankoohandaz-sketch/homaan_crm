@@ -6,12 +6,21 @@ import {
   createBaseline,
   compareToBaseline,
   calculateFloat,
+  calculateTimeVariancePercent,
+  buildProjectDashboard,
+  buildMasterPlan,
+  buildProjectCalendar,
+  detectDelays,
+  buildRecoveryPlan,
+  reviseSchedule,
+  createProjectVersion,
+  createProjectSnapshot,
   getProjectStatus
 } from '../../src/domains/construction/project-management-core.js';
 
 const wbs = [
-  { id:'a', type:'task', name:'Excavate', duration_days:2, depends_on:[], progress:100 },
-  { id:'b', type:'task', name:'Foundation', duration_days:3, depends_on:['a'], progress:50 },
+  { id:'a', type:'task', name:'Excavate', duration_days:2, depends_on:[], progress:100, metadata:{planned_progress:100} },
+  { id:'b', type:'task', name:'Foundation', duration_days:3, depends_on:['a'], progress:50, metadata:{planned_progress:80, delay_reason:'supplier', delay_responsibility:'supplier'} },
   { id:'m1', type:'milestone', name:'Structure start', duration_days:0, depends_on:['b'], progress:0 }
 ];
 
@@ -57,6 +66,52 @@ test('float calculation identifies critical dependency chain', () => {
   assert.equal(floats.find(x=>x.id==='a').slack_days, 0);
   assert.equal(floats.find(x=>x.id==='b').slack_days, 0);
   assert.equal(floats.find(x=>x.id==='c').slack_days, 4);
+});
+
+test('time variance, delay detection and recovery plan are deterministic', () => {
+  assert.equal(calculateTimeVariancePercent({baseline_duration_days:20, variance_days:5}), 25);
+  const delays = detectDelays([
+    {id:'a', baseline_finish:'2026-10-05', forecast_finish:'2026-10-08', metadata:{delay_reason:'supplier',delay_responsibility:'supplier'}},
+    {id:'b', baseline_finish:'2026-10-05', forecast_finish:'2026-10-05'}
+  ]);
+  assert.equal(delays.length, 1);
+  assert.equal(delays[0].reason, 'supplier');
+  assert.equal(delays[0].responsibility, 'supplier');
+  const recovery = buildRecoveryPlan(delays, [{id:'a', duration_days:10}]);
+  assert.equal(recovery[0].task_id, 'a');
+  assert.equal(recovery[0].target_reduction_days, 3);
+});
+
+test('master plan, dashboard and calendar expose one canonical project view model', () => {
+  const schedule = {
+    start_date:'2026-10-01',
+    finish_date:'2026-10-06',
+    items:[
+      {id:'a', name:'Excavate', type:'task', start_date:'2026-10-01', finish_date:'2026-10-03', progress:100, depends_on:[]},
+      {id:'m1', name:'Structure start', type:'milestone', start_date:'2026-10-06', finish_date:'2026-10-06', progress:0, depends_on:['a']}
+    ]
+  };
+  const dashboard = buildProjectDashboard({project:{id:'p1',name:'A'},schedule,progress:{percent:50},status:{status:'active'}});
+  assert.equal(dashboard.project.id,'p1');
+  assert.equal(dashboard.kpis.progress_percent,50);
+  assert.equal(buildMasterPlan(schedule).milestones[0].id,'m1');
+  assert.equal(buildProjectCalendar(schedule).events.length,2);
+});
+
+test('revised schedule and project versions preserve lineage', () => {
+  const schedule = {start_date:'2026-10-01',finish_date:'2026-10-06',items:[
+    {id:'a',start_date:'2026-10-01',finish_date:'2026-10-03',duration_days:2,depends_on:[]},
+    {id:'b',start_date:'2026-10-03',finish_date:'2026-10-06',duration_days:3,depends_on:['a']}
+  ]};
+  const revised = reviseSchedule(schedule,{delay_days:2});
+  assert.equal(revised.finish_date,'2026-10-08');
+  const version=createProjectVersion({version:1,label:'baseline',schedule});
+  const next=createProjectVersion({version:2,label:'revised',schedule:revised,parent_version:version.version});
+  assert.equal(next.parent_version,1);
+  assert.equal(next.version,2);
+  const snap=createProjectSnapshot({project:{id:'p1'},schedule:revised,version:next});
+  assert.equal(snap.version,2);
+  assert.equal(snap.schedule.finish_date,'2026-10-08');
 });
 
 test('project status distinguishes planned, active and completed', () => {
