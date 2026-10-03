@@ -341,6 +341,7 @@ E — PROCUREMENT / PURCHASING
 ==================================================
 
 131 [~] Procurement Master Plan
+    Canonical planning logic added in src/domains/construction/procurement-planning.js; focused tests added; runtime acceptance pending.
     Canonical planning logic added in src/domains/construction/procurement-planning.js.
 
 132 [~] Material List
@@ -455,7 +456,7 @@ F — AI PROJECT CONTROL
 184 [~] AI Suggest Trade Sequencing
 
 185 [~] AI "What if?" Simulation
-    Isolated scenario simulation implemented; full runtime acceptance pending.
+    Isolated scenario simulation implemented and focused test registered; runtime acceptance pending.
 
 186 [~] AI Schedule Optimization
 
