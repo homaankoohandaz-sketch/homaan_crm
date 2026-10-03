@@ -28,7 +28,7 @@ export function resolveWorker(worker, env = process.env) {
 
 export function createBudget(input = {}) {
   return Object.freeze({
-    tokenBudget: finiteNonNegative(input.tokenBudget, 0),
+    tokenBudget: finiteNonNegative(input.tokenBudget, Math.floor(MAX_OUTPUT / 4)),
     timeBudgetMs: finiteNonNegative(input.timeBudgetMs, DEFAULT_TIMEOUT_MS),
     costBudget: finiteNonNegative(input.costBudget, 0),
     maxIterations: Math.max(1, Math.floor(finiteNonNegative(input.maxIterations, 1))),
