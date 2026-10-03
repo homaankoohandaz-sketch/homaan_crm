@@ -354,3 +354,11 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Corrected the test fixture to a 4-day horizon and preserved the implementation logic.
 - Checklist 131-160 remain PARTIAL pending fresh CI + runtime acceptance. Item 185 remains PARTIAL pending runtime acceptance.
 - Next: fresh Unit/QA/Application verification, then continue 161-190.
+
+
+## 2026-10-03 — AI Project Control 161-190 / Finance Control 191-220
+- Extended the canonical AI project-control module with deterministic schedule, delay, dependency, critical-path, procurement, shortage, cost-overrun, recovery, parallel-work, conflict, zoning, optimization, tradeoff, explanation and approval contracts.
+- Added focused 161-190 tests and registered them in npm test; Unit CI passed on commit a476f12062663e8d093dd377650ccf02cbc5d5c1.
+- Extended the existing canonical project-finance model rather than creating a second finance engine with ledger, budget and cost-control views for 191-220.
+- Added focused 191-220 tests; fresh CI verification is pending.
+- DONE remains gated by implementation + test + runtime/UI/security evidence.
