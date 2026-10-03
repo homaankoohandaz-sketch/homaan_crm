@@ -240,7 +240,7 @@ export function createProjectFinanceModel() {
           actorId: x?.actorId ?? null
         }))
       };
-    }
+    },
 
     ledger(input = {}) {
       const entries = rows(input.entries).map((entry, index) => ({
