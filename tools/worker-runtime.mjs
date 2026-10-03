@@ -40,7 +40,7 @@ export function consumeBudget(budget, usage = {}) {
     costBudget: budget.costBudget - finiteNonNegative(usage.cost, 0),
     maxIterations: budget.maxIterations - Math.max(0, Math.floor(finiteNonNegative(usage.iterations, 0))),
   };
-  const exhausted = Object.entries(next).some(([key, value]) => key !== "maxIterations" ? value < 0 : value < 0);
+  const exhausted = Object.entries(next).some(([key, value]) => key !== "maxIterations" ? value < 0 : value <= 0);
   return Object.freeze({ ...next, exhausted });
 }
 
