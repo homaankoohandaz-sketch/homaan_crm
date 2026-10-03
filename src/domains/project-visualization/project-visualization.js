@@ -20,18 +20,18 @@ export function createElevationSvg({ width = 20, floors = 4, floorHeight = 3, op
   const safeFloors = Math.max(1, Math.floor(Number(floors) || 1));
   const totalHeight = safeFloors * Number(floorHeight || 3);
   const lines = [];
-  lines.push(\`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 \${width} \${totalHeight}" role="img" aria-label="BuildWise elevation">\`);
-  lines.push(\`<rect x="0" y="0" width="\${width}" height="\${totalHeight}" fill="none" stroke="currentColor"/>\`);
+  lines.push(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${totalHeight}" role="img" aria-label="BuildWise elevation">`);
+  lines.push(`<rect x="0" y="0" width="${width}" height="${totalHeight}" fill="none" stroke="currentColor"/>`);
   for (let i = 1; i < safeFloors; i += 1) {
     const y = i * Number(floorHeight || 3);
-    lines.push(\`<line x1="0" y1="\${y}" x2="\${width}" y2="\${y}" stroke="currentColor"/>\`);
+    lines.push(`<line x1="0" y1="${y}" x2="${width}" y2="${y}" stroke="currentColor"/>`);
   }
   for (const opening of openings) {
     const x = Number(opening.x || 0);
     const y = Number(opening.y || 0);
     const w = Number(opening.width || 1);
     const h = Number(opening.height || 2);
-    lines.push(\`<rect x="\${x}" y="\${y}" width="\${w}" height="\${h}" fill="none" stroke="currentColor"/>\`);
+    lines.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="none" stroke="currentColor"/>`);
   }
   lines.push("</svg>");
   return lines.join("");
@@ -39,14 +39,14 @@ export function createElevationSvg({ width = 20, floors = 4, floorHeight = 3, op
 
 export function createFloorPlanSvg({ width = 20, depth = 15, rooms = [] } = {}) {
   const svg = [
-    \`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 \${width} \${depth}" role="img" aria-label="BuildWise floor plan">\`,
-    \`<rect x="0" y="0" width="\${width}" height="\${depth}" fill="none" stroke="currentColor"/>\`
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${depth}" role="img" aria-label="BuildWise floor plan">`,
+    `<rect x="0" y="0" width="${width}" height="${depth}" fill="none" stroke="currentColor"/>`
   ];
   for (const room of rooms) {
     const x = Number(room.x || 0), y = Number(room.y || 0);
     const w = Number(room.width || 1), h = Number(room.height || 1);
-    svg.push(\`<rect x="\${x}" y="\${y}" width="\${w}" height="\${h}" fill="none" stroke="currentColor"/>\`);
-    if (room.name) svg.push(\`<text x="\${x + w/2}" y="\${y + h/2}" text-anchor="middle">\${String(room.name).replace(/[<>]/g,"")}</text>\`);
+    svg.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="none" stroke="currentColor"/>`);
+    if (room.name) svg.push(`<text x="${x + w/2}" y="${y + h/2}" text-anchor="middle">${String(room.name).replace(/[<>]/g,"")}</text>`);
   }
   svg.push("</svg>");
   return svg.join("");
@@ -54,7 +54,7 @@ export function createFloorPlanSvg({ width = 20, depth = 15, rooms = [] } = {}) 
 
 export function buildScenarioSet(base, variants = []) {
   return [base, ...variants].map((scenario, index) => ({
-    id: scenario.id || \`scenario-\${index + 1}\`,
+    id: scenario.id || `scenario-${index + 1}`,
     ...scenario
   }));
 }
