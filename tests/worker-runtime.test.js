@@ -24,7 +24,7 @@ const executed = await runWorker({
   worker: "local",
   taskPath,
   env: { BUILDWISE_LOCAL_COMMAND: process.execPath },
-  budget: { tokenBudget: 100, timeBudgetMs: 5000, costBudget: 0, maxIterations: 1 },
+  budget: { tokenBudget: 100, timeBudgetMs: 5000, costBudget: 1, maxIterations: 1 },
   execute: (_command, args, _options, callback) => callback(null, args.at(-1), ""),
 });
 assert.equal(executed.status, "budget_exhausted");
