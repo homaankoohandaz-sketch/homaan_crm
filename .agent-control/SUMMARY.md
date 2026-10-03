@@ -362,3 +362,10 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Extended the existing canonical project-finance model rather than creating a second finance engine with ledger, budget and cost-control views for 191-220.
 - Added focused 191-220 tests; fresh CI verification is pending.
 - DONE remains gated by implementation + test + runtime/UI/security evidence.
+
+
+## 2026-10-03 — Verification update: AI Project Control 161-190 / Finance 191-220
+- Unit run 1042 passed after repairing fixture-only failures in the new AI project-control suite; worker job also passed.
+- Finance 191-220 syntax defect (missing comma between model methods) was caught by CI, repaired, and is now covered by the suite.
+- Current evidence: implementation + focused/full unit execution + worker validation are green.
+- Runtime/UI gate is still not closed for these newly changed areas. The registered buildwise-ai-h preview URL currently returns Netlify Site Not Found in live browser verification, so no false DONE status is recorded.
