@@ -275,9 +275,9 @@ C — REAL ESTATE INTELLIGENCE
 D — PROFESSIONAL PROJECT MANAGEMENT
 ==================================================
 
-101 [ ] Project Management Core
+101 [~] Project Management Core
 
-102 [ ] Project / Complex / Building / Phase / Floor / Unit Hierarchy
+102 [~] Project / Complex / Building / Phase / Floor / Unit Hierarchy
 
 103 [ ] Project Dashboard
 
@@ -285,41 +285,41 @@ D — PROFESSIONAL PROJECT MANAGEMENT
 
 105 [ ] Project Calendar
 
-106 [ ] WBS — Work Breakdown Structure
+106 [~] WBS — Work Breakdown Structure
 
-107 [ ] MSP-style Scheduling
+107 [~] MSP-style Scheduling
 
-108 [ ] Gantt Chart
+108 [~] Gantt Chart
 
-109 [ ] Milestones
+109 [~] Milestones
 
-110 [ ] Dependencies
+110 [~] Dependencies
 
-111 [ ] Predecessors / Successors
+111 [~] Predecessors / Successors
 
-112 [ ] Critical Path
+112 [~] Critical Path
 
-113 [ ] Critical Path Method — CPM
+113 [~] Critical Path Method — CPM
 
-114 [ ] Float / Slack
+114 [~] Float / Slack
 
-115 [ ] Baseline Schedule
+115 [~] Baseline Schedule
 
-116 [ ] Actual vs Baseline
+116 [~] Actual vs Baseline
 
-117 [ ] Schedule Variance
+117 [~] Schedule Variance
 
-118 [ ] Time Variance %
+118 [~] Time Variance %
 
-119 [ ] Progress %
+119 [~] Progress %
 
-120 [ ] Planned Progress
+120 [~] Planned Progress
 
-121 [ ] Actual Progress
+121 [~] Actual Progress
 
-122 [ ] Earned Progress
+122 [~] Earned Progress
 
-123 [ ] Delay Detection
+123 [~] Delay Detection
 
 124 [ ] Delay Reason
 
@@ -331,9 +331,9 @@ D — PROFESSIONAL PROJECT MANAGEMENT
 
 128 [ ] Multiple Project Versions
 
-129 [ ] Project Snapshot
+129 [~] Project Snapshot
 
-130 [ ] Project Status
+130 [~] Project Status
 
 
 ==================================================
