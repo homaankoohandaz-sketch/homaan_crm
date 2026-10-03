@@ -1466,26 +1466,37 @@ Z — INFRASTRUCTURE / DEPLOYMENT
 
 641 [~] GitHub Pages
 
-642 [ ] Final Production Domain
+642 [~] Final Production Domain
+     Netlify production hostname is the current runtime endpoint.
+     Custom domain remains optional/deferred.
 
-643 [ ] Cloudflare
+643 [~] Cloudflare
+     Deferred from the critical release path; no provider runtime is required for the current Netlify + Supabase architecture.
 
 644 [ ] Cloudflare Workers if needed
+     Not required by the current architecture.
 
-645 [ ] Automated Deployment
+645 [~] Automated Deployment
+     Netlify deployment path exists; production runtime verification remains required before DONE.
 
 646 [ ] Deployment Health Check
+     Requires a successful live deployment smoke check.
 
 647 [ ] Database Migration Pipeline
+     Not changed by this infrastructure batch.
 
-648 [ ] Backup Strategy
+648 [~] Backup Strategy
+     GitHub Actions scheduled pg_dump workflow implemented.
+     Runtime activation/verification remains required before DONE.
 
 649 [ ] Rollback Strategy
+     Not implemented in this batch.
 
-650 [ ] Environment Separation
+650 [~] Environment Separation
      Development
      Staging
      Production
+     Netlify context separation is implemented; staging/production still share the current Supabase backend until an isolated backend is available.
 
 
 ==================================================
