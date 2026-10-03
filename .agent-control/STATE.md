@@ -216,3 +216,11 @@ last_batch: 633-650 infrastructure
 - Added `docs/INFRASTRUCTURE_FREE_BASELINE.md` documenting Development → Staging/Preview → Production semantics and the provider limitations.
 - Updated `netlify.toml` with explicit BUILDWISE_ENV values for production, deploy-preview, branch-deploy and local contexts.
 - No infrastructure item is marked DONE until runtime verification satisfies the project acceptance rule.
+
+
+## 2026-10-03 — Infrastructure CI repair
+- Migration Gate run 87 failed for a pre-existing legacy filename: `20260923_advisor_followups_security_reports.sql`.
+- Normalized it to the required 14-digit migration filename `20260923000000_advisor_followups_security_reports.sql`.
+- Removed the invalid legacy path.
+- Unit Tests, Application Validation, QA, Phase Code Map and Agent Control Validation for the infrastructure commit all passed; only Migration Gate failed on the filename gate.
+- A fresh Migration Gate run must be observed before treating migration infrastructure as verified.
