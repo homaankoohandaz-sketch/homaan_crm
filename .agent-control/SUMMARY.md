@@ -1,7 +1,7 @@
 # BuildWise AI — SUMMARY
 
 Updated: 2026-10-03
-Branch: main (integrity repair on main)
+Branch: main
 
 ## Canonical governance
 - Repository law: Conversation → Decision → Repository record → Implementation → Test → Runtime verification → State update.
@@ -16,6 +16,12 @@ Branch: main (integrity repair on main)
 - This is the sole active acceptance/source-of-truth register.
 - Task sequencing and acceptance mapping must reference this file only.
 
+## Existing implementation baseline
+- Tasks 001–020: existing implementation/audit baseline; do not rebuild.
+- Tasks 011–012: implementation + focused test evidence.
+- Task 010: implementation preserved/audited.
+- Tasks 013–020: primarily audit/release-gate work.
+
 ## Architecture baseline
 - Mother architecture: .agent-control/MASTER-ARCHITECTURE.md
 - Execution protocol: .agent-control/AGENT_EXECUTION_PROTOCOL.md
@@ -23,9 +29,13 @@ Branch: main (integrity repair on main)
 - Decision ledger: .agent-control/DECISIONS.md
 - Execution state: .agent-control/STATE.md
 
+## Phase 04
+Relational canonical path for hierarchy, schedule, BOQ, procurement, progress.
+Integration test covers hierarchy→schedule→progress→boq→procurement.
+
 ## Release gate
-Production URL (documented): https://buildwis-ai.netlify.app
-Preview/implementation work remains on buildwise-implementation where applicable.
+Production URL: https://buildwis-ai.netlify.app
+Preview/implementation branch: buildwise-implementation where applicable.
 
 ## 2026-10-03 — Integrity repair (defect origin)
 - Root cause: `src/domains/intelligence/market-intelligence.js` existed (liquidity, snapshot, benchmark, scenario, investment proposal) but `tests/unit/market-intelligence.test.mjs` was never created; the broken package.json reference was only removed earlier.
@@ -33,5 +43,15 @@ Preview/implementation work remains on buildwise-implementation where applicable
 - Commit: `61de2ef55bd0a68bcb8f36a4781afdf2e82f1da0`.
 - No architecture change; reconciled existing canonical module only. CI verification required before DONE claim.
 
-## Prior ledger (retained)
-Historical phase entries through 2026-10-02 remain authoritative in git history. This SUMMARY entry records the integrity completion only; full historical body is preserved in prior commits.
+## 2026-10-03 — Production Runtime/UI Verification
+- Production Netlify deploy documented at https://buildwis-ai.netlify.app
+- Live public browser smoke test previously recorded for landing, role entries, visual-project, project-control and import pages.
+- This does not mark unrelated MASTER-CHECKLIST-v3-850 tasks DONE.
+
+## 2026-10-02 — Integrity repair (prior)
+- Fixed stale package.json test reference to non-existent market-intelligence.test.mjs (removal-only fix).
+- Commit: `404811d89b66ed84ba4dbdf526f58c0948698235`.
+- Superseded by 2026-10-03 defect-origin repair that restores the missing test.
+
+## Historical ledger note
+Full phase-by-phase historical entries (Procurement 141-160 through Decision Constitution 750-827 and Security 591-608) remain in git history prior to the temporary SUMMARY compaction. Agents must read prior commits or MASTER-CHECKLIST for acceptance mapping; this SUMMARY prioritizes current integrity and release state.
