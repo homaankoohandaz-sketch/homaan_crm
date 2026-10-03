@@ -47,8 +47,8 @@ const project={
 
 test('161-165 schedule intelligence exposes delay, dependency and critical-path evidence',()=>{
   const summary=analyzeProjectSchedule(project);
-  assert.equal(summary.task_count,2);
-  assert.equal(detectProjectDelays(project.tasks).length,2);
+  assert.equal(summary.task_count,3);
+  assert.equal(detectProjectDelays(project.tasks).length,3);
   assert.deepEqual(analyzeDependencies(project.tasks).find(x=>x.task_id==='b').depends_on,['a']);
   assert.ok(analyzeCriticalPath(project.tasks).critical_task_ids.includes('a'));
 });
