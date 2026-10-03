@@ -232,41 +232,41 @@ C — REAL ESTATE INTELLIGENCE
 
 081 [~] Dollar Comparison
 
-082 [ ] Historical Market Analysis
+082 [~] Historical Market Analysis
 
-083 [ ] Live Market Snapshot
+083 [~] Live Market Snapshot
 
 084 [~] Scenario Forecasting
 
-085 [ ] Liquidity Analysis
+085 [~] Liquidity Analysis
 
 086 [~] Deal Risk Analysis
 
-087 [ ] Market Data Timestamp
+087 [~] Market Data Timestamp
 
-088 [ ] Daily Gold Price Update
+088 [~] Daily Gold Price Update
 
-089 [ ] Daily Dollar Price Update
+089 [~] Daily Dollar Price Update
 
-090 [ ] Property Price vs Gold
+090 [~] Property Price vs Gold
 
-091 [ ] Property Price vs Dollar
+091 [~] Property Price vs Dollar
 
-092 [ ] Property Value in Grams of 18K Gold
+092 [~] Property Value in Grams of 18K Gold
 
-093 [ ] 6-Month Historical Comparison
+093 [~] 6-Month Historical Comparison
 
-094 [ ] 12-Month Historical Comparison
+094 [~] 12-Month Historical Comparison
 
-095 [ ] 18-Month Historical Comparison
+095 [~] 18-Month Historical Comparison
 
-096 [ ] 24-Month Historical Comparison
+096 [~] 24-Month Historical Comparison
 
-097 [ ] Historical Performance Chart
+097 [~] Historical Performance Chart
 
-098 [ ] Future Scenario Chart
+098 [~] Future Scenario Chart
 
-099 [ ] Proposal-Ready Investment Analysis
+099 [~] Proposal-Ready Investment Analysis
 
 100 [~] Clearly distinguish forecast/scenario from guarantee
 
@@ -1157,200 +1157,200 @@ S — UI / UX
 T — WEBSITE / APP PRESENTATION
 ==================================================
 
-501 [ ] BuildWise AI Landing Website
+501 [~] BuildWise AI Landing Website
 
-502 [ ] Premium animated hero
+502 [~] Premium animated hero
 
-503 [ ] Interactive product demonstrations
+503 [~] Interactive product demonstrations
 
-504 [ ] Scroll-driven animations
+504 [~] Scroll-driven animations
 
-505 [ ] App screenshots inside website
+505 [~] App screenshots inside website
 
-506 [ ] Interactive dashboard preview
+506 [~] Interactive dashboard preview
 
-507 [ ] Interactive project-control preview
+507 [~] Interactive project-control preview
 
-508 [ ] Interactive Gantt preview
+508 [~] Interactive Gantt preview
 
-509 [ ] Interactive KPI preview
+509 [~] Interactive KPI preview
 
-510 [ ] Interactive AI assistant preview
+510 [~] Interactive AI assistant preview
 
-511 [ ] Interactive sales proposal preview
+511 [~] Interactive sales proposal preview
 
-512 [ ] Interactive customer room preview
+512 [~] Interactive customer room preview
 
-513 [ ] Responsive mobile website
+513 [~] Responsive mobile website
 
-514 [ ] PWA
+514 [~] PWA
 
-515 [ ] Add to Home Screen
+515 [~] Add to Home Screen
 
-516 [ ] Installable mobile experience
+516 [~] Installable mobile experience
 
-517 [ ] App icon
+517 [~] App icon
 
-518 [ ] Splash screen
+518 [~] Splash screen
 
-519 [ ] Offline shell
+519 [~] Offline shell
 
-520 [ ] Professional SEO
+520 [~] Professional SEO
 
-521 [ ] OpenGraph
+521 [~] OpenGraph
 
-522 [ ] Social share previews
+522 [~] Social share previews
 
-523 [ ] Analytics
+523 [~] Analytics
 
-524 [ ] Conversion tracking
+524 [~] Conversion tracking
 
 
 ==================================================
 U — CONTENT / MARKETING / LAUNCH
 ==================================================
 
-525 [ ] BuildWise Brand System
+525 [~] BuildWise Brand System
 
-526 [ ] Brand Guidelines
+526 [~] Brand Guidelines
 
-527 [ ] Logo System
+527 [~] Logo System
 
-528 [ ] Social Media Visual System
+528 [~] Social Media Visual System
 
-529 [ ] Instagram Content System
+529 [~] Instagram Content System
 
-530 [ ] Instagram Launch Campaign
+530 [~] Instagram Launch Campaign
 
-531 [ ] Educational Content
+531 [~] Educational Content
 
-532 [ ] Product Demo Content
+532 [~] Product Demo Content
 
-533 [ ] Construction AI Content
+533 [~] Construction AI Content
 
-534 [ ] Real Estate Intelligence Content
+534 [~] Real Estate Intelligence Content
 
-535 [ ] Before/After Project Content
+535 [~] Before/After Project Content
 
-536 [ ] Customer Case Studies
+536 [~] Customer Case Studies
 
-537 [ ] Reels System
+537 [~] Reels System
 
-538 [ ] Stories System
+538 [~] Stories System
 
-539 [ ] YouTube Content
+539 [~] YouTube Content
 
-540 [ ] LinkedIn Content
+540 [~] LinkedIn Content
 
-541 [ ] Launch Calendar
+541 [~] Launch Calendar
 
-542 [ ] Marketing Workflow
+542 [~] Marketing Workflow
 
-543 [ ] Lead Capture
+543 [~] Lead Capture
 
-544 [ ] Landing → Request → CRM
+544 [~] Landing → Request → CRM
 
-545 [ ] Campaign Analytics
+545 [~] Campaign Analytics
 
 
 ==================================================
 V — AI CONTENT PRODUCTION BOT
 ==================================================
 
-546 [ ] Content Production Bot
+546 [~] Content Production Bot
 
-547 [ ] Prompt → Video
+547 [~] Prompt → Video
 
-548 [ ] Prompt → Image
+548 [~] Prompt → Image
 
-549 [ ] Prompt → Reel
+549 [~] Prompt → Reel
 
-550 [ ] Prompt → Voiceover
+550 [~] Prompt → Voiceover
 
-551 [ ] Prompt → Caption
+551 [~] Prompt → Caption
 
-552 [ ] Prompt → Hashtags
+552 [~] Prompt → Hashtags
 
-553 [ ] Prompt → Thumbnail
+553 [~] Prompt → Thumbnail
 
 554 [ ] Real Estate Video Generator
 
-555 [ ] Land Dimensions Input
+555 [~] Land Dimensions Input
 
-556 [ ] Width Input
+556 [~] Width Input
 
-557 [ ] Street Width Input
+557 [~] Street Width Input
 
-558 [ ] Aerial Image Input
+558 [~] Aerial Image Input
 
-559 [ ] Automatic Dimension Lines
+559 [~] Automatic Dimension Lines
 
-560 [ ] Yellow Length/Width Lines
+560 [~] Yellow Length/Width Lines
 
-561 [ ] Blueprint Overlay
+561 [~] Blueprint Overlay
 
-562 [ ] Floor Area Visualization
+562 [~] Floor Area Visualization
 
-563 [ ] 3D Massing
+563 [~] 3D Massing
 
-564 [ ] Modern Architectural Render
+564 [~] Modern Architectural Render
 
-565 [ ] Construction Progress Video
+565 [~] Construction Progress Video
 
-566 [ ] Property Presentation Reel
+566 [~] Property Presentation Reel
 
-567 [ ] Investor Proposal Video
+567 [~] Investor Proposal Video
 
-568 [ ] Automated Voiceover
+568 [~] Automated Voiceover
 
-569 [ ] Automated Subtitles
+569 [~] Automated Subtitles
 
-570 [ ] Instagram-ready Export
+570 [~] Instagram-ready Export
 
-571 [ ] YouTube-ready Export
+571 [~] YouTube-ready Export
 
-572 [ ] Content Library
+572 [~] Content Library
 
-573 [ ] Prompt Library
+573 [~] Prompt Library
 
-574 [ ] Brand-consistent Content
+574 [~] Brand-consistent Content
 
-575 [ ] Free/low-cost generation pipeline
+575 [~] Free/low-cost generation pipeline
 
 
 ==================================================
 W — MARKET / EXTERNAL DATA
 ==================================================
 
-576 [ ] Live Gold Feed
+576 [~] Live Gold Feed
 
-577 [ ] Live Dollar Feed
+577 [~] Live Dollar Feed
 
-578 [ ] Material Price Feed
+578 [~] Material Price Feed
 
-579 [ ] Property Market Feed
+579 [~] Property Market Feed
 
-580 [ ] Divar-compatible acquisition strategy
+580 [~] Divar-compatible acquisition strategy
 
-581 [ ] CRM Property Data
+581 [~] CRM Property Data
 
-582 [ ] Market Comparable Engine
+582 [~] Market Comparable Engine
 
-583 [ ] Source Registry
+583 [~] Source Registry
 
-584 [ ] Source Timestamp
+584 [~] Source Timestamp
 
-585 [ ] Source Reliability
+585 [~] Source Reliability
 
-586 [ ] Historical Snapshots
+586 [~] Historical Snapshots
 
-587 [ ] Daily Snapshot Job
+587 [~] Daily Snapshot Job
 
-588 [ ] Market Data Archive
+588 [~] Market Data Archive
 
-589 [ ] Market Data API Layer
+589 [~] Market Data API Layer
 
-590 [ ] External Data Failure Fallback
+590 [~] External Data Failure Fallback
 
 
 ==================================================
@@ -1868,3 +1868,8 @@ without actual implementation/testing/runtime verification.
 - The previous `Runtime/UI = BLOCKED` condition caused by the stale/dead Netlify preview URL is cleared.
 - Live root and `project-control.html` smoke tests now pass on the active Netlify hostname.
 - 131-220 remain PARTIAL because domain-specific functional runtime acceptance has not been falsely inferred from page-load smoke tests.
+
+### Status reconciliation — 2026-10-03 (evidence: local `npm test` on this branch, all green)
+- 082-100, 501-524, 525-545, 546-553, 555-564, 565-575 and 576-590 moved [ ] → [~] (105 items). Basis: implemented contracts with passing focused tests (market-history-082-100, landing-501-524, content-system-525-545, content-bot-546-575, market-data-576-590). Item 554 has no covering test and stays [ ].
+- No item was promoted to DONE. These remain PARTIAL until runtime + UI (+ security where applicable) evidence exists.
+- Counts after reconciliation: 35 DONE / 613 PARTIAL / 201 TODO / 1 BLOCKED.
