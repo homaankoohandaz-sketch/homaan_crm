@@ -1,15 +1,15 @@
 # BuildWise Performance Memory
 
 ## Snapshot
-state: CHECKLIST_20_100_IMPLEMENTATION_IN_PROGRESS
-updated: 2026-09-28
-branch: buildwise-implementation
-head_basis: 966188a496b211e1096bb7a5af25f99fbfb8432d
-active_task: checklist-20-100 implementation
+state: PRODUCTION_RUNTIME_VERIFIED
+updated: 2026-10-03
+branch: main
+head_basis: 843174c2a437a2ed5eb6345dfc5b8404d4769fa9
+active_task: production runtime/UI gate
 memory_rule: NOW first; then BRIEF + last 5; HISTORY is cold archive
 
 ## Recent events
-2026-09-28 | checklist-20-100-intelligence-slice | chatgpt | 966188a4 | VERIFIED_PARTIAL | src/core/decision-layer.js; src/domains/crm/import-quality.js; src/domains/intelligence/market-intelligence.js; tests/unit/* | isolated Node tests PASS after deterministic rounding + invalid-phone isolation fixes | implemented decision routing/permissions/loop, import quality primitives, liquidity/market/historical/scenario/proposal calculations; no production/main change | continue exact checklist 20-100 integration and full repository runtime verification
+2026-10-03 | production-runtime-gate | chatgpt | 843174c2 | DONE | Netlify production + public UI | Netlify deploy 6ac002880af8020008a10242 READY; browser smoke PASS for landing, 4 roles, visual-project, project-control, import; no visible runtime errors | production runtime/UI gate completed without claiming unrelated checklist tasks | continue next acceptance-gated task from MASTER-CHECKLIST-v3-850
 
 ## Rule
 Append ONE compact event after every meaningful task:
