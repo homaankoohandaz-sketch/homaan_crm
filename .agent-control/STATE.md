@@ -238,7 +238,7 @@ last_batch: 633-650 infrastructure
 
 
 ## 2026-10-03 — Netlify Runtime Recovery
-- Web research confirmed the observed 404 is consistent with a deleted/stale Netlify deploy or missing deploy context; Netlify documents that deleted deploys can leave a context URL returning generic 404. cite not stored in repo
+- Web research confirmed the observed 404 is consistent with a deleted/stale Netlify deploy or missing deploy context; Netlify documents that deleted deploys can leave a context URL returning generic 404.
 - Netlify project `buildwise-ai-h` exists and its primary URL was returning Site Not Found.
 - A one-time controlled publish was executed through the connected Netlify deployment path from the `buildwise-implementation` branch.
 - Live browser verification now passes on `https://buildwise-ai-h.netlify.app` and `/project-control.html`.
