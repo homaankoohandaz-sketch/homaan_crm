@@ -245,3 +245,12 @@ last_batch: 633-650 infrastructure
 - Root gateway renders BuildWise role entry; project-control renders the application UI with expected empty-project state and no visible JS/runtime errors.
 - The temporary emergency publish workflow/trigger was removed immediately after successful recovery; no permanent deployment secret was committed.
 - Therefore the prior Runtime/UI BLOCKED condition caused by the dead Netlify URL is resolved for the current deployment. This does NOT by itself promote 131-220 to DONE; domain-specific functional runtime acceptance remains required.
+
+
+## 2026-10-03 — Production browser smoke / acceptance reconciliation
+- Netlify production site: `https://buildwise-ai-h.netlify.app` — current production deploy is READY, branch `main`, deploy id `6ac127c7410eb1febee44602`.
+- Browser smoke test: PASS. Landing page loads, BuildWise AI branding renders, role gateway renders, no visible runtime/navigation error.
+- Authenticated Production E2E 630: **BLOCKED**. Browser profile has no saved signed-in site/session, and the production role gateway cannot be authenticated without a real account session. This is now explicitly marked `[⛔]` in the canonical checklist.
+- Production/implementation mismatch is confirmed: Netlify production is `main`; `buildwise-implementation` is a separate branch and is 151 commits ahead / 3 commits behind `main`. No merge or force-update was performed.
+- Deployment Health Check 646 is now PARTIAL because public production smoke verification passed; authenticated E2E remains outstanding.
+- Canonical checklist count after reconciliation: **35 DONE / 508 PARTIAL / 306 TODO / 1 BLOCKED**.
