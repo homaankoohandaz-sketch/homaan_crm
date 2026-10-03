@@ -268,7 +268,7 @@ C — REAL ESTATE INTELLIGENCE
 
 099 [ ] Proposal-Ready Investment Analysis
 
-100 [ ] Clearly distinguish forecast/scenario from guarantee
+100 [~] Clearly distinguish forecast/scenario from guarantee
 
 
 ==================================================
