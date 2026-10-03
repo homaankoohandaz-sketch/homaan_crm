@@ -346,3 +346,11 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Netlify deploy preview for the implementation branch is READY on commit `fb6e322d83f92614a3048a05dddfb59d08311150`.
 - Checklist 101-130 are implementation-complete but remain PARTIAL until authenticated browser/UI verification is independently performed under the repository DONE rule.
 - Browser verification tool is not currently connected; TinyFish was surfaced as the required browser capability. Do not claim DONE from deployment readiness alone.
+
+
+## 2026-10-03 — Procurement 131-160 / What-if 185 verification repair
+- Procurement planning implementation and focused tests are present in the canonical construction path.
+- CI identified one incorrect timing-test fixture: the test expected `order_now` while the required date was 7 days away and lead time was 5 days. The implementation correctly returned `monitor`.
+- Corrected the test fixture to a 4-day horizon and preserved the implementation logic.
+- Checklist 131-160 remain PARTIAL pending fresh CI + runtime acceptance. Item 185 remains PARTIAL pending runtime acceptance.
+- Next: fresh Unit/QA/Application verification, then continue 161-190.
