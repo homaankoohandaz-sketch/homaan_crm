@@ -1,0 +1,21 @@
+name: Emergency Netlify Publish
+
+on:
+  push:
+    branches:
+      - buildwise-implementation
+    paths:
+      - ".agent-control/netlify-publish-trigger"
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Publish current branch to BuildWise Netlify site
+        run: |
+          npx -y @netlify/mcp@latest --site-id 22966b24-9bab-424f-8540-b59315cabdd4 --proxy-path "https://netlify-mcp.netlify.app/proxy/eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0.._8QCj8-ZkJDA9FQg.CrRqj_TcKSAN4Zr2yO9wjKEwPmx7GoXuOV5lvWUmbvc6Ak9iyoWHp9G7-BN0I27fq5_MD0zHctNq0bKmFjnuCNPFQGxHCsnZ9Qp3HZ7-ORq9X0gdxqVB54YZzQnqkKPOsDogLSdY86pi6Hvh3NzXPNR-H3IXxRtnR751dKD5gF7EiZsoQcHMXEnVL5fYdId7wvWdQCYYZkPpFjqKU9nTyuAGuiIg-tS5Qb6_gBlbFskZit_BNfpSevMwovka8SjlYavbjksWRqbZr6I8qpJkYihcO1i_Lmw3TFX4FlrVf7wG35ENUwF3vEis1Hc5DjzpsFNnR3kLtrUJX3gxCHDBBwE_AewLpv8STKoHlbmnmbXGEeg4HIuC1PCNcTgEJSUsvwOH9qc9.1U1nEt5QdhkX5wOxgcxNBg"
