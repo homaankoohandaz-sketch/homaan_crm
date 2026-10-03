@@ -1027,15 +1027,15 @@ Q — AGENT / AUTOMATION INFRASTRUCTURE
 
 444 [~] Agent Failure Recovery
 
-445 [ ] Codex Worker [⛔]
+445 [~] Coding Worker Capability — provider-independent adapter
 
-446 [ ] Claude Worker [⛔]
+446 [~] Review/QA Worker Capability — provider-independent adapter
 
-447 [ ] Gemini Worker [⛔]
+447 [~] Research/Multimodal Worker Capability — provider-independent adapter
 
-448 [ ] n8n Runtime [⛔]
+448 [~] Workflow/Automation Capability — n8n optional, not required
 
-449 [ ] Independent Agent Execution [⛔]
+449 [~] Independent Agent Execution — canonical BuildWise Worker Runtime
 
 450 [ ] Non-production Agent Sandbox
 
@@ -1843,6 +1843,8 @@ that were discussed afterward but were not present as numbered items in v2.
 Current consolidated numbered range: 001–850.
 
 IMPORTANT:
+445-449 are capability requirements and are not vendor-runtime obligations. The 2026-10-03 independence decision supersedes the old vendor-specific BLOCKED interpretation.
+
 850 does NOT mean 850 implemented features.
 It is the acceptance/architecture register. Status must remain separate from
 item existence. Existing [✓], [~], [ ], and [⛔] states must not be converted
