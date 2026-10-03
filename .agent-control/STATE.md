@@ -174,3 +174,13 @@ last_batch: 633-650 infrastructure
 - Architecture: docs/architecture/MARKET-HISTORY-AND-SCENARIOS.md.
 - Checklist 082–100: PARTIAL.
 - Live gold/dollar/property observations are intentionally not embedded without provenance.
+
+
+## 2026-10-03 — Project Management Core 101-130
+- Added canonical project-management orchestration over existing construction modules: hierarchy, WBS, schedule, Gantt rows, CPM float, baseline variance, progress and project status.
+- Focused tests added and npm test registration updated.
+- Checklist: 101, 102, 106-123, 129-130 = PARTIAL; 103-105, 124-128 remain TODO where implementation is not sufficient for the checklist contract.
+- Runtime/browser verification remains pending; no DONE promotion.
+
+## Next action
+- Continue from 103-105 / 124-128 only where the canonical project-management core can be extended without duplicating existing responsibilities; then proceed to 131+.
