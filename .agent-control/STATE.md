@@ -166,3 +166,11 @@ last_batch: 633-650 infrastructure
 - Architecture record: docs/architecture/REGULATION-EVIDENCE.md.
 - Checklist 068: PARTIAL.
 - No municipal rule was invented or treated as verified without source evidence.
+
+
+## 2026-10-03 — Market History / Scenarios 082-100
+- Implementation: src/domains/market-intelligence/market-history.js.
+- Tests: tests/unit/market-history-082-100.test.mjs.
+- Architecture: docs/architecture/MARKET-HISTORY-AND-SCENARIOS.md.
+- Checklist 082–100: PARTIAL.
+- Live gold/dollar/property observations are intentionally not embedded without provenance.
