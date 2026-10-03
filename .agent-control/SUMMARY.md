@@ -306,3 +306,12 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Added focused tests and registered them in npm test.
 - Checklist 082–100 promoted from TODO to PARTIAL.
 - No live market value was fabricated; real sourced observations and runtime/UI verification remain required.
+
+
+## 2026-10-03 — Agent Runtime Independence Decision
+- 445-449 are no longer treated as five vendor runtimes that must each be built.
+- Canonical direction: one provider-independent BuildWise Worker Runtime with replaceable adapters.
+- OpenCode, smolagents, vLLM and Ollama are reusable open-source/runtime candidates; n8n is optional.
+- Per-user token/time/cost/iteration/tool/data budgets and three access lanes are part of the execution contract.
+- Budget exhaustion escalates safely to human advisors with preserved task state.
+- Decision recorded in .agent-control/AGENT-RUNTIME-INDEPENDENCE-DECISION-2026-10-03.md.
