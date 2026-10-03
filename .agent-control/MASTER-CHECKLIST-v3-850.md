@@ -340,25 +340,26 @@ D — PROFESSIONAL PROJECT MANAGEMENT
 E — PROCUREMENT / PURCHASING
 ==================================================
 
-131 [ ] Procurement Master Plan
+131 [~] Procurement Master Plan
+    Canonical planning logic added in src/domains/construction/procurement-planning.js.
 
-132 [ ] Material List
+132 [~] Material List
 
-133 [ ] BOQ Integration
+133 [~] BOQ Integration
 
-134 [ ] Purchase Schedule
+134 [~] Purchase Schedule
 
-135 [ ] Required Date
+135 [~] Required Date
 
-136 [ ] Order Date
+136 [~] Order Date
 
-137 [ ] Delivery Date
+137 [~] Delivery Date
 
-138 [ ] Supplier
+138 [~] Supplier
 
-139 [ ] Supplier Comparison
+139 [~] Supplier Comparison
 
-140 [ ] Purchase Request
+140 [~] Purchase Request
 
 141 [~] Purchase Approval
 
