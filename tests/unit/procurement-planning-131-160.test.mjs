@@ -80,7 +80,7 @@ test('price variance and dated price history are explicit', () => {
 test('purchase forecast and timing use required date and lead time', () => {
   const forecast=forecastPurchaseNeed({required_quantity:100,ordered_quantity:20,delivered_quantity:10});
   assert.equal(forecast.remaining_quantity,70);
-  assert.equal(recommendPurchaseTiming({required_at:'2026-10-10',lead_time_days:5,as_of:'2026-10-03'}),'order_now');
+  assert.equal(recommendPurchaseTiming({required_at:'2026-10-10',lead_time_days:5,as_of:'2026-10-06'}),'order_now');
 });
 
 test('procurement risk is bounded and explainable', () => {
