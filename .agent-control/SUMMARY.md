@@ -315,3 +315,12 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Per-user token/time/cost/iteration/tool/data budgets and three access lanes are part of the execution contract.
 - Budget exhaustion escalates safely to human advisors with preserved task state.
 - Decision recorded in .agent-control/AGENT-RUNTIME-INDEPENDENCE-DECISION-2026-10-03.md.
+
+
+## 2026-10-03 — Project Management Core 101-130
+- Reconciled existing construction hierarchy, WBS, schedule and progress modules before implementation; no duplicate project-control engine created.
+- Added `src/domains/construction/project-management-core.js` as the canonical orchestration layer for hierarchy validation, schedule, Gantt-ready rows, CPM float/critical flags, baselines, actual-vs-baseline variance and project status.
+- Added focused contract tests in `tests/unit/project-management-core.test.mjs` and registered them in npm test.
+- Checklist 101, 102, 106-123, 129-130 moved from TODO to PARTIAL where the new core provides implementation coverage.
+- Dashboard/calendar UI, delay reason/responsibility, recovery plan, revised schedule and multi-version snapshot behavior remain separate TODOs.
+- Runtime/browser verification is still required; no DONE claim.
