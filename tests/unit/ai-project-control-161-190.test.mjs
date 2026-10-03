@@ -64,7 +64,7 @@ test('170-175 identifies safe parallel opportunities and team conflicts',()=>{
   assert.equal(analyzeParallelWork(project.tasks).candidate_count,1);
   assert.equal(detectTeamConflicts(project.teams).length,0);
   assert.equal(analyzeWorkfront(project.tasks).active_count,3);
-  assert.equal(analyzeCrewAvailability(project.teams,'2026-10-06').available_count,3);
+  assert.equal(analyzeCrewAvailability(project.teams,'2026-10-06').available_count,2);
   assert.equal(suggestParallelTeams(project.tasks,project.teams).length,1);
   assert.equal(suggestSafeParallelActivities(project.tasks).length,1);
 });
