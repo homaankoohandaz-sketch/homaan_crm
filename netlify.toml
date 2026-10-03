@@ -2,6 +2,21 @@
   publish = "."
   command = ""
 
+[build.environment]
+  BUILDWISE_ENV = "production"
+
+[context.production.environment]
+  BUILDWISE_ENV = "production"
+
+[context.deploy-preview.environment]
+  BUILDWISE_ENV = "staging"
+
+[context.branch-deploy.environment]
+  BUILDWISE_ENV = "staging"
+
+[context.local.environment]
+  BUILDWISE_ENV = "development"
+
 [build.processing]
   skip_processing = true
 
