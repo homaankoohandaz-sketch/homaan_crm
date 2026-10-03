@@ -1,6 +1,6 @@
 # BuildWise AI — SUMMARY
 
-Updated: 2026-10-02
+Updated: 2026-10-03
 Branch: buildwise-implementation
 
 ## Canonical governance
@@ -369,3 +369,10 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Finance 191-220 syntax defect (missing comma between model methods) was caught by CI, repaired, and is now covered by the suite.
 - Current evidence: implementation + focused/full unit execution + worker validation are green.
 - Runtime/UI gate is still not closed for these newly changed areas. The registered buildwise-ai-h preview URL currently returns Netlify Site Not Found in live browser verification, so no false DONE status is recorded.
+
+
+## 2026-10-03 — Integrity reconciliation
+- Canonical register is `.agent-control/MASTER-CHECKLIST-v3-850.md`; header and count reconciled: 15 DONE / 511 PARTIAL / 324 TODO / 0 BLOCKED.
+- Supabase migration history was checked directly. Advisor-followups migration is applied as `20260923160714`; repository filename was corrected to the same version to remove the migration-gate mismatch.
+- Security advisor findings were inspected function-by-function. No blanket SECURITY DEFINER revoke was applied because several functions are intentional authenticated helpers/RPCs and revoking them indiscriminately would break existing policy/application paths.
+- 630 remains the only hard release blocker requiring external authenticated browser runtime evidence.
