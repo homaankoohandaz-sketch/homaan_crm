@@ -1,4 +1,4 @@
-BUILDWISE AI — MASTER CHECKLIST v2
+BUILDWISE AI — MASTER CHECKLIST v3 — 850
 Real Estate Operating System (REOS)
 هدف: ساخت یک سیستم حرفه‌ای و قابل سفارشی‌سازی برای املاک، ساخت‌وساز، سرمایه‌گذاری، فروش و کنترل پروژه
 
