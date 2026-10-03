@@ -317,10 +317,12 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Decision recorded in .agent-control/AGENT-RUNTIME-INDEPENDENCE-DECISION-2026-10-03.md.
 
 
+
+
 ## 2026-10-03 — Project Management Core 101-130
 - Reconciled existing construction hierarchy, WBS, schedule and progress modules before implementation; no duplicate project-control engine created.
-- Added `src/domains/construction/project-management-core.js` as the canonical orchestration layer for hierarchy validation, schedule, Gantt-ready rows, CPM float/critical flags, baselines, actual-vs-baseline variance and project status.
-- Added focused contract tests in `tests/unit/project-management-core.test.mjs` and registered them in npm test.
-- Checklist 101, 102, 106-123, 129-130 moved from TODO to PARTIAL where the new core provides implementation coverage.
-- Dashboard/calendar UI, delay reason/responsibility, recovery plan, revised schedule and multi-version snapshot behavior remain separate TODOs.
-- Runtime/browser verification is still required; no DONE claim.
+- Added `src/domains/construction/project-management-core.js` for hierarchy validation, schedule/Gantt rows, CPM float/critical flags, baselines, actual-vs-baseline variance, weighted progress and project status.
+- Added focused test `tests/unit/project-management-core.test.mjs` and registered it in npm test.
+- Local focused execution: 4/4 PASS after correcting the test expectation to the repository's weighted-progress semantics.
+- Checklist 101, 102, 106-123, 129-130 = PARTIAL. 103-105 and 124-128 remain TODO.
+- GitHub combined status for the latest commit is not yet available; browser/runtime verification remains pending, so no DONE claim.
