@@ -75,7 +75,9 @@ export function calculateFloat(schedule) {
     const item = byId.get(id);
     const childStarts = (successors.get(id) ?? []).map((childId) => {
       const child = byId.get(childId);
-      return Date.parse(child.start_date) - latestFinish(childId, stack);
+      const childLatestFinish = latestFinish(childId, stack);
+      const childDuration = Date.parse(child.finish_date) - Date.parse(child.start_date);
+      return childLatestFinish - childDuration;
     });
     stack.delete(id);
     const lf = childStarts.length ? Math.min(...childStarts) : Date.parse(schedule.finish_date);
