@@ -127,7 +127,7 @@ export function forecastPurchaseNeed({ required_quantity = 0, ordered_quantity =
     required_quantity: Math.max(0, asNumber(required_quantity)),
     ordered_quantity: Math.max(0, asNumber(ordered_quantity)),
     delivered_quantity: Math.max(0, asNumber(delivered_quantity)),
-    remaining_quantity: Math.max(0, asNumber(required_quantity) - Math.max(0, asNumber(delivered_quantity)))
+    remaining_quantity: Math.max(0, asNumber(required_quantity) - Math.max(0, asNumber(ordered_quantity)) - Math.max(0, asNumber(delivered_quantity)))
   };
 }
 
