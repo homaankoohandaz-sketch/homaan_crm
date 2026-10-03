@@ -1863,3 +1863,8 @@ IMPORTANT:
 It is the acceptance/architecture register. Status must remain separate from
 item existence. Existing [✓], [~], [ ], and [⛔] states must not be converted
 without actual implementation/testing/runtime verification.
+
+### Runtime Recovery — 2026-10-03
+- The previous `Runtime/UI = BLOCKED` condition caused by the stale/dead Netlify preview URL is cleared.
+- Live root and `project-control.html` smoke tests now pass on the active Netlify hostname.
+- 131-220 remain PARTIAL because domain-specific functional runtime acceptance has not been falsely inferred from page-load smoke tests.
