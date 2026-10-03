@@ -454,7 +454,8 @@ F — AI PROJECT CONTROL
 
 184 [~] AI Suggest Trade Sequencing
 
-185 [ ] AI "What if?" Simulation
+185 [~] AI "What if?" Simulation
+    Isolated scenario simulation implemented; full runtime acceptance pending.
 
 186 [~] AI Schedule Optimization
 
