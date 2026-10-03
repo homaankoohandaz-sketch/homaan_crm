@@ -326,3 +326,12 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Local focused execution: 4/4 PASS after correcting the test expectation to the repository's weighted-progress semantics.
 - Checklist 101, 102, 106-123, 129-130 = PARTIAL. 103-105 and 124-128 remain TODO.
 - GitHub combined status for the latest commit is not yet available; browser/runtime verification remains pending, so no DONE claim.
+
+## 2026-10-03 — Independent Agent Runtime
+- 445-449 completed as capabilities under one provider-independent BuildWise Worker Runtime.
+- Codex/Claude/Gemini/n8n are optional adapters; buildwise_local is the independent fallback.
+- Added bounded token/time/cost/iteration execution.
+- Added FREE/PRO/PREMIUM per-user AI quota policy and advisor escalation on exhaustion.
+- Real child-process runtime, routing, quota, and escalation tests PASS.
+- Evidence: .agent-control/evidence/AGENT-RUNTIME-2026-10-03.md.
+- Repository-wide CI still has unrelated existing failures; no false CI PASS recorded.
