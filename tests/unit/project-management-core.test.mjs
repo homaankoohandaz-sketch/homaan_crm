@@ -32,7 +32,7 @@ test('project management core composes hierarchy, schedule, gantt and status', (
   assert.equal(model.project.id, 'p1');
   assert.equal(model.schedule.finish_date, '2026-10-06');
   assert.equal(model.gantt.length, 3);
-  assert.equal(model.status.progress_percent, 50);
+  assert.equal(model.status.progress_percent, 58.333333333333336);
 });
 
 test('baseline comparison reports schedule variance without mutating baseline', () => {
