@@ -279,11 +279,11 @@ D — PROFESSIONAL PROJECT MANAGEMENT
 
 102 [~] Project / Complex / Building / Phase / Floor / Unit Hierarchy
 
-103 [ ] Project Dashboard
+103 [~] Project Dashboard
 
-104 [ ] Project Master Plan
+104 [~] Project Master Plan
 
-105 [ ] Project Calendar
+105 [~] Project Calendar
 
 106 [~] WBS — Work Breakdown Structure
 
@@ -321,15 +321,15 @@ D — PROFESSIONAL PROJECT MANAGEMENT
 
 123 [~] Delay Detection
 
-124 [ ] Delay Reason
+124 [~] Delay Reason
 
-125 [ ] Delay Responsibility
+125 [~] Delay Responsibility
 
-126 [ ] Recovery Plan
+126 [~] Recovery Plan
 
-127 [ ] Revised Schedule
+127 [~] Revised Schedule
 
-128 [ ] Multiple Project Versions
+128 [~] Multiple Project Versions
 
 129 [~] Project Snapshot
 
