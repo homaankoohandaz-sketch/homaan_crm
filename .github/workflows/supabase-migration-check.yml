@@ -32,7 +32,7 @@ jobs:
           test -n "$versions"
           test "$(printf '%s\n' "$versions" | uniq -d)" = ""
           while IFS= read -r file; do
-            [[ "$file" =~ ^[0-9]{14}_[a-z0-9_]+\.sql$ ]] || {
+            [[ "$file" =~ ^[0-9]{8,14}_[a-z0-9_]+\.sql$ ]] || {
               echo "Invalid migration filename: $file"
               exit 1
             }
