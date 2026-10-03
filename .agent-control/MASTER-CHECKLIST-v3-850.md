@@ -204,7 +204,7 @@ C — REAL ESTATE INTELLIGENCE
 
 067 [~] Development Feasibility
 
-068 [ ] Municipal Regulation Evidence
+068 [~] Municipal Regulation Evidence
 
 069 [~] Participation Analysis
 
