@@ -298,3 +298,11 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Unverified or expired sources cannot enter regulatory decision input.
 - Added focused tests and registered them in npm test.
 - Checklist 068 promoted from TODO to PARTIAL; runtime ingestion/UI verification remains required.
+
+
+## 2026-10-03 — Market History / Scenarios 082-100
+- Added source-aware historical observation and comparison contracts.
+- Added 6/12/18/24-month comparison capability, property value in 18K gold grams, chart series generation and explicit forecast/non-guarantee scenario contracts.
+- Added focused tests and registered them in npm test.
+- Checklist 082–100 promoted from TODO to PARTIAL.
+- No live market value was fabricated; real sourced observations and runtime/UI verification remain required.
