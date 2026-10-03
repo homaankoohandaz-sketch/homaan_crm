@@ -184,3 +184,14 @@ last_batch: 633-650 infrastructure
 
 ## Next action
 - Continue from 103-105 / 124-128 only where the canonical project-management core can be extended without duplicating existing responsibilities; then proceed to 131+.
+
+
+## 2026-10-03 — Project Management Core 101-130
+- Implementation: `src/domains/construction/project-management-core.js`.
+- Tests: `tests/unit/project-management-core.test.mjs`; local focused run 4/4 PASS.
+- Package test registration updated.
+- Checklist: 101, 102, 106-123, 129-130 PARTIAL; 103-105, 124-128 TODO.
+- GitHub combined status for the latest implementation commit has no reported checks yet; browser/runtime verification remains pending.
+
+## Next action
+- Continue with 103-105 and 124-128 only if their missing behavior can be added to the same canonical project-management path; otherwise proceed to 131 without creating parallel engines.
