@@ -63,8 +63,8 @@ test('166-169 predicts procurement, shortage, cost overrun and recovery',()=>{
 test('170-175 identifies safe parallel opportunities and team conflicts',()=>{
   assert.equal(analyzeParallelWork(project.tasks).candidate_count,1);
   assert.equal(detectTeamConflicts(project.teams).length,0);
-  assert.equal(analyzeWorkfront(project.tasks).active_count,2);
-  assert.equal(analyzeCrewAvailability(project.teams,'2026-10-06').available_count,2);
+  assert.equal(analyzeWorkfront(project.tasks).active_count,3);
+  assert.equal(analyzeCrewAvailability(project.teams,'2026-10-06').available_count,3);
   assert.equal(suggestParallelTeams(project.tasks,project.teams).length,1);
   assert.equal(suggestSafeParallelActivities(project.tasks).length,1);
 });
@@ -76,7 +76,7 @@ test('176-184 detects dependencies/interference and produces zoning/sequence gui
   assert.equal(detectSharedEquipmentConflicts([{task_id:'a',equipment_id:'e1'},{task_id:'b',equipment_id:'e1'}]).length,1);
   assert.equal(detectSharedMaterialConflicts([{task_id:'a',material_id:'m1'},{task_id:'b',material_id:'m1'}]).length,1);
   assert.equal(detectSharedWorkspaceConflicts([{task_id:'a',workspace:'A'},{task_id:'b',workspace:'A'}]).length,1);
-  assert.equal(suggestWorkZoning(project.tasks).zones.length,2);
+  assert.equal(suggestWorkZoning(project.tasks).zones.length,3);
   assert.equal(suggestFloorParallelism([{id:'a',floor:1},{id:'b',floor:2}]).parallel_floors,2);
   assert.deepEqual(suggestTradeSequencing(['structure','masonry','MEP']),['structure','masonry','MEP']);
 });
