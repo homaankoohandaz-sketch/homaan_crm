@@ -74,15 +74,15 @@ last_batch: 633-650 infrastructure
 - 639 Graph Tables: PARTIAL — existing graph/data layer remains in place.
 - 640 AI Orchestrator: PARTIAL — existing Supabase Edge Function remains the canonical AI edge.
 - 641 GitHub Pages: PARTIAL — retained for smoke/demo; not production.
-- 642 Final Production Domain: TODO/BLOCKED — no verified production URL available in this execution context.
-- 643 Cloudflare: PARTIAL — Cloudflare Pages deployment workflow + Wrangler configuration added; account/project/secrets are not yet runtime-verified.
-- 644 Cloudflare Workers if needed: TODO — no Worker introduced because Pages + Supabase Edge Functions cover the current static/API path.
-- 645 Automated Deployment: PARTIAL — main-only Cloudflare Pages workflow implemented; actual Cloudflare deployment awaits configured secrets/project.
-- 646 Deployment Health Check: PARTIAL — fail-closed HTTPS health workflow implemented; production URL variable/runtime not yet verified.
-- 647 Database Migration Pipeline: PARTIAL — migration naming gate and manual, secret-gated dry-run path implemented; no production migration applied by this batch.
-- 648 Backup Strategy: PARTIAL — backup/rollback policy documented; actual scheduled backup runtime not enabled.
-- 649 Rollback Strategy: PARTIAL — Cloudflare rollback path and corrective-migration policy documented; runtime rollback drill not executed.
-- 650 Environment Separation: PARTIAL — development/preview/production rules documented; provider-side environment configuration remains to be verified.
+- 642 Final Production Domain: PARTIAL — current Netlify production hostname is available; custom domain is optional/deferred.
+- 643 Cloudflare: PARTIAL — explicitly deferred from the critical release path; no Cloudflare provider runtime is required by the current Netlify + Supabase architecture.
+- 644 Cloudflare Workers if needed: TODO — not required by the current architecture.
+- 645 Automated Deployment: PARTIAL — Netlify deployment path exists; live production verification remains required.
+- 646 Deployment Health Check: TODO — live deployment smoke verification remains required.
+- 647 Database Migration Pipeline: PARTIAL — existing migration controls remain unchanged by this batch.
+- 648 Backup Strategy: PARTIAL — GitHub Actions scheduled pg_dump workflow implemented; real successful run is still required before DONE.
+- 649 Rollback Strategy: TODO — no runtime rollback drill executed in this batch.
+- 650 Environment Separation: PARTIAL — Netlify production/preview/branch contexts now expose explicit BUILDWISE_ENV values; staging and production still share the current Supabase backend.
 - Infrastructure contract test: PASS — GitHub Actions run 868, commit 1bd0d09.
 - No production deployment or destructive production database action was performed.
 
@@ -206,3 +206,13 @@ last_batch: 633-650 infrastructure
 
 ## Next action
 - Connect a browser verification capability (TinyFish or equivalent) and run the authenticated Project Control flow. Only after that evidence can 101-130 be promoted from PARTIAL to DONE.
+
+
+## 2026-10-03 — Free infrastructure baseline
+- Production delivery remains on the existing Netlify hostname; no custom domain purchase is required for runtime verification.
+- Cloudflare was removed from the critical release path to avoid unnecessary provider dependency and cost.
+- Added `.github/workflows/database-backup.yml`: daily PostgreSQL logical backup, pg_restore validation, 7-day private artifact retention.
+- Required activation secret: `SUPABASE_DB_URL`. No secret was committed.
+- Added `docs/INFRASTRUCTURE_FREE_BASELINE.md` documenting Development → Staging/Preview → Production semantics and the provider limitations.
+- Updated `netlify.toml` with explicit BUILDWISE_ENV values for production, deploy-preview, branch-deploy and local contexts.
+- No infrastructure item is marked DONE until runtime verification satisfies the project acceptance rule.
