@@ -127,7 +127,7 @@ export function comparePlanToPermit(plan = {}, permit = {}) {
 }
 
 export function detectMissingPlanInformation(facts = {}) {
-  const required = ["gross_area","useful_area","unit_count","parking_count","floor_count","land_area"];
+  const required = ["gross_area","useful_area","unit_count","parking_count","storage_count","floor_count","land_area"];
   return required.filter(key => facts[key] === null || facts[key] === undefined || facts[key] === "");
 }
 
