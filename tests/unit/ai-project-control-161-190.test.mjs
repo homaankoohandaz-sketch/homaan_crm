@@ -33,7 +33,8 @@ import {
 const project={
   tasks:[
     {id:'a',name:'structure',start_date:'2026-10-01',finish_date:'2026-10-05',progress:50,planned_progress:80,depends_on:[]},
-    {id:'b',name:'masonry',start_date:'2026-10-05',finish_date:'2026-10-10',progress:20,planned_progress:60,depends_on:['a']}
+    {id:'b',name:'masonry',start_date:'2026-10-05',finish_date:'2026-10-10',progress:20,planned_progress:60,depends_on:['a']},
+    {id:'c',name:'landscape',start_date:'2026-10-01',finish_date:'2026-10-04',progress:0,planned_progress:20,depends_on:[]}
   ],
   teams:[
     {id:'t1',trade:'structure',available_from:'2026-10-01',available_to:'2026-10-20',capacity:2},
