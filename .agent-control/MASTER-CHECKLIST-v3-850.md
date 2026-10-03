@@ -1027,15 +1027,15 @@ Q — AGENT / AUTOMATION INFRASTRUCTURE
 
 444 [~] Agent Failure Recovery
 
-445 [~] Coding Worker Capability — provider-independent adapter
+445 [✓] Coding Worker Capability — provider-independent adapter — verified via BuildWise Worker Runtime
 
-446 [~] Review/QA Worker Capability — provider-independent adapter
+446 [✓] Review/QA Worker Capability — provider-independent adapter — verified via BuildWise Worker Runtime
 
-447 [~] Research/Multimodal Worker Capability — provider-independent adapter
+447 [✓] Research/Multimodal Worker Capability — provider-independent adapter — verified via BuildWise Worker Runtime
 
-448 [~] Workflow/Automation Capability — n8n optional, not required
+448 [✓] Workflow/Automation Capability — provider-independent; n8n optional — verified via BuildWise Worker Runtime
 
-449 [~] Independent Agent Execution — canonical BuildWise Worker Runtime
+449 [✓] Independent Agent Execution — canonical BuildWise Worker Runtime — runtime verified
 
 450 [ ] Non-production Agent Sandbox
 
