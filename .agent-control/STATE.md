@@ -158,3 +158,11 @@ last_batch: 633-650 infrastructure
 - DWG remains a worker/conversion boundary; no GPL/AGPL CAD parser was embedded.
 - Browser bridge is wired in index.html.
 - Focused unit tests are now part of npm test; CI evidence is required before any DONE promotion.
+
+
+## 2026-10-03 — Municipal Regulation Evidence 068
+- Implementation: src/domains/regulation/regulation-evidence.js.
+- Test: tests/unit/regulation-evidence-068.test.mjs.
+- Architecture record: docs/architecture/REGULATION-EVIDENCE.md.
+- Checklist 068: PARTIAL.
+- No municipal rule was invented or treated as verified without source evidence.
