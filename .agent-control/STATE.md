@@ -235,3 +235,13 @@ last_batch: 633-650 infrastructure
 - Production E2E 630 remains BLOCKED until an actual authenticated browser session verifies the deployed application. No false DONE promotion.
 - Cloudflare remains out of the critical release path.
 - No production database mutation was performed during this reconciliation.
+
+
+## 2026-10-03 — Netlify Runtime Recovery
+- Web research confirmed the observed 404 is consistent with a deleted/stale Netlify deploy or missing deploy context; Netlify documents that deleted deploys can leave a context URL returning generic 404. cite not stored in repo
+- Netlify project `buildwise-ai-h` exists and its primary URL was returning Site Not Found.
+- A one-time controlled publish was executed through the connected Netlify deployment path from the `buildwise-implementation` branch.
+- Live browser verification now passes on `https://buildwise-ai-h.netlify.app` and `/project-control.html`.
+- Root gateway renders BuildWise role entry; project-control renders the application UI with expected empty-project state and no visible JS/runtime errors.
+- The temporary emergency publish workflow/trigger was removed immediately after successful recovery; no permanent deployment secret was committed.
+- Therefore the prior Runtime/UI BLOCKED condition caused by the dead Netlify URL is resolved for the current deployment. This does NOT by itself promote 131-220 to DONE; domain-specific functional runtime acceptance remains required.
