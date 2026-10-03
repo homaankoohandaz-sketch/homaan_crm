@@ -255,3 +255,11 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Fixed stale `package.json` test reference to the non-existent `tests/unit/market-intelligence.test.mjs`.
 - Commit: `404811d89b66ed84ba4dbdf526f58c0948698235`.
 - Next: verify fresh CI, then reconcile the live deployment with the canonical implementation branch.
+
+
+## 2026-10-03 — Production Runtime/UI Verification
+- Production Netlify deploy 6ac002880af8020008a10242 is READY and serves main commit 843174c2a437a2ed5eb6345dfc5b8404d4769fa9.
+- Production URL: https://buildwis-ai.netlify.app
+- Live public browser smoke test passed for the BuildWise AI landing page, four role entries (مالک/مشتری، سازنده، مدیر، مشاور), visual-project.html, project-control.html and import.html.
+- No visible 404, blank-page or console/runtime error was observed during the smoke test.
+- This closes the production runtime/UI gate for the current main deployment. It does not mark unrelated MASTER-CHECKLIST-v3-850 tasks DONE.
