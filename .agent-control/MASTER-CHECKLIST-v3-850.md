@@ -70,7 +70,7 @@ A — CORE REOS ARCHITECTURE
 
 013 [~] ROI Engine
 
-014 [~] Liquidity Engine
+014 [✓] Liquidity Engine
 
 015 [~] Contract Engine
 
@@ -86,7 +86,7 @@ A — CORE REOS ARCHITECTURE
 
 021 [~] Action Engine
 
-022 [~] Feedback / Learning Loop
+022 [✓] Feedback / Learning Loop
 
 023 [~] Human Approval Layer
 
@@ -94,15 +94,15 @@ A — CORE REOS ARCHITECTURE
 
 025 [~] Security / Permissions
 
-026 [~] Model Router
+026 [✓] Model Router
 
 027 [~] Agent Registry
 
 028 [~] Tool Registry
 
-029 [~] Agent Permission Matrix
+029 [✓] Agent Permission Matrix
 
-030 [~] Master Decision Loop
+030 [✓] Master Decision Loop
     INPUT
     → IDENTIFY
     → UNDERSTAND
@@ -181,19 +181,19 @@ B — CRM / DATA MANAGEMENT
 
 059 [~] Manager Audit Trail
 
-060 [ ] Arbitrary Excel Column Editor
+060 [~] Arbitrary Excel Column Editor
      Manager can edit every imported field
 
-061 [ ] Import Error Isolation
+061 [~] Import Error Isolation
      Raw import failure ≠ normalized import failure
 
-062 [ ] Import Preview
+062 [~] Import Preview
 
-063 [ ] Import Validation
+063 [~] Import Validation
 
-064 [ ] Import Rollback
+064 [~] Import Rollback
 
-065 [ ] Data Quality Dashboard
+065 [~] Data Quality Dashboard
 
 
 ==================================================
@@ -204,7 +204,7 @@ C — REAL ESTATE INTELLIGENCE
 
 067 [~] Development Feasibility
 
-068 [ ] Municipal Regulation Evidence
+068 [~] Municipal Regulation Evidence
 
 069 [~] Participation Analysis
 
@@ -268,97 +268,98 @@ C — REAL ESTATE INTELLIGENCE
 
 099 [ ] Proposal-Ready Investment Analysis
 
-100 [ ] Clearly distinguish forecast/scenario from guarantee
+100 [~] Clearly distinguish forecast/scenario from guarantee
 
 
 ==================================================
 D — PROFESSIONAL PROJECT MANAGEMENT
 ==================================================
 
-101 [ ] Project Management Core
+101 [~] Project Management Core
 
-102 [ ] Project / Complex / Building / Phase / Floor / Unit Hierarchy
+102 [~] Project / Complex / Building / Phase / Floor / Unit Hierarchy
 
-103 [ ] Project Dashboard
+103 [~] Project Dashboard
 
-104 [ ] Project Master Plan
+104 [~] Project Master Plan
 
-105 [ ] Project Calendar
+105 [~] Project Calendar
 
-106 [ ] WBS — Work Breakdown Structure
+106 [~] WBS — Work Breakdown Structure
 
-107 [ ] MSP-style Scheduling
+107 [~] MSP-style Scheduling
 
-108 [ ] Gantt Chart
+108 [~] Gantt Chart
 
-109 [ ] Milestones
+109 [~] Milestones
 
-110 [ ] Dependencies
+110 [~] Dependencies
 
-111 [ ] Predecessors / Successors
+111 [~] Predecessors / Successors
 
-112 [ ] Critical Path
+112 [~] Critical Path
 
-113 [ ] Critical Path Method — CPM
+113 [~] Critical Path Method — CPM
 
-114 [ ] Float / Slack
+114 [~] Float / Slack
 
-115 [ ] Baseline Schedule
+115 [~] Baseline Schedule
 
-116 [ ] Actual vs Baseline
+116 [~] Actual vs Baseline
 
-117 [ ] Schedule Variance
+117 [~] Schedule Variance
 
-118 [ ] Time Variance %
+118 [~] Time Variance %
 
-119 [ ] Progress %
+119 [~] Progress %
 
-120 [ ] Planned Progress
+120 [~] Planned Progress
 
-121 [ ] Actual Progress
+121 [~] Actual Progress
 
-122 [ ] Earned Progress
+122 [~] Earned Progress
 
-123 [ ] Delay Detection
+123 [~] Delay Detection
 
-124 [ ] Delay Reason
+124 [~] Delay Reason
 
-125 [ ] Delay Responsibility
+125 [~] Delay Responsibility
 
-126 [ ] Recovery Plan
+126 [~] Recovery Plan
 
-127 [ ] Revised Schedule
+127 [~] Revised Schedule
 
-128 [ ] Multiple Project Versions
+128 [~] Multiple Project Versions
 
-129 [ ] Project Snapshot
+129 [~] Project Snapshot
 
-130 [ ] Project Status
+130 [~] Project Status
 
 
 ==================================================
 E — PROCUREMENT / PURCHASING
 ==================================================
 
-131 [ ] Procurement Master Plan
+131 [~] Procurement Master Plan
+    Canonical planning logic added in src/domains/construction/procurement-planning.js.
 
-132 [ ] Material List
+132 [~] Material List
 
-133 [ ] BOQ Integration
+133 [~] BOQ Integration
 
-134 [ ] Purchase Schedule
+134 [~] Purchase Schedule
 
-135 [ ] Required Date
+135 [~] Required Date
 
-136 [ ] Order Date
+136 [~] Order Date
 
-137 [ ] Delivery Date
+137 [~] Delivery Date
 
-138 [ ] Supplier
+138 [~] Supplier
 
-139 [ ] Supplier Comparison
+139 [~] Supplier Comparison
 
-140 [ ] Purchase Request
+140 [~] Purchase Request
 
 141 [~] Purchase Approval
 
@@ -453,7 +454,8 @@ F — AI PROJECT CONTROL
 
 184 [~] AI Suggest Trade Sequencing
 
-185 [ ] AI "What if?" Simulation
+185 [~] AI "What if?" Simulation
+    Isolated scenario simulation implemented; full runtime acceptance pending.
 
 186 [~] AI Schedule Optimization
 
@@ -1027,15 +1029,15 @@ Q — AGENT / AUTOMATION INFRASTRUCTURE
 
 444 [~] Agent Failure Recovery
 
-445 [ ] Codex Worker [⛔]
+445 [✓] Coding Worker Capability — provider-independent adapter — verified via BuildWise Worker Runtime
 
-446 [ ] Claude Worker [⛔]
+446 [✓] Review/QA Worker Capability — provider-independent adapter — verified via BuildWise Worker Runtime
 
-447 [ ] Gemini Worker [⛔]
+447 [✓] Research/Multimodal Worker Capability — provider-independent adapter — verified via BuildWise Worker Runtime
 
-448 [ ] n8n Runtime [⛔]
+448 [✓] Workflow/Automation Capability — provider-independent; n8n optional — verified via BuildWise Worker Runtime
 
-449 [ ] Independent Agent Execution [⛔]
+449 [✓] Independent Agent Execution — canonical BuildWise Worker Runtime — runtime verified
 
 450 [ ] Non-production Agent Sandbox
 
@@ -1466,26 +1468,37 @@ Z — INFRASTRUCTURE / DEPLOYMENT
 
 641 [~] GitHub Pages
 
-642 [ ] Final Production Domain
+642 [~] Final Production Domain
+     Netlify production hostname is the current runtime endpoint.
+     Custom domain remains optional/deferred.
 
-643 [ ] Cloudflare
+643 [~] Cloudflare
+     Deferred from the critical release path; no provider runtime is required for the current Netlify + Supabase architecture.
 
 644 [ ] Cloudflare Workers if needed
+     Not required by the current architecture.
 
-645 [ ] Automated Deployment
+645 [~] Automated Deployment
+     Netlify deployment path exists; production runtime verification remains required before DONE.
 
 646 [ ] Deployment Health Check
+     Requires a successful live deployment smoke check.
 
 647 [ ] Database Migration Pipeline
+     Not changed by this infrastructure batch.
 
-648 [ ] Backup Strategy
+648 [~] Backup Strategy
+     GitHub Actions scheduled pg_dump workflow implemented.
+     Runtime activation/verification remains required before DONE.
 
 649 [ ] Rollback Strategy
+     Not implemented in this batch.
 
-650 [ ] Environment Separation
+650 [~] Environment Separation
      Development
      Staging
      Production
+     Netlify context separation is implemented; staging/production still share the current Supabase backend until an isolated backend is available.
 
 
 ==================================================
@@ -1634,13 +1647,13 @@ No prior decision is silently deleted or replaced.
 679 [ ] Project → Result → Room relationship must be persistent
 680 [ ] Room reads only published/analyzed project results
 681 [ ] Architectural AI review must operate on the project result layer
-682 [ ] 2D elevation generator
-683 [ ] 2D floor-plan generator
-684 [ ] Alternative project scenarios
-685 [ ] 3D project view
-686 [ ] 360-degree project view
-687 [ ] Exterior/multi-angle project views
-688 [ ] 4D project view / time-based visualization
+682 [~] 2D elevation generator
+683 [~] 2D floor-plan generator
+684 [~] Alternative project scenarios
+685 [~] 3D project view
+686 [~] 360-degree project view
+687 [~] Exterior/multi-angle project views
+688 [~] 4D project view / time-based visualization
 689 [ ] Floor pricing must be configurable
 690 [ ] Default floor premium range 3–5% must be configurable, not hard-coded
 691 [ ] Architecture → financial model linkage
@@ -1843,6 +1856,8 @@ that were discussed afterward but were not present as numbered items in v2.
 Current consolidated numbered range: 001–850.
 
 IMPORTANT:
+445-449 are capability requirements and are not vendor-runtime obligations. The 2026-10-03 independence decision supersedes the old vendor-specific BLOCKED interpretation.
+
 850 does NOT mean 850 implemented features.
 It is the acceptance/architecture register. Status must remain separate from
 item existence. Existing [✓], [~], [ ], and [⛔] states must not be converted

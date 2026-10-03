@@ -150,3 +150,19 @@ test("master decision loop stops at approval gate for critical actions", async (
   assert.equal(runMasterDecisionLoop(base).code,"APPROVAL_REQUIRED");
   assert.equal(runMasterDecisionLoop({...base,approvalState:"approved"}).ok,true);
 });
+
+
+test("liquidity rejects negative asset inputs", async () => {
+  const { calculateLiquidity } = await import("../../src/core/reos-contract.js");
+  assert.equal(calculateLiquidity({liquidAssets:-1,shortTermObligations:100}).ok,false);
+  assert.equal(calculateLiquidity({liquidAssets:100,shortTermObligations:-1}).ok,false);
+});
+
+test("master decision loop requires non-empty evidence", async () => {
+  const { runMasterDecisionLoop } = await import("../../src/core/reos-contract.js");
+  const result = runMasterDecisionLoop({
+    event:"e", evidence:[], decision:"d", responsibleParty:"manager", nextAction:"review",
+  });
+  assert.equal(result.ok,false);
+  assert.equal(result.code,"EVIDENCE_REQUIRED");
+});

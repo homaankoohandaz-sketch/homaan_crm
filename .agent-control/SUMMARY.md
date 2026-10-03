@@ -255,3 +255,94 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Fixed stale `package.json` test reference to the non-existent `tests/unit/market-intelligence.test.mjs`.
 - Commit: `404811d89b66ed84ba4dbdf526f58c0948698235`.
 - Next: verify fresh CI, then reconcile the live deployment with the canonical implementation branch.
+## 2026-10-02 — Customer Experience C01-C40 implementation
+- Decision converted to bounded task `.agent-control/tasks/TASK-CUSTOMER-EXPERIENCE-C01-C40.md`.
+- Added the canonical C01-C40 implementation layer to `PHASE-CURRENT-ARCHITECTURE.md`; no parallel customer application/engine created.
+- Extended `src/domains/portal/customer-experience.js` with intent, requirement/profile, location ranking (max 4), customer-safe ±5% price range, evidence/scenario comparison, verified ratings/market score and privacy-safe output contracts.
+- Added migration `20261002230000_customer_experience_c01_c40.sql` for customer profiles/requirements, location recommendations, verified interactions/ratings, proposals, aggregation and privacy policy boundaries.
+- Customer portal output now masks exact internal price and limits customer-visible media types.
+- Added focused C01-C40 customer-experience tests.
+- Acceptance remains PARTIAL until full CI + live Supabase/runtime + browser/UI + applicable security verification are confirmed.
+
+## 2026-10-02 — CRM Import Quality 060-065
+- Implemented the canonical CRM import-quality layer for arbitrary-column editing, row-level error isolation, preview, validation, exact batch rollback and data-quality metrics.
+- Added focused tests covering all six capabilities and wired the canonical importer UI to preview/edit/validate/rollback.
+- Added manager-only rollback migration with batch identity on imported target rows.
+- Status: implementation complete; acceptance remains PARTIAL pending CI/runtime verification.
+
+
+## 2026-10-03 — Core REOS Acceptance 014/022/026/029/030
+- Reconciled the existing shared `src/core/reos-contract.js`; no duplicate engine was introduced.
+- Hardened Liquidity validation to reject negative assets/obligations and hardened the Master Decision Loop to require non-empty evidence.
+- Added focused regression coverage in `tests/unit/reos-contract.test.mjs`.
+- Full `npm test` passed in BuildWise Unit Tests run 840.
+- Application Validation 938, QA 154, Agent Control Plane Validation 291 and Phase Code Map 617 passed.
+- Checklist 014, 022, 026, 029 and 030 promoted to [✓] DONE under the repository DONE rule.
+- Migration Gate 19 failed on an unrelated existing migration-gate condition; this task introduced no migration and does not depend on that gate.
+- Task contract: `.agent-control/tasks/TASK-A-CORE-014-022-026-029-030.md`.
+
+
+## 2026-10-03 — Task C/D: Plan Intelligence + Visualization
+- Researched GitHub components for 301–312 and 682–688 and recorded the licensing/architecture decision in D-024.
+- Added BuildWise-owned plan-intelligence adapters for OCR, PDF, DXF, text fact extraction, plan-vs-permit comparison and missing-information detection.
+- Added BuildWise-owned visualization contracts for 2D elevation, 2D floor plan, scenarios, 3D scene bootstrap, 360° texture loading and 4D progress frames.
+- Added browser bridge src/ui/plan-visualization-adapter.js and wired it into index.html.
+- Added focused tests and registered them in npm test.
+- Added docs/architecture/PLAN-VISUALIZATION-TOOLS.md, THIRD-PARTY-NOTICES.md and the Task C/D control-plane task.
+- Acceptance remains PARTIAL: real browser ingestion/rendering and representative PDF/image/DXF runtime verification are still required.
+
+
+## 2026-10-03 — Municipal Regulation Evidence 068
+- Added a provenance-first regulation evidence boundary.
+- Verified evidence requires authority, source URL, verified status and valid effective dates.
+- Unverified or expired sources cannot enter regulatory decision input.
+- Added focused tests and registered them in npm test.
+- Checklist 068 promoted from TODO to PARTIAL; runtime ingestion/UI verification remains required.
+
+
+## 2026-10-03 — Market History / Scenarios 082-100
+- Added source-aware historical observation and comparison contracts.
+- Added 6/12/18/24-month comparison capability, property value in 18K gold grams, chart series generation and explicit forecast/non-guarantee scenario contracts.
+- Added focused tests and registered them in npm test.
+- Checklist 082–100 promoted from TODO to PARTIAL.
+- No live market value was fabricated; real sourced observations and runtime/UI verification remain required.
+
+
+## 2026-10-03 — Agent Runtime Independence Decision
+- 445-449 are no longer treated as five vendor runtimes that must each be built.
+- Canonical direction: one provider-independent BuildWise Worker Runtime with replaceable adapters.
+- OpenCode, smolagents, vLLM and Ollama are reusable open-source/runtime candidates; n8n is optional.
+- Per-user token/time/cost/iteration/tool/data budgets and three access lanes are part of the execution contract.
+- Budget exhaustion escalates safely to human advisors with preserved task state.
+- Decision recorded in .agent-control/AGENT-RUNTIME-INDEPENDENCE-DECISION-2026-10-03.md.
+
+
+
+
+## 2026-10-03 — Project Management Core 101-130
+- Reconciled existing construction hierarchy, WBS, schedule and progress modules before implementation; no duplicate project-control engine created.
+- Added `src/domains/construction/project-management-core.js` for hierarchy validation, schedule/Gantt rows, CPM float/critical flags, baselines, actual-vs-baseline variance, weighted progress and project status.
+- Added focused test `tests/unit/project-management-core.test.mjs` and registered it in npm test.
+- Local focused execution: 4/4 PASS after correcting the test expectation to the repository's weighted-progress semantics.
+- Checklist 101, 102, 106-123, 129-130 = PARTIAL. 103-105 and 124-128 remain TODO.
+- GitHub combined status for the latest commit is not yet available; browser/runtime verification remains pending, so no DONE claim.
+
+## 2026-10-03 — Independent Agent Runtime
+- 445-449 completed as capabilities under one provider-independent BuildWise Worker Runtime.
+- Codex/Claude/Gemini/n8n are optional adapters; buildwise_local is the independent fallback.
+- Added bounded token/time/cost/iteration execution.
+- Added FREE/PRO/PREMIUM per-user AI quota policy and advisor escalation on exhaustion.
+- Real child-process runtime, routing, quota, and escalation tests PASS.
+- Evidence: .agent-control/evidence/AGENT-RUNTIME-2026-10-03.md.
+- Repository-wide CI still has unrelated existing failures; no false CI PASS recorded.
+
+
+## 2026-10-03 — Project Management 101-130 root-cause repair + verification
+- Root-cause review found two concrete defects: plan-intelligence missing-information logic omitted `storage_count`; the new project-management version test asserted the whole version object instead of its numeric version field. Both were fixed and fresh CI passed.
+- Extended `src/domains/construction/project-management-core.js` to cover dashboard, master plan, calendar, Gantt, milestones, dependencies, predecessors/successors, CPM, float, baseline comparison, time variance %, planned/actual/earned progress, delay detection, reason/responsibility, recovery planning, revised schedules, version lineage, snapshots and project status.
+- Added `src/ui/project-management-101-130.js` and wired it into `project-control.html`; the existing Project Control page remains the canonical UI path.
+- Added focused UI contract tests and registered them in npm test.
+- Latest verification for commit `fb6e322d83f92614a3048a05dddfb59d08311150`: Unit 982 PASS, Application Validation 1080 PASS, QA 215 PASS, Agent Control Plane 381 PASS, Phase Code Map 759 PASS. Supabase Migration Gate remains FAIL on the repository's pre-existing migration-gate condition and this batch introduced no migration.
+- Netlify deploy preview for the implementation branch is READY on commit `fb6e322d83f92614a3048a05dddfb59d08311150`.
+- Checklist 101-130 are implementation-complete but remain PARTIAL until authenticated browser/UI verification is independently performed under the repository DONE rule.
+- Browser verification tool is not currently connected; TinyFish was surfaced as the required browser capability. Do not claim DONE from deployment readiness alone.

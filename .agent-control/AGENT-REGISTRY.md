@@ -1,24 +1,32 @@
 # BuildWise AI — Worker Registry
 
-Updated: 2026-09-25
+Updated: 2026-10-03
 
-| Worker | Runtime status | Role | Routing |
+| Worker / Runtime | Runtime status | Role | Routing |
 |---|---|---|---|
 | ChatGPT | available | master/orchestrator/architecture | orchestration |
-| Grok | available | implementation + review + GitHub/control | primary live worker |
-| Claude | handoff | review/QA | used when an external Claude handoff is available; never assumed live |
-| Codex | blocked | implementation/test | fallback to Grok |
-| Gemini | configured | research | fallback to Grok for implementation |
-| n8n | blocked | automation | GitHub-native/runtime-independent fallback required |
+| BuildWise Worker Runtime | architecture-decided | provider-independent worker pool | canonical execution path |
+| OpenCode | candidate | coding runtime/reference | coding adapter |
+| smolagents | candidate | domain/tool agent runtime/reference | research/domain adapters |
+| vLLM | candidate | self-hosted model serving | model adapter |
+| Ollama | candidate | local/WSL model runtime | local development / low-volume |
+| Grok | optional adapter | implementation + review + GitHub/control | provider fallback when available |
+| Claude | optional adapter | review/QA | provider fallback when available |
+| Codex | optional adapter | implementation/test | provider fallback when available |
+| Gemini | optional adapter | research/multimodal | provider fallback when available |
+| n8n | optional adapter | automation | not required |
 
-## Rule
-The router selects the preferred worker only when its runtime is actually usable and its capability matches the task. Otherwise it falls back to the minimum live worker.
+## Canonical rule
+445-449 are capability requirements, not mandatory vendor runtimes. The BuildWise Worker Runtime owns execution; provider runtimes are replaceable adapters.
 
-## Current live path
-ChatGPT → task contract → Grok → GitHub branch → GitHub Actions → verification → compact performance memory.
+## Routing
+The router must select by task suitability, access, cost, reliability and policy/budget—not by vendor name alone.
 
-## Non-live paths
-Claude/Gemini/n8n are configuration targets, not autonomous runtimes. Codex has no registered environment.
+## Budget
+Every task may be bounded by token, time, cost, iteration, tool and data-scope limits.
+
+## Independence
+BuildWise must remain operational if any single AI provider or automation vendor becomes unavailable.
 
 ## Safety
 No credentials are stored in the repository. Production/destructive/security-sensitive changes remain approval-gated.

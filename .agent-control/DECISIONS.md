@@ -117,3 +117,16 @@ Durable memory:
 ## Decision change protocol
 
 When a later decision changes one of these: append a new decision; identify the superseded decision; update PHASE-CURRENT-ARCHITECTURE.md; update MASTER-ARCHITECTURE.md; update SUMMARY.md; never delete the historical decision.
+
+
+## D-023 — Core REOS acceptance 014/022/026/029/030
+Decision: The canonical implementation for Liquidity, Feedback/Learning, Model Routing, Agent Permission Matrix and Master Decision Loop remains the shared `src/core/reos-contract.js` layer; no parallel engines are permitted.
+Evidence: TASK-A-CORE-014-022-026-029-030, BuildWise Unit Tests run 840, Application Validation run 938, QA run 154, Agent Control Plane Validation run 291, Phase Code Map run 617.
+Impact: Checklist items 014, 022, 026, 029 and 030 may be accepted as DONE under the repository DONE rule; UI/security verification is not applicable to these pure core contracts beyond the permission-gate tests and existing governance boundary.
+
+
+## D-024 — Plan Intelligence / Visualization tool selection
+Decision: Checklist 301–312 and 682–688 use a BuildWise-owned adapter layer around mature open-source components rather than a new proprietary model or parallel engine.
+Selected: Tesseract.js (OCR), Mozilla PDF.js (PDF), dxf-parser (DXF), Three.js (3D/360). Floor Plan Document Intelligence is a MIT-licensed raster floor-plan reference. DWG remains a worker/conversion boundary.
+Licensing constraint: do not embed GPL/AGPL CAD/rendering components in the current proprietary application path. AIFloorPlan is excluded from vendoring because its AGPL-3.0/commercial terms are not compatible with the current strategy.
+Impact: implementation is isolated in the plan-intelligence and project-visualization domains and remains replaceable. Checklist acceptance stays PARTIAL until browser/runtime verification.

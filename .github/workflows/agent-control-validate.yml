@@ -46,3 +46,13 @@ jobs:
                   json.load(f)
               print('OK', p)
           PY
+
+      - name: Verify independent worker runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run worker runtime tests
+        run: |
+          node tests/worker-runtime.test.js
+          node tests/worker-runtime-smoke.test.mjs
+          node tests/agent-control-worker-registry.test.js

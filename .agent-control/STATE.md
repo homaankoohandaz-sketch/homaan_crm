@@ -74,15 +74,15 @@ last_batch: 633-650 infrastructure
 - 639 Graph Tables: PARTIAL — existing graph/data layer remains in place.
 - 640 AI Orchestrator: PARTIAL — existing Supabase Edge Function remains the canonical AI edge.
 - 641 GitHub Pages: PARTIAL — retained for smoke/demo; not production.
-- 642 Final Production Domain: TODO/BLOCKED — no verified production URL available in this execution context.
-- 643 Cloudflare: PARTIAL — Cloudflare Pages deployment workflow + Wrangler configuration added; account/project/secrets are not yet runtime-verified.
-- 644 Cloudflare Workers if needed: TODO — no Worker introduced because Pages + Supabase Edge Functions cover the current static/API path.
-- 645 Automated Deployment: PARTIAL — main-only Cloudflare Pages workflow implemented; actual Cloudflare deployment awaits configured secrets/project.
-- 646 Deployment Health Check: PARTIAL — fail-closed HTTPS health workflow implemented; production URL variable/runtime not yet verified.
-- 647 Database Migration Pipeline: PARTIAL — migration naming gate and manual, secret-gated dry-run path implemented; no production migration applied by this batch.
-- 648 Backup Strategy: PARTIAL — backup/rollback policy documented; actual scheduled backup runtime not enabled.
-- 649 Rollback Strategy: PARTIAL — Cloudflare rollback path and corrective-migration policy documented; runtime rollback drill not executed.
-- 650 Environment Separation: PARTIAL — development/preview/production rules documented; provider-side environment configuration remains to be verified.
+- 642 Final Production Domain: PARTIAL — current Netlify production hostname is available; custom domain is optional/deferred.
+- 643 Cloudflare: PARTIAL — explicitly deferred from the critical release path; no Cloudflare provider runtime is required by the current Netlify + Supabase architecture.
+- 644 Cloudflare Workers if needed: TODO — not required by the current architecture.
+- 645 Automated Deployment: PARTIAL — Netlify deployment path exists; live production verification remains required.
+- 646 Deployment Health Check: TODO — live deployment smoke verification remains required.
+- 647 Database Migration Pipeline: PARTIAL — existing migration controls remain unchanged by this batch.
+- 648 Backup Strategy: PARTIAL — GitHub Actions scheduled pg_dump workflow implemented; real successful run is still required before DONE.
+- 649 Rollback Strategy: TODO — no runtime rollback drill executed in this batch.
+- 650 Environment Separation: PARTIAL — Netlify production/preview/branch contexts now expose explicit BUILDWISE_ENV values; staging and production still share the current Supabase backend.
 - Infrastructure contract test: PASS — GitHub Actions run 868, commit 1bd0d09.
 - No production deployment or destructive production database action was performed.
 
@@ -116,3 +116,111 @@ last_batch: 633-650 infrastructure
 - Checklist status after this batch: 5 DONE / 455 PARTIAL / 390 TODO.
 - 14/22/26/29/30 are PARTIAL because runtime/UI acceptance is still required.
 - Live Netlify production remains tied to `main` at an older commit; current implementation branch is not yet the deployed production artifact. Do not mark 630/642 DONE.
+
+## 2026-10-02 — Customer Experience C01-C40 implementation
+- Task: `.agent-control/tasks/TASK-CUSTOMER-EXPERIENCE-C01-C40.md`
+- Implementation: customer experience domain + customer portal privacy enforcement.
+- Persistence: `20261002230000_customer_experience_c01_c40.sql`.
+- Architecture: canonical C01-C40 layer added to `PHASE-CURRENT-ARCHITECTURE.md`.
+- Tests: focused customer-experience suite expanded; CI/live/runtime verification is still required.
+- Status: PARTIAL. Do not mark C01-C40 or 401-415/418-432 DONE yet.
+
+## 2026-10-02 — CRM Import Quality 060-065
+- 060 Arbitrary Excel Column Editor: implemented in canonical `src/domains/crm/import-quality.js` and wired into the canonical importer preview.
+- 061 Import Error Isolation: row-level validation/errors remain isolated; one bad row does not invalidate valid rows.
+- 062 Import Preview: preview exposes row/column counts, all discovered columns, sample rows, validation status and duplicate candidates.
+- 063 Import Validation: required-field and phone validation is executed before import; invalid rows stop the batch from being written.
+- 064 Import Rollback: exact batch identity is persisted on normalized target rows; manager-only `rollback_import_batch(text)` removes only that batch.
+- 065 Data Quality Dashboard: completeness/coverage, invalid rows, duplicate groups and error-rate metrics are available from the canonical quality layer.
+- Tests added for all six behaviors. Current branch CI has an unrelated pre-existing migration filename-gate failure; syntax workflow also exposed and was fixed to reference the canonical importer path.
+- Status: 060-065 remain PARTIAL until the new CI run plus live/browser verification confirms runtime acceptance under the repository DONE rule.
+
+
+## 2026-10-03 — Core REOS Acceptance 014/022/026/029/030
+- Task: `.agent-control/tasks/TASK-A-CORE-014-022-026-029-030.md`.
+- 014 Liquidity Engine: DONE — implementation, focused regression, full npm test, CI/runtime execution evidence.
+- 022 Feedback / Learning Loop: DONE — implementation, focused regression, full npm test, CI/runtime execution evidence.
+- 026 Model Router: DONE — implementation, focused regression, full npm test, CI/runtime execution evidence.
+- 029 Agent Permission Matrix: DONE — implementation, focused authorization regression, full npm test, CI/runtime execution evidence.
+- 030 Master Decision Loop: DONE — implementation, evidence gate regression, full npm test, CI/runtime execution evidence.
+- Core hardening: negative liquidity inputs rejected; empty decision evidence rejected.
+- BuildWise Unit Tests run 840: PASS.
+- Application Validation 938: PASS; QA 154: PASS; Agent Control Plane Validation 291: PASS; Phase Code Map 617: PASS.
+- Supabase Migration Gate 19: FAIL, unrelated to this pure-JS task; no migration introduced.
+- Current canonical checklist count: 10 DONE / 456 PARTIAL / 384 TODO / 0 BLOCKED.
+
+
+## 2026-10-03 — Task C/D implementation
+- Checklist 301–312: retained PARTIAL; existing document/plan persistence is extended by a replaceable adapter layer rather than a parallel document engine.
+- Checklist 682–688: implementation contracts added for elevation, floor plan, scenarios, 3D, 360°, multi-angle and 4D visualization; acceptance remains PARTIAL.
+- Selected components: Tesseract.js, Mozilla PDF.js, dxf-parser, Three.js. MIT Floor Plan Document Intelligence is reference-only.
+- AIFloorPlan was researched but excluded from vendoring because its AGPL-3.0/commercial licensing does not fit the current proprietary application path.
+- DWG remains a worker/conversion boundary; no GPL/AGPL CAD parser was embedded.
+- Browser bridge is wired in index.html.
+- Focused unit tests are now part of npm test; CI evidence is required before any DONE promotion.
+
+
+## 2026-10-03 — Municipal Regulation Evidence 068
+- Implementation: src/domains/regulation/regulation-evidence.js.
+- Test: tests/unit/regulation-evidence-068.test.mjs.
+- Architecture record: docs/architecture/REGULATION-EVIDENCE.md.
+- Checklist 068: PARTIAL.
+- No municipal rule was invented or treated as verified without source evidence.
+
+
+## 2026-10-03 — Market History / Scenarios 082-100
+- Implementation: src/domains/market-intelligence/market-history.js.
+- Tests: tests/unit/market-history-082-100.test.mjs.
+- Architecture: docs/architecture/MARKET-HISTORY-AND-SCENARIOS.md.
+- Checklist 082–100: PARTIAL.
+- Live gold/dollar/property observations are intentionally not embedded without provenance.
+
+
+## 2026-10-03 — Project Management Core 101-130
+- Added canonical project-management orchestration over existing construction modules: hierarchy, WBS, schedule, Gantt rows, CPM float, baseline variance, progress and project status.
+- Focused tests added and npm test registration updated.
+- Checklist: 101, 102, 106-123, 129-130 = PARTIAL; 103-105, 124-128 remain TODO where implementation is not sufficient for the checklist contract.
+- Runtime/browser verification remains pending; no DONE promotion.
+
+## Next action
+- Continue from 103-105 / 124-128 only where the canonical project-management core can be extended without duplicating existing responsibilities; then proceed to 131+.
+
+
+## 2026-10-03 — Project Management Core 101-130
+- Implementation: `src/domains/construction/project-management-core.js`.
+- Tests: `tests/unit/project-management-core.test.mjs`; local focused run 4/4 PASS.
+- Package test registration updated.
+- Checklist: 101, 102, 106-123, 129-130 PARTIAL; 103-105, 124-128 TODO.
+- GitHub combined status for the latest implementation commit has no reported checks yet; browser/runtime verification remains pending.
+
+## Next action
+- Continue with 103-105 and 124-128 only if their missing behavior can be added to the same canonical project-management path; otherwise proceed to 131 without creating parallel engines.
+
+
+## 2026-10-03 — Project Management 101-130 verification state
+- Implementation coverage now includes all checklist capabilities 101-130; status remains PARTIAL pending authenticated browser/UI verification.
+- Fresh CI evidence on latest verified implementation lineage: Unit 982 PASS; Application Validation 1080 PASS; QA 215 PASS; Agent Control Plane 381 PASS; Phase Code Map 759 PASS.
+- Netlify deploy preview is READY for the latest implementation commit.
+- Supabase Migration Gate continues to fail on an unrelated existing migration-gate condition; no migration was introduced by this batch.
+- Two real defects discovered during verification were fixed: storage-count missing-information detection and incorrect snapshot-version test assertion.
+
+## Next action
+- Connect a browser verification capability (TinyFish or equivalent) and run the authenticated Project Control flow. Only after that evidence can 101-130 be promoted from PARTIAL to DONE.
+
+
+## 2026-10-03 — Free infrastructure baseline
+- Production delivery remains on the existing Netlify hostname; no custom domain purchase is required for runtime verification.
+- Cloudflare was removed from the critical release path to avoid unnecessary provider dependency and cost.
+- Added `.github/workflows/database-backup.yml`: daily PostgreSQL logical backup, pg_restore validation, 7-day private artifact retention.
+- Required activation secret: `SUPABASE_DB_URL`. No secret was committed.
+- Added `docs/INFRASTRUCTURE_FREE_BASELINE.md` documenting Development → Staging/Preview → Production semantics and the provider limitations.
+- Updated `netlify.toml` with explicit BUILDWISE_ENV values for production, deploy-preview, branch-deploy and local contexts.
+- No infrastructure item is marked DONE until runtime verification satisfies the project acceptance rule.
+
+
+## 2026-10-03 — Infrastructure CI repair
+- Migration Gate run 87 failed for a pre-existing legacy filename: `20260923_advisor_followups_security_reports.sql`.
+- Normalized it to the required 14-digit migration filename `20260923000000_advisor_followups_security_reports.sql`.
+- Removed the invalid legacy path.
+- Unit Tests, Application Validation, QA, Phase Code Map and Agent Control Validation for the infrastructure commit all passed; only Migration Gate failed on the filename gate.
+- A fresh Migration Gate run must be observed before treating migration infrastructure as verified.
