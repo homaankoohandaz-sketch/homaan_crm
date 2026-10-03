@@ -110,7 +110,7 @@ test('revised schedule and project versions preserve lineage', () => {
   assert.equal(next.parent_version,1);
   assert.equal(next.version,2);
   const snap=createProjectSnapshot({project:{id:'p1'},schedule:revised,version:next});
-  assert.equal(snap.version,2);
+  assert.equal(snap.version.version,2);
   assert.equal(snap.schedule.finish_date,'2026-10-08');
 });
 
