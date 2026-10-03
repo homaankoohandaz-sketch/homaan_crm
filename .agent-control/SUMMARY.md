@@ -335,3 +335,14 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Real child-process runtime, routing, quota, and escalation tests PASS.
 - Evidence: .agent-control/evidence/AGENT-RUNTIME-2026-10-03.md.
 - Repository-wide CI still has unrelated existing failures; no false CI PASS recorded.
+
+
+## 2026-10-03 — Project Management 101-130 root-cause repair + verification
+- Root-cause review found two concrete defects: plan-intelligence missing-information logic omitted `storage_count`; the new project-management version test asserted the whole version object instead of its numeric version field. Both were fixed and fresh CI passed.
+- Extended `src/domains/construction/project-management-core.js` to cover dashboard, master plan, calendar, Gantt, milestones, dependencies, predecessors/successors, CPM, float, baseline comparison, time variance %, planned/actual/earned progress, delay detection, reason/responsibility, recovery planning, revised schedules, version lineage, snapshots and project status.
+- Added `src/ui/project-management-101-130.js` and wired it into `project-control.html`; the existing Project Control page remains the canonical UI path.
+- Added focused UI contract tests and registered them in npm test.
+- Latest verification for commit `fb6e322d83f92614a3048a05dddfb59d08311150`: Unit 982 PASS, Application Validation 1080 PASS, QA 215 PASS, Agent Control Plane 381 PASS, Phase Code Map 759 PASS. Supabase Migration Gate remains FAIL on the repository's pre-existing migration-gate condition and this batch introduced no migration.
+- Netlify deploy preview for the implementation branch is READY on commit `fb6e322d83f92614a3048a05dddfb59d08311150`.
+- Checklist 101-130 are implementation-complete but remain PARTIAL until authenticated browser/UI verification is independently performed under the repository DONE rule.
+- Browser verification tool is not currently connected; TinyFish was surfaced as the required browser capability. Do not claim DONE from deployment readiness alone.
