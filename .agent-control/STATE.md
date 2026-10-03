@@ -224,3 +224,14 @@ last_batch: 633-650 infrastructure
 - Removed the invalid legacy path.
 - Unit Tests, Application Validation, QA, Phase Code Map and Agent Control Validation for the infrastructure commit all passed; only Migration Gate failed on the filename gate.
 - A fresh Migration Gate run must be observed before treating migration infrastructure as verified.
+
+
+## 2026-10-03 — Integrity / Security / Infrastructure reconciliation
+- Canonical checklist header corrected from v2 to **v3 — 850**.
+- Live Supabase project `beuestoewletjsgmigmf` is ACTIVE_HEALTHY on PostgreSQL 17.6.
+- Remote migration history was compared with repository migration naming. The applied advisor-followups migration is version `20260923160714`; repository filename was incorrectly `20260923000000_...`. The repository filename was corrected to `20260923160714_advisor_followups_security_reports.sql` and the duplicate legacy filename removed.
+- Current checklist count from the canonical 850 register: **15 DONE / 511 PARTIAL / 324 TODO / 0 BLOCKED**.
+- Supabase security advisor currently reports 21 authenticated-callable SECURITY DEFINER functions and leaked-password protection disabled. Function definitions were reviewed before changing permissions. The 21 functions are not blanket-revoked because several are authorization helpers or deliberately authenticated RPCs with in-function role checks; indiscriminate revoke would break RLS/application paths. Further function-by-function hardening remains required where data scope is broader than intended.
+- Production E2E 630 remains BLOCKED until an actual authenticated browser session verifies the deployed application. No false DONE promotion.
+- Cloudflare remains out of the critical release path.
+- No production database mutation was performed during this reconciliation.
