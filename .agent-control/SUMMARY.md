@@ -290,3 +290,11 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Added focused tests and registered them in npm test.
 - Added docs/architecture/PLAN-VISUALIZATION-TOOLS.md, THIRD-PARTY-NOTICES.md and the Task C/D control-plane task.
 - Acceptance remains PARTIAL: real browser ingestion/rendering and representative PDF/image/DXF runtime verification are still required.
+
+
+## 2026-10-03 — Municipal Regulation Evidence 068
+- Added a provenance-first regulation evidence boundary.
+- Verified evidence requires authority, source URL, verified status and valid effective dates.
+- Unverified or expired sources cannot enter regulatory decision input.
+- Added focused tests and registered them in npm test.
+- Checklist 068 promoted from TODO to PARTIAL; runtime ingestion/UI verification remains required.
