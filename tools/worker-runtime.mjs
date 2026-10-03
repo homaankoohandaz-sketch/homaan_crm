@@ -58,7 +58,7 @@ export function runWorker({ worker, taskPath, env = process.env, budget = {}, qu
   const task = loadTask(taskPath);
   const estimatedInputTokens = estimateTokens(task);
   if (quota?.userId) {
-    const gate = authorizeQuota({ userId: quota.userId, plan: quota.plan, windowId: quota.windowId, requestedTokens: estimatedInputTokens, requestedTimeMs: limits.timeBudgetMs, requestedCost: quota.requestedCost ?? 0 });
+    const gate = authorizeQuota({ userId: quota.userId, plan: quota.plan, windowId: quota.windowId, requestedTokens: estimatedInputTokens + limits.tokenBudget, requestedTimeMs: limits.timeBudgetMs, requestedCost: quota.requestedCost ?? 0 });
     if (!gate.ok) return Promise.resolve({ status: "quota_exhausted", worker, reason: gate.code, escalation: "human_advisor", quota: gate });
   }
   const [command, ...args] = resolved.command.trim().split(/\s+/);
