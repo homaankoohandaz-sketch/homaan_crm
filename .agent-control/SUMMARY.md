@@ -376,3 +376,11 @@ main diverged — never force-update main. Preview buildwise-implementation for 
 - Supabase migration history was checked directly. Advisor-followups migration is applied as `20260923160714`; repository filename was corrected to the same version to remove the migration-gate mismatch.
 - Security advisor findings were inspected function-by-function. No blanket SECURITY DEFINER revoke was applied because several functions are intentional authenticated helpers/RPCs and revoking them indiscriminately would break existing policy/application paths.
 - 630 remains the only hard release blocker requiring external authenticated browser runtime evidence.
+
+
+## 2026-10-03 — Production smoke verification
+- Production URL: `https://buildwise-ai-h.netlify.app`.
+- Netlify production deploy is READY on `main`; browser smoke passed.
+- Authenticated Production E2E remains blocked because no authenticated browser profile/session is available.
+- `buildwise-implementation` is 151 commits ahead and 3 behind `main`; no production merge was performed.
+- Canonical 850 status: **35 DONE / 508 PARTIAL / 306 TODO / 1 BLOCKED**.
