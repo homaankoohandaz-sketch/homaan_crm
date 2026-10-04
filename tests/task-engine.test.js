@@ -119,8 +119,14 @@ assert.throws(
 
 console.log('task engine mutation contracts: PASS');
 
-// Calendar / query helpers (PHASE-CURRENT-ARCHITECTURE views)
-const tCrm = createTask({ ...baseInput, id: 't1', assigned_to: 'u-a', scheduled_date: '2026-10-04' });
+// Calendar / query helpers — only t2 has a past deadline
+const tCrm = createTask({
+  ...baseInput,
+  id: 't1',
+  assigned_to: 'u-a',
+  scheduled_date: '2026-10-04',
+  deadline: '2026-10-10T18:00:00.000Z',
+});
 const tCon = createTask({
   ...baseInput,
   id: 't2',
@@ -132,7 +138,13 @@ const tCon = createTask({
   deadline: '2026-10-03T12:00:00.000Z',
 });
 const tStar = setTaskStarred(
-  createTask({ ...baseInput, id: 't3', assigned_to: 'u-a', scheduled_date: '2026-10-05' }),
+  createTask({
+    ...baseInput,
+    id: 't3',
+    assigned_to: 'u-a',
+    scheduled_date: '2026-10-05',
+    deadline: '2026-10-12T18:00:00.000Z',
+  }),
   true,
 );
 const bag = [tCrm, tCon, tStar];
