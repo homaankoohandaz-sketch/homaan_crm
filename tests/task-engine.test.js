@@ -8,6 +8,11 @@ import {
   setTaskStarred,
   setTaskPriority,
   configureTaskNotification,
+  listTasksForDay,
+  listTeamTasksForDay,
+  listOverdueTasks,
+  listStarredTasks,
+  listTasksByContext,
 } from '../src/core/task-engine.js';
 
 const baseInput = {
@@ -78,7 +83,6 @@ assert.throws(
 
 console.log('task engine contract: PASS');
 
-
 const starred = setTaskStarred(created, true, {
   now: '2026-09-27T09:15:00.000Z',
 });
@@ -114,3 +118,44 @@ assert.throws(
 );
 
 console.log('task engine mutation contracts: PASS');
+
+// Calendar / query helpers — PHASE-CURRENT-ARCHITECTURE required views
+const tCrm = createTask({
+  ...baseInput,
+  id: 't1',
+  assigned_to: 'u-a',
+  scheduled_date: '2026-10-04',
+  deadline: '2026-10-10T18:00:00.000Z',
+});
+const tCon = createTask({
+  ...baseInput,
+  id: 't2',
+  context_type: 'construction',
+  subject_type: 'construction',
+  related_entity_id: 'wbs-1',
+  assigned_to: 'u-b',
+  scheduled_date: '2026-10-04',
+  deadline: '2026-10-03T12:00:00.000Z',
+});
+const tStar = setTaskStarred(
+  createTask({
+    ...baseInput,
+    id: 't3',
+    assigned_to: 'u-a',
+    scheduled_date: '2026-10-05',
+    deadline: '2026-10-12T18:00:00.000Z',
+  }),
+  true,
+);
+const bag = [tCrm, tCon, tStar];
+
+assert.equal(listTasksForDay(bag, 'u-a', '2026-10-04').length, 1);
+assert.equal(listTasksForDay(bag, 'u-a', '2026-10-04')[0].id, 't1');
+assert.equal(listTeamTasksForDay(bag, '2026-10-04').length, 2);
+assert.equal(listOverdueTasks(bag, '2026-10-04T00:00:00.000Z').map((t) => t.id).join(','), 't2');
+assert.equal(listStarredTasks(bag).length, 1);
+assert.equal(listTasksByContext(bag, 'crm').length, 2);
+assert.equal(listTasksByContext(bag, 'construction').length, 1);
+assert.throws(() => listTasksByContext(bag, 'sales'), /Invalid context_type/);
+
+console.log('task engine calendar query contracts: PASS');
