@@ -11,6 +11,7 @@ import {
   createTask,
   respondToTask,
   completeTask,
+  rejectTask,
   moveTaskToTomorrow,
   setTaskStarred,
   setTaskPriority,
@@ -20,6 +21,8 @@ import {
   listOverdueTasks,
   listStarredTasks,
   listTasksByContext,
+  listDueTodayTasks,
+  listNotificationCandidates,
 } from './task-engine.js';
 
 export function createTaskRepository(client, { table = 'tasks' } = {}) {
@@ -55,6 +58,12 @@ export function createTaskRepository(client, { table = 'tasks' } = {}) {
       return repository.updateById(id, completeTask(task, options));
     },
 
+    async reject(id, reason, options) {
+      const task = await repository.getById(id);
+      if (!task) return null;
+      return repository.updateById(id, rejectTask(task, reason, options));
+    },
+
     async moveToTomorrow(id, tomorrow, options) {
       const task = await repository.getById(id);
       if (!task) return null;
@@ -79,29 +88,32 @@ export function createTaskRepository(client, { table = 'tasks' } = {}) {
       return repository.updateById(id, configureTaskNotification(task, input));
     },
 
-    /** Personal calendar for one assignee on one day. */
     async listForDay(assigneeId, date, options) {
       return listTasksForDay(await allTasks(options), assigneeId, date);
     },
 
-    /** Manager/team calendar for one day. */
     async listTeamForDay(date, options) {
       return listTeamTasksForDay(await allTasks(options), date);
     },
 
-    /** Overdue open/in_progress tasks. */
     async listOverdue(now, options) {
       return listOverdueTasks(await allTasks(options), now);
     },
 
-    /** Starred tasks. */
     async listStarred(options) {
       return listStarredTasks(await allTasks(options));
     },
 
-    /** Context slice: crm | construction | procurement. */
     async listByContext(contextType, options) {
       return listTasksByContext(await allTasks(options), contextType);
+    },
+
+    async listDueToday(date, options) {
+      return listDueTodayTasks(await allTasks(options), date);
+    },
+
+    async listNotificationCandidates(now, options) {
+      return listNotificationCandidates(await allTasks(options), now);
     },
   });
 }
