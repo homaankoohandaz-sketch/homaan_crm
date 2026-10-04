@@ -8,6 +8,12 @@ project: BuildWise AI | branch: buildwise-implementation
 code_truth: GitHub
 coordination_truth: .agent-control
 
+## Canonical Netlify target — LOCKED
+- Active production platform: `buildwis-ai` (Netlify exact project name; Site ID `b880916b-90b3-406e-8915-b26f9aa1d21`).
+- Primary production URL: `https://buildwis-ai.netlify.app`.
+- `buildwise-ai-h` is legacy/duplicate and MUST NOT be used for deploys, smoke tests, links, or implementation work.
+- One-platform rule: all future implementation/release/runtime work targets `buildwis-ai` only.
+
 ## Current state
 - Batch 20 is audited for in-repo scope; release is still PARTIAL.
 - Latest audited CI is green for unit tests, control-plane validation and phase map.
