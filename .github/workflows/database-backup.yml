@@ -1,0 +1,54 @@
+name: BuildWise Scheduled Database Backup
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 0 * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: buildwise-database-backup
+  cancel-in-progress: false
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Verify backup credential is configured
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          set -euo pipefail
+          test -n "$SUPABASE_DB_URL"
+
+      - name: Install PostgreSQL client
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
+      - name: Create compressed PostgreSQL backup
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          set -euo pipefail
+          mkdir -p backup
+          pg_dump "$SUPABASE_DB_URL" \
+            --format=custom \
+            --no-owner \
+            --no-privileges \
+            --file="backup/buildwise-${GITHUB_RUN_ID}.dump"
+          pg_restore --list "backup/buildwise-${GITHUB_RUN_ID}.dump" > "backup/buildwise-${GITHUB_RUN_ID}.manifest"
+          test -s "backup/buildwise-${GITHUB_RUN_ID}.dump"
+          test -s "backup/buildwise-${GITHUB_RUN_ID}.manifest"
+
+      - name: Upload backup artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: buildwise-db-backup-${{ github.run_id }}
+          path: backup/
+          if-no-files-found: error
+          retention-days: 7

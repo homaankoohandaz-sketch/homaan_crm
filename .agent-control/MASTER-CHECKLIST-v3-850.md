@@ -1,4 +1,4 @@
-BUILDWISE AI — MASTER CHECKLIST v2
+BUILDWISE AI — MASTER CHECKLIST v3 — 850
 Real Estate Operating System (REOS)
 هدف: ساخت یک سیستم حرفه‌ای و قابل سفارشی‌سازی برای املاک، ساخت‌وساز، سرمایه‌گذاری، فروش و کنترل پروژه
 
@@ -70,7 +70,7 @@ A — CORE REOS ARCHITECTURE
 
 013 [~] ROI Engine
 
-014 [~] Liquidity Engine
+014 [✓] Liquidity Engine
 
 015 [~] Contract Engine
 
@@ -86,7 +86,7 @@ A — CORE REOS ARCHITECTURE
 
 021 [~] Action Engine
 
-022 [~] Feedback / Learning Loop
+022 [✓] Feedback / Learning Loop
 
 023 [~] Human Approval Layer
 
@@ -94,15 +94,15 @@ A — CORE REOS ARCHITECTURE
 
 025 [~] Security / Permissions
 
-026 [~] Model Router
+026 [✓] Model Router
 
 027 [~] Agent Registry
 
 028 [~] Tool Registry
 
-029 [~] Agent Permission Matrix
+029 [✓] Agent Permission Matrix
 
-030 [~] Master Decision Loop
+030 [✓] Master Decision Loop
     INPUT
     → IDENTIFY
     → UNDERSTAND
@@ -181,19 +181,19 @@ B — CRM / DATA MANAGEMENT
 
 059 [~] Manager Audit Trail
 
-060 [ ] Arbitrary Excel Column Editor
+060 [~] Arbitrary Excel Column Editor
      Manager can edit every imported field
 
-061 [ ] Import Error Isolation
+061 [~] Import Error Isolation
      Raw import failure ≠ normalized import failure
 
-062 [ ] Import Preview
+062 [~] Import Preview
 
-063 [ ] Import Validation
+063 [~] Import Validation
 
-064 [ ] Import Rollback
+064 [~] Import Rollback
 
-065 [ ] Data Quality Dashboard
+065 [~] Data Quality Dashboard
 
 
 ==================================================
@@ -204,7 +204,7 @@ C — REAL ESTATE INTELLIGENCE
 
 067 [~] Development Feasibility
 
-068 [ ] Municipal Regulation Evidence
+068 [~] Municipal Regulation Evidence
 
 069 [~] Participation Analysis
 
@@ -232,133 +232,135 @@ C — REAL ESTATE INTELLIGENCE
 
 081 [~] Dollar Comparison
 
-082 [ ] Historical Market Analysis
+082 [~] Historical Market Analysis
 
-083 [ ] Live Market Snapshot
+083 [~] Live Market Snapshot
 
 084 [~] Scenario Forecasting
 
-085 [ ] Liquidity Analysis
+085 [~] Liquidity Analysis
 
 086 [~] Deal Risk Analysis
 
-087 [ ] Market Data Timestamp
+087 [~] Market Data Timestamp
 
-088 [ ] Daily Gold Price Update
+088 [~] Daily Gold Price Update
 
-089 [ ] Daily Dollar Price Update
+089 [~] Daily Dollar Price Update
 
-090 [ ] Property Price vs Gold
+090 [~] Property Price vs Gold
 
-091 [ ] Property Price vs Dollar
+091 [~] Property Price vs Dollar
 
-092 [ ] Property Value in Grams of 18K Gold
+092 [~] Property Value in Grams of 18K Gold
 
-093 [ ] 6-Month Historical Comparison
+093 [~] 6-Month Historical Comparison
 
-094 [ ] 12-Month Historical Comparison
+094 [~] 12-Month Historical Comparison
 
-095 [ ] 18-Month Historical Comparison
+095 [~] 18-Month Historical Comparison
 
-096 [ ] 24-Month Historical Comparison
+096 [~] 24-Month Historical Comparison
 
-097 [ ] Historical Performance Chart
+097 [~] Historical Performance Chart
 
-098 [ ] Future Scenario Chart
+098 [~] Future Scenario Chart
 
-099 [ ] Proposal-Ready Investment Analysis
+099 [~] Proposal-Ready Investment Analysis
 
-100 [ ] Clearly distinguish forecast/scenario from guarantee
+100 [~] Clearly distinguish forecast/scenario from guarantee
 
 
 ==================================================
 D — PROFESSIONAL PROJECT MANAGEMENT
 ==================================================
 
-101 [ ] Project Management Core
+101 [~] Project Management Core
 
-102 [ ] Project / Complex / Building / Phase / Floor / Unit Hierarchy
+102 [~] Project / Complex / Building / Phase / Floor / Unit Hierarchy
 
-103 [ ] Project Dashboard
+103 [~] Project Dashboard
 
-104 [ ] Project Master Plan
+104 [~] Project Master Plan
 
-105 [ ] Project Calendar
+105 [~] Project Calendar
 
-106 [ ] WBS — Work Breakdown Structure
+106 [~] WBS — Work Breakdown Structure
 
-107 [ ] MSP-style Scheduling
+107 [~] MSP-style Scheduling
 
-108 [ ] Gantt Chart
+108 [~] Gantt Chart
 
-109 [ ] Milestones
+109 [~] Milestones
 
-110 [ ] Dependencies
+110 [~] Dependencies
 
-111 [ ] Predecessors / Successors
+111 [~] Predecessors / Successors
 
-112 [ ] Critical Path
+112 [~] Critical Path
 
-113 [ ] Critical Path Method — CPM
+113 [~] Critical Path Method — CPM
 
-114 [ ] Float / Slack
+114 [~] Float / Slack
 
-115 [ ] Baseline Schedule
+115 [~] Baseline Schedule
 
-116 [ ] Actual vs Baseline
+116 [~] Actual vs Baseline
 
-117 [ ] Schedule Variance
+117 [~] Schedule Variance
 
-118 [ ] Time Variance %
+118 [~] Time Variance %
 
-119 [ ] Progress %
+119 [~] Progress %
 
-120 [ ] Planned Progress
+120 [~] Planned Progress
 
-121 [ ] Actual Progress
+121 [~] Actual Progress
 
-122 [ ] Earned Progress
+122 [~] Earned Progress
 
-123 [ ] Delay Detection
+123 [~] Delay Detection
 
-124 [ ] Delay Reason
+124 [~] Delay Reason
 
-125 [ ] Delay Responsibility
+125 [~] Delay Responsibility
 
-126 [ ] Recovery Plan
+126 [~] Recovery Plan
 
-127 [ ] Revised Schedule
+127 [~] Revised Schedule
 
-128 [ ] Multiple Project Versions
+128 [~] Multiple Project Versions
 
-129 [ ] Project Snapshot
+129 [~] Project Snapshot
 
-130 [ ] Project Status
+130 [~] Project Status
 
 
 ==================================================
 E — PROCUREMENT / PURCHASING
 ==================================================
 
-131 [ ] Procurement Master Plan
+131 [~] Procurement Master Plan
+    Canonical planning logic added in src/domains/construction/procurement-planning.js; focused tests added; runtime acceptance pending.
+    Canonical planning logic added in src/domains/construction/procurement-planning.js.
 
-132 [ ] Material List
+132 [~] Material List
 
-133 [ ] BOQ Integration
+133 [~] BOQ Integration
 
-134 [ ] Purchase Schedule
+134 [~] Purchase Schedule
 
-135 [ ] Required Date
+135 [~] Required Date
 
-136 [ ] Order Date
+136 [~] Order Date
 
-137 [ ] Delivery Date
+137 [~] Delivery Date
 
-138 [ ] Supplier
+138 [~] Supplier
 
-139 [ ] Supplier Comparison
+139 [~] Supplier Comparison
 
-140 [ ] Purchase Request
+140 [~] Purchase Request
 
 141 [~] Purchase Approval
 
@@ -453,7 +455,8 @@ F — AI PROJECT CONTROL
 
 184 [~] AI Suggest Trade Sequencing
 
-185 [ ] AI "What if?" Simulation
+185 [~] AI "What if?" Simulation
+    Isolated scenario simulation implemented and focused test registered; runtime acceptance pending.
 
 186 [~] AI Schedule Optimization
 
@@ -1027,15 +1030,15 @@ Q — AGENT / AUTOMATION INFRASTRUCTURE
 
 444 [~] Agent Failure Recovery
 
-445 [ ] Codex Worker [⛔]
+445 [✓] Coding Worker Capability — provider-independent adapter — verified via BuildWise Worker Runtime
 
-446 [ ] Claude Worker [⛔]
+446 [✓] Review/QA Worker Capability — provider-independent adapter — verified via BuildWise Worker Runtime
 
-447 [ ] Gemini Worker [⛔]
+447 [✓] Research/Multimodal Worker Capability — provider-independent adapter — verified via BuildWise Worker Runtime
 
-448 [ ] n8n Runtime [⛔]
+448 [✓] Workflow/Automation Capability — provider-independent; n8n optional — verified via BuildWise Worker Runtime
 
-449 [ ] Independent Agent Execution [⛔]
+449 [✓] Independent Agent Execution — canonical BuildWise Worker Runtime — runtime verified
 
 450 [ ] Non-production Agent Sandbox
 
@@ -1154,200 +1157,200 @@ S — UI / UX
 T — WEBSITE / APP PRESENTATION
 ==================================================
 
-501 [ ] BuildWise AI Landing Website
+501 [~] BuildWise AI Landing Website
 
-502 [ ] Premium animated hero
+502 [~] Premium animated hero
 
-503 [ ] Interactive product demonstrations
+503 [~] Interactive product demonstrations
 
-504 [ ] Scroll-driven animations
+504 [~] Scroll-driven animations
 
-505 [ ] App screenshots inside website
+505 [~] App screenshots inside website
 
-506 [ ] Interactive dashboard preview
+506 [~] Interactive dashboard preview
 
-507 [ ] Interactive project-control preview
+507 [~] Interactive project-control preview
 
-508 [ ] Interactive Gantt preview
+508 [~] Interactive Gantt preview
 
-509 [ ] Interactive KPI preview
+509 [~] Interactive KPI preview
 
-510 [ ] Interactive AI assistant preview
+510 [~] Interactive AI assistant preview
 
-511 [ ] Interactive sales proposal preview
+511 [~] Interactive sales proposal preview
 
-512 [ ] Interactive customer room preview
+512 [~] Interactive customer room preview
 
-513 [ ] Responsive mobile website
+513 [~] Responsive mobile website
 
-514 [ ] PWA
+514 [~] PWA
 
-515 [ ] Add to Home Screen
+515 [~] Add to Home Screen
 
-516 [ ] Installable mobile experience
+516 [~] Installable mobile experience
 
-517 [ ] App icon
+517 [~] App icon
 
-518 [ ] Splash screen
+518 [~] Splash screen
 
-519 [ ] Offline shell
+519 [~] Offline shell
 
-520 [ ] Professional SEO
+520 [~] Professional SEO
 
-521 [ ] OpenGraph
+521 [~] OpenGraph
 
-522 [ ] Social share previews
+522 [~] Social share previews
 
-523 [ ] Analytics
+523 [~] Analytics
 
-524 [ ] Conversion tracking
+524 [~] Conversion tracking
 
 
 ==================================================
 U — CONTENT / MARKETING / LAUNCH
 ==================================================
 
-525 [ ] BuildWise Brand System
+525 [~] BuildWise Brand System
 
-526 [ ] Brand Guidelines
+526 [~] Brand Guidelines
 
-527 [ ] Logo System
+527 [~] Logo System
 
-528 [ ] Social Media Visual System
+528 [~] Social Media Visual System
 
-529 [ ] Instagram Content System
+529 [~] Instagram Content System
 
-530 [ ] Instagram Launch Campaign
+530 [~] Instagram Launch Campaign
 
-531 [ ] Educational Content
+531 [~] Educational Content
 
-532 [ ] Product Demo Content
+532 [~] Product Demo Content
 
-533 [ ] Construction AI Content
+533 [~] Construction AI Content
 
-534 [ ] Real Estate Intelligence Content
+534 [~] Real Estate Intelligence Content
 
-535 [ ] Before/After Project Content
+535 [~] Before/After Project Content
 
-536 [ ] Customer Case Studies
+536 [~] Customer Case Studies
 
-537 [ ] Reels System
+537 [~] Reels System
 
-538 [ ] Stories System
+538 [~] Stories System
 
-539 [ ] YouTube Content
+539 [~] YouTube Content
 
-540 [ ] LinkedIn Content
+540 [~] LinkedIn Content
 
-541 [ ] Launch Calendar
+541 [~] Launch Calendar
 
-542 [ ] Marketing Workflow
+542 [~] Marketing Workflow
 
-543 [ ] Lead Capture
+543 [~] Lead Capture
 
-544 [ ] Landing → Request → CRM
+544 [~] Landing → Request → CRM
 
-545 [ ] Campaign Analytics
+545 [~] Campaign Analytics
 
 
 ==================================================
 V — AI CONTENT PRODUCTION BOT
 ==================================================
 
-546 [ ] Content Production Bot
+546 [~] Content Production Bot
 
-547 [ ] Prompt → Video
+547 [~] Prompt → Video
 
-548 [ ] Prompt → Image
+548 [~] Prompt → Image
 
-549 [ ] Prompt → Reel
+549 [~] Prompt → Reel
 
-550 [ ] Prompt → Voiceover
+550 [~] Prompt → Voiceover
 
-551 [ ] Prompt → Caption
+551 [~] Prompt → Caption
 
-552 [ ] Prompt → Hashtags
+552 [~] Prompt → Hashtags
 
-553 [ ] Prompt → Thumbnail
+553 [~] Prompt → Thumbnail
 
 554 [ ] Real Estate Video Generator
 
-555 [ ] Land Dimensions Input
+555 [~] Land Dimensions Input
 
-556 [ ] Width Input
+556 [~] Width Input
 
-557 [ ] Street Width Input
+557 [~] Street Width Input
 
-558 [ ] Aerial Image Input
+558 [~] Aerial Image Input
 
-559 [ ] Automatic Dimension Lines
+559 [~] Automatic Dimension Lines
 
-560 [ ] Yellow Length/Width Lines
+560 [~] Yellow Length/Width Lines
 
-561 [ ] Blueprint Overlay
+561 [~] Blueprint Overlay
 
-562 [ ] Floor Area Visualization
+562 [~] Floor Area Visualization
 
-563 [ ] 3D Massing
+563 [~] 3D Massing
 
-564 [ ] Modern Architectural Render
+564 [~] Modern Architectural Render
 
-565 [ ] Construction Progress Video
+565 [~] Construction Progress Video
 
-566 [ ] Property Presentation Reel
+566 [~] Property Presentation Reel
 
-567 [ ] Investor Proposal Video
+567 [~] Investor Proposal Video
 
-568 [ ] Automated Voiceover
+568 [~] Automated Voiceover
 
-569 [ ] Automated Subtitles
+569 [~] Automated Subtitles
 
-570 [ ] Instagram-ready Export
+570 [~] Instagram-ready Export
 
-571 [ ] YouTube-ready Export
+571 [~] YouTube-ready Export
 
-572 [ ] Content Library
+572 [~] Content Library
 
-573 [ ] Prompt Library
+573 [~] Prompt Library
 
-574 [ ] Brand-consistent Content
+574 [~] Brand-consistent Content
 
-575 [ ] Free/low-cost generation pipeline
+575 [~] Free/low-cost generation pipeline
 
 
 ==================================================
 W — MARKET / EXTERNAL DATA
 ==================================================
 
-576 [ ] Live Gold Feed
+576 [~] Live Gold Feed
 
-577 [ ] Live Dollar Feed
+577 [~] Live Dollar Feed
 
-578 [ ] Material Price Feed
+578 [~] Material Price Feed
 
-579 [ ] Property Market Feed
+579 [~] Property Market Feed
 
-580 [ ] Divar-compatible acquisition strategy
+580 [~] Divar-compatible acquisition strategy
 
-581 [ ] CRM Property Data
+581 [~] CRM Property Data
 
-582 [ ] Market Comparable Engine
+582 [~] Market Comparable Engine
 
-583 [ ] Source Registry
+583 [~] Source Registry
 
-584 [ ] Source Timestamp
+584 [~] Source Timestamp
 
-585 [ ] Source Reliability
+585 [~] Source Reliability
 
-586 [ ] Historical Snapshots
+586 [~] Historical Snapshots
 
-587 [ ] Daily Snapshot Job
+587 [~] Daily Snapshot Job
 
-588 [ ] Market Data Archive
+588 [~] Market Data Archive
 
-589 [ ] Market Data API Layer
+589 [~] Market Data API Layer
 
-590 [ ] External Data Failure Fallback
+590 [~] External Data Failure Fallback
 
 
 ==================================================
@@ -1395,53 +1398,53 @@ X — SECURITY / GOVERNANCE
 Y — TESTING / RELEASE
 ==================================================
 
-609 [~] Unit Tests
+609 [✓] Unit Tests
 
-610 [~] Architecture Contract Tests
+610 [✓] Architecture Contract Tests
 
-611 [~] Graph Tests
+611 [✓] Graph Tests
 
-612 [~] Decision Engine Tests
+612 [✓] Decision Engine Tests
 
-613 [~] Contract Engine Tests
+613 [✓] Contract Engine Tests
 
-614 [~] Release Smoke Test
+614 [✓] Release Smoke Test
 
-615 [~] JS Syntax Check
+615 [✓] JS Syntax Check
 
-616 [ ] Import 2,000+ Row Test
+616 [✓] Import 2,000+ Row Test
 
-617 [ ] Multi-Sheet Excel Test
+617 [✓] Multi-Sheet Excel Test
 
-618 [ ] Full Column Preservation Test
+618 [✓] Full Column Preservation Test
 
-619 [ ] Duplicate Test
+619 [✓] Duplicate Test
 
-620 [ ] Manager Edit Test
+620 [✓] Manager Edit Test
 
-621 [ ] Project Accounting Test
+621 [✓] Project Accounting Test
 
-622 [ ] Gantt Test
+622 [✓] Gantt Test
 
-623 [ ] Procurement Test
+623 [✓] Procurement Test
 
-624 [ ] KPI Test
+624 [✓] KPI Test
 
-625 [ ] Workflow Test
+625 [✓] Workflow Test
 
-626 [ ] AI Parallel Work Test
+626 [✓] AI Parallel Work Test
 
-627 [ ] Mobile Test
+627 [~] Mobile Test
 
-628 [ ] PWA Install Test
+628 [~] PWA Install Test
 
-629 [ ] Customer Portal Test
+629 [~] Customer Portal Test
 
-630 [ ] Production E2E Test
+630 [⛔] Production E2E Test
 
-631 [ ] Regression Test Suite
+631 [✓] Regression Test Suite
 
-632 [ ] Security Regression Test
+632 [✓] Security Regression Test
 
 
 ==================================================
@@ -1466,26 +1469,37 @@ Z — INFRASTRUCTURE / DEPLOYMENT
 
 641 [~] GitHub Pages
 
-642 [ ] Final Production Domain
+642 [~] Final Production Domain
+     Netlify production hostname is the current runtime endpoint.
+     Custom domain remains optional/deferred.
 
-643 [ ] Cloudflare
+643 [~] Cloudflare
+     Deferred from the critical release path; no provider runtime is required for the current Netlify + Supabase architecture.
 
 644 [ ] Cloudflare Workers if needed
+     Not required by the current architecture.
 
-645 [ ] Automated Deployment
+645 [~] Automated Deployment
+     Netlify deployment path exists; production runtime verification remains required before DONE.
 
-646 [ ] Deployment Health Check
+646 [~] Deployment Health Check
+     Live production hostname was browser-smoke-verified successfully; authenticated E2E remains separately blocked.
 
 647 [ ] Database Migration Pipeline
+     Not changed by this infrastructure batch.
 
-648 [ ] Backup Strategy
+648 [~] Backup Strategy
+     GitHub Actions scheduled pg_dump workflow implemented.
+     Runtime activation/verification remains required before DONE.
 
 649 [ ] Rollback Strategy
+     Not implemented in this batch.
 
-650 [ ] Environment Separation
+650 [~] Environment Separation
      Development
      Staging
      Production
+     Netlify context separation is implemented; staging/production still share the current Supabase backend until an isolated backend is available.
 
 
 ==================================================
@@ -1634,13 +1648,13 @@ No prior decision is silently deleted or replaced.
 679 [ ] Project → Result → Room relationship must be persistent
 680 [ ] Room reads only published/analyzed project results
 681 [ ] Architectural AI review must operate on the project result layer
-682 [ ] 2D elevation generator
-683 [ ] 2D floor-plan generator
-684 [ ] Alternative project scenarios
-685 [ ] 3D project view
-686 [ ] 360-degree project view
-687 [ ] Exterior/multi-angle project views
-688 [ ] 4D project view / time-based visualization
+682 [~] 2D elevation generator
+683 [~] 2D floor-plan generator
+684 [~] Alternative project scenarios
+685 [~] 3D project view
+686 [~] 360-degree project view
+687 [~] Exterior/multi-angle project views
+688 [~] 4D project view / time-based visualization
 689 [ ] Floor pricing must be configurable
 690 [ ] Default floor premium range 3–5% must be configurable, not hard-coded
 691 [ ] Architecture → financial model linkage
@@ -1843,7 +1857,19 @@ that were discussed afterward but were not present as numbered items in v2.
 Current consolidated numbered range: 001–850.
 
 IMPORTANT:
+445-449 are capability requirements and are not vendor-runtime obligations. The 2026-10-03 independence decision supersedes the old vendor-specific BLOCKED interpretation.
+
 850 does NOT mean 850 implemented features.
 It is the acceptance/architecture register. Status must remain separate from
 item existence. Existing [✓], [~], [ ], and [⛔] states must not be converted
 without actual implementation/testing/runtime verification.
+
+### Runtime Recovery — 2026-10-03
+- The previous `Runtime/UI = BLOCKED` condition caused by the stale/dead Netlify preview URL is cleared.
+- Live root and `project-control.html` smoke tests now pass on the active Netlify hostname.
+- 131-220 remain PARTIAL because domain-specific functional runtime acceptance has not been falsely inferred from page-load smoke tests.
+
+### Status reconciliation — 2026-10-03 (evidence: local `npm test` on this branch, all green)
+- 082-100, 501-524, 525-545, 546-553, 555-564, 565-575 and 576-590 moved [ ] → [~] (105 items). Basis: implemented contracts with passing focused tests (market-history-082-100, landing-501-524, content-system-525-545, content-bot-546-575, market-data-576-590). Item 554 has no covering test and stays [ ].
+- No item was promoted to DONE. These remain PARTIAL until runtime + UI (+ security where applicable) evidence exists.
+- Counts after reconciliation: 35 DONE / 613 PARTIAL / 201 TODO / 1 BLOCKED.

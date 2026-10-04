@@ -36,6 +36,12 @@ class Query {
   select() { return this; }
   limit() { return this; }
   order() { return this; }
+  in() { return this; }
+  gte() { return this; }
+  lte() { return this; }
+  ilike() { return this; }
+  neq() { return this; }
+  is() { return this; }
 
   eq(column, value) {
     this.filters.push([column, value]);
@@ -76,6 +82,11 @@ class Query {
     const id = this.filters.find(([column]) => column === 'id')?.[1];
     return id ? this.rows.get(id) : [...this.rows.values()][0];
   }
+
+  // Awaitable list result for repository.list()
+  then(resolve, reject) {
+    return Promise.resolve({ data: [...this.rows.values()], error: null }).then(resolve, reject);
+  }
 }
 
 test('task repository persists canonical task lifecycle changes', async () => {
@@ -84,7 +95,6 @@ test('task repository persists canonical task lifecycle changes', async () => {
 
   const created = await repo.create(baseTask, { now: '2026-09-27T09:00:00.000Z' });
   assert.equal(created.status, 'open');
-
 
   const answered = await repo.respond('task-001', 'yes', {
     now: '2026-09-27T09:05:00.000Z',
@@ -117,7 +127,6 @@ test('task repository validates before persistence', async () => {
   );
 });
 
-
 test('task repository maps canonical task fields to the live tasks schema', async () => {
   const client = createFakeClient();
   const repo = createTaskRepository(client);
@@ -129,4 +138,52 @@ test('task repository maps canonical task fields to the live tasks schema', asyn
   assert.equal(persisted.scheduled_date, '2026-09-28');
   assert.equal(persisted.scheduled_time, '10:30');
   assert.equal(persisted.deadline, '2026-09-28T18:00:00.000Z');
+});
+
+test('task repository calendar queries filter via canonical engine helpers', async () => {
+  const client = createFakeClient();
+  const repo = createTaskRepository(client);
+
+  await repo.create({
+    ...baseTask,
+    id: 't1',
+    assigned_to: 'u-a',
+    scheduled_date: '2026-10-04',
+    deadline: '2026-10-10T18:00:00.000Z',
+  });
+  await repo.create({
+    ...baseTask,
+    id: 't2',
+    context_type: 'construction',
+    subject_type: 'construction',
+    related_entity_id: 'wbs-1',
+    assigned_to: 'u-b',
+    scheduled_date: '2026-10-04',
+    deadline: '2026-10-03T12:00:00.000Z',
+  });
+  await repo.create({
+    ...baseTask,
+    id: 't3',
+    assigned_to: 'u-a',
+    scheduled_date: '2026-10-05',
+    deadline: '2026-10-12T18:00:00.000Z',
+  });
+  await repo.setStarred('t3', true);
+
+  const day = await repo.listForDay('u-a', '2026-10-04');
+  assert.equal(day.length, 1);
+  assert.equal(day[0].id, 't1');
+
+  const team = await repo.listTeamForDay('2026-10-04');
+  assert.equal(team.length, 2);
+
+  const overdue = await repo.listOverdue('2026-10-04T00:00:00.000Z');
+  assert.equal(overdue.map((t) => t.id).join(','), 't2');
+
+  const starred = await repo.listStarred();
+  assert.equal(starred.length, 1);
+  assert.equal(starred[0].id, 't3');
+
+  const crm = await repo.listByContext('crm');
+  assert.equal(crm.length, 2);
 });

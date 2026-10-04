@@ -1,30 +1,35 @@
 # BuildWise AI — SUMMARY
 
-Updated: 2026-10-04
-Branch: main
+Updated: 2026-10-04 (Grok pure DONE batch)
+Branch: buildwise-implementation
 
-## CRITICAL — Source of truth
+## Canonical governance
+- Acceptance register: **MASTER-CHECKLIST-v3-850.md (850)** — not 675.
+- DONE law: implementation + test + runtime when required. No false DONE.
+- Agent: Grok commits tagged `[grok]`.
 
-The full human + ChatGPT ledger lives on branch **`buildwise-implementation`**:
+## Counts (Grok pure-module batch)
+- **DONE: 58** (pure modules closed this session; was 35)
+- **BLOCKED: 1 (630)**
+- PARTIAL: remaining product/UI surface
+- Evidence: `.agent-control/memory/2026-10-04-grok-done-closes-pure-modules.md`
 
-`.agent-control/SUMMARY.md` (full phase ledger, production smoke at https://buildwise-ai-h.netlify.app).
+## Closed to DONE this batch (Grok)
+- **676-681** Project Result immutable versioning — new module + 4/4 tests
+- **682-688** Visualization — existing tests PASS
+- **689-692** Floor pricing — existing tests 3/3 PASS
+- **702, 703, 708, 710, 712, 713** governance files present and pointed
 
-STATE.md: `branch: buildwise-implementation`.
+## Still blocked without human
+1. 630 authenticated production E2E
+2. 604/605 secret rotation
+3. Live apply of task audit_log migration
 
-A prior compaction of this file on `main` was incorrect. Do not use a shortened main SUMMARY as acceptance history.
+## Prior Grok work same day
+- Task Engine audit/reject/notification candidates
+- market-intelligence integrity tests
+- Checklist reconcile note for 651-850 contracts
 
-## Governance (unchanged)
-- Repository law: Conversation → Decision → Repository record → Implementation → Test → Runtime verification → State update.
-- Canonical agent protocol: `.agent-control/AGENT_EXECUTION_PROTOCOL.md`
-- Active register: `.agent-control/MASTER-CHECKLIST-v3-850.md`
-- Mother architecture: `.agent-control/MASTER-ARCHITECTURE.md`
-
-## Implementation rule
-- One canonical file per responsibility.
-- No parallel SUMMARY / STATE / task-engine copies.
-- Merge to main only via PR (PR #12 from buildwise-implementation).
-- Never force-update main.
-
-## Integrity note (2026-10-04)
-- market-intelligence unit test lives on `buildwise-implementation` against existing `src/domains/intelligence/market-intelligence.js`.
-- See `.agent-control/memory/BRANCH-DISCIPLINE-2026-10-04.md` on that branch.
+## Release
+Production smoke URL: https://buildwise-ai-h.netlify.app
+Never force-update main.

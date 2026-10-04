@@ -240,6 +240,61 @@ export function createProjectFinanceModel() {
           actorId: x?.actorId ?? null
         }))
       };
-    }
+    },
+
+    ledger(input = {}) {
+      const entries = rows(input.entries).map((entry, index) => ({
+        id: entry?.id ?? index + 1,
+        projectId: input.projectId ?? entry?.projectId ?? null,
+        accountId: entry?.accountId ?? 'unassigned',
+        amount: n(entry?.amount),
+        date: entry?.date ?? null,
+        reference: entry?.reference ?? null
+      }));
+      const balanceByAccount = {};
+      for (const entry of entries) balanceByAccount[entry.accountId] = (balanceByAccount[entry.accountId] ?? 0) + entry.amount;
+      return { projectId: input.projectId ?? null, entries, balanceByAccount, totalBalance: entries.reduce((s, x) => s + x.amount, 0) };
+    },
+
+    budgetControl(input = {}) {
+      const budget = positive(input.budget);
+      const revisedBudget = positive(input.revisedBudget || budget);
+      const actual = positive(input.actual);
+      const committed = positive(input.committed);
+      const remaining = positive(input.remaining);
+      return {
+        budget,
+        revisedBudget,
+        actual,
+        committed,
+        remaining,
+        totalProjectCost: actual + committed + remaining
+      };
+    },
+
+    costControl(input = {}) {
+      const entries = rows(input.entries);
+      const baseIndex = positive(input.baseCostIndex) || 100;
+      const currentIndex = positive(input.currentCostIndex) || baseIndex;
+      const result = {
+        byWbs: groupSum(entries.map(x => ({...x, amountToman: x.amount})), 'wbsId'),
+        byPhase: groupSum(entries.map(x => ({...x, amountToman: x.amount})), 'phaseId'),
+        byFloor: groupSum(entries.map(x => ({...x, amountToman: x.amount})), 'floorId'),
+        byUnit: groupSum(entries.map(x => ({...x, amountToman: x.amount})), 'unitId'),
+        byContractor: groupSum(entries.map(x => ({...x, amountToman: x.amount})), 'contractorId'),
+        bySupplier: groupSum(entries.map(x => ({...x, amountToman: x.amount})), 'supplierId'),
+        byMaterial: groupSum(entries.map(x => ({...x, amountToman: x.amount})), 'materialId'),
+        byPurchase: groupSum(entries.map(x => ({...x, amountToman: x.amount})), 'purchaseId'),
+        byInvoice: groupSum(entries.map(x => ({...x, amountToman: x.amount})), 'invoiceId'),
+        byPayment: groupSum(entries.map(x => ({...x, amountToman: x.amount})), 'paymentId'),
+        byDate: byDate(entries.map(x => ({...x, amountToman: x.amount})))
+      };
+      const total = entries.reduce((s, x) => s + positive(x.amount), 0);
+      result.totalBaseValue = total;
+      result.totalCurrentValue = total * currentIndex / baseIndex;
+      result.varianceVsBudget = result.totalCurrentValue - total;
+      result.inflationPct = baseIndex ? (currentIndex / baseIndex - 1) * 100 : 0;
+      return result;
+    },
   });
 }
