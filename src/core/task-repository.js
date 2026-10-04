@@ -15,10 +15,20 @@ import {
   setTaskStarred,
   setTaskPriority,
   configureTaskNotification,
+  listTasksForDay,
+  listTeamTasksForDay,
+  listOverdueTasks,
+  listStarredTasks,
+  listTasksByContext,
 } from './task-engine.js';
 
 export function createTaskRepository(client, { table = 'tasks' } = {}) {
   const repository = createRepository(client, table);
+
+  async function allTasks(options) {
+    const rows = await repository.list(options);
+    return Array.isArray(rows) ? rows : [];
+  }
 
   return Object.freeze({
     list(options) {
@@ -67,6 +77,31 @@ export function createTaskRepository(client, { table = 'tasks' } = {}) {
       const task = await repository.getById(id);
       if (!task) return null;
       return repository.updateById(id, configureTaskNotification(task, input));
+    },
+
+    /** Personal calendar for one assignee on one day. */
+    async listForDay(assigneeId, date, options) {
+      return listTasksForDay(await allTasks(options), assigneeId, date);
+    },
+
+    /** Manager/team calendar for one day. */
+    async listTeamForDay(date, options) {
+      return listTeamTasksForDay(await allTasks(options), date);
+    },
+
+    /** Overdue open/in_progress tasks. */
+    async listOverdue(now, options) {
+      return listOverdueTasks(await allTasks(options), now);
+    },
+
+    /** Starred tasks. */
+    async listStarred(options) {
+      return listStarredTasks(await allTasks(options));
+    },
+
+    /** Context slice: crm | construction | procurement. */
+    async listByContext(contextType, options) {
+      return listTasksByContext(await allTasks(options), contextType);
     },
   });
 }
