@@ -1,23 +1,21 @@
-# BuildWise NOW
+# NOW — BuildWise AI
 
-updated: 2026-10-04
-branch: buildwise-implementation
-actor: Grok (xAI)
-batch: project-result 676-681 + floor-pricing verification + checklist pure DONE closes
+Updated: 2026-10-04
+Agent note: Grok merge prep for PR #12 → main (human requested production check).
 
-## Status
-PARTIAL overall release — pure domain modules advanced; authenticated production E2E still BLOCKED.
+## Current state
+- Branch: `buildwise-implementation` (canonical implementation)
+- Production Netlify: `https://buildwise-ai-h.netlify.app` still tracks **main** (older tree) until PR merges
+- 630 authenticated E2E: human login confirmed on production URL; code under test must be implementation tree after merge
+- Sole hard BLOCKED before merge was PR conflicts; resolved preferring implementation for Task Engine + package.json tests + SUMMARY/NOW
 
-## This session (Grok)
-- Implemented `src/domains/project-control/project-result.js` (676-681) + tests 4/4 PASS
-- Verified floor-pricing 689-692 tests 3/3 PASS
-- Verified project-visualization 682-688 tests PASS
-- Added TASK_CONTRACT.md pointer to AGENT-TASK-CONTRACT-v1.md
+## Current objective
+1. Merge PR #12 into main (no force-push)
+2. Netlify production republish from main
+3. Human re-checks site with new code
 
-## Blockers (need human)
-1. 630 authenticated production browser E2E
-2. 604/605 secret rotation
-3. Apply migration `20261004120000_task_engine_audit_log.sql` on live Supabase
+## Current blocker
+- Until merge + Netlify deploy: production UI will not show implementation commits
 
 ## Next action
-Continue pure-module completion with tests; do not false-DONE UI/security items without runtime evidence.
+- Complete PR #12 merge → verify Netlify deploy → smoke production

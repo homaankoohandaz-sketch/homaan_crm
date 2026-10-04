@@ -48,10 +48,7 @@ function dayKey(value) {
   return String(value).slice(0, 10);
 }
 
-/**
- * Pure audit event builder — one engine, no parallel audit table required at this layer.
- * Agent: Grok — 2026-10-04
- */
+/** Pure audit event builder — Agent: Grok — 2026-10-04 */
 export function buildTaskAuditEvent(task, action, {
   actor = null,
   now = new Date().toISOString(),
@@ -70,7 +67,6 @@ export function buildTaskAuditEvent(task, action, {
   });
 }
 
-/** Append an audit event onto task.audit_log (immutable copy). */
 export function appendTaskAudit(task, action, options = {}) {
   const event = buildTaskAuditEvent(task, action, options);
   const prior = Array.isArray(task.audit_log) ? task.audit_log : [];
@@ -160,7 +156,6 @@ export function completeTask(task, { now = new Date().toISOString(), actor = nul
   return appendTaskAudit(next, 'completed', { actor, now });
 }
 
-/** Reject task — status rejected remains in STATUSES contract. Agent: Grok */
 export function rejectTask(task, reason = null, { now = new Date().toISOString(), actor = null } = {}) {
   if (!task || typeof task !== 'object') throw new TypeError('task is required');
   if (task.status === 'completed') {
@@ -269,7 +264,6 @@ export function configureTaskNotification(
   });
 }
 
-/** Personal daily list: tasks assigned to user on a given scheduled_date (YYYY-MM-DD). */
 export function listTasksForDay(tasks, assigneeId, date) {
   requireString(assigneeId, 'assigneeId');
   requireDateString(date, 'date');
@@ -279,33 +273,25 @@ export function listTasksForDay(tasks, assigneeId, date) {
   );
 }
 
-/** Manager/team calendar for a day (all assignees). */
 export function listTeamTasksForDay(tasks, date) {
   requireDateString(date, 'date');
   const day = dayKey(date);
   return asArray(tasks).filter((t) => dayKey(t.scheduled_date) === day);
 }
 
-/** Overdue open/in_progress tasks with deadline before now. */
 export function listOverdueTasks(tasks, now = new Date().toISOString()) {
   return asArray(tasks).filter((t) => isTaskOverdue(t, now));
 }
 
-/** Starred / promoted tasks. */
 export function listStarredTasks(tasks) {
   return asArray(tasks).filter((t) => Boolean(t.starred));
 }
 
-/** Context slice: crm | construction | procurement — one engine, three views. */
 export function listTasksByContext(tasks, contextType) {
   assertAllowed(contextType, CONTEXT_TYPES, 'context_type');
   return asArray(tasks).filter((t) => t.context_type === contextType);
 }
 
-/**
- * Due today: scheduled_date is today OR deadline day is today (non-terminal).
- * Agent: Grok — PHASE calendar daily list
- */
 export function listDueTodayTasks(tasks, date = new Date().toISOString()) {
   requireDateString(date, 'date');
   const day = dayKey(date);
@@ -317,11 +303,6 @@ export function listDueTodayTasks(tasks, date = new Date().toISOString()) {
   });
 }
 
-/**
- * Notification candidates (auditable events, not a second notification engine).
- * Events: reminder_due | due_today | overdue_detected
- * Agent: Grok — PHASE Notification model
- */
 export function listNotificationCandidates(tasks, now = new Date().toISOString()) {
   const day = dayKey(now);
   const nowMs = Date.parse(now);
