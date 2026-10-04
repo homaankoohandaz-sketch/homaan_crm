@@ -23,6 +23,10 @@ function assertAllowed(value, allowed, field) {
   }
 }
 
+function asArray(tasks) {
+  return Array.isArray(tasks) ? tasks : [];
+}
+
 export function createTask(input, { now = new Date().toISOString() } = {}) {
   requireString(input?.id, 'id');
   requireString(input?.title, 'title');
@@ -144,6 +148,39 @@ export function configureTaskNotification(
       : null,
     updated_at: now,
   };
+}
+
+/** Personal daily list: tasks assigned to user on a given scheduled_date (YYYY-MM-DD). */
+export function listTasksForDay(tasks, assigneeId, date) {
+  requireString(assigneeId, 'assigneeId');
+  requireDateString(date, 'date');
+  const day = date.slice(0, 10);
+  return asArray(tasks).filter(
+    (t) => t.assigned_to === assigneeId && String(t.scheduled_date).slice(0, 10) === day,
+  );
+}
+
+/** Manager/team calendar for a day (all assignees). */
+export function listTeamTasksForDay(tasks, date) {
+  requireDateString(date, 'date');
+  const day = date.slice(0, 10);
+  return asArray(tasks).filter((t) => String(t.scheduled_date).slice(0, 10) === day);
+}
+
+/** Overdue open/in_progress tasks with deadline before now. */
+export function listOverdueTasks(tasks, now = new Date().toISOString()) {
+  return asArray(tasks).filter((t) => isTaskOverdue(t, now));
+}
+
+/** Starred / promoted tasks (any status except rejected optional filter left to caller). */
+export function listStarredTasks(tasks) {
+  return asArray(tasks).filter((t) => Boolean(t.starred));
+}
+
+/** Context slice: crm | construction | procurement — one engine, three views. */
+export function listTasksByContext(tasks, contextType) {
+  assertAllowed(contextType, CONTEXT_TYPES, 'context_type');
+  return asArray(tasks).filter((t) => t.context_type === contextType);
 }
 
 export { CONTEXT_TYPES, SUBJECT_TYPES, PRIORITIES, STATUSES, RESPONSES };
