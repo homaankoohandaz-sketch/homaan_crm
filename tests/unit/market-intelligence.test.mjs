@@ -60,14 +60,16 @@ test('compareToBenchmark computes multiple and delta', () => {
 
 test('historicalWindow keeps only rows inside month window', () => {
   const asOf = '2026-10-03T00:00:00.000Z';
+  // 6 months before 2026-10-03 is 2026-04-03; April 1 is outside, May 1 is inside
   const rows = [
     { observed_at: '2026-09-01T00:00:00.000Z' },
-    { observed_at: '2026-04-01T00:00:00.000Z' },
+    { observed_at: '2026-05-01T00:00:00.000Z' },
     { observed_at: '2025-01-01T00:00:00.000Z' },
   ];
   const windowed = historicalWindow(rows, 6, asOf);
   assert.equal(windowed.length, 2);
-  assert.equal(windowed[0].observed_at, '2026-04-01T00:00:00.000Z');
+  assert.equal(windowed[0].observed_at, '2026-05-01T00:00:00.000Z');
+  assert.equal(windowed[1].observed_at, '2026-09-01T00:00:00.000Z');
 });
 
 test('buildScenarioSeries compounds monthly growth', () => {
