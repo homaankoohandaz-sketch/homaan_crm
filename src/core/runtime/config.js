@@ -1,10 +1,11 @@
 const DEFAULT_SUPABASE_URL = 'https://beuestoewletjsgmigmf.supabase.co';
+const DEFAULT_SUPABASE_ANON_KEY = 'sb_publishable_dE92Qm9EtMv4sdNRXF7SRg_7ox1xYax';
 
 export function getRuntimeConfig(source = globalThis) {
   const env = source?.process?.env ?? {};
   const meta = source?.__BUILDWISE_CONFIG__ ?? {};
   const url = meta.SUPABASE_URL ?? env.SUPABASE_URL ?? DEFAULT_SUPABASE_URL;
-  const anonKey = meta.SUPABASE_ANON_KEY ?? env.SUPABASE_ANON_KEY ?? '';
+  const anonKey = meta.SUPABASE_ANON_KEY ?? env.SUPABASE_ANON_KEY ?? DEFAULT_SUPABASE_ANON_KEY;
 
   if (!url) throw new Error('SUPABASE_URL is required');
 

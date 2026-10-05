@@ -9,6 +9,11 @@ test('runtime config normalizes the Supabase URL', () => {
   assert.equal(config.functionsBaseUrl, 'https://example.supabase.co/functions/v1');
 });
 
+test('runtime config provides a publishable Supabase client key by default', () => {
+  const config = getRuntimeConfig({});
+  assert.match(config.supabaseAnonKey, /^sb_publishable_/);
+});
+
 test('repository rejects invalid table names', () => {
   assert.throws(() => createRepository({ from() {} }, 'bad-table-name!'), /Invalid table name/);
 });
