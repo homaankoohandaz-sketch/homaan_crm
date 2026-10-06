@@ -32,8 +32,8 @@ function isMeaningfulRow(row) {
 
 export function normalizeImportRows(rows = []) {
   return (rows || [])
-    .filter(isMeaningfulRow)
-    .map((row, index) => normalizeOne(row, index));
+    .map((row, index) => isMeaningfulRow(row) ? normalizeOne(row, index) : null)
+    .filter(Boolean);
 }
 
 function phoneIssue(row) {
