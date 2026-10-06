@@ -45,3 +45,10 @@ Branch: buildwise-implementation
 - Canonical files: src/ui/task-engine-ui.js, src/core/task-engine.js, src/core/task-repository.js.
 - UI lifecycle: create → assign → today/team view → approve/reject → complete/move → reminder → audit persistence.
 - Acceptance remains PARTIAL until CI and authenticated browser/runtime evidence are available.
+
+
+## 2026-10-06 — Task Engine UI Slice
+- Task Engine connected to UI through a single Task Center route.
+- Role-scoped task RLS and notification path are live in Supabase.
+- CI evidence exists for implementation commit `44498c9`; migration commit `520c52c` is under CI.
+- Runtime/browser verification remains open; no false DONE promotion.
