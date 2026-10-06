@@ -14,6 +14,7 @@ test('blank spreadsheet rows are ignored instead of becoming property records', 
   const normalized = normalizeImportRows(rows);
   assert.equal(normalized.length, 2);
   assert.deepEqual(normalized.map(x => x.property_code), ['P-1', 'P-2']);
+  assert.deepEqual(normalized.map(x => x._source_row), [1, 4]);
   const preview = buildImportPreview(rows);
   assert.equal(preview.rowCount, 2);
 });
