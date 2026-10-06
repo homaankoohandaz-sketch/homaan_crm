@@ -42,7 +42,8 @@ function taskCard(t){
     actions.push('<button class="btn" onclick="window.taskRespond(\''+esc(t.id)+'\',\'yes\')">تأیید</button>');
     actions.push('<button class="btn" onclick="window.taskReject(\''+esc(t.id)+'\')">رد</button>');
     actions.push('<button class="btn" onclick="window.taskComplete(\''+esc(t.id)+'\')">تکمیل</button>');
-    actions.push('<button class="btn" onclick="window.taskMoveTomorrow(\''+esc(t.id)+'\')">فردا</button>');\n    actions.push('<button class="btn" onclick="window.taskReminderForm(\''+esc(t.id)+'\')">یادآوری</button>');
+    actions.push('<button class="btn" onclick="window.taskMoveTomorrow(\''+esc(t.id)+'\')">فردا</button>');
+    actions.push('<button class="btn" onclick="window.taskReminderForm(\''+esc(t.id)+'\')">یادآوری</button>');
   }
   if (canManage() && !terminal) {
     actions.push('<button class="btn" onclick="window.taskToggleStar(\''+esc(t.id)+'\','+(!t.starred)+')">'+(t.starred?'حذف ستاره':'ستاره')+'</button>');
@@ -133,11 +134,24 @@ async function mutate(id, fn, success){
   }catch(e){toast(e.message||'عملیات انجام نشد','error');}
 }
 window.taskRespond=(id,response)=>mutate(id,(t,o)=>respondToTask(t,response,o),response==='yes'?'پیگیری تأیید شد':'پیگیری رد شد');
-window.taskComplete=(id)=>mutate(id,(t,o)=>completeTask(t,o),'پیگیری تکمیل شد');\nwindow.taskReject=(id)=>mutate(id,(t,o)=>rejectTask(t,'رد توسط مسئول',o),'پیگیری رد شد');
+window.taskComplete=(id)=>mutate(id,(t,o)=>completeTask(t,o),'پیگیری تکمیل شد');
+window.taskReject=(id)=>mutate(id,(t,o)=>rejectTask(t,'رد توسط مسئول',o),'پیگیری رد شد');
 window.taskMoveTomorrow=(id)=>mutate(id,(t,o)=>moveTaskToTomorrow(t,{...o,tomorrow:tomorrow()}),'پیگیری به فردا منتقل شد');
 window.taskToggleStar=(id,value)=>mutate(id,(t,o)=>setTaskStarred(t,value,o),value?'پیگیری ستاره‌دار شد':'ستاره حذف شد');
 window.taskSetPriority=(id,value)=>mutate(id,(t,o)=>setTaskPriority(t,value,o),'اولویت تغییر کرد');
-window.taskNotify=(id,enabled,reminder_at)=>mutate(id,(t,o)=>configureTaskNotification(t,{...o,enabled,reminder_at}),'یادآوری تنظیم شد');\nwindow.taskReminderForm=async function(id){\n  const current=await repository().getById(id); if(!current)return toast('پیگیری پیدا نشد','error');\n  const value=current.reminder_at?new Date(current.reminder_at).toISOString().slice(0,16):'';\n  modal('<h2>تنظیم یادآوری</h2><label>زمان یادآوری<input id="te_reminder_edit" type="datetime-local" value="'+esc(value)+'"></label><div class="modal-actions"><button class="btn" onclick="closeModal()">انصراف</button><button class="btn primary" onclick="window.taskSaveReminder(\\''+esc(id)+'\\')">ذخیره</button></div>');\n};\nwindow.taskSaveReminder=async function(id){\n  const value=document.getElementById('te_reminder_edit')?.value;\n  if(!value)return toast('زمان یادآوری الزامی است','error');\n  close(); await window.taskNotify(id,true,new Date(value).toISOString());\n};
+window.taskNotify=(id,enabled,reminder_at)=>mutate(id,(t,o)=>configureTaskNotification(t,{...o,enabled,reminder_at}),'یادآوری تنظیم شد');
+window.taskReminderForm=async function(id){
+  const current=await repository().getById(id);
+  if(!current)return toast('پیگیری پیدا نشد','error');
+  const value=current.reminder_at?new Date(current.reminder_at).toISOString().slice(0,16):'';
+  modal(`<h2>تنظیم یادآوری</h2><label>زمان یادآوری<input id="te_reminder_edit" type="datetime-local" value="${esc(value)}"></label><div class="modal-actions"><button class="btn" onclick="closeModal()">انصراف</button><button class="btn primary" onclick="window.taskSaveReminder('${esc(id)}')">ذخیره</button></div>`);
+};
+window.taskSaveReminder=async function(id){
+  const value=document.getElementById('te_reminder_edit')?.value;
+  if(!value)return toast('زمان یادآوری الزامی است','error');
+  close();
+  await window.taskNotify(id,true,new Date(value).toISOString());
+};
 window.taskCreateForm=taskCreateForm;
 window.taskCreate=taskCreate;
 window.refreshTaskCenter=refreshTaskCenter;
