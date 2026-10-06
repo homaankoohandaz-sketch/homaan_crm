@@ -9,7 +9,7 @@ test('task UI binds the canonical Task Engine actions', () => {
   for (const name of ['createTask','respondToTask','completeTask','rejectTask','moveTaskToTomorrow','setTaskStarred','setTaskPriority','configureTaskNotification','listDueTodayTasks','listOverdueTasks','listStarredTasks']) {
     assert.match(ui, new RegExp(name));
   }
-  for (const action of ['taskRespond','taskComplete','taskMoveTomorrow','taskToggleStar']) assert.match(ui, new RegExp(action));
+  for (const action of ['taskRespond','taskReject','taskComplete','taskMoveTomorrow','taskToggleStar','taskReminderForm','taskSaveReminder']) assert.match(ui, new RegExp(action));
 });
 
 test('task UI exposes a single Task Center route and does not create a second table', () => {
