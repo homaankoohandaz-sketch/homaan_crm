@@ -87,3 +87,12 @@ Full prior sections (Security detail, 609-632 runs, 633-650 detail, Netlify reco
 - Bumped service-worker shell cache from v4 to v5.
 - Focused source-level syntax verification: buildwise-app.js PASS, src/domains/crm/data-import.js PASS; regression assertions for UI governance/import filtering PASS.
 - Public runtime verification used the authenticated BuildWise Production E2E profile and confirmed the profile session is signed in as owner, but the currently published Netlify deployment still served the previous UI. Runtime acceptance of these latest code changes remains PENDING until the implementation branch is deployed.
+
+## 2026-10-07 — Production data cleanup + latest runtime gate
+- Re-checked live Supabase before cleanup: public.properties contained 1,729 rows, all with generated IMP-* property codes from the malformed 2026-09-23 15:32 import window; 0 had owner name, mobile, total price, or price-per-meter; only 4 had land_area and 1,255 had a street value. This is not valid CRM property data.
+- The 1,729 malformed live property rows were deleted using the exact import-window + generated-code + empty-owner/contact/pricing predicate. No property images, photos, documents, followups, market observations, deals, tasks, promotions, construction projects, matches, valuations, or alerts referenced those rows. One old customer_shares test record referenced a malformed property; its FK is ON DELETE SET NULL, so the property cleanup did not orphan a blocking child record.
+- Post-cleanup verification is required before marking the data-cleanup item DONE.
+- CI for commit 5bd06d4 is GREEN: Agent Control Plane Validation, Application Validation, BuildWise QA, Phase Code Map, Supabase Migration Gate, and BuildWise Unit Tests all completed successfully.
+- Netlify Deploy Preview for 5bd06d4 is successful at https://deploy-preview-15--buildwis-ai.netlify.app.
+- Public runtime smoke on the latest deploy preview confirmed BuildWise AI branding, all four role choices, and absence of internal instruction/debug/production-suite/duplicate-mobile-navigation leakage.
+- Authenticated production/runtime acceptance is still BLOCKED on a signed-in browser session; Browser Context Profiles currently report no signed-in site. No authenticated DONE claim is made.
