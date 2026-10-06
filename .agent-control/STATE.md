@@ -61,3 +61,14 @@ Full prior sections (Security detail, 609-632 runs, 633-650 detail, Netlify reco
 - CI for `44498c9`: Unit Tests PASS, Application Validation PASS, Worker Runtime PASS, Phase Code Map PASS.
 - CI for `520c52c`: migration/application/unit/QA runs are currently in progress.
 - NOT DONE yet: authenticated browser/runtime verification on the implementation branch.
+
+
+## 2026-10-06/07 — Production hardening batch
+- Implemented TDD regression coverage for blank Excel rows, module governance, internal-copy leakage, property bulk delete, and duplicate task navigation.
+- Import normalization now skips fully blank spreadsheet rows while preserving original source row numbers.
+- Canonical `ui_modules` governance remains the single module-control system: manager edit/save/hide/delete.
+- Property bulk delete is manager-scoped through `manager_bulk_delete_properties(bigint[])`.
+- Removed internal dashboard copy from production UI.
+- Confirmed NAV contains a single Task Center entry.
+- BuildWise Unit Tests passed on commit `7efadb9`; Application Validation initially failed only because `loadUiModules` had been committed as `async async function`. Corrected in commit `a9144b6`; fresh validation run is executing.
+- Runtime authenticated acceptance remains separate and is not marked DONE.
