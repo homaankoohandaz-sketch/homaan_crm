@@ -47,3 +47,17 @@ Full prior sections (Security detail, 609-632 runs, 633-650 detail, Netlify reco
 - UI actions: create, approve, reject, complete, move to tomorrow, star, reminder.
 - Existing public.tasks remains the sole persistence table; no second task engine/table introduced.
 - GitHub readback verified. CI/browser runtime evidence not yet returned; status remains IMPLEMENTED / RUNTIME PENDING, not DONE.
+
+
+## 2026-10-06 — Unified Task Engine → UI → Auth/Permission → Notification
+- Canonical Task Engine UI binding is implemented at `src/ui/task-engine-ui.js` and routed from `buildwise-app.js`.
+- UI exposes one Task Center for CRM / Construction / Procurement; no second task table was introduced.
+- Production Supabase `public.tasks` was extended additively with canonical Task Engine fields including `delegated_by` and `audit_log`.
+- Task RLS now scopes reads to task managers or the assigned user; writes are manager-scoped except assigned-user task updates.
+- In-app notifications reuse existing `workflow_notifications`; assignment, due-today, overdue and reminder paths are wired.
+- Authorization helper functions are internal RLS helpers; public EXECUTE was revoked.
+- PR #15 opened for this slice.
+- Commit `44498c9`: code/UI slice. Commit `520c52c`: migration persistence.
+- CI for `44498c9`: Unit Tests PASS, Application Validation PASS, Worker Runtime PASS, Phase Code Map PASS.
+- CI for `520c52c`: migration/application/unit/QA runs are currently in progress.
+- NOT DONE yet: authenticated browser/runtime verification on the implementation branch.
