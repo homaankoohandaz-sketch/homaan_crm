@@ -25,8 +25,15 @@ function normalizeOne(row, index) {
   };
 }
 
+function isMeaningfulRow(row) {
+  if (!row || typeof row !== 'object' || Array.isArray(row)) return false;
+  return Object.values(row).some(value => value != null && String(value).trim() !== '');
+}
+
 export function normalizeImportRows(rows = []) {
-  return (rows || []).map((row, index) => normalizeOne(row, index));
+  return (rows || [])
+    .filter(isMeaningfulRow)
+    .map((row, index) => normalizeOne(row, index));
 }
 
 function phoneIssue(row) {
@@ -109,7 +116,7 @@ export function isolateImportErrors(rows = [], options = {}) {
 }
 
 export function buildImportPreview(rows = [], options = {}) {
-  const sourceRows = (rows || []).map(asRaw);
+  const sourceRows = (rows || []).filter(isMeaningfulRow).map(asRaw);
   const columns = [...new Set(sourceRows.flatMap((r) => Object.keys(r || {})))];
   const validation = validateImportRows(sourceRows, options);
   const duplicateCandidates = findDuplicateCandidates(sourceRows);
