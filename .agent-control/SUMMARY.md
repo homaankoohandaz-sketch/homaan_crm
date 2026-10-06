@@ -38,4 +38,4 @@ Branch: buildwise-implementation
 - Live Supabase Procurement tables are present under the canonical `project_*` names. HSE/corrective-action schema is not yet canonicalized.
 - 630 remains BLOCKED: no authenticated runtime evidence for the exact implementation HEAD.
 - OPENAI live AI remains pending until `OPENAI_API_KEY` is actually available to the Edge Function runtime.
-- Next action: use a deployment provider/path that can deploy the exact implementation branch HEAD independently of current Netlify production, then run authenticated E2E.
+- Next action: obtain an independently verifiable deployment of the exact implementation branch HEAD, then run authenticated E2E; current Netlify has no deploy path for this branch and no Vercel team is connected.
