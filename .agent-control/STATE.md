@@ -39,3 +39,11 @@ last_batch: 2026-10-04 Grok task-engine audit/reject/notification
 
 ## Prior STATE history
 Full prior sections (Security detail, 609-632 runs, 633-650 detail, Netlify recovery, production smoke reconciliation) remain in git history of this path on buildwise-implementation. Do not compact away evidence; prefer prior commits when expanding.
+
+
+## 2026-10-06 — Unified Task Engine UI binding
+- Active implementation: Task Center UI connected to canonical Task Engine on buildwise-implementation.
+- Added src/ui/task-engine-ui.js, Task Center navigation in buildwise-app.js, module load in index.html, and focused test in tests/task-engine-ui.test.js.
+- UI actions: create, approve, reject, complete, move to tomorrow, star, reminder.
+- Existing public.tasks remains the sole persistence table; no second task engine/table introduced.
+- GitHub readback verified. CI/browser runtime evidence not yet returned; status remains IMPLEMENTED / RUNTIME PENDING, not DONE.
