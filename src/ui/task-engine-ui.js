@@ -26,7 +26,7 @@ const statusLabel = { open:'باز', in_progress:'در حال پیگیری', com
 let repo;
 function repository(){ return repo ??= createTaskRepository(window.db); }
 function actor(){ return window.me?.id || null; }
-function canManage(){ return ['owner','manager','staff','builder'].includes(window.role); }
+function canManage(){ return ['owner','admin','manager','staff','builder'].includes(window.role); }
 function modal(html){ window.modal?.(html); }
 function close(){ window.closeModal?.(); }
 function toast(message, type='info'){ window.toast?.(message, type); }
@@ -107,8 +107,9 @@ async function refreshTaskCenter(){
 }
 
 async function taskCenter(){
-  main.innerHTML = page('پیگیری‌ها','Task Engine واحد برای CRM، ساخت و خرید',canManage()?btn('+ پیگیری جدید','window.taskCreateForm()',true):'')
-    +'<section class="panel" id="task-center-root"></section>';
+  const root=document.getElementById('main');
+  if(!root) throw new Error('Task Center root not found');
+  root.innerHTML = '<div class="page-head"><div><div class="eyebrow">BUILDWISE</div><h1>پیگیری‌ها</h1><p>Task Engine واحد برای CRM، ساخت و خرید</p></div><div class="page-actions">'+(canManage()?'<button class="btn primary" onclick="window.taskCreateForm()">+ پیگیری جدید</button>':'')+'</div></div><section class="panel" id="task-center-root"></section>';
   await refreshTaskCenter();
 }
 
