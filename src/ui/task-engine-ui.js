@@ -63,11 +63,32 @@ async function loadTasks(){
   return Array.isArray(rows) ? rows : [];
 }
 
+async function notifyTaskCandidates(rows){
+  const now=new Date().toISOString();
+  const candidates=[];
+  for(const task of rows){
+    if(['completed','rejected'].includes(task.status) || !task.assigned_to) continue;
+    if(listDueTodayTasks([task],now).length) candidates.push({kind:'due',subject:'BuildWise · سررسید امروز',body:'[task:'+task.id+':due] پیگیری «'+task.title+'» امروز سررسید دارد.'});
+    if(listOverdueTasks([task],now).length) candidates.push({kind:'overdue',subject:'BuildWise · کار عقب‌افتاده',body:'[task:'+task.id+':overdue] پیگیری «'+task.title+'» از موعد گذشته است.'});
+    if(task.notification_enabled && task.reminder_at && Date.parse(task.reminder_at)<=Date.parse(now)){
+      candidates.push({kind:'reminder',subject:'BuildWise · یادآوری',body:'[task:'+task.id+':reminder] زمان یادآوری پیگیری «'+task.title+'» رسیده است.'});
+    }
+  }
+  for(const item of candidates){
+    const q=await window.db.from('workflow_notifications').select('id').eq('recipient_id',rows.find(t=>item.body.includes('[task:'+t.id+':'))?.assigned_to||null).eq('subject',item.subject).ilike('body','%'+item.body.split(']')[0]+']%').limit(1);
+    if(q.error || q.data?.length) continue;
+    const task=rows.find(t=>item.body.includes('[task:'+t.id+':'));
+    if(!task?.assigned_to) continue;
+    await window.db.from('workflow_notifications').insert({recipient_id:task.assigned_to,channel:'in_app',subject:item.subject,body:item.body,status:'queued'});
+  }
+}
+
 async function refreshTaskCenter(){
   const root=document.getElementById('task-center-root'); if(!root) return;
   root.innerHTML='<div class="loading">در حال بارگذاری پیگیری‌ها…</div>';
   try{
     const rows=await loadTasks();
+    await notifyTaskCandidates(rows);
     const now=new Date().toISOString();
     const due=listDueTodayTasks(rows, now);
     const overdue=listOverdueTasks(rows, now);
