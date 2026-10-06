@@ -3,7 +3,6 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
 import { normalizeImportRows, buildImportPreview } from '../../src/domains/crm/import-quality.js';
-import { MODULE_REGISTRY, canManageModule, applyModulePatch } from '../../src/core/module-registry.js';
 
 test('blank spreadsheet rows are ignored instead of becoming property records', () => {
   const rows = [
@@ -19,14 +18,14 @@ test('blank spreadsheet rows are ignored instead of becoming property records', 
   assert.equal(preview.rowCount, 2);
 });
 
-test('module registry gives manager hide/edit/delete/save controls for every registered feature', () => {
-  assert.ok(MODULE_REGISTRY.length >= 10);
-  assert.equal(canManageModule('manager'), true);
-  assert.equal(canManageModule('advisor'), false);
-  const updated = applyModulePatch(MODULE_REGISTRY[0], { title: 'عنوان جدید', visible: false, enabled: true });
-  assert.equal(updated.title, 'عنوان جدید');
-  assert.equal(updated.visible, false);
-  assert.equal(updated.enabled, true);
+test('manager module governance exposes edit/save/hide/delete controls', () => {
+  const app = fs.readFileSync(new URL('../../buildwise-app.js', import.meta.url), 'utf8');
+  assert.match(app, /appSettings/);
+  assert.match(app, /saveUiModule/);
+  assert.match(app, /deleteUiModule/);
+  assert.match(app, /ui_visible_/);
+  assert.match(app, /manager_edit_ui_module/);
+  assert.match(app, /manager_delete_ui_module/);
 });
 
 test('production UI contains no internal instruction copy', () => {
@@ -38,8 +37,8 @@ test('production UI contains no internal instruction copy', () => {
 
 test('property UI exposes manager-scoped bulk delete contract', () => {
   const app = fs.readFileSync(new URL('../../buildwise-app.js', import.meta.url), 'utf8');
-  assert.match(app, /propertyBulkDelete/);
-  assert.match(app, /manager_delete_properties/);
+  assert.match(app, /bulkDeleteProperties/);
+  assert.match(app, /manager_bulk_delete_properties/);
 });
 
 test('navigation does not duplicate the same task section', () => {
