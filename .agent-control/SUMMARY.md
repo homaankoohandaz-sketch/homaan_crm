@@ -39,3 +39,9 @@ Branch: buildwise-implementation
 - 630 remains BLOCKED: no authenticated runtime evidence for the exact implementation HEAD.
 - OPENAI live AI remains pending until `OPENAI_API_KEY` is actually available to the Edge Function runtime.
 - Next action: obtain an independently verifiable deployment of the exact implementation branch HEAD, then run authenticated E2E; current Netlify has no deploy path for this branch and no Vercel team is connected.
+
+## 2026-10-06 — Task Engine UI binding
+- Unified Task Engine moved from pure-layer-only to application UI binding.
+- Canonical files: src/ui/task-engine-ui.js, src/core/task-engine.js, src/core/task-repository.js.
+- UI lifecycle: create → assign → today/team view → approve/reject → complete/move → reminder → audit persistence.
+- Acceptance remains PARTIAL until CI and authenticated browser/runtime evidence are available.
