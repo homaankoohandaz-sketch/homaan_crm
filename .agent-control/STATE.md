@@ -72,3 +72,18 @@ Full prior sections (Security detail, 609-632 runs, 633-650 detail, Netlify reco
 - Confirmed NAV contains a single Task Center entry.
 - BuildWise Unit Tests passed on commit `7efadb9`; Application Validation initially failed only because `loadUiModules` had been committed as `async async function`. Corrected in commit `a9144b6`; fresh validation run is executing.
 - Runtime authenticated acceptance remains separate and is not marked DONE.
+
+
+## 2026-10-06 — Production UI / Import Hardening
+- User-reported production defects: internal instruction copy visible across UI, duplicate navigation presentation, no manager bulk property deletion, malformed Excel import producing 1,750 property rows, and no manager governance for newly added modules.
+- Live Supabase verification found public.properties = 1,750; all 1,750 rows belonged to the malformed 2026-09-23 import window. Import batch #4 recorded 3,750 rows with 1,750 successful / 2,000 failed.
+- Removed the 1,750 malformed property rows and marked import batch #4 rolled_back; no owners were attached to those rows.
+- Applied live CRM import-quality runtime schema with import_batch_id support and exact batch rollback function.
+- Added persistent ui_modules governance with manager-only edit/save/hide/delete RPCs and seeded module registry.
+- Added manager property selection, bulk delete, edit and delete controls.
+- Excel importer now filters fully blank spreadsheet rows before mapping/insertion.
+- Removed the production suite shortcut overlay from index.html; this removes the public Netlify/Showroom/Project Control shortcut injection.
+- Removed duplicate mobile navigation strip; bottom navigation is the single mobile navigation surface.
+- Bumped service-worker shell cache from v4 to v5.
+- Focused source-level syntax verification: buildwise-app.js PASS, src/domains/crm/data-import.js PASS; regression assertions for UI governance/import filtering PASS.
+- Public runtime verification used the authenticated BuildWise Production E2E profile and confirmed the profile session is signed in as owner, but the currently published Netlify deployment still served the previous UI. Runtime acceptance of these latest code changes remains PENDING until the implementation branch is deployed.
