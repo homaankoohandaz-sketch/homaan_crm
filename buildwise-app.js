@@ -2,7 +2,7 @@ const U='https://beuestoewletjsgmigmf.supabase.co';
 const K='sb_publishable_dE92Qm9EtMv4sdNRXF7SRg_7ox1xYax';
 const db=supabase.createClient(U,K); window.db=db;
 let me=null,role=null,tab='dashboard',requestedRole=null;
-const NAV=[['requests','درخواست‌ها','◉'],['tasks','پیگیری‌ها','✓'],['promotions','پروموشن','✦'],['dashboard','داشبورد','⌂'],['properties','املاک','⌂'],['leads','خواهان‌ها','◉'],['deals','معاملات','◆'],['search','جستجوی هوشمند','⌕'],['construction','ساخت و پروژه','▦'],['market','بازار و ارزش‌گذاری','◌'],['matching','تطبیق','⇄'],['room','ROOM','◇'],['automation','اتوماسیون','⚙'],['customerflow','مشتری → مشاور','↗'],['ai','دستیار AI','✦']];
+const NAV=[['requests','درخواست‌ها','◉'],['tasks','پیگیری‌ها','✓'],['promotions','پروموشن','✦'],['dashboard','داشبورد','⌂'],['properties','املاک','⌂'],['leads','خواهان‌ها','◉'],['deals','معاملات','◆'],['search','جستجوی هوشمند','⌕'],['construction','ساخت و پروژه','▦'],['market','بازار و ارزش‌گذاری','◌'],['matching','تطبیق','⇄'],['room','ROOM','◇'],['automation','اتوماسیون','⚙'],['customerflow','مشتری → مشاور','↗'],['ai','دستیار AI','✦'],['tasks','پیگیری‌ها','✓']];
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const n=x=>x===''||x==null?null:Number(x); const money=x=>x==null||x===''||Number.isNaN(Number(x))?'—':Number(x).toLocaleString('fa-IR'); const date=x=>x?new Date(x).toLocaleDateString('fa-IR'):'—';
 const stateLabel=x=>({active:'فعال',inactive:'غیرفعال',draft:'پیش‌نویس',completed:'تکمیل‌شده',pending:'در انتظار',closed:'بسته'}[x]||x||'—');
@@ -49,7 +49,7 @@ async function dashboard(){
     db.from('properties_client').select('id',{count:'exact',head:true}),
     db.from('leads').select('id',{count:'exact',head:true}),
     db.from('deals').select('id',{count:'exact',head:true}),
-    db.from('tasks').select('id',{count:'exact',head:true}).eq('status','pending'),
+    db.from('tasks').select('id',{count:'exact',head:true}).in('status',['pending','open','in_progress']),
     db.from('public_requests').select('id,request_type,status,assigned_agent_id,created_at').order('created_at',{ascending:false}).limit(500),
     db.from('app_roles').select('user_id,full_name,role,active').eq('active',true),
     db.from('activity_logs').select('actor_id,actor_name,action,created_at').order('created_at',{ascending:false}).limit(500)
