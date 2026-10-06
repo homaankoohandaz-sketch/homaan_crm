@@ -116,30 +116,38 @@ async function taskCreateForm(){
 
 async function taskCreate(){
   try{
-    const id=crypto.randomUUID();
+    const id=String(Date.now());
     const input={id,title:te_title.value.trim(),description:te_description.value.trim(),context_type:te_context.value,subject_type:te_subject.value,related_entity_id:te_related.value.trim(),created_by:actor(),assigned_to:te_assigned.value,scheduled_date:te_date.value,scheduled_time:te_time.value||null,deadline:te_deadline.value?new Date(te_deadline.value).toISOString():null,priority:te_priority.value,notification_enabled:te_notify.checked,reminder_at:te_reminder.value?new Date(te_reminder.value).toISOString():null};
     if(!input.title||!input.related_entity_id||!input.created_by||!input.assigned_to)return toast('عنوان، موجودیت و مسئول الزامی است','error');
     const built=createTask(input,{actor:actor()});
     const saved=await repository().create(built);
+    if (built.assigned_to) {
+      await window.db.from('workflow_notifications').insert({
+        recipient_id: built.assigned_to,
+        channel: 'in_app',
+        subject: 'BuildWise · پیگیری جدید',
+        body: '[task:' + built.id + ':assigned] پیگیری جدید «' + built.title + '» به شما اختصاص یافت.',
+        status: 'queued'
+      });
+    }
     close(); await refreshTaskCenter(); toast('پیگیری ثبت شد','success'); return saved;
   }catch(e){toast(e.message||'ثبت پیگیری انجام نشد','error');}
 }
 
-async function mutate(id, fn, success){
+async function mutate(id, operation, success){
   try{
-    const current=await repository().getById(id); if(!current)return toast('پیگیری پیدا نشد','error');
-    const next=fn(current,{now:new Date().toISOString(),actor:actor()});
-    await repository().updateById(id,next);
+    const saved=await operation(id);
+    if(!saved)return toast('پیگیری پیدا نشد','error');
     await refreshTaskCenter(); toast(success,'success');
   }catch(e){toast(e.message||'عملیات انجام نشد','error');}
 }
-window.taskRespond=(id,response)=>mutate(id,(t,o)=>respondToTask(t,response,o),response==='yes'?'پیگیری تأیید شد':'پیگیری رد شد');
-window.taskComplete=(id)=>mutate(id,(t,o)=>completeTask(t,o),'پیگیری تکمیل شد');
-window.taskReject=(id)=>mutate(id,(t,o)=>rejectTask(t,'رد توسط مسئول',o),'پیگیری رد شد');
-window.taskMoveTomorrow=(id)=>mutate(id,(t,o)=>moveTaskToTomorrow(t,{...o,tomorrow:tomorrow()}),'پیگیری به فردا منتقل شد');
-window.taskToggleStar=(id,value)=>mutate(id,(t,o)=>setTaskStarred(t,value,o),value?'پیگیری ستاره‌دار شد':'ستاره حذف شد');
-window.taskSetPriority=(id,value)=>mutate(id,(t,o)=>setTaskPriority(t,value,o),'اولویت تغییر کرد');
-window.taskNotify=(id,enabled,reminder_at)=>mutate(id,(t,o)=>configureTaskNotification(t,{...o,enabled,reminder_at}),'یادآوری تنظیم شد');
+window.taskRespond=(id,response)=>mutate(id,(taskId)=>repository().respond(taskId,response,{actor:actor()}),response==='yes'?'پیگیری تأیید شد':'پیگیری ثبت شد');
+window.taskComplete=(id)=>mutate(id,(taskId)=>repository().complete(taskId,{actor:actor()}),'پیگیری تکمیل شد');
+window.taskReject=(id)=>mutate(id,(taskId)=>repository().reject(taskId,'رد توسط مسئول',{actor:actor()}),'پیگیری رد شد');
+window.taskMoveTomorrow=(id)=>mutate(id,(taskId)=>repository().moveToTomorrow(taskId,tomorrow(),{actor:actor()}),'پیگیری به فردا منتقل شد');
+window.taskToggleStar=(id,value)=>mutate(id,(taskId)=>repository().setStarred(taskId,value,{actor:actor()}),value?'پیگیری ستاره‌دار شد':'ستاره حذف شد');
+window.taskSetPriority=(id,value)=>mutate(id,(taskId)=>repository().setPriority(taskId,value,{actor:actor()}),'اولویت تغییر کرد');
+window.taskNotify=(id,enabled,reminder_at)=>mutate(id,(taskId)=>repository().configureNotification(taskId,{enabled,reminder_at,actor:actor()}),'یادآوری تنظیم شد');
 window.taskReminderForm=async function(id){
   const current=await repository().getById(id);
   if(!current)return toast('پیگیری پیدا نشد','error');
