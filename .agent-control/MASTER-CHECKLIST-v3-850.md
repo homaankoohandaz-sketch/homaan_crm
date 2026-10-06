@@ -1076,10 +1076,12 @@ R — CONSTRUCTION CONTROL
 464 [~] Quality
 
 465 [~] HSE
+    Canonical `project_hse` schema now live and tracked; authenticated runtime CRUD remains pending.
 
 466 [~] Risk
 
 467 [~] Corrective Action
+    Canonical `project_corrective_actions` schema now live and tracked; authenticated runtime CRUD remains pending.
 
 468 [~] Site Diary
 
