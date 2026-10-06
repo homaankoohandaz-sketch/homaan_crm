@@ -1,6 +1,6 @@
 # BuildWise AI — SUMMARY
 
-Updated: 2026-10-04 (Grok pure DONE batch)
+Updated: 2026-10-06 (runtime/deployment reconciliation)
 Branch: buildwise-implementation
 
 ## Canonical governance
@@ -30,6 +30,12 @@ Branch: buildwise-implementation
 - market-intelligence integrity tests
 - Checklist reconcile note for 651-850 contracts
 
-## Release
-Production smoke URL: https://buildwise-ai-h.netlify.app
-Never force-update main.
+## Runtime / release gate — 2026-10-06
+- Canonical implementation branch: `buildwise-implementation`.
+- Current branch HEAD after control-plane reconciliation: `3fd3220046a4073871c33832b3912b6180511aaf`.
+- `main` remains 5 commits ahead of the pre-reconciliation implementation merge base; production Netlify deploy `6ac35708e38a3300080370a4` is `main` and is not implementation evidence.
+- A non-merge PR runtime path was attempted from the exact implementation HEAD. Netlify did not emit a status/deploy for that PR, so the route is rejected rather than repeatedly retried.
+- Live Supabase Procurement tables are present under the canonical `project_*` names. HSE/corrective-action schema is not yet canonicalized.
+- 630 remains BLOCKED: no authenticated runtime evidence for the exact implementation HEAD.
+- OPENAI live AI remains pending until `OPENAI_API_KEY` is actually available to the Edge Function runtime.
+- Next action: use a deployment provider/path that can deploy the exact implementation branch HEAD independently of current Netlify production, then run authenticated E2E.
