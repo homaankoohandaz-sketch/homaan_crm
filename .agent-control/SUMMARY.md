@@ -3,6 +3,19 @@
 Updated: 2026-10-06 (runtime/deployment reconciliation)
 Branch: buildwise-implementation
 
+## Single source of truth
+- Workspace: `homaankoohandaz-sketch/homaan_crm`
+- Code: `buildwise-implementation`
+- Release: `main`
+- Summary: `.agent-control/SUMMARY.md` (this file)
+- State: `.agent-control/STATE.md`
+- Architecture: `.agent-control/MASTER-ARCHITECTURE.md`
+- Acceptance: `.agent-control/MASTER-CHECKLIST-v3-850.md`
+- Decisions: `.agent-control/DECISIONS.md`
+- Protocol: `.agent-control/AGENT_EXECUTION_PROTOCOL.md`
+- Task queue: `.agent-control/TASK-QUEUE.yaml`
+- Do not create competing summaries, checklists, architectures, task registries, or applications.
+
 ## Canonical governance
 - Acceptance register: **MASTER-CHECKLIST-v3-850.md (850)** — not 675.
 - DONE law: implementation + test + runtime when required. No false DONE.
