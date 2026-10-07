@@ -1,5 +1,6 @@
 import { calculateConstruction } from './calculations.js';
 import { createProjectRepository } from './project-repository.js';
+import { createProjectControlRepository } from './project-control-repository.js';
 
 const money = (value) => typeof window.money === 'function'
   ? window.money(value)
@@ -155,3 +156,5 @@ window.calcConstruction = function () {
     });
   };
 })();
+
+window.BuildWiseProjectControlRepository = function(client){ return createProjectControlRepository(client || window.db); };
