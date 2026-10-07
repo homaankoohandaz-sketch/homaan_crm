@@ -70,7 +70,7 @@ Root-level legacy engines/pages are transitional. Do not add new root-level feat
 6. No production/destructive/auth/security/billing action without the required human gate.
 7. Never claim DONE without implementation + tests + runtime evidence.
 8. When two files implement the same role, choose one canonical file and migrate/remove the duplicate; do not maintain both indefinitely.
-9. Stable decisions belong here; execution status belongs in NOW. Do not create another status/state file.
+9. Stable decisions belong here; execution status belongs in `.agent-control/STATE.md`. Do not create another status/state file.
 
 ## 6. Current decisions
 - BuildWise remains a unified REOS, not a collection of independent apps.
@@ -106,7 +106,10 @@ Rules:
 7. When a decision changes architecture, update `DECISIONS.md`, `MASTER-ARCHITECTURE.md`, the owning phase, and `SUMMARY.md` as required by the change protocol.
 8. The 850-task master reference is a planning/acceptance source only when its exact committed version is present and verifiable in GitHub. Agents must never invent missing task numbers.
 
-## 11. Current architecture phase — 2026-09-27
+## 11. Single-workspace rule — 2026-10-07
+The repository and canonical implementation branch are the only active BuildWise engineering workspace. Old branches are historical pointers, not parallel development environments. New work must target `buildwise-implementation` and be released through `main`.
+
+## 12. Current architecture phase — 2026-09-27
 The current architecture phase is tracked separately in `.agent-control/PHASE-CURRENT-ARCHITECTURE.md`.
 
 The next cross-domain implementation slice is the **Unified Task Engine**: CRM/file/customer follow-up, construction/workshop follow-up, and procurement/purchasing follow-up. Shared capabilities are assignment, calendar, notification, reminder, priority, starred promotion, Yes/No response, completion, move-to-tomorrow and audit.
