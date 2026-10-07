@@ -76,3 +76,12 @@ Branch: buildwise-implementation
 - Old active-looking branches were collapsed to the canonical implementation head; the explicitly named archive branch remains historical only.
 - Obsolete open release/governance PRs #5 and #11 were closed. PR #15 was merged into main as part of the consolidation.
 - No new application, checklist, summary, architecture, task registry or coding workspace may be created for BuildWise.
+
+## 2026-10-07 — Post-Task-Engine project-control batch
+- Started the next agreed slice: Project Persistence → Schedule/Milestone → Progress/KPI.
+- Implemented canonical `project-control-repository.js` over existing project/schedule/progress repositories.
+- Routed construction project list/create persistence through the canonical project repository.
+- Added TDD coverage for vertical snapshot, project update isolation, and creator persistence.
+- PR #16 opened from `buildwise-implementation` to `main`.
+- Acceptance remains PARTIAL until CI plus runtime/authenticated UI evidence are available.
+
