@@ -1,11 +1,1 @@
-# Deprecated — BuildWise 100-Point Checklist
-
-This file is no longer an execution reference.
-
-Use:
-- `.agent-control/SUMMARY.md` for orientation.
-- `.agent-control/MASTER-ARCHITECTURE.md` for architecture and decisions.
-- `docs/PHASES/` for phase scope.
-- The current BuildWise Master Checklist v2 (675 items) as acceptance truth.
-
-Do not add new checklist items here.
+# Deprecated pointer — NOT AN EXECUTION REFERENCE\n\nCanonical acceptance reference:\n`.agent-control/MASTER-CHECKLIST-v3-850.md` (850 items).\n\nThe former 100/675 references in this file are historical only. Do not plan, implement, or report status from this file.\n
