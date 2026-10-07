@@ -3,6 +3,9 @@
 ## Mission
 Build and maintain Homaan CRM through coordinated AI agents. This repository is the source of truth for code; `.agent-control/` is the source of truth for coordination.
 
+## Single source of truth
+Read `BUILDWISE-SINGLE-SOURCE-OF-TRUTH.md` first. There is one active implementation branch: `buildwise-implementation`. There is one release branch: `main`. Do not create or use another active coding environment for BuildWise.
+
 ## Canonical execution protocol
 All agents MUST follow:
 `.agent-control/AGENT_EXECUTION_PROTOCOL.md`
@@ -21,15 +24,17 @@ The protocol is the behavioral authority for agent execution. Material decisions
 - HUMAN: final authority for destructive, security-sensitive, financial, production, or irreversible changes.
 
 ## Mandatory protocol
-1. Read `.agent-control/STATE.md` before work.
-2. Read `.agent-control/AGENT_EXECUTION_PROTOCOL.md`.
-3. Read the relevant task in `.agent-control/tasks/`.
-4. Claim the task and affected files before editing.
-5. Never edit a file claimed by another active agent.
-6. Record important decisions in `.agent-control/memory/`.
-7. Run the required verification before declaring done.
-8. Write a handoff in `.agent-control/handoffs/` when another agent must continue.
-9. Never expose secrets, tokens, private keys, or credentials in memory, commits, logs, or prompts.
+1. Read `BUILDWISE-SINGLE-SOURCE-OF-TRUTH.md`.
+2. Read `.agent-control/SUMMARY.md`.
+3. Read `.agent-control/STATE.md` before work.
+4. Read `.agent-control/AGENT_EXECUTION_PROTOCOL.md`.
+5. Read the relevant task in `.agent-control/tasks/`.
+6. Claim the task and affected files before editing.
+7. Never edit a file claimed by another active agent.
+8. Record important decisions in `.agent-control/memory/` and update the canonical file named by the decision.
+9. Run the required verification before declaring done.
+10. Write a handoff in `.agent-control/handoffs/` when another agent must continue.
+11. Never expose secrets, tokens, private keys, or credentials in memory, commits, logs, or prompts.
 
 ## Git rules
 - Prefer one branch/worktree per task.
