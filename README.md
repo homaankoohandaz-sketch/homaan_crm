@@ -1,5 +1,8 @@
 # BuildWise AI
 
+> Canonical workspace: `BUILDWISE-SINGLE-SOURCE-OF-TRUTH.md`
+> Active coding: `buildwise-implementation` only. Release: `main` only.
+
 ## Start here
 1. `.agent-control/SUMMARY.md` — short project map and change ledger.
 2. `.agent-control/MASTER-ARCHITECTURE.md` — mother architecture and decisions.
