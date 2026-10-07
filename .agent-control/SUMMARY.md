@@ -65,3 +65,14 @@ Branch: buildwise-implementation
 - Role-scoped task RLS and notification path are live in Supabase.
 - CI evidence exists for implementation commit `44498c9`; migration commit `520c52c` is under CI.
 - Runtime/browser verification remains open; no false DONE promotion.
+
+
+## 2026-10-07 — Workspace unification
+- **ONE repository:** `homaankoohandaz-sketch/homaan_crm`.
+- **ONE active coding branch:** `buildwise-implementation`.
+- **ONE release branch:** `main`.
+- **ONE checklist:** `.agent-control/MASTER-CHECKLIST-v3-850.md` (850). The old 100/675 file is a deprecated pointer only.
+- **ONE summary:** this file. **ONE current state:** `.agent-control/STATE.md`. **ONE architecture:** `.agent-control/MASTER-ARCHITECTURE.md`.
+- Old active-looking branches were collapsed to the canonical implementation head; the explicitly named archive branch remains historical only.
+- Obsolete open release/governance PRs #5 and #11 were closed. PR #15 was merged into main as part of the consolidation.
+- No new application, checklist, summary, architecture, task registry or coding workspace may be created for BuildWise.
