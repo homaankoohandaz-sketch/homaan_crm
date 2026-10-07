@@ -96,3 +96,11 @@ Full prior sections (Security detail, 609-632 runs, 633-650 detail, Netlify reco
 - Netlify Deploy Preview for 5bd06d4 is successful at https://deploy-preview-15--buildwis-ai.netlify.app.
 - Public runtime smoke on the latest deploy preview confirmed BuildWise AI branding, all four role choices, and absence of internal instruction/debug/production-suite/duplicate-mobile-navigation leakage.
 - Authenticated production/runtime acceptance is still BLOCKED on a signed-in browser session; Browser Context Profiles currently report no signed-in site. No authenticated DONE claim is made.
+
+## 2026-10-07 — Post-Task-Engine project-control slice
+- Started the next canonical slice: Project Persistence → Schedule/Milestone → Progress/KPI.
+- Added `src/domains/construction/project-control-repository.js` as the single vertical adapter over canonical project, schedule and progress repositories; no parallel persistence table introduced.
+- Construction project UI persistence in `src/domains/construction/browser-adapter.js` now routes project listing/creation through `createProjectRepository`.
+- Added TDD coverage for vertical snapshot loading, project update isolation, and creator persistence.
+- PR #16 contains the slice. CI/runtime/authenticated UI evidence is not yet available from the connected GitHub write path; therefore no DONE claim is made.
+- Next execution path remains the same canonical branch and same repository; continue schedule/milestone → progress/KPI implementation without creating a second engine.
