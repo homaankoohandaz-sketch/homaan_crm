@@ -25,6 +25,7 @@ function serialize(input) {
     expected_sale_price: Number(input.totalReturn) || 0,
     expected_duration_months: input.expectedDurationMonths ?? null,
     status: input.status || 'draft',
+    created_by: input.createdBy ?? input.created_by ?? null,
     assumptions
   };
 }
