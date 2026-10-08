@@ -12,17 +12,19 @@ export function createProjectControlRepository(client) {
   return Object.freeze({
     async getVertical(projectId) {
       if (projectId == null || projectId === '') throw new TypeError('projectId is required');
-      const [project, tasks, milestones, progressSnapshot] = await Promise.all([
+      const [project, tasks, milestones, progressSnapshot, kpis] = await Promise.all([
         projects.getById(projectId),
         schedule.listTasks(projectId),
         schedule.listMilestones(projectId),
-        progress.get(projectId)
+        progress.get(projectId),
+        progress.getKpis(projectId)
       ]);
       return Object.freeze({
         project,
         tasks,
         milestones,
-        progress: progressSnapshot
+        progress: progressSnapshot,
+        kpis
       });
     },
 
