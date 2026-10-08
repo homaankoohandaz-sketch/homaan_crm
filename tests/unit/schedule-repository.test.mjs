@@ -18,6 +18,15 @@ function fakeClient() {
           tables[table].push(row);
           return { select: () => ({ single: () => Promise.resolve({ data: row, error: null }) }) };
         },
+        update(payload) {
+          return {
+            eq(column, value) {
+              const row = tables[table].find((item) => item[column] === value);
+              if (row) Object.assign(row, payload);
+              return { select: () => ({ single: () => Promise.resolve({ data: row ?? null, error: null }) }) };
+            }
+          };
+        },
         then(resolve, reject) {
           try {
             let rows = tables[table] ?? [];
