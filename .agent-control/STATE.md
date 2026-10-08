@@ -116,3 +116,13 @@ Full prior sections (Security detail, 609-632 runs, 633-650 detail, Netlify reco
 - Delay detection uses forecast/actual finish where available.
 - CI green after two real failures were diagnosed and corrected.
 - Runtime authentication is the remaining acceptance gate.
+
+
+## 2026-10-08 — Procurement Control Vertical 131–160
+- Procurement planning logic and persistence path are now connected through canonical `createProjectProcurementControlRepository`.
+- Canonical Project Control vertical now exposes procurement alongside project/WBS/schedule/milestones/progress/KPI.
+- Focused procurement repository contract added.
+- CI on implementation branch is GREEN: Unit Tests, Application Validation, QA, Phase Code Map, Agent Control Plane Validation.
+- Public Deploy Preview remains reachable and branded correctly.
+- Authenticated procurement UI/runtime acceptance remains pending; 131–160 stay PARTIAL.
+- Next action: authenticated runtime gate for the canonical project-control/procurement flow, then continue to the next coherent phase.
