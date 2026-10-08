@@ -276,6 +276,7 @@ D — PROFESSIONAL PROJECT MANAGEMENT
 ==================================================
 
 101 [~] Project Management Core
+    2026-10-08: canonical project-control vertical verified by CI; authenticated runtime remains pending.
 
 102 [~] Project / Complex / Building / Phase / Floor / Unit Hierarchy
 
@@ -286,14 +287,18 @@ D — PROFESSIONAL PROJECT MANAGEMENT
 105 [~] Project Calendar
 
 106 [~] WBS — Work Breakdown Structure
+    Canonical WBS is included in project-control vertical; CI verified.
 
 107 [~] MSP-style Scheduling
+    Schedule repository + project-management core covered by CI tests.
 
 108 [~] Gantt Chart
 
 109 [~] Milestones
+    Canonical milestone create/update/list path covered by CI tests.
 
 110 [~] Dependencies
+    Predecessor normalization and schedule dependency tests pass in CI.
 
 111 [~] Predecessors / Successors
 
@@ -312,6 +317,7 @@ D — PROFESSIONAL PROJECT MANAGEMENT
 118 [~] Time Variance %
 
 119 [~] Progress %
+    Canonical progress/KPI snapshot verified in CI.
 
 120 [~] Planned Progress
 
@@ -320,20 +326,25 @@ D — PROFESSIONAL PROJECT MANAGEMENT
 122 [~] Earned Progress
 
 123 [~] Delay Detection
+    Forecast/actual finish delay detection fixed and covered by CI.
 
 124 [~] Delay Reason
 
 125 [~] Delay Responsibility
 
 126 [~] Recovery Plan
+    Existing recovery-plan logic is exercised by project-management tests; authenticated runtime pending.
 
 127 [~] Revised Schedule
 
 128 [~] Multiple Project Versions
+    Existing baseline/version UI logic covered by project-management test suite.
 
 129 [~] Project Snapshot
+    Canonical vertical snapshot now includes project, WBS, tasks, milestones, progress and KPIs.
 
 130 [~] Project Status
+    Project-management model derives status; authenticated runtime pending.
 
 
 ==================================================
@@ -1052,16 +1063,21 @@ R — CONSTRUCTION CONTROL
 ==================================================
 
 453 [~] Project Model
+    Canonical project-control repository verified by CI.
 
 454 [~] WBS
+    WBS included in canonical vertical and verified by CI.
 
 455 [~] Schedule
+    Schedule repository CRUD/validation and management tests pass in CI.
 
 456 [~] Gantt
 
 457 [~] Baseline
+    Baseline/version logic exists and passes project-management tests; runtime pending.
 
 458 [~] Variance
+    Schedule variance and delay detection verified by CI.
 
 459 [~] BOQ
 
