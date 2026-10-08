@@ -90,3 +90,11 @@ Branch: buildwise-implementation
 - Extended canonical project-control vertical to include WBS alongside project, schedule, milestones, progress and KPI snapshot.
 - Added WBS assertion to vertical repository TDD.
 - TASK-006 remains IN_PROGRESS; runtime/authenticated acceptance and CI evidence are still pending.
+
+## 2026-10-08 — Full project-control phase verification cycle
+- Completed a full verification cycle for Project → WBS → Schedule/Milestone → Progress/KPI.
+- Real CI failure 1: architecture contract still expected the retired 100/675 checklist wording; corrected test to the canonical 850-item checklist pointer.
+- Real CI failure 2: schedule repository update test fake client lacked `update()`; corrected test harness and reran.
+- Real product logic defect found: delay KPI could never detect delay because forecast finish defaulted to planned finish; corrected to use forecast/actual finish when present and added regression coverage.
+- Final CI for HEAD `6827adc8f7b3ffda8027ffa935d4f1379ae72b14`: Unit Tests SUCCESS; Application Validation SUCCESS; QA SUCCESS; Phase Code Map SUCCESS.
+- Public Netlify Deploy Preview is reachable; authenticated runtime/UI acceptance remains pending, so no DONE claim.
