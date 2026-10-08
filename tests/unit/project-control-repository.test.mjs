@@ -6,7 +6,8 @@ function fakeClient() {
   const tables = {
     construction_projects: [],
     project_schedule_tasks: [],
-    project_milestones: []
+    project_milestones: [],
+    project_wbs: []
   };
   let seq = 1;
   const client = {
@@ -53,11 +54,14 @@ test('project control repository loads one canonical vertical snapshot', async (
   tables.construction_projects.push({ id: 42, title: 'Tower' });
   tables.project_schedule_tasks.push({ id: 1, project_id: 42, title: 'Excavation', progress: 50, planned_start: '2026-10-01', planned_finish: '2026-10-05' });
   tables.project_milestones.push({ id: 2, project_id: 42, title: 'Foundation', planned_date: '2026-10-10' });
+  tables.project_wbs.push({ id: 3, project_id: 42, code: '1.1', title: 'Structure', parent_id: null });
 
   const repo = createProjectControlRepository(client);
   const snapshot = await repo.getVertical(42);
 
   assert.equal(snapshot.project.title, 'Tower');
+  assert.equal(snapshot.wbs.length, 1);
+  assert.equal(snapshot.wbs[0].code, '1.1');
   assert.equal(snapshot.tasks.length, 1);
   assert.equal(snapshot.milestones.length, 1);
   assert.equal(snapshot.progress.percent, 50);
