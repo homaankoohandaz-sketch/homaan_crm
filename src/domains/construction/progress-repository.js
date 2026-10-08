@@ -34,6 +34,22 @@ export function createProjectProgressRepository(client) {
   }
 
   return Object.freeze({
+    async getKpis(projectId) {
+      req(projectId, 'projectId');
+      const rows = await listTaskRows(projectId);
+      const snap = summarizeProgress(toItems(rows));
+      const delayedItems = snap.items.filter((item) => item.baseline_finish && item.forecast_finish && Date.parse(item.forecast_finish) > Date.parse(item.baseline_finish));
+      return Object.freeze({
+        progress_percent: snap.percent,
+        remaining_percent: snap.remaining_percent,
+        completed_items: snap.completed_items,
+        total_items: snap.total_items,
+        schedule_variance_days: snap.schedule_variance_days,
+        delayed_items: delayedItems.length,
+        delayed_item_ids: delayedItems.map((item) => item.id)
+      });
+    },
+
     async get(projectId) {
       req(projectId, 'projectId');
       const rows = await listTaskRows(projectId);
