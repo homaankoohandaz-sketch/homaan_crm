@@ -98,3 +98,12 @@ Branch: buildwise-implementation
 - Real product logic defect found: delay KPI could never detect delay because forecast finish defaulted to planned finish; corrected to use forecast/actual finish when present and added regression coverage.
 - Final CI for HEAD `6827adc8f7b3ffda8027ffa935d4f1379ae72b14`: Unit Tests SUCCESS; Application Validation SUCCESS; QA SUCCESS; Phase Code Map SUCCESS.
 - Public Netlify Deploy Preview is reachable; authenticated runtime/UI acceptance remains pending, so no DONE claim.
+
+
+## 2026-10-08 — Procurement Control Vertical 131–160
+- Completed the procurement vertical using existing canonical planning logic and persistence/UI; no parallel procurement engine introduced.
+- Added `src/domains/construction/procurement-control-repository.js` and connected it to the canonical project-control repository.
+- Added focused repository TDD coverage.
+- CI GREEN: Unit Tests, Application Validation, QA, Phase Code Map, Agent Control Plane Validation.
+- Public Deploy Preview smoke verified BuildWise AI shell; authenticated procurement runtime remains the acceptance gate.
+- Checklist 131–160 remain PARTIAL until authenticated runtime/UI verification.
