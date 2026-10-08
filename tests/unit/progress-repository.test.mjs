@@ -78,3 +78,13 @@ test('progress repository exposes KPI snapshot from canonical task progress', as
   assert.equal(kpi.delayed_items, 0);
   assert.ok(kpi.progress_percent >= 70 && kpi.progress_percent <= 80);
 });
+
+test('progress repository detects delayed task from forecast finish', async () => {
+  const { client, tables } = fakeClient();
+  tables.project_schedule_tasks[1].forecast_finish = '2026-10-20';
+  const repo = createProjectProgressRepository(client);
+  const kpi = await repo.getKpis('p1');
+  assert.equal(kpi.delayed_items, 1);
+  assert.deepEqual(kpi.delayed_item_ids, [2]);
+  assert.ok(kpi.schedule_variance_days > 0);
+});
