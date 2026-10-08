@@ -61,6 +61,8 @@ test('project control repository loads one canonical vertical snapshot', async (
   assert.equal(snapshot.tasks.length, 1);
   assert.equal(snapshot.milestones.length, 1);
   assert.equal(snapshot.progress.percent, 50);
+  assert.equal(snapshot.kpis.total_items, 1);
+  assert.equal(snapshot.kpis.progress_percent, 50);
 });
 
 test('project control repository persists project changes without mixing schedule data', async () => {
