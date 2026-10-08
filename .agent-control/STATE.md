@@ -104,3 +104,8 @@ Full prior sections (Security detail, 609-632 runs, 633-650 detail, Netlify reco
 - Added TDD coverage for vertical snapshot loading, project update isolation, and creator persistence.
 - PR #16 contains the slice. CI/runtime/authenticated UI evidence is not yet available from the connected GitHub write path; therefore no DONE claim is made.
 - Next execution path remains the same canonical branch and same repository; continue schedule/milestone → progress/KPI implementation without creating a second engine.
+
+## 2026-10-08 — Post-Task-Engine project-control continuation
+- Current implementation head includes WBS in the canonical project-control vertical.
+- No runtime/authenticated DONE claim: connected GitHub reports no workflow runs for current HEAD.
+- Existing PR #16 remains the single integration path.
