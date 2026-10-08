@@ -126,3 +126,13 @@ Full prior sections (Security detail, 609-632 runs, 633-650 detail, Netlify reco
 - Public Deploy Preview remains reachable and branded correctly.
 - Authenticated procurement UI/runtime acceptance remains pending; 131–160 stay PARTIAL.
 - Next action: authenticated runtime gate for the canonical project-control/procurement flow, then continue to the next coherent phase.
+
+
+## 2026-10-08 — Procurement Control Vertical 131–160
+- Canonical procurement planning/persistence is connected through `createProjectProcurementControlRepository`.
+- Project Control now exposes procurement alongside project/WBS/schedule/milestones/progress/KPI.
+- Focused repository TDD coverage added.
+- CI GREEN: Unit Tests, Application Validation, QA, Phase Code Map, Agent Control Plane Validation.
+- Public Deploy Preview smoke is reachable; authenticated procurement runtime/UI acceptance remains pending.
+- Checklist 131–160 remain PARTIAL until authenticated runtime/UI verification.
+- Next action: authenticated runtime gate, then continue to the next coherent phase.
