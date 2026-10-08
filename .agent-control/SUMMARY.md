@@ -85,3 +85,8 @@ Branch: buildwise-implementation
 - PR #16 opened from `buildwise-implementation` to `main`.
 - Acceptance remains PARTIAL until CI plus runtime/authenticated UI evidence are available.
 
+
+## 2026-10-08 — Post-Task-Engine project-control continuation
+- Extended canonical project-control vertical to include WBS alongside project, schedule, milestones, progress and KPI snapshot.
+- Added WBS assertion to vertical repository TDD.
+- TASK-006 remains IN_PROGRESS; runtime/authenticated acceptance and CI evidence are still pending.
