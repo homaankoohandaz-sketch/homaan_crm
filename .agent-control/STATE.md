@@ -109,3 +109,10 @@ Full prior sections (Security detail, 609-632 runs, 633-650 detail, Netlify reco
 - Current implementation head includes WBS in the canonical project-control vertical.
 - No runtime/authenticated DONE claim: connected GitHub reports no workflow runs for current HEAD.
 - Existing PR #16 remains the single integration path.
+
+## 2026-10-08 — Full project-control phase verification cycle
+- Project-control phase is implementation/test verified on `buildwise-implementation`.
+- Canonical vertical now contains project, WBS, schedule tasks, milestones, progress and KPI snapshot.
+- Delay detection uses forecast/actual finish where available.
+- CI green after two real failures were diagnosed and corrected.
+- Runtime authentication is the remaining acceptance gate.
