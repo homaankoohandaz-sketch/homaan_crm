@@ -67,3 +67,14 @@ test('progress repository save updates task progress then recomputes', async () 
   assert.equal(snap.completed_items, 2);
   assert.equal(snap.percent, 100);
 });
+
+
+test('progress repository exposes KPI snapshot from canonical task progress', async () => {
+  const { client } = fakeClient();
+  const repo = createProjectProgressRepository(client);
+  const kpi = await repo.getKpis('p1');
+  assert.equal(kpi.total_items, 2);
+  assert.equal(kpi.completed_items, 1);
+  assert.equal(kpi.delayed_items, 0);
+  assert.ok(kpi.progress_percent >= 70 && kpi.progress_percent <= 80);
+});
