@@ -29,7 +29,7 @@ export function createProjectProgressRepository(client) {
       actual: Number(t.progress) || 0,
       weight: 1,
       baseline_finish: t.planned_finish ?? null,
-      forecast_finish: t.planned_finish ?? null
+      forecast_finish: t.forecast_finish ?? t.actual_finish ?? t.planned_finish ?? null
     }));
   }
 
