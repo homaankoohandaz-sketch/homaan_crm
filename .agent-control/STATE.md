@@ -144,3 +144,11 @@ Full prior sections (Security detail, 609-632 runs, 633-650 detail, Netlify reco
 - Updated canonical architecture, decision ledger and summary to point to the standard.
 - Status: DOCUMENTATION REGISTERED; SECURITY AUDIT / CODE FIXES / SUPABASE LIVE POLICY VERIFICATION / AUTHENTICATED RUNTIME remain unverified unless separately evidenced.
 - Do not promote security-related checklist items to DONE based on documentation alone.
+
+
+## 2026-10-09 — Finance vertical connected to canonical project control
+- Added `src/domains/finance/project-finance-repository.js` as a project-scoped read adapter over the existing accounting summary, ledger, budgets/budget lines, cash flow, payment schedule, financial documents, and payment approvals.
+- Extended `createProjectControlRepository().getVertical(projectId)` to include `finance`; existing project, WBS, schedule, milestones, progress/KPI and procurement remain in the same vertical. No new persistence tables or duplicate engine were introduced.
+- Added `tests/unit/project-finance-repository.test.mjs` and registered it in the full test script.
+- Evidence on HEAD `f738c472`: BuildWise Unit Tests job PASS; Application Validation PASS; Phase Code Map PASS; QA PASS; Agent Control Plane Validation PASS. Worker runtime workflow was still running at last read.
+- Acceptance boundary: this is code/test integration, not authenticated production UI acceptance. Do not mark production accounting DONE until authenticated runtime/UI verification. Security code/Supabase policy audit remains intentionally deferred until coding is complete, as directed by the user.
