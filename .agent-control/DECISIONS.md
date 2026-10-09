@@ -130,3 +130,14 @@ Decision: Checklist 301–312 and 682–688 use a BuildWise-owned adapter layer 
 Selected: Tesseract.js (OCR), Mozilla PDF.js (PDF), dxf-parser (DXF), Three.js (3D/360). Floor Plan Document Intelligence is a MIT-licensed raster floor-plan reference. DWG remains a worker/conversion boundary.
 Licensing constraint: do not embed GPL/AGPL CAD/rendering components in the current proprietary application path. AIFloorPlan is excluded from vendoring because its AGPL-3.0/commercial terms are not compatible with the current strategy.
 Impact: implementation is isolated in the plan-intelligence and project-visualization domains and remains replaceable. Checklist acceptance stays PARTIAL until browser/runtime verification.
+
+
+## D-025 — Canonical BuildWise Security Architecture
+Decision: Security requirements are defined by the six-file entry-point-and-five-document set: `docs/SECURITY-ARCHITECTURE.md` and `docs/security/{security,auth,data,hack,checklist}.md`.
+Rules:
+- These documents are customized to the existing REOS architecture, Supabase Auth/RLS, role-based data access, imports/uploads, AI/agent action boundaries, and deployment truth.
+- The security checklist is subordinate to the canonical 850-item Master Checklist and is not a second task registry.
+- Implement fixes only in existing canonical modules; no parallel auth/security engine.
+- No security issue is DONE without tests and runtime evidence where applicable.
+- Production data mutation, secret rotation, auth redesign, permission broadening, destructive tests and release actions retain existing human gates.
+Impact: The security standard is repository law, not a chat-only instruction. Its existence does not assert that current code or production has passed an audit.
