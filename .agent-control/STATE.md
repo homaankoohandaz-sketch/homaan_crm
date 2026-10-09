@@ -136,3 +136,11 @@ Full prior sections (Security detail, 609-632 runs, 633-650 detail, Netlify reco
 - Public Deploy Preview smoke is reachable; authenticated procurement runtime/UI acceptance remains pending.
 - Checklist 131–160 remain PARTIAL until authenticated runtime/UI verification.
 - Next action: authenticated runtime gate, then continue to the next coherent phase.
+
+
+## 2026-10-09 — Security documentation registered (implementation evidence pending)
+- Added: `docs/security/security.md`, `auth.md`, `data.md`, `hack.md`, `checklist.md`.
+- Architecture entry point: `docs/SECURITY-ARCHITECTURE.md`.
+- Updated canonical architecture, decision ledger and summary to point to the standard.
+- Status: DOCUMENTATION REGISTERED; SECURITY AUDIT / CODE FIXES / SUPABASE LIVE POLICY VERIFICATION / AUTHENTICATED RUNTIME remain unverified unless separately evidenced.
+- Do not promote security-related checklist items to DONE based on documentation alone.
