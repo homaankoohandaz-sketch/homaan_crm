@@ -107,3 +107,11 @@ Branch: buildwise-implementation
 - CI GREEN: Unit Tests, Application Validation, QA, Phase Code Map, Agent Control Plane Validation.
 - Public Deploy Preview smoke verified BuildWise AI shell; authenticated procurement runtime remains the acceptance gate.
 - Checklist 131–160 remain PARTIAL until authenticated runtime/UI verification.
+
+
+## 2026-10-09 — BuildWise security architecture registered
+- Added five architecture-specific security documents under `docs/security/`: system standard, auth/authorization, data/import/storage, authorized threat testing, and acceptance checklist.
+- Registered the security standard in `.agent-control/MASTER-ARCHITECTURE.md`; `docs/SECURITY-ARCHITECTURE.md` is the overview/release-gate entry point.
+- Scope is the existing REOS repository and canonical implementation branch; no parallel application or security engine is authorized.
+- This is security governance/documentation work only. It does not claim the code, Supabase policies, secrets or production runtime have been audited or fixed. Those require evidence-backed implementation and verification.
+- Production authenticated runtime is still an independent acceptance gate; do not mark security DONE from these documents alone.
