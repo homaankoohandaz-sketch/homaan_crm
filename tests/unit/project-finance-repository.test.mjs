@@ -21,10 +21,11 @@ function fakeClient() {
         limit() { return this; },
         order() { return this; },
         eq(column, value) { state.filters.push({ column, value }); return this; },
+        in(column, values) { state.filters.push({ column, values, op: 'in' }); return this; },
         then(resolve, reject) {
           try {
             let rows = tables[table] || [];
-            for (const filter of state.filters) rows = rows.filter(row => row[filter.column] === filter.value);
+            for (const filter of state.filters) rows = rows.filter(row => filter.op === 'in' ? filter.values.includes(row[filter.column]) : row[filter.column] === filter.value);
             resolve({ data: rows, error: null });
           } catch (error) { reject(error); }
         }
