@@ -2,6 +2,7 @@ import { createProjectRepository } from './project-repository.js';
 import { createProjectScheduleRepository } from './schedule-repository.js';
 import { createProjectProgressRepository } from './progress-repository.js';
 import { createProjectProcurementControlRepository } from './procurement-control-repository.js';
+import { createProjectFinanceRepository } from '../finance/project-finance-repository.js';
 
 export function createProjectControlRepository(client) {
   if (!client?.from) throw new TypeError('Supabase client is required');
@@ -10,18 +11,20 @@ export function createProjectControlRepository(client) {
   const schedule = createProjectScheduleRepository(client);
   const progress = createProjectProgressRepository(client);
   const procurement = createProjectProcurementControlRepository(client);
+  const finance = createProjectFinanceRepository(client);
 
   return Object.freeze({
     async getVertical(projectId) {
       if (projectId == null || projectId === '') throw new TypeError('projectId is required');
-      const [project, wbs, tasks, milestones, progressSnapshot, kpis, procurementSnapshot] = await Promise.all([
+      const [project, wbs, tasks, milestones, progressSnapshot, kpis, procurementSnapshot, financeSnapshot] = await Promise.all([
         projects.getById(projectId),
         schedule.listWbs(projectId),
         schedule.listTasks(projectId),
         schedule.listMilestones(projectId),
         progress.get(projectId),
         progress.getKpis(projectId),
-        procurement.getVertical(projectId)
+        procurement.getVertical(projectId),
+        finance.getVertical(projectId)
       ]);
       return Object.freeze({
         project,
@@ -30,7 +33,8 @@ export function createProjectControlRepository(client) {
         milestones,
         progress: progressSnapshot,
         kpis,
-        procurement: procurementSnapshot
+        procurement: procurementSnapshot,
+        finance: financeSnapshot
       });
     },
 
