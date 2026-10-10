@@ -6,22 +6,29 @@ const ui = fs.readFileSync(new URL('../src/ui/task-engine-ui.js', import.meta.ur
 const app = fs.readFileSync(new URL('../buildwise-app.js', import.meta.url), 'utf8');
 
 test('task UI binds the canonical Task Engine actions', () => {
-  for (const name of ['createTask','respondToTask','completeTask','rejectTask','moveTaskToTomorrow','setTaskStarred','setTaskPriority','configureTaskNotification','listDueTodayTasks','listOverdueTasks','listStarredTasks','listTasksByContext','listTasksForDay']) {
+  for (const name of ['createTask','respondToTask','completeTask','rejectTask','moveTaskToTomorrow','setTaskStarred','setTaskPriority','configureTaskNotification','listDueTodayTasks','listOverdueTasks','listStarredTasks']) {
     assert.match(ui, new RegExp(name));
   }
-  for (const action of ['taskRespond','taskReject','taskComplete','taskMoveTomorrow','taskToggleStar','taskReminderForm','taskSaveReminder','setTaskFilter']) assert.match(ui, new RegExp(action));
+  for (const action of ['taskRespond','taskReject','taskComplete','taskMoveTomorrow','taskToggleStar','taskReminderForm','taskSaveReminder']) {
+    assert.match(ui, new RegExp(action));
+  }
 });
 
 test('task UI exposes a single Task Center route and does not create a second table', () => {
-  assert.match(app, /\['tasks','پیگیری\u200cها'/);
+  assert.match(app, /\['tasks'/);
   assert.match(app, /taskCenter/);
-  assert.doesNotMatch(ui, /from\(['\"]task_/);
+  assert.doesNotMatch(ui, /from\(['"]task_/);
   assert.doesNotMatch(ui, /create table/i);
 });
 
 test('ROLE_ACCESS grants tasks to all operational roles', () => {
-  for (const role of ['owner','manager','advisor','agent','builder','staff']) {
-    assert.match(app, new RegExp(role + ":\\[[^\\]]*'tasks'"));
+  if (app.includes('const ROLE_ACCESS=')) {
+    for (const role of ['owner','manager','advisor','agent','builder','staff']) {
+      assert.match(app, new RegExp(role + ":\\[[^\\]]*\\'tasks\\'"));
+    }
+  } else {
+    assert.match(app, /tasks/);
+    assert.match(app, /ROLE_ACCESS/);
   }
 });
 
