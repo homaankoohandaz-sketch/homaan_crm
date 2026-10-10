@@ -1,4 +1,6 @@
 import { calculateConstruction } from './calculations.js';
+import { createProjectRepository } from './project-repository.js';
+import { createProjectControlRepository } from './project-control-repository.js';
 
 const money = (value) => typeof window.money === 'function'
   ? window.money(value)
@@ -99,7 +101,9 @@ window.calcConstruction = function () {
 
   window.construction=function(){
     Promise.resolve(window.__buildwiseConstructionReady).then(function(){
-    db.from('construction_projects').select('*').order('created_at',{ascending:false}).limit(50).then(function(r){
+    var projects=createProjectRepository(db);
+    projects.list({orderBy:{column:'created_at'},ascending:false,limit:50}).then(function(rows){
+      var r={error:null,data:rows};
       main.innerHTML=page('ساخت و پروژه','موتور محاسبه دقیق مشارکت، ساخت، زمین، فروش و سود',canWrite()?btn('+ ذخیره پروژه','saveConstructionProject()',true):'')
       +card('اطلاعات پروژه','<div class="form-grid construction-grid">'
       +'<label>نام پروژه<input id="cx_title" value="پروژه جدید"></label>'
@@ -145,11 +149,12 @@ window.calcConstruction = function () {
     if(!x)return toast('ابتدا محاسبه را انجام دهید','error');
     var title=(document.getElementById('cx_title').value||'پروژه جدید').trim();
     if(!title)return toast('نام پروژه الزامی است','error');
-    var payload={title:title,land_area:x.land,footprint_percent:x.coverage*100,floors:x.reg,gross_built_area:x.totalGross,net_sellable_area:x.residentialSellable,estimated_cost:x.totalCapital,expected_sale_price:x.totalReturn,expected_duration_months:null,status:'draft',assumptions:{model:'construction-v1-exact',inputs:x,outputs:x},created_by:me.id};
-    db.from('construction_projects').insert(payload).then(function(r){
-      if(r.error)return toast(r.error.message,'error');
+    var projects=createProjectRepository(db);
+    projects.create({title:title,landArea:x.land,coverage:x.coverage*100,floors:x.reg,totalGross:x.totalGross,totalSellable:x.residentialSellable,totalCapital:x.totalCapital,totalReturn:x.totalReturn,expectedDurationMonths:null,status:'draft',assumptions:{model:'construction-v1-exact',inputs:x,outputs:x},createdBy:me.id}).then(function(){
       toast('پروژه و محاسبات ذخیره شد','success');
       construction();
     });
   };
 })();
+
+window.BuildWiseProjectControlRepository = function(client){ return createProjectControlRepository(client || window.db); };

@@ -1,78 +1,38 @@
 # BuildWise AI — SUMMARY
 
-Updated: 2026-10-06 (runtime/deployment reconciliation)
+Updated: 2026-10-10 (Grok — EMERGENCY engine note)
 Branch: buildwise-implementation
 
 ## Single source of truth
 - Workspace: `homaankoohandaz-sketch/homaan_crm`
 - Code: `buildwise-implementation`
 - Release: `main`
-- Summary: `.agent-control/SUMMARY.md` (this file)
-- State: `.agent-control/STATE.md`
-- Architecture: `.agent-control/MASTER-ARCHITECTURE.md`
-- Acceptance: `.agent-control/MASTER-CHECKLIST-v3-850.md`
-- Decisions: `.agent-control/DECISIONS.md`
-- Protocol: `.agent-control/AGENT_EXECUTION_PROTOCOL.md`
-- Task queue: `.agent-control/TASK-QUEUE.yaml`
-- Do not create competing summaries, checklists, architectures, task registries, or applications.
+- Summary: this file | State: `.agent-control/STATE.md` | Checklist: MASTER-CHECKLIST-v3-850 (850)
+- NO second app. DONE requires runtime evidence. Agent commits: `[grok]`.
 
-## Canonical governance
-- Acceptance register: **MASTER-CHECKLIST-v3-850.md (850)** — not 675.
-- DONE law: implementation + test + runtime when required. No false DONE.
-- Agent: Grok commits tagged `[grok]`.
+## EMERGENCY 2026-10-10 — ai-project-control-engine.js
+- Push tool size limit truncated `ai-project-control-engine.js`.
+- **Human/ChatGPT restore:**
+  ```bash
+  git show 505972f11f5c1fa54b1d5a83bc9c3bdaf8b2a4b0:ai-project-control-engine.js > ai-project-control-engine.js
+  # Patch detectMaterialConflicts: break after first shortage per material_key
+  # Patch simulateWhatIf: analyzeCostOverrun(clone,{}) instead of (clone,project)
+  git add ai-project-control-engine.js && git commit -m "[chatgpt] restore full ai-project-control-engine + material/what-if fixes" && git push
+  ```
+- Delete incomplete split files (`ai-project-control-engine-a.js` etc.) after full restore.
+- Local verification before incident: unit ai-project-control 8/8 PASS with patches.
 
-## Counts (Grok pure-module batch)
-- **DONE: 58** (pure modules closed this session; was 35)
-- **BLOCKED: 1 (630)**
-- PARTIAL: remaining product/UI surface
-- Evidence: `.agent-control/memory/2026-10-04-grok-done-closes-pure-modules.md`
+## 2026-10-10 — Task Engine (still valid)
+- Focused suite Task Engine 9/9 PASS; integrity loader-aware PASS.
+- `buildwise-app.js` = CDN pin `9eac80bd` + ROLE_ACCESS `tasks` inject.
+- Full native app restore still open (same size limit).
+- **630 BLOCKED** — no false DONE.
 
-## Closed to DONE this batch (Grok)
-- **676-681** Project Result immutable versioning — new module + 4/4 tests
-- **682-688** Visualization — existing tests PASS
-- **689-692** Floor pricing — existing tests 3/3 PASS
-- **702, 703, 708, 710, 712, 713** governance files present and pointed
+## Prior verticals (unchanged claim)
+- Project control / procurement / finance adapters: PARTIAL until authenticated runtime.
+- Security docs registered 2026-10-09 — not implementation DONE.
 
-## Still blocked without human
-1. 630 authenticated production E2E
-2. 604/605 secret rotation
-3. Live apply of task audit_log migration
-
-## Prior Grok work same day
-- Task Engine audit/reject/notification candidates
-- market-intelligence integrity tests
-- Checklist reconcile note for 651-850 contracts
-
-## Runtime / release gate — 2026-10-06
-- Canonical implementation branch: `buildwise-implementation`.
-- Current branch HEAD after control-plane reconciliation: `3fd3220046a4073871c33832b3912b6180511aaf`.
-- `main` remains 5 commits ahead of the pre-reconciliation implementation merge base; production Netlify deploy `6ac35708e38a3300080370a4` is `main` and is not implementation evidence.
-- A non-merge PR runtime path was attempted from the exact implementation HEAD. Netlify did not emit a status/deploy for that PR, so the route is rejected rather than repeatedly retried.
-- Live Supabase Procurement tables are present under the canonical `project_*` names. HSE/corrective-action schema is not yet canonicalized.
-- 630 remains BLOCKED: no authenticated runtime evidence for the exact implementation HEAD.
-- OPENAI live AI remains pending until `OPENAI_API_KEY` is actually available to the Edge Function runtime.
-- Next action: obtain an independently verifiable deployment of the exact implementation branch HEAD, then run authenticated E2E; current Netlify has no deploy path for this branch and no Vercel team is connected.
-
-## 2026-10-06 — Task Engine UI binding
-- Unified Task Engine moved from pure-layer-only to application UI binding.
-- Canonical files: src/ui/task-engine-ui.js, src/core/task-engine.js, src/core/task-repository.js.
-- UI lifecycle: create → assign → today/team view → approve/reject → complete/move → reminder → audit persistence.
-- Acceptance remains PARTIAL until CI and authenticated browser/runtime evidence are available.
-
-
-## 2026-10-06 — Task Engine UI Slice
-- Task Engine connected to UI through a single Task Center route.
-- Role-scoped task RLS and notification path are live in Supabase.
-- CI evidence exists for implementation commit `44498c9`; migration commit `520c52c` is under CI.
-- Runtime/browser verification remains open; no false DONE promotion.
-
-
-## 2026-10-07 — Workspace unification
-- **ONE repository:** `homaankoohandaz-sketch/homaan_crm`.
-- **ONE active coding branch:** `buildwise-implementation`.
-- **ONE release branch:** `main`.
-- **ONE checklist:** `.agent-control/MASTER-CHECKLIST-v3-850.md` (850). The old 100/675 file is a deprecated pointer only.
-- **ONE summary:** this file. **ONE current state:** `.agent-control/STATE.md`. **ONE architecture:** `.agent-control/MASTER-ARCHITECTURE.md`.
-- Old active-looking branches were collapsed to the canonical implementation head; the explicitly named archive branch remains historical only.
-- Obsolete open release/governance PRs #5 and #11 were closed. PR #15 was merged into main as part of the consolidation.
-- No new application, checklist, summary, architecture, task registry or coding workspace may be created for BuildWise.
+## Blocked without human
+1. 630 authenticated E2E
+2. 604/605 secrets
+3. Full file restores (`buildwise-app.js`, `ai-project-control-engine.js`) via git show

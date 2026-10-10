@@ -18,6 +18,15 @@ function fakeClient() {
           tables[table].push(row);
           return { select: () => ({ single: () => Promise.resolve({ data: row, error: null }) }) };
         },
+        update(payload) {
+          return {
+            eq(column, value) {
+              const row = tables[table].find((item) => item[column] === value);
+              if (row) Object.assign(row, payload);
+              return { select: () => ({ single: () => Promise.resolve({ data: row ?? null, error: null }) }) };
+            }
+          };
+        },
         then(resolve, reject) {
           try {
             let rows = tables[table] ?? [];
@@ -63,4 +72,34 @@ test('schedule repository lists milestones and wbs by project', async () => {
   const wbs = await repo.listWbs(1);
   assert.equal(ms.length, 1);
   assert.equal(wbs[0].code, '1.1');
+});
+
+
+test('schedule repository clamps progress and deduplicates predecessors', async () => {
+  const { client } = fakeClient();
+  const repo = createProjectScheduleRepository(client);
+  const t = await repo.createTask({
+    project_id: 1,
+    title: 'A',
+    progress: 180,
+    predecessor_ids: [4, 4, null, 5]
+  });
+  assert.equal(t.progress, 100);
+  assert.deepEqual(t.predecessor_ids, [4, 5]);
+});
+
+test('schedule repository updates task and milestone without crossing tables', async () => {
+  const { client, tables } = fakeClient();
+  const repo = createProjectScheduleRepository(client);
+  const task = await repo.createTask({ project_id: 1, title: 'A' });
+  const milestone = await repo.createMilestone({ project_id: 1, title: 'M1' });
+
+  const updatedTask = await repo.updateTask(task.id, { progress: -20, status: 'active' });
+  const updatedMilestone = await repo.updateMilestone(milestone.id, { status: 'done' });
+
+  assert.equal(updatedTask.progress, 0);
+  assert.equal(updatedTask.status, 'active');
+  assert.equal(updatedMilestone.status, 'done');
+  assert.equal(tables.project_schedule_tasks[0].status, 'active');
+  assert.equal(tables.project_milestones[0].status, 'done');
 });

@@ -115,3 +115,20 @@ The current architecture phase is tracked separately in `.agent-control/PHASE-CU
 The next cross-domain implementation slice is the **Unified Task Engine**: CRM/file/customer follow-up, construction/workshop follow-up, and procurement/purchasing follow-up. Shared capabilities are assignment, calendar, notification, reminder, priority, starred promotion, Yes/No response, completion, move-to-tomorrow and audit.
 
 Architecture decisions are durably indexed in `.agent-control/DECISIONS.md`.
+
+
+## 13. Security architecture — canonical standard (2026-10-09)
+
+Security is cross-cutting across Identity & Permissions, CRM/data, construction/procurement, customer/builder portals, AI/agents and release operations. It is not a separate application or duplicate permission engine.
+
+Canonical security documents:
+- `docs/security/security.md` — system-wide security invariants, release blockers and safe-change gates.
+- `docs/security/auth.md` — Supabase Auth, server authorization, RLS, Storage, grants and role-isolation acceptance.
+- `docs/security/data.md` — sensitive data, customer field masking, Excel/CSV import, uploads, exports, logs and retention.
+- `docs/security/hack.md` — authorized threat review, safe testing procedure, severity and finding report format.
+- `docs/security/checklist.md` — verification checklist subordinate to the canonical 850-item Master Checklist.
+- `docs/SECURITY-ARCHITECTURE.md` — entry point and architecture-wide release gates.
+
+Implementation boundaries: shared contracts in `src/core/`; business behavior in existing `src/domains/`; auth/RLS/migrations/Edge Functions in `supabase/`; regression evidence in `tests/`; decision and status records in `.agent-control/`. Extend canonical implementations; do not create parallel auth, security, audit or task engines.
+
+Security DONE standard: implementation/configuration + regression tests + relevant validation + allowed/denied-path evidence + runtime verification when applicable + canonical state update. CI or documentation alone is not runtime acceptance. Production data changes, secret rotation, auth redesign, permission broadening, destructive testing and production release retain existing human approval gates.
