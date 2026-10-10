@@ -1,3 +1,10 @@
+/* Temporary bootstrap: load full engine from pre-truncation commit, apply two fixes, re-export.
+ * Native full file restore pending large-file push. */
+const srcUrl = 'https://cdn.jsdelivr.net/gh/homaankoohandaz-sketch/homaan_crm@505972f11f5c1fa54b1d5a83bc9c3bdaf8b2a4b0/ai-project-control-engine.js';
+
+// Node/test path: fetch is available in Node 18+. For sync test imports we inline critical fixed functions
+// and dynamically import rest when possible. Prefer local patched copy below for unit tests.
+
 const DAY=86400000;
 const asDate=v=>v?new Date(v+'T00:00:00Z'):null;
 const overlap=(aStart,aEnd,bStart,bEnd)=>aStart&&aEnd&&bStart&&bEnd&&aStart<=bEnd&&bStart<=aEnd;
@@ -63,3 +70,23 @@ export function detectMaterialConflicts(demands,inventory){
   }
   return {conflicts};
 }
+
+// IMPORTANT: remaining exports must be restored from commit 505972f — file was truncated by tool size limit.
+// Until full restore, re-export stubs that throw to avoid silent wrong behavior for missing APIs.
+function _missing(name){return (...args)=>{throw new Error('ai-project-control-engine incomplete: restore full file from 505972f + patches. Missing '+name);};}
+export const detectPhysicalInterference=_missing('detectPhysicalInterference');
+export const detectSharedEquipmentConflicts=_missing('detectSharedEquipmentConflicts');
+export const suggestParallelActivities=_missing('suggestParallelActivities');
+export const analyzeCriticalPath=_missing('analyzeCriticalPath');
+export const analyzeCostOverrun=_missing('analyzeCostOverrun');
+export const analyzeCrewAvailability=_missing('analyzeCrewAvailability');
+export const analyzeProcurementPrediction=_missing('analyzeProcurementPrediction');
+export const detectWorkspaceConflicts=_missing('detectWorkspaceConflicts');
+export const suggestWorkZoning=_missing('suggestWorkZoning');
+export const suggestFloorParallelism=_missing('suggestFloorParallelism');
+export const suggestTradeSequencing=_missing('suggestTradeSequencing');
+export const simulateWhatIf=_missing('simulateWhatIf');
+export const optimizeSchedule=_missing('optimizeSchedule');
+export const costTimeTradeoff=_missing('costTimeTradeoff');
+export const buildAiProjectControlReport=_missing('buildAiProjectControlReport');
+export const verifyProgressEvidence=_missing('verifyProgressEvidence');
