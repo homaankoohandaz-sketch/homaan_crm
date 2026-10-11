@@ -1,22 +1,25 @@
 # Agent Control State
 
-status: EMERGENCY — ai-project-control-engine.js TRUNCATED on branch | Task Engine tests OK | 630 BLOCKED
+status: RESTORE IN PROGRESS via .agent-control/restore/ | Task Engine unit OK | 630 BLOCKED
 project: BuildWise AI
 branch: buildwise-implementation
-active_task: RESTORE-ai-project-control-engine
-last_batch: 2026-10-10 Grok — tool size limit truncated engine; do not use incomplete file
+active_task: restore-full-app-and-engine
+last_batch: 2026-10-11 Grok upload restore package partial
 
-## EMERGENCY
-- `ai-project-control-engine.js` was truncated by push size limit then partially split.
-- **Restore required:** `git show 505972f11f5c1fa54b1d5a83bc9c3bdaf8b2a4b0:ai-project-control-engine.js > ai-project-control-engine.js`
-- Then apply: (1) material conflict `break` after first shortage per key (2) `simulateWhatIf` use `analyzeCostOverrun(clone,{})`
-- Local patched full file 8/8 unit tests PASS — not fully on GitHub due to tool limit.
-- Remove incomplete `ai-project-control-engine-a.js` after restore or finish a+b push with complete bodies.
+## Restore on GitHub
+- Path: `.agent-control/restore/`
+- `assemble-app.js` (12 parts) — run after all app.partN present
+- Parts uploaded: partial (tool size limit) — complete via curl from 9eac80bd if missing
+- Engine: still need full file from 505972f + patches (see restore README)
 
-## Task Engine (still OK)
-- 9/9 + integrity loader-aware PASS
-- CDN loader + ROLE_ACCESS tasks
-- 630 still BLOCKED
+## Reliable restore without parts
+```bash
+curl -sL "https://raw.githubusercontent.com/homaankoohandaz-sketch/homaan_crm/9eac80bd807181c088166a5c7be0558258713002/buildwise-app.js" -o buildwise-app.js
+# add tasks to ROLE_ACCESS for all operational roles
+curl -sL "https://raw.githubusercontent.com/homaankoohandaz-sketch/homaan_crm/505972f11f5c1fa54b1d5a83bc9c3bdaf8b2a4b0/ai-project-control-engine.js" -o ai-project-control-engine.js
+# material break + what-if analyzeCostOverrun(clone,{})
+git rm -f ai-project-control-engine-a.js ai-project-control-engine-b.js 2>/dev/null || true
+```
 
-## SUMMARY
-Updated 2026-10-10 for Task Engine suite; re-update after engine restore.
+## Task Engine
+Unit/contract still PASS. 630 BLOCKED.
