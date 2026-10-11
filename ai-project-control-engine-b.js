@@ -71,8 +71,8 @@ export function analyzeCriticalPath(tasks){
 export function analyzeCostOverrun(tasks, project={}){
   const plannedTasks=tasks.reduce((s,t)=>s+Number(t.planned_cost||0),0);
   const actualTasks=tasks.reduce((s,t)=>s+Number(t.actual_cost||0),0);
-  const planned=Number(project.current_budget||project.baseline_budget||plannedTasks);
-  const actual=Number(project.actual_cost||actualTasks);
+  const planned=Number(project.current_budget??project.baseline_budget??plannedTasks);
+  const actual=Number(project.actual_cost??actualTasks);
   const variance=actual-planned;
   return {planned,actual,variance,variancePercent:planned>0?(variance/planned)*100:0,overrun:variance>0};
 }
@@ -237,6 +237,7 @@ export function calculateVariance(tasks = [], baseline = {}) {
 
 export function verifyProgressEvidence(tasks = [], evidence = []) {
   const byTask = new Map(evidence.map(e => [Number(e.task_id), Number(e.progress)]));
+  const evidencedTaskIds = new Set(evidence.map(e => Number(e.task_id)));
   const mismatches = [];
   let verifiedTaskCount = 0;
   for (const task of tasks) {
@@ -247,12 +248,14 @@ export function verifyProgressEvidence(tasks = [], evidence = []) {
     if (declared === evidenced) verifiedTaskCount += 1;
     else mismatches.push({ taskId: id, declared, evidenced });
   }
+  const unverifiedTaskCount = tasks.filter(task => !evidencedTaskIds.has(Number(task.id))).length;
   return {
     taskCount: tasks.length,
     evidenceCount: evidence.length,
     verifiedTaskCount,
+    unverifiedTaskCount,
     mismatchCount: mismatches.length,
     mismatches,
-    verified: mismatches.length === 0
+    verified: mismatches.length === 0 && unverifiedTaskCount === 0
   };
 }
