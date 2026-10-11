@@ -11,3 +11,13 @@ test('progress verification compares declared progress with evidence', () => {
   assert.equal(result.mismatchCount, 1);
   assert.deepEqual(result.mismatches[0], { taskId: 1, declared: 60, evidenced: 70 });
 });
+
+test('progress verification is false when evidence is missing for a task', () => {
+  const result = verifyProgressEvidence(
+    [{ id: 1, progress: 60 }, { id: 2, progress: 20 }],
+    [{ task_id: 1, progress: 60 }]
+  );
+  assert.equal(result.verifiedTaskCount, 1);
+  assert.equal(result.unverifiedTaskCount, 1);
+  assert.equal(result.verified, false);
+});
