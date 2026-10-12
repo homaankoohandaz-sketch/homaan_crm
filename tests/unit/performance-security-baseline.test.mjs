@@ -6,6 +6,11 @@ const migration = fs.readFileSync(
   new URL("../../supabase/migrations/20261012161148_performance_security_baseline.sql", import.meta.url),
   "utf8"
 );
+const managerEdit = fs.readFileSync(
+  new URL("../../supabase/migrations/20261012161544_manager_edit_record_column_allowlist.sql", import.meta.url),
+  "utf8"
+);
+const app = fs.readFileSync(new URL("../../buildwise-app.js", import.meta.url), "utf8");
 
 test("KPI snapshots no longer expose unrestricted authenticated read/write access", () => {
   assert.match(migration, /DROP POLICY IF EXISTS project_kpi_snapshots_auth/);
