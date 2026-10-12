@@ -102,7 +102,7 @@ test("resource caps are enforced in the database and cannot be bypassed by spoof
   assert.match(resourceLimits, /before insert on public\.properties/);
   assert.match(resourceLimits, /before insert on public\.leads/);
   assert.match(resourceLimits, /before insert on public\.construction_projects/);
-  assert.match(resourceLimits, /v_actor := auth\.uid\(\)/);
+  assert.match(resourceLimits, /v_actor uuid := auth\.uid\(\)/);
   assert.match(resourceLimits, /new\.created_by := v_actor/);
   assert.match(resourceLimits, /CREATED_BY_MISMATCH/);
   assert.match(resourceLimits, /v_uid := new\.created_by/);
