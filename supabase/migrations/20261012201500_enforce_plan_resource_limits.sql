@@ -7,14 +7,22 @@ set search_path = ''
 as $function$
 declare
   v_uid uuid;
+  v_actor uuid := auth.uid();
   v_plan text := 'FREE';
   v_feature text;
   v_limit bigint;
   v_current bigint := 0;
 begin
-  -- Never trust a client-supplied created_by for authenticated writes.
-  v_uid := auth.uid();
-  if v_uid is null then v_uid := new.created_by; end if;
+  -- Bind authenticated inserts to the caller and never trust client-supplied created_by.
+  if v_actor is not null then
+    if new.created_by is not null and new.created_by is distinct from v_actor then
+      raise exception 'CREATED_BY_MISMATCH';
+    end if;
+    new.created_by := v_actor;
+    v_uid := v_actor;
+  else
+    v_uid := new.created_by;
+  end if;
   if v_uid is null then return new; end if;
 
   if tg_table_name = 'properties' then v_feature := 'max_properties';
