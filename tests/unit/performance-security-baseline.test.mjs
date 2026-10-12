@@ -45,7 +45,7 @@ test("manager editor only mutates explicitly approved public-request fields", ()
   assert.match(managerEdit, /column_not_nullable:%/);
   assert.match(managerEdit, /manager_edit_events/);
   assert.match(app, /requirements:\{text:er_notes\.value\.trim\(\)\}/);
-  assert.match(app, /data-id="\'+esc\(x\.id\)\+'" onclick="editPublicRequest\(this\.dataset\.id\)"/);
-  assert.match(app, /data-id="\'+esc\(id\)\+'" onclick="savePublicRequest\(this\.dataset\.id\)"/);
+  assert.ok(app.includes("data-id=\"'+esc(x.id)+'\" onclick=\"editPublicRequest(this.dataset.id)\""));
+  assert.ok(app.includes("data-id=\"'+esc(id)+'\" onclick=\"savePublicRequest(this.dataset.id)\""));
   assert.doesNotMatch(app, /budget_max:n\(er_max\.value\),status:er_status\.value\.trim\(\),notes:er_notes\.value\.trim\(\)/);
 });
