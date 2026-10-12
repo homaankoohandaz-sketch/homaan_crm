@@ -231,13 +231,9 @@ AS $function$
 declare h text; found_match boolean;
 begin
   if not public.is_active_user() then raise exception 'unauthorized'; end if;
-  if not (public.is_manager_user() or public.my_role() in ('owner','staff')) then
-    raise exception 'forbidden_role';
-  end if;
-  if p_phone is null or length(public.normalize_crm_phone(p_phone)) < 7 then
-    raise exception 'invalid_phone';
-  end if;
-  h := encode(digest(public.normalize_crm_phone(p_phone),'sha256'),'hex');
+  if not (public.is_manager_user() or public.my_role() in ('owner','staff')) then raise exception 'forbidden_role'; end if;
+  if p_phone is null or length(public.normalize_crm_phone(p_phone)) < 7 then raise exception 'invalid_phone'; end if;
+  h := pg_catalog.encode(extensions.digest(public.normalize_crm_phone(p_phone),'sha256'),'hex');
   select exists(select 1 from public.crm_person_private where phone_hash=h) into found_match;
   return jsonb_build_object('exists',found_match);
 end $function$;
@@ -276,12 +272,10 @@ begin
   if p_person_id is null then raise exception 'person_not_found'; end if;
   select created_by into v_person_owner from public.crm_people where id=p_person_id;
   if not found then raise exception 'person_not_found'; end if;
-  if v_role not in ('owner','admin','manager','staff') and v_person_owner is distinct from v_uid then
-    raise exception 'forbidden_person';
-  end if;
+  if v_role not in ('owner','admin','manager','staff') and v_person_owner is distinct from v_uid then raise exception 'forbidden_person'; end if;
   v_phone:=public.normalize_crm_phone(p_phone);
   if v_phone is null or length(v_phone)<7 then raise exception 'invalid_phone'; end if;
-  v_hash:=encode(digest(v_phone,'sha256'),'hex');
+  v_hash:=pg_catalog.encode(extensions.digest(v_phone,'sha256'),'hex');
   if exists(select 1 from public.crm_person_private where phone_hash=v_hash and person_id<>p_person_id) then
     insert into public.crm_identity_events(phone_hash,person_id,entity_type,entity_id,action,actor_id,metadata)
     values(v_hash,p_person_id,'person',p_person_id,'duplicate_register_attempt',v_uid,jsonb_build_object('source','crm_register_phone'));
@@ -449,8 +443,7 @@ begin
   return jsonb_build_object('ok',true,'batch_id',p_batch_id,'deleted',jsonb_build_object('properties',deleted_properties,'leads',deleted_leads,'market',deleted_market));
 end $function$;
 
--- Explicitly remove default/public and anonymous execution. Authenticated RPCs remain
--- callable only where the function body enforces the caller's role/ownership.
+-- Remove default/public and anonymous execution; preserve authenticated access only for guarded RPCs.
 REVOKE ALL ON FUNCTION public.buildwise_ai_control_scan(bigint) FROM PUBLIC, anon;
 GRANT EXECUTE ON FUNCTION public.buildwise_ai_control_scan(bigint) TO authenticated, service_role;
 REVOKE ALL ON FUNCTION public.buildwise_check_limit(text,bigint) FROM PUBLIC, anon;
