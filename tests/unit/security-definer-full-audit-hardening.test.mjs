@@ -10,6 +10,10 @@ const edge = fs.readFileSync(
   new URL("../../supabase/functions/ai-orchestrator/index.ts", import.meta.url),
   "utf8"
 );
+const resourceLimits = fs.readFileSync(
+  new URL("../../supabase/migrations/20261012201500_enforce_plan_resource_limits.sql", import.meta.url),
+  "utf8"
+);
 
 function body(name) {
   const start = migration.indexOf(`FUNCTION public.${name}`);
@@ -83,4 +87,16 @@ test("AI identity checks use the caller JWT RPC and return no cross-record ident
   assert.doesNotMatch(b, /service-role lookup|from\("crm_person_private"\)|from\("leads"\)|from\("owners"\)|from\("properties"\)/);
   assert.match(edge, /canCheckIdentity\(a\.profile\)/);
   assert.doesNotMatch(edge, /duplicate\.matches|r\.matches\.length/);
+});
+
+
+test("resource caps are enforced in the database and cannot be bypassed by spoofing created_by", () => {
+  assert.match(resourceLimits, /before insert on public\.properties/);
+  assert.match(resourceLimits, /before insert on public\.leads/);
+  assert.match(resourceLimits, /before insert on public\.construction_projects/);
+  assert.match(resourceLimits, /v_uid := auth\.uid\(\)/);
+  assert.match(resourceLimits, /v_uid := new\.created_by/);
+  assert.match(resourceLimits, /pg_advisory_xact_lock/);
+  assert.match(resourceLimits, /PLAN_LIMIT_REACHED/);
+  assert.match(resourceLimits, /revoke all on function public\.enforce_plan_resource_limit\(\) from public, anon, authenticated/);
 });
