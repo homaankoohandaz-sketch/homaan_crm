@@ -14,6 +14,10 @@ const resourceLimits = fs.readFileSync(
   new URL("../../supabase/migrations/20261012201500_enforce_plan_resource_limits.sql", import.meta.url),
   "utf8"
 );
+const unusedRpcRevokes = fs.readFileSync(
+  new URL("../../supabase/migrations/20261012203000_revoke_unused_security_definer_rpc_exposure.sql", import.meta.url),
+  "utf8"
+);
 
 function body(name) {
   const start = migration.indexOf(`FUNCTION public.${name}`);
@@ -99,4 +103,23 @@ test("resource caps are enforced in the database and cannot be bypassed by spoof
   assert.match(resourceLimits, /pg_advisory_xact_lock/);
   assert.match(resourceLimits, /PLAN_LIMIT_REACHED/);
   assert.match(resourceLimits, /revoke all on function public\.enforce_plan_resource_limit\(\) from public, anon, authenticated/);
+});
+
+
+test("unused SECURITY DEFINER RPCs are not directly callable by authenticated clients", () => {
+  for (const signature of [
+    "buildwise_ai_control_scan(bigint)",
+    "buildwise_check_limit(text,bigint)",
+    "buildwise_plan_status()",
+    "buildwise_project_dashboard(bigint)",
+    "crm_deal_radar()",
+    "crm_market_value(bigint)",
+    "crm_match_score(bigint,bigint)",
+    "crm_record_learning(text,text,bigint,jsonb,jsonb,numeric)",
+    "crm_run_matching(bigint,integer)",
+    "crm_schedule_conflict(timestamptz,timestamptz,uuid,bigint)",
+    "my_role()"
+  ]) {
+    assert.match(unusedRpcRevokes, new RegExp("revoke all on function public\\." + signature.replace(/[.*+?^${}()|[\\]\\]/g, "\\$&") + " from public, anon, authenticated", "i"));
+  }
 });
