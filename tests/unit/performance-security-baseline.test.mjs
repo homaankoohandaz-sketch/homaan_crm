@@ -32,3 +32,13 @@ test("performance baseline removes duplicate KPI index and indexes hot-path fore
     "idx_crm_requests_person_id"
   ]) assert.ok(migration.includes(name), "missing index " + name);
 });
+
+test("manager editor only mutates explicitly approved public-request fields", () => {
+  assert.match(managerEdit, /allowed_tables text\[\] := ARRAY\['public_requests'\]/);
+  assert.match(managerEdit, /allowed_columns text\[\]/);
+  assert.match(managerEdit, /column_not_allowlisted:%/);
+  assert.match(managerEdit, /column_not_nullable:%/);
+  assert.match(managerEdit, /manager_edit_events/);
+  assert.match(app, /requirements:\{text:er_notes\.value\.trim\(\)\}/);
+  assert.doesNotMatch(app, /budget_max:n\(er_max\.value\),status:er_status\.value\.trim\(\),notes:er_notes\.value\.trim\(\)/);
+});
