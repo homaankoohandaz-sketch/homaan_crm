@@ -55,7 +55,7 @@ Repository branch: `buildwise-implementation`
 - Quota overflow test was denied; usage stayed at zero.
 - Phone-registration test completed successfully inside a rollback-only transaction; no test person remained.
 - Resource quota tests rejected a spoofed `created_by` and a null creator at a zero limit; test rows were absent and the configured limit remained unchanged.
-- GitHub Actions: Application Validation, BuildWise QA, Migration Gate, Phase Code Map and Unit Tests passed on commit `9af20426796b636f2303601b1728af8a3e968952`. Newer test runs are tracked after subsequent quota and registration assertions.
+- GitHub Actions: Application Validation, BuildWise QA, Migration Gate, Phase Code Map, Agent Control Plane Validation and Unit Tests passed on commit `09c75c2738bda58926bf0056294792bbf0d971f2`.
 
 ## Remaining explicit findings
 
