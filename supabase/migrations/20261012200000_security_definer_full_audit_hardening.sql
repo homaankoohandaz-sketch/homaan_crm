@@ -379,7 +379,7 @@ CREATE OR REPLACE FUNCTION public.manager_edit_record(p_table text, p_id text, p
 AS $function$
 declare before_row jsonb; after_row jsonb; k text; v jsonb; typ text; has_updated_at boolean;
   allowed_tables text[] := array[
-    'properties','leads','crm_people','crm_requests','appointments','construction_projects',
+    'properties','leads','crm_people','crm_requests','public_requests','appointments','construction_projects',
     'project_schedule_tasks','project_procurement','project_quality_checks','project_risks',
     'project_rfis','project_submittals','project_daily_logs','project_site_observations',
     'project_commitments','project_change_orders','project_progress_snapshots'
