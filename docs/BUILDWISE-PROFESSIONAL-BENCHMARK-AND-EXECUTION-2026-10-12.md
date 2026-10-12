@@ -50,3 +50,11 @@ These are product capability comparisons based on vendor-published descriptions,
 ## Release safety
 
 Changes were applied to the connected Supabase project and recorded in buildwise-implementation. Production Netlify is on main; this work does not merge the 139-commit divergent branch or claim that the live UI now includes all branch changes.
+
+## Additional security and functional correction
+
+- Restricted the generic manager editor to the currently verified active table, public_requests, and an explicit editable-column allowlist. Requests for other tables now fail closed until a table-specific editable schema is reviewed.
+- The editor rejects null for non-nullable columns.
+- Fixed the editor's description field to persist into public_requests.requirements.text (JSONB) instead of the nonexistent notes column.
+- Fixed UUID-based edit/save handlers to pass record IDs via data attributes; the previous unquoted interpolation could make the action invalid for UUID primary keys.
+- Expanded targeted tests to cover these protections. Local targeted suite: **4/4 passed**.
