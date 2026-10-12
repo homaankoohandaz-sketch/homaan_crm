@@ -1,6 +1,6 @@
 -- BuildWise AI: consolidated SECURITY DEFINER RPC hardening.
--- Reproducible source for the production hardening already applied to Supabase.
--- Includes authorization checks, constrained dynamic edits, privacy-safe phone lookup,
+-- Reproducible source for production hardening already applied to Supabase.
+-- Includes authorization, constrained dynamic edits, privacy-safe phone lookup,
 -- caller-scoped scheduling checks, and atomic monthly quota consumption.
 
 CREATE OR REPLACE FUNCTION public.buildwise_ai_control_scan(p_project_id bigint)
@@ -283,9 +283,10 @@ begin
     values('duplicate_identity','high',p_person_id,v_uid,v_uid,'تلاش برای ثبت شماره تکراری',jsonb_build_object('source','crm_register_phone'));
     return jsonb_build_object('ok',false,'duplicate',true);
   end if;
-  insert into public.crm_person_private(person_id,phone,phone_hash,updated_at)
-    values(p_person_id,v_phone,v_hash,now())
-    on conflict(person_id) do update set phone=excluded.phone,phone_hash=excluded.phone_hash,updated_at=now();
+  -- phone_hash is a stored generated column; write only the source phone.
+  insert into public.crm_person_private(person_id,phone,updated_at)
+    values(p_person_id,v_phone,now())
+    on conflict(person_id) do update set phone=excluded.phone,updated_at=now();
   insert into public.crm_identity_events(phone_hash,person_id,entity_type,entity_id,action,actor_id,metadata)
     values(v_hash,p_person_id,'person',p_person_id,'registered',v_uid,jsonb_build_object('source','crm_register_phone'));
   return jsonb_build_object('ok',true,'duplicate',false);
@@ -402,11 +403,8 @@ begin
       where n.nspname='public' and c.relname=p_table and a.attname=k and a.attnum>0 and not a.attisdropped;
     if typ is null then raise exception 'column_not_found:%',k; end if;
     if has_updated_at then
-      if v='null'::jsonb then
-        execute format('update public.%I set %I=null, updated_at=now() where id::text=$1',p_table,k) using p_id;
-      else
-        execute format('update public.%I set %I=$1::%s, updated_at=now() where id::text=$2',p_table,k,typ) using v #>> '{}',p_id;
-      end if;
+      if v='null'::jsonb then execute format('update public.%I set %I=null, updated_at=now() where id::text=$1',p_table,k) using p_id;
+      else execute format('update public.%I set %I=$1::%s, updated_at=now() where id::text=$2',p_table,k,typ) using v #>> '{}',p_id; end if;
     else
       if v='null'::jsonb then execute format('update public.%I set %I=null where id::text=$1',p_table,k) using p_id;
       else execute format('update public.%I set %I=$1::%s where id::text=$2',p_table,k,typ) using v #>> '{}',p_id; end if;
@@ -443,7 +441,7 @@ begin
   return jsonb_build_object('ok',true,'batch_id',p_batch_id,'deleted',jsonb_build_object('properties',deleted_properties,'leads',deleted_leads,'market',deleted_market));
 end $function$;
 
--- Remove default/public and anonymous execution; preserve authenticated access only for guarded RPCs.
+-- Remove default/public and anonymous execution; authenticated access remains only for guarded RPCs.
 REVOKE ALL ON FUNCTION public.buildwise_ai_control_scan(bigint) FROM PUBLIC, anon;
 GRANT EXECUTE ON FUNCTION public.buildwise_ai_control_scan(bigint) TO authenticated, service_role;
 REVOKE ALL ON FUNCTION public.buildwise_check_limit(text,bigint) FROM PUBLIC, anon;
