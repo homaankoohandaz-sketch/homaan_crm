@@ -32,7 +32,7 @@ begin
   end if;
 
   v_hash := pg_catalog.encode(
-    public.digest(public.normalize_crm_phone(p_phone), 'sha256'),
+    extensions.digest(public.normalize_crm_phone(p_phone), 'sha256'),
     'hex'
   );
 
