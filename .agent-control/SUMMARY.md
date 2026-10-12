@@ -47,3 +47,7 @@ Branch: buildwise-implementation
 - Targeted tests: 3/3 pass locally. Full GitHub CI and authenticated cross-account browser E2E are not yet confirmed; do not mark release-ready.
 - Benchmark/report: docs/BUILDWISE-PROFESSIONAL-BENCHMARK-AND-EXECUTION-2026-10-12.md.
 - Production main remains untouched by this branch work; no merge/deploy claimed.
+
+- Additional hardening: manager_edit_record now fails closed outside the active public_requests editor and allows only an explicit field list; non-null columns cannot be set to JSON null.
+- Fixed public-request editor payload to write the description into requirements.text (the actual JSONB column), and fixed UUID-based edit/save buttons to pass IDs through data attributes rather than unquoted JavaScript expressions.
+- Targeted local regression tests now pass **4/4**. Full CI and authenticated browser E2E still unconfirmed.
