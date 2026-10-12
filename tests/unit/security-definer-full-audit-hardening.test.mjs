@@ -120,6 +120,11 @@ test("unused SECURITY DEFINER RPCs are not directly callable by authenticated cl
     "crm_schedule_conflict(timestamptz,timestamptz,uuid,bigint)",
     "my_role()"
   ]) {
-    assert.match(unusedRpcRevokes, new RegExp("revoke all on function public\\." + signature.replace(/[.*+?^${}()|[\\]\\]/g, "\\$&") + " from public, anon, authenticated", "i"));
+    assert.ok(
+      unusedRpcRevokes.toLowerCase().includes(
+        ("revoke all on function public." + signature + " from public, anon, authenticated").toLowerCase()
+      ),
+      "missing revoke for " + signature
+    );
   }
 });
