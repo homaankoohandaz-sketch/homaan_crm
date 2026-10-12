@@ -44,7 +44,7 @@ Repository branch: `buildwise-implementation`
 - Made monthly quota consumption atomic and fail-closed for unconfigured features.
 - Enforced `max_properties`, `max_leads`, and `max_projects` in database triggers; authenticated inserts cannot spoof or omit `created_by` to bypass quotas. Per-user advisory locks serialize concurrent inserts.
 - Added server-side `max_ai_requests` consumption before each model call; quota exhaustion returns HTTP 429.
-- Restored the complete app bundle in `buildwise-app.js` instead of a remote-fetch stub, and added task access to the role navigation.
+- Restored the complete app bundle in `buildwise-app.js` on `buildwise-implementation` instead of a remote-fetch stub, and added task access to the role navigation. This is not yet on production Netlify because its production branch is `main`.
 - Revoked direct authenticated execution for 11 RPCs with no active caller; internal SECURITY DEFINER dependencies still work under the function owner.
 
 ## Verification
@@ -62,3 +62,4 @@ Repository branch: `buildwise-implementation`
 - Supabase's generic advisor still reports 14 authenticated-callable SECURITY DEFINER functions. These are the RLS helpers and guarded RPCs still needed by the active app/Edge Function; the advisor does not evaluate the authorization guards.
 - Supabase separately reports leaked-password protection disabled. This is an Auth dashboard setting and cannot be changed through the available Supabase database/Edge Function tools.
 - `crm_manager_phone` is protected but has no active UI caller; manager phone display should be wired to this RPC if the current UI must reveal phone numbers to managers.
+- Production Netlify is still on `main` commit `3f17befc09578db7df59be8c10c035bb0908097d`. PR #16 contains 135 commits; merging it would release a much larger change set, so it was not merged without the production-release gate.
