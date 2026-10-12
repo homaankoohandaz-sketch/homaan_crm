@@ -106,7 +106,7 @@ async function chat(a: any, message: string) {
     let result: any;
     try {
       if (item.name === "search_properties") { result = await searchProperties(args); await logAction(profile.user_id, "chat_tool:search_properties", "property", null, { filters: args }, { count: result.length }); }
-      else if (item.name === "check_identity" && write) { const r = await checkIdentity(args.phone, a.token); result = safeIdentity(r); await logAction(profile.user_id, "chat_tool:check_identity", "person", null, { requested: true }, { exists: r.exists }); }
+      else if (item.name === "check_identity" && write && canCheckIdentity(profile)) { const r = await checkIdentity(args.phone, a.token); result = safeIdentity(r); await logAction(profile.user_id, "chat_tool:check_identity", "person", null, { requested: true }, { exists: r.exists }); }
       else if (item.name === "create_request" && write) { pending.push({ action: "create_request", args: sanitizeRequest(profile, args) }); result = { status: "requires_confirmation", note: "Not executed. Ask the user to confirm using the confirm button." }; await logAction(profile.user_id, "chat_tool:create_request_proposed", "request", null, { fields: Object.keys(args) }, { status: "pending_confirmation" }); }
       else result = { error: "tool_not_allowed" };
     } catch (e) { result = { error: "tool_failed" }; await logAction(profile.user_id, `chat_tool:${item.name}`, null, null, {}, { error: e instanceof Error ? e.message : String(e) }, false); }
