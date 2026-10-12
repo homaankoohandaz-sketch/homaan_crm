@@ -81,6 +81,8 @@ test("phone registration is scoped to the creator unless caller is trusted CRM s
   assert.match(b, /v_person_owner is distinct from v_uid/);
   assert.match(b, /forbidden_person/);
   assert.match(b, /extensions\.digest/);
+  assert.match(b, /insert into public\.crm_person_private\(person_id,phone,updated_at\)/);
+  assert.doesNotMatch(b, /insert into public\.crm_person_private\(person_id,phone,phone_hash/);
 });
 
 test("AI identity checks use the caller JWT RPC and return no cross-record identifiers", () => {
@@ -91,6 +93,8 @@ test("AI identity checks use the caller JWT RPC and return no cross-record ident
   assert.doesNotMatch(b, /service-role lookup|from\("crm_person_private"\)|from\("leads"\)|from\("owners"\)|from\("properties"\)/);
   assert.match(edge, /canCheckIdentity\(a\.profile\)/);
   assert.doesNotMatch(edge, /duplicate\.matches|r\.matches\.length/);
+  assert.match(edge, /userDb\.rpc\("buildwise_consume"/);
+  assert.match(edge, /quota_exceeded/);
 });
 
 
