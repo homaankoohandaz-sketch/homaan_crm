@@ -36,3 +36,14 @@ Branch: buildwise-implementation
 1. 630 authenticated E2E
 2. 604/605 secrets
 3. Full file restores (`buildwise-app.js`, `ai-project-control-engine.js`) via git show
+
+
+## 2026-10-12 — Professional benchmark + performance/security execution
+- Supabase RLS: removed unrestricted project_kpi_snapshots_auth policy; active-user reads and can_write()-gated writes now apply.
+- Removed duplicate KPI snapshot index; added 18 targeted FK indexes.
+- Rewrote 55 direct stable auth.*() policy calls as scalar SELECT expressions without changing policy predicates/roles/commands.
+- Advisor after changes: unindexed FKs 142 → 124; auth_rls_initplan and duplicate-index categories no longer reported. 34 multiple-permissive-policy findings remain.
+- Security advisor remains: 14 authenticated-callable SECURITY DEFINER functions + leaked-password protection disabled.
+- Targeted tests: 3/3 pass locally. Full GitHub CI and authenticated cross-account browser E2E are not yet confirmed; do not mark release-ready.
+- Benchmark/report: docs/BUILDWISE-PROFESSIONAL-BENCHMARK-AND-EXECUTION-2026-10-12.md.
+- Production main remains untouched by this branch work; no merge/deploy claimed.
