@@ -20,7 +20,7 @@ function body(name) {
 
 test("phone lookup returns only existence and is restricted to trusted roles", () => {
   const b = body("crm_phone_exists");
-  assert.match(b, /role in \('owner','admin','manager','staff'\)/);
+  assert.match(b, /public\\.is_manager_user\\(\\) or public\\.my_role\\(\\) in \\('owner','staff'\\)/);
   assert.match(b, /jsonb_build_object\('exists',found_match\)/);
   assert.doesNotMatch(b, /'person_id'/);
   assert.match(b, /extensions\.digest/);
