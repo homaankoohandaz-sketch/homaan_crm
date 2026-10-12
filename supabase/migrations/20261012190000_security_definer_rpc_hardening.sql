@@ -77,12 +77,13 @@ begin
     'max_telegram_actions',
     'max_automation_runs'
   ) then
-    select coalesce(pum.used_count, 0)
-      into v_used
-    from public.plan_usage_monthly pum
-    where pum.user_id = auth.uid()
-      and pum.month_start = date_trunc('month', current_date)::date
-      and pum.feature_key = p_feature_key;
+    select coalesce((
+      select pum.used_count
+      from public.plan_usage_monthly pum
+      where pum.user_id = auth.uid()
+        and pum.month_start = date_trunc('month', current_date)::date
+        and pum.feature_key = p_feature_key
+    ), 0) into v_used;
   end if;
 
   if v_limit = -1 then
