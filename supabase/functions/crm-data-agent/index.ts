@@ -1,8 +1,9 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 
-// crm-data-agent v3 — hardened bulk-import endpoint.
-// Changes vs v2: role gate (app_roles), column allow-list, actor stamping, audit log, CORS/OPTIONS.
+// crm-data-agent v5 — source synchronized from the deployed function on 2026-10-17.
+// Hardening: role gate (app_roles), column allow-list, actor stamping, audit log, CORS/OPTIONS.
+// Batch rollback fix: preserve import_batch_id for every supported target.
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
