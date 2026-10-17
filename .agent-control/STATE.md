@@ -97,3 +97,10 @@ Unit/contract still PASS. 630 BLOCKED.
 - Added `tests/unit/crm-data-agent-import.test.mjs` and wired it into `npm test`.
 - Read-only live schema/policy inspection confirmed `import_raw_rows` stores raw rows and that its insert policy is user-scoped; it also confirmed the deployed importer was dropping `import_batch_id` at the Edge Function allow-list boundary. No live data was changed.
 - Focused source-contract regression test: PASS (1 test block). Full `npm test`, migration execution, and live rollback test remain unverified. Migration history parity is unresolved, so do not apply migrations to production or deploy the Edge Function until parity is reconciled and staging tests pass.
+
+
+## Migration provenance comparison — 2026-10-17 (read-only)
+- Supabase migration ledger currently returns 106 applied entries.
+- Current `buildwise-implementation` tree contains 46 SQL files under `supabase/migrations/`.
+- A conservative normalized-name comparison matched only 27 live ledger names to repository filenames; several local filenames are not represented under their current names in the live ledger. This is not proof that every unmatched item is missing SQL behavior; names/timestamps have been rewritten or squashed in prior work.
+- Do not infer that the new migrations in this branch are safe to apply just because their SQL is additive. First map every live ledger entry to its source SQL (Git history, backups, or recovered deployed state), then reconcile objects and migration versions. Production migration application remains blocked.
