@@ -9,17 +9,17 @@ This is an evidence and execution plan, not authorization to change production s
 ## Live findings (2026-10-17)
 
 - Supabase Performance Advisor reports **124 unindexed foreign-key findings**, observed at 2026-10-17 10:56:29 UTC.
-- A read-only catalog cross-check also found 124 candidate FK constraints across **69 public tables** without an index whose leading key columns cover the FK columns in order.
-- Of those 124 candidates, **43 tables are 16 KiB**, **79 are >16 KiB and <=1 MiB**, and **2 are >1 MiB**; the largest affected table is about **2.3 MiB**. This means the advisor count alone does not justify adding every index immediately.
+- A read-only catalog cross-check found 124 candidate FK constraints across **69 public tables** without an index whose leading key columns cover the FK columns in order.
+- Of those 124 candidates, **43 tables are 16 KiB**, **79 are >16 KiB and <=1 MiB**, and **2 are >1 MiB**; the largest affected table is about **2.3 MiB**. The advisor count alone does not justify adding every index immediately.
 - A sample of indexes with `idx_scan = 0` includes primary-key indexes, a UNIQUE constraint index (`properties_property_code_key`), and property search indexes (GIN/trigram). These must **not** be removed based on zero scans alone.
-- The 34 multiple-permissive-policy and 89 unused-index figures in the 2026-10-12 report are historical figures; re-run current advisors and inspect the current catalog before treating them as today's counts.
+- The 34 multiple-permissive-policy and 89 unused-index figures in the 2026-10-12 report are historical; re-run current advisors and inspect the catalog before treating them as today's counts.
 - Current security advisor output also includes 14 authenticated-callable SECURITY DEFINER functions. This is a separate security review item; do not modify their grants as part of index optimization.
 
 Reference benchmark: `docs/BUILDWISE-PROFESSIONAL-BENCHMARK-AND-EXECUTION-2026-10-12.md`.
 
 ## Decision
 
-**Do not generate or apply a blanket migration for all 124 findings.** First prioritize foreign keys on tables with meaningful row counts and demonstrated joins/deletes/updates in application traffic. Small/empty tables can remain documented candidates until query evidence or data growth justifies the write/storage cost. For each selected FK, check existing indexes by leading-column order (including composite indexes), constraints, table size, write volume, and actual query plan.
+**Do not generate or apply a blanket migration for all 124 findings.** Prioritize foreign keys on tables with meaningful row counts and demonstrated joins/deletes/updates in application traffic. Small/empty tables can remain documented candidates until query evidence or data growth justifies the write/storage cost. For each selected FK, check existing indexes by leading-column order (including composite indexes), constraints, table size, write volume, and actual query plan.
 
 ## Repeatable read-only inventory
 
@@ -53,8 +53,8 @@ WHERE NOT EXISTS (
   FROM pg_index i
   WHERE i.indrelid = fk.table_oid
     AND i.indisvalid
-    AND NOT i.indispartial
-    AND NOT i.indexprs IS NOT NULL
+    AND i.indpred IS NULL
+    AND i.indexprs IS NULL
     AND (
       SELECT array_agg(k.attnum ORDER BY k.ord)
       FROM unnest(i.indkey::smallint[]) WITH ORDINALITY k(attnum, ord)
@@ -64,7 +64,7 @@ WHERE NOT EXISTS (
 ORDER BY table_bytes DESC, table_name, constraint_name;
 ```
 
-Review the results against the Performance Advisor before selecting candidates. If the PostgreSQL version or catalog representation rejects a catalog expression, use the advisor findings as the initial inventory and inspect each index via `pg_get_indexdef(indexrelid)`; do not interpret a failed inventory query as proof that no index exists.
+The predicate intentionally excludes partial and expression indexes because they do not generally cover every FK row. Compare the output with the Performance Advisor before selecting candidates.
 
 ### 2. Index usage and constraint protection
 
@@ -81,7 +81,7 @@ WHERE s.schemaname = 'public'
 ORDER BY s.idx_scan ASC, pg_relation_size(s.indexrelid) DESC;
 ```
 
-Before considering any index removal, establish the statistics reset time and workload coverage, check whether the index enforces PRIMARY KEY/UNIQUE, inspect dependencies and overlapping leading columns, and capture representative query plans. An `idx_scan = 0` observation is not sufficient evidence for deletion.
+Before considering any index removal, establish statistics reset time and workload coverage, check whether the index enforces PRIMARY KEY/UNIQUE, inspect dependencies and overlapping leading columns, and capture representative query plans. An `idx_scan = 0` observation is not sufficient evidence for deletion.
 
 ### 3. Table size and activity
 
@@ -96,7 +96,7 @@ ORDER BY pg_total_relation_size(relid) DESC;
 
 ### 4. Current advisor evidence
 
-Use Supabase Dashboard → **Advisors → Performance** and **Advisors → Security**, or rerun the connected Supabase advisor tool after each approved change. Save the findings with an observation timestamp. Advisor findings are prompts for investigation, not automatic instructions to modify the database.
+Use Supabase Dashboard → **Advisors → Performance** and **Advisors → Security**, or rerun the connected Supabase advisor tool after each approved change. Save findings with an observation timestamp. Advisor findings are prompts for investigation, not automatic instructions to modify the database.
 
 ## Remediation sequence
 
@@ -119,4 +119,4 @@ Use Supabase Dashboard → **Advisors → Performance** and **Advisors → Secur
 
 ## Human action, if required
 
-The current connected Supabase and GitHub tools are sufficient for read-only audit and drafting; no additional plugin is required. For performance evidence unavailable to the integration, open Supabase Dashboard → **Database → Query Performance** (or **Logs → Postgres**) and capture the slowest representative queries with their SQL/plan and the measurement window. Do not paste API keys, service-role keys, or database passwords into chat.
+The current connected Supabase and GitHub tools are sufficient for read-only audit and drafting; no additional plugin is required. For performance evidence unavailable to the integration, open Supabase Dashboard → **Database → Query Performance** (or **Logs → Postgres**) and capture the slowest representative queries with their SQL/plan and measurement window. Do not paste API keys, service-role keys, or database passwords into chat.
