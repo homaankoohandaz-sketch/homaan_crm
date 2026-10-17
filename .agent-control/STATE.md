@@ -83,3 +83,10 @@ Read-only catalog queries on 2026-10-17 found:
 - A complete live catalog query found 37 policies with role `public` across 14 public-schema tables. This is broader than the 12 policies in the focused is_active_user() audit. Because public includes anon, the entire set needs policy-by-policy authorization review and unauthenticated runtime testing.
 - Current function ACL inventory found 40 SECURITY DEFINER functions in public; 14 are executable by authenticated and zero by anon. Advisor findings require per-function review, not blanket revocation.
 - Do not apply the proposed 12-policy migration to production while the broader public-policy inventory and migration-version parity are unresolved. No production changes were made.
+
+
+## Public intake runtime finding — 2026-10-17 11:15 UTC
+
+- Read-only inspection of the deployed `public-request` Edge Function (active, verify_jwt=false) found POST-only handling with no OPTIONS preflight branch and no Access-Control-Allow-* headers, while the browser form uses fetch with Content-Type application/json. This likely blocks cross-origin browser submission at preflight; runtime browser verification is still pending.
+- Draft PR #26 adds the missing source file to the implementation branch, handles OPTIONS/CORS, fails closed when the rate-limit lookup errors, and adds contract tests. It has not been deployed. Verify OPTIONS from the actual site origin and POST behavior before deployment.
+- Draft PR #23's branch is now two commits behind `buildwise-implementation`; its CI passed on the previous head, but branch synchronization and rerunning CI are required before it can be considered merge-ready.
