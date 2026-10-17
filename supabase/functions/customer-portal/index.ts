@@ -1,5 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
+import { escapeHtml, safeHttpsUrl } from "./html.mjs";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
@@ -50,14 +51,19 @@ Deno.serve(async(req)=>{
     if(req.method==="GET"){
       const share=await loadShare(token); if(!share) return html("<!doctype html><meta charset='utf-8'><body dir='rtl' style='font-family:sans-serif;padding:40px'><h2>لینک نامعتبر یا منقضی شده است</h2></body>");
       const p=share.properties||{};
-      const assets=(share.assets||[]).map((x:any)=>x.file_url?'<a href="'+x.file_url+'" target="_blank">دانلود '+(x.file_name||"فایل")+"</a>":"").join(" · ");
-      const photos=(share.photos||[]).filter((x:any)=>x.file_url && x.is_main !== false).map((x:any)=>'<img src="'+x.file_url+'" style="max-width:100%;border-radius:12px;margin:6px">').join("");
+      const assets=(share.assets||[]).map((x:any)=>{
+        const fileUrl=safeHttpsUrl(x.file_url);
+        if(!fileUrl) return "";
+        return '<a href="'+escapeHtml(fileUrl)+'" target="_blank" rel="noopener noreferrer">دانلود '+escapeHtml(x.file_name||"فایل")+"</a>";
+      }).filter(Boolean).join(" · ");
+      const photos=(share.photos||[]).filter((x:any)=>x.file_url && x.is_main !== false).map((x:any)=>{
+        const imageUrl=safeHttpsUrl(x.file_url);
+        return imageUrl ? '<img src="'+escapeHtml(imageUrl)+'" alt="تصویر ملک" style="max-width:100%;border-radius:12px;margin:6px">' : "";
+      }).filter(Boolean).join("");
       const estimate=Number(p.total_price)||0;
       const min=Math.round(estimate*0.95);
       const max=Math.round(estimate*1.05);
-      const safeProperty={property_name:p.property_name,property_type:p.property_type,region:p.region,neighborhood:p.neighborhood,street:p.street,built_area:p.built_area,bedrooms:p.bedrooms,price_range:{min,max},description:p.description};
-      const safe=JSON.stringify({token,title:share.title,message:share.message,property:safeProperty});
-      return html(`<!doctype html><html lang="fa" dir="rtl"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BuildWise</title><body style="font-family:Arial,sans-serif;max-width:680px;margin:auto;padding:24px;background:#f6f7f9"><main style="background:white;padding:24px;border-radius:18px"><h1>BuildWise AI</h1><h2>${share.title}</h2><p>${share.message}</p><h3>${p.property_name||"ملک پیشنهادی"}</h3><p>${[p.property_type,p.neighborhood,p.street,p.built_area&&p.built_area+" متر",p.bedrooms&&p.bedrooms+" خواب"].filter(Boolean).join(" · ")}</p><p>بازه قیمت مشتری: ${min.toLocaleString("fa-IR")} تا ${max.toLocaleString("fa-IR")}</p>${photos}<p>${assets}</p><hr><h3>نظر شما</h3><button onclick="send('approved')">تأیید می‌کنم</button> <button onclick="send('interested')">علاقه‌مندم</button> <button onclick="send('rejected')">مناسب نیست</button><textarea id="m" placeholder="پیام یا توضیح شما" style="width:100%;margin-top:16px;min-height:90px"></textarea><button onclick="send('question')" style="margin-top:8px">ارسال پیام</button><p id="out"></p></main><script>const C=${safe};async function send(c){const m=document.getElementById('m').value||c;const r=await fetch(location.href,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({message:m,choice:c})});const x=await r.json();document.getElementById('out').textContent=x.ok?'پاسخ شما ثبت شد. مشاور در جریان قرار گرفت.':(x.error||'خطا');}</script></body></html>`);
+      return html(`<!doctype html><html lang="fa" dir="rtl"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BuildWise</title><body style="font-family:Arial,sans-serif;max-width:680px;margin:auto;padding:24px;background:#f6f7f9"><main style="background:white;padding:24px;border-radius:18px"><h1>BuildWise AI</h1><h2>${escapeHtml(share.title)}</h2><p>${escapeHtml(share.message)}</p><h3>${escapeHtml(p.property_name||"ملک پیشنهادی")}</h3><p>${[p.property_type,p.neighborhood,p.street,p.built_area&&p.built_area+" متر",p.bedrooms&&p.bedrooms+" خواب"].filter(Boolean).map(escapeHtml).join(" · ")}</p><p>بازه قیمت مشتری: ${min.toLocaleString("fa-IR")} تا ${max.toLocaleString("fa-IR")}</p>${photos}<p>${assets}</p><hr><h3>نظر شما</h3><button onclick="send('approved')">تأیید می‌کنم</button> <button onclick="send('interested')">علاقه‌مندم</button> <button onclick="send('rejected')">مناسب نیست</button><textarea id="m" placeholder="پیام یا توضیح شما" style="width:100%;margin-top:16px;min-height:90px"></textarea><button onclick="send('question')" style="margin-top:8px">ارسال پیام</button><p id="out"></p></main><script>async function send(c){const m=document.getElementById('m').value||c;const r=await fetch(location.href,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({message:m,choice:c})});const x=await r.json();document.getElementById('out').textContent=x.ok?'پاسخ شما ثبت شد. مشاور در جریان قرار گرفت.':(x.error||'خطا');}</script></body></html>`);
     }
     if(req.method==="POST"){
       const body=await req.json(); if(!body.message) return json({error:"message_required"},400);
