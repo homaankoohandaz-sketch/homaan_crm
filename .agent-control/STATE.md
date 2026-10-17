@@ -87,3 +87,13 @@ Unit/contract still PASS. 630 BLOCKED.
 - NOT verified: full `npm test`, PostgreSQL migration execution, live RLS/trigger behavior, authenticated browser runtime, or deployment. No production migration/deploy was performed.
 - Integration PR #39 was closed without merge because the canonical implementation branch is diverged from `main` and the PR would have included accumulated unrelated branch changes. Reconcile branch divergence before creating a release PR.
 - Release remains BLOCKED; database backup/restore and migration parity gates remain open.
+
+
+## Import batch integrity implementation — 2026-10-17
+- Retrieved the active Supabase `crm-data-agent` source read-only (deployed version 5) and added the source to `supabase/functions/crm-data-agent/` for version control. No deployment was performed.
+- Fixed its allow-list to retain `import_batch_id` for properties, leads, and market observations; market imports also retain the existing `raw_payload`.
+- Added `20261017200000_import_batch_market_rollback.sql`: adds batch identity to `market_price_observations` and updates the manager-gated, row-locked, idempotent rollback to remove imported market observations as well as properties/leads/market import records.
+- Updated `data-import.js` so raw archive failures count toward the batch failure total/status.
+- Added `tests/unit/crm-data-agent-import.test.mjs` and wired it into `npm test`.
+- Read-only live schema/policy inspection confirmed `import_raw_rows` stores raw rows and that its insert policy is user-scoped; it also confirmed the deployed importer was dropping `import_batch_id` at the Edge Function allow-list boundary. No live data was changed.
+- Focused source-contract regression test: PASS (1 test block). Full `npm test`, migration execution, and live rollback test remain unverified. Migration history parity is unresolved, so do not apply migrations to production or deploy the Edge Function until parity is reconciled and staging tests pass.
