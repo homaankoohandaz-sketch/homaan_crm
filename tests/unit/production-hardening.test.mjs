@@ -54,13 +54,14 @@ test('property file triage is persisted, visible, and manager-editable', async (
   assert.match(migration, /add column if not exists is_starred boolean/i);
   assert.match(migration, /add column if not exists file_tags text\[\]/i);
   assert.match(migration, /is_starred, file_tags/i);
-  assert.match(migration, /where public\\.is_active_user\\(\\)/i);
-  assert.doesNotMatch(migration, /owner_notes,\\s*internal_notes/i);
+  assert.match(migration, /where public\.is_active_user\(\)/i);
+  assert.doesNotMatch(migration, /owner_notes,\s*internal_notes/i);
   assert.match(app, /status,is_starred,file_tags,created_at/);
   assert.match(app, /function propertyCard\(x\)/);
   assert.match(app, /x\.is_starred\?'★ '/);
   for (const tag of ['خوش‌قیمت', 'خوش‌فروش', 'پول لازم', 'تهاتر']) assert.ok(app.includes(tag), 'missing property label: ' + tag);
   assert.match(app, /async function editProperty\(id\)\{if\(!isManager\(\)\)/);
+  assert.match(app, /select\('id,property_name,property_type,region,neighborhood,built_area,bedrooms,total_price,price_per_meter,is_starred,file_tags'\)/);
   assert.match(app, /is_starred:!!ep_starred\.checked/);
   assert.match(app, /file_tags:\[\.\.\.\(ep_tag_good_price\.checked/);
 });
