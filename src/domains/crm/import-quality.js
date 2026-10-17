@@ -30,6 +30,22 @@ function isMeaningfulRow(row) {
   return Object.values(row).some(value => value != null && String(value).trim() !== '');
 }
 
+const MAPPED_IMPORT_FIELDS = {
+  properties: ['property_name', 'property_type', 'request_type', 'region', 'neighborhood', 'street', 'land_area', 'built_area', 'bedrooms', 'total_price', 'price_per_meter', 'mobile', 'description'],
+  leads: ['full_name', 'mobile', 'desired_property_type', 'desired_region', 'budget_min', 'budget_max', 'notes'],
+  market: ['external_id', 'region', 'neighborhood', 'property_type', 'area', 'bedrooms', 'age_years', 'floor_number', 'total_price', 'price_per_meter', 'listing_status']
+};
+
+export function hasMappedImportData(record, target = 'properties') {
+  if (!record || typeof record !== 'object' || Array.isArray(record)) return false;
+  const fields = MAPPED_IMPORT_FIELDS[target];
+  if (!fields) return false;
+  return fields.some((field) => {
+    const value = record[field];
+    return value !== null && value !== undefined && String(value).trim() !== '';
+  });
+}
+
 export function normalizeImportRows(rows = []) {
   return (rows || [])
     .map((row, index) => isMeaningfulRow(row) ? normalizeOne(row, index) : null)
