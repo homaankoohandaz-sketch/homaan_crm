@@ -76,3 +76,10 @@ Read-only catalog queries on 2026-10-17 found:
 - Latest Security Advisor output reports 14 authenticated-callable SECURITY DEFINER functions, anonymous-role policy findings on multiple tables, and 34 multiple-permissive-policy findings.
 - This is broader than the focused 12-policy is_active_user() catalog query. Treat both as evidence with different scope; the complete policy inventory and predicate review remains OPEN. Do not claim all anon policies are restricted based only on the focused query.
 - No broad EXECUTE revocations, policy deletions, index changes, or production SQL were applied. Function-by-function and policy-by-policy review is required.
+
+
+## Full public-role policy inventory — 2026-10-17 11:12 UTC
+
+- A complete live catalog query found 37 policies with role `public` across 14 public-schema tables. This is broader than the 12 policies in the focused is_active_user() audit. Because public includes anon, the entire set needs policy-by-policy authorization review and unauthenticated runtime testing.
+- Current function ACL inventory found 40 SECURITY DEFINER functions in public; 14 are executable by authenticated and zero by anon. Advisor findings require per-function review, not blanket revocation.
+- Do not apply the proposed 12-policy migration to production while the broader public-policy inventory and migration-version parity are unresolved. No production changes were made.
