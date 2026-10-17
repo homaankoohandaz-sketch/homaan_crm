@@ -54,6 +54,8 @@ test('property file triage is persisted, visible, and manager-editable', async (
   assert.match(migration, /add column if not exists is_starred boolean/i);
   assert.match(migration, /add column if not exists file_tags text\[\]/i);
   assert.match(migration, /is_starred, file_tags/i);
+  assert.match(migration, /where public\\.is_active_user\\(\\)/i);
+  assert.doesNotMatch(migration, /owner_notes,\\s*internal_notes/i);
   assert.match(app, /status,is_starred,file_tags,created_at/);
   assert.match(app, /function propertyCard\(x\)/);
   assert.match(app, /x\.is_starred\?'★ '/);
