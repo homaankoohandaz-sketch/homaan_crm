@@ -120,3 +120,12 @@ Use Supabase Dashboard → **Advisors → Performance** and **Advisors → Secur
 ## Human action, if required
 
 The current connected Supabase and GitHub tools are sufficient for read-only audit and drafting; no additional plugin is required. For performance evidence unavailable to the integration, open Supabase Dashboard → **Database → Query Performance** (or **Logs → Postgres**) and capture the slowest representative queries with their SQL/plan and measurement window. Do not paste API keys, service-role keys, or database passwords into chat.
+
+
+## Query Performance sample triage — 2026-10-17
+
+The user supplied the full SQL for the dashboard's top query (80 calls, 1.537 s mean, 3.527 s max, 100% cache hit, role `supabase_read_only_user`, application `n/a`). It reads PostgreSQL catalogs to inventory tables, columns, primary keys, foreign-key relationships, RLS flags, and sizes. Its comment identifies `source: POST /mcp` and an OAuth user.
+
+**Disposition: classify as administrative schema introspection, not as a confirmed BuildWise end-user application query.** The supplied SQL contains catalog reads and metadata functions, not data/schema mutation statements. Do not attempt to “optimize” this query by changing production indexes or RLS policies. Its repeated execution may still add overhead to monitoring; reduce unnecessary repeated schema introspection at the caller if that caller is under our control, but the evidence does not identify the caller implementation, so no code change is claimed here.
+
+This sample is excluded from the list of confirmed end-user performance regressions. Continue identifying slow queries whose SQL actually targets BuildWise business tables and correlate them with application role/source, real user requests, and execution plans before proposing changes.
