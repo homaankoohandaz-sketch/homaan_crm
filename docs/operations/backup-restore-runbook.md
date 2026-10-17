@@ -1,61 +1,71 @@
 # BuildWise AI — Backup and Restore Runbook
 
-**Status:** Recovery procedure documented; a successful backup and a real restore must still be verified before this control is marked complete.  
+**Status:** Procedure and workflow hardened; a successful backup and real restore still must be verified before this control is complete.  
 **Project ref:** `beuestoewletjsgmigmf`  
-**Repository:** `homaankoohandaz-sketch/homaan_crm`  
+**Repository:** `homaankoohandaz-sketch/homaan_crm` (**public**)  
 **Workflow:** `.github/workflows/database-backup.yml`
 
-## 1. Known incident and current gate
+## 1. Known incident and security finding
 
-GitHub Actions run [38116503290](https://github.com/homaankoohandaz-sketch/homaan_crm/actions/runs/38116503290) failed at **Verify backup credential is configured**. The dump and artifact-upload steps were skipped. This is evidence that this run produced no backup artifact; it does not by itself prove whether a separate Supabase-managed backup exists.
+GitHub Actions run [38116503290](https://github.com/homaankoohandaz-sketch/homaan_crm/actions/runs/38116503290) failed at **Verify backup credential is configured**. The dump and artifact-upload steps were skipped. That run produced no artifact; this does not prove whether a separate Supabase-managed backup exists.
 
-The workflow requires the repository Actions secret `SUPABASE_DB_URL`. Never put the connection URI in source code, issues, logs, or chat. Prefer the project's **Session pooler** connection URI from Supabase Dashboard → Connect; ensure the password is current and URI-encoded as required. Add/update it in GitHub → repository Settings → Secrets and variables → Actions. Do not use the direct `db.<ref>.supabase.co` URI from a runner unless direct IPv6/IPv4 connectivity is known to work.
+The repository is public. Therefore database dumps must never be uploaded as plaintext GitHub artifacts or committed to this repository. The workflow now requires client-side `age` encryption before upload. Artifact encryption does not replace a separate off-site backup or a restore drill.
 
-## 2. Run the scheduled backup
+## 2. One-time setup required from a maintainer
 
-1. Confirm the repository is private and Actions artifacts are restricted to trusted maintainers.
-2. Set `SUPABASE_DB_URL` as a GitHub Actions secret.
-3. Open Actions → **BuildWise Scheduled Database Backup** → Run workflow.
-4. Require a successful run. The workflow creates three Supabase CLI logical dumps: roles, schema, and data; validates non-empty outputs and dump completion markers; creates a manifest and SHA-256 checksums; and uploads them as an artifact for 30 days.
-5. Download the artifact through GitHub Actions and verify `sha256sum --check SHA256SUMS` in the extracted `backup` directory.
-6. Record run URL, UTC completion time, artifact name, checksum verification, and any warnings in the release evidence.
+1. Generate an `age` key pair on a trusted workstation using the official `age-keygen` tool. Keep the **private identity** outside GitHub and this repository (preferably in an approved password manager/offline recovery location); never paste it into chat or commit it.
+2. Add the public recipient string (starts with `age1`) as repository **variable** `BACKUP_AGE_RECIPIENT` in GitHub → Settings → Secrets and variables → Actions → Variables.
+3. Add/update repository **secret** `SUPABASE_DB_URL` in GitHub → Settings → Secrets and variables → Actions. Use the Supabase Dashboard → Connect **Session pooler** URI where possible; ensure the password is current and URI-encoded as required. Do not paste it into source code, issues, logs, or chat.
+4. Confirm repository Actions access is restricted to trusted maintainers. Although artifacts in this public repository may be downloadable, their database dumps are encrypted before upload and the decryption identity is not stored here.
+5. Open Actions → **BuildWise Scheduled Database Backup** → Run workflow. The job must fail early if either configuration item is missing.
 
-A successful workflow run is necessary but not sufficient: it does not prove the dump can be restored.
+## 3. Backup procedure and evidence
 
-## 3. What is and is not covered
+The workflow uses Supabase CLI logical dumps for roles, schema, and data; checks that files are non-empty and schema/data dump completion markers exist; encrypts all three SQL dumps using the configured `age` recipient; removes plaintext files from the runner workspace; generates a manifest and SHA-256 checksums; verifies the checksums; and uploads only encrypted dump files plus the non-secret manifest/checksum files. Artifact retention is 30 days.
 
-The logical database dump is intended to capture database roles (excluding platform-reserved roles), schema, database data, SQL functions, triggers, and database RLS policies, subject to Supabase's platform-specific dump filtering and permissions.
+For each successful run:
+1. Record run URL, UTC completion time, artifact name, and retention expiry.
+2. Download the artifact and run `sha256sum --check SHA256SUMS`.
+3. On a trusted workstation, decrypt using the separately stored private identity, e.g. `age -d -i /secure/path/identity.txt -o schema.sql schema.sql.age`. Repeat for roles and data. Never upload decrypted files to this public repository.
+4. Keep at least one additional encrypted copy in an approved off-site storage location with access controls and a retention policy. GitHub artifact retention is not a long-term archive.
 
-Treat these as separate recovery items and verify them independently:
+A successful dump and checksum check do not prove recoverability.
 
-- Storage object bytes: database dumps preserve Storage metadata, not uploaded file contents. Export/copy the objects separately using an approved Storage/S3 procedure.
-- Edge Functions: retain source in Git and redeploy to the recovery project.
-- Auth/provider configuration, OAuth credentials, SMTP, API keys, JWT configuration, custom domains, redirect URLs, and project settings: document and reconfigure securely; do not put secret values in this runbook or artifacts.
-- Extensions and database settings: inventory them and confirm availability on the target.
-- Scheduled jobs, external integrations, and encryption/Vault keys: verify separately; do not assume a database dump alone restores them.
+## 4. Coverage and separate recovery items
 
-Supabase-managed daily backup availability and retention depend on the project's plan and backup type. Verify Dashboard → Database → Backups rather than assuming it exists or that a GitHub artifact is equivalent to a platform restore point.
+The logical database dump is intended to capture database roles (excluding platform-reserved roles), schema, database data, SQL functions, triggers, and database RLS policies, subject to Supabase's platform-specific filtering and permissions.
 
-## 4. Restore drill — isolated project only
+These items require separate inventory, backup, or reconfiguration:
+- **Storage object bytes:** database dumps preserve Storage metadata, not uploaded file contents. Export/copy objects separately using an approved Storage/S3 procedure.
+- **Edge Functions:** retain source in Git and redeploy to the recovery project.
+- **Auth/provider configuration, OAuth credentials, SMTP, API keys, JWT configuration, custom domains, redirect URLs, and project settings:** document and reconfigure securely; never put secret values in this runbook or artifacts.
+- **Extensions and database settings:** inventory and confirm availability on the target.
+- **Scheduled jobs, external integrations, and encryption/Vault keys:** verify separately; do not assume a database dump alone restores them.
 
-**Never test restore against production.** Create or designate a separate recovery project and confirm region/version/extension compatibility. Use synthetic test accounts where possible and protect any production-derived personal data under the same access controls as production.
+Supabase-managed backup availability and retention depend on the project's plan and backup type. Verify Dashboard → Database → Backups instead of assuming a managed backup exists.
+
+## 5. Restore drill — isolated project only
+
+**Never test restore against production.** Create/designate a separate recovery project and confirm region, PostgreSQL version, extensions, and Supabase platform compatibility. Use synthetic test accounts where possible and protect production-derived personal data as carefully as production.
 
 1. Download a known successful artifact and verify checksums.
-2. Review the current Supabase documentation for the supported logical restore procedure and platform-reserved role handling before executing it.
-3. Restore roles, schema, and data into the isolated target using the approved Supabase CLI/psql procedure. Stop on the first SQL error; do not treat a partial restore as success.
-4. Inventory tables by schema and compare critical table row counts with a source snapshot taken at backup time. Document expected differences for system-managed or volatile tables.
-5. Verify extensions, indexes, constraints, SQL functions, triggers, and RLS enabled status/policies. Test an unauthenticated request and at least two test users with different permissions to confirm unauthorized rows/actions remain blocked.
-6. Deploy required Edge Functions to the isolated project, apply safe non-secret configuration, and test health/expected responses.
-7. Verify representative data reads and an end-to-end login with a recovery-only test user. Do not send real customer emails or trigger payments/production webhooks.
-8. Test Storage object retrieval separately if Storage is used by the application.
-9. Record restore start/end in UTC, artifact/checksum, target project ref, errors, table/policy/function counts, login/read/RLS test results, and the operator. Remove test data/project only after evidence is captured and according to the approved cleanup policy.
+2. Decrypt the SQL files on a trusted machine or controlled runner that is not the public artifact store.
+3. Follow the current official Supabase logical restore procedure, including reserved-role filtering and version compatibility. Stop on the first SQL error; a partial restore is a failure.
+4. Inventory tables by schema and compare critical table row counts against a source snapshot from backup time. Explain expected differences for volatile/system-managed tables.
+5. Verify extensions, indexes, constraints, SQL functions, triggers, RLS enabled status, and policy definitions. Test an unauthenticated request and at least two test users with different permissions; verify unauthorized rows/actions remain blocked.
+6. Deploy required Edge Functions to the isolated project, configure only safe non-secret settings, and test expected responses.
+7. Verify representative reads and login with a recovery-only test user. Do not send real customer emails or trigger payments/production webhooks.
+8. Test Storage object retrieval separately if the application uses Storage.
+9. Record restore start/end in UTC, artifact/checksum, target project ref, errors, table/policy/function counts, login/read/RLS test results, and operator. Clean up only after evidence is captured and according to an approved policy.
 
-## 5. Recovery evidence template
+## 6. Recovery evidence template
 
 - Backup run URL:
 - Backup completion time (UTC):
 - Artifact name and retention expiry:
 - SHA-256 verification: PASS / FAIL
+- Decryption check: PASS / FAIL
+- Additional off-site encrypted copy and retention:
 - Restore target (non-production project ref):
 - Restore start/end (UTC):
 - Table and critical row-count comparison:
@@ -67,12 +77,19 @@ Supabase-managed daily backup availability and retention depend on the project's
 - Failures and remediation:
 - Reviewer and approval:
 
-## 6. Release gate
+## 7. Release gate
 
-Keep the P0 backup/restore gate **OPEN** until there is at least one successful backup artifact with verified checksums and a documented successful restore drill in a separate project. Keep high-risk schema changes and production rollout blocked until that evidence is reviewed. A workflow file, configured secret, or successful dump alone is not proof of recoverability.
+Keep the P0 backup/restore gate **OPEN** until all of these are evidenced:
+- GitHub Actions secret `SUPABASE_DB_URL` and variable `BACKUP_AGE_RECIPIENT` are configured.
+- At least one backup workflow run succeeds and the encrypted artifact's checksums verify.
+- An additional encrypted off-site copy exists.
+- A documented restore drill succeeds in a separate project and data/access checks pass.
+
+Keep high-risk schema changes and production rollout blocked until the evidence is reviewed. A workflow file, configured secret, or successful dump alone is not proof of recoverability.
 
 ## References
 
 - [Supabase Database Backups](https://supabase.com/docs/guides/platform/backups)
 - [Supabase automated backups using GitHub Actions](https://supabase.com/docs/guides/deployment/ci/backups)
-- [Supabase restore to another project](https://supabase.com/docs/guides/platform/migrating-within-supabase/backup-restore)
+- [Supabase backup and restore](https://supabase.com/docs/guides/platform/migrating-within-supabase/backup-restore)
+- [age encryption tool](https://age-encryption.org/)
