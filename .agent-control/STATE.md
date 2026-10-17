@@ -76,3 +76,14 @@ Unit/contract still PASS. 630 BLOCKED.
 - NOW.md updated with current state / objective / blocker / next action.
 - Backup still requires human to set Actions secret `SUPABASE_DB_URL` (URI with DB password, not API key) and `BACKUP_AGE_RECIPIENT`, then manual run + artifact verification.
 - Next action for human: configure backup secrets and produce verified restore drill evidence.
+
+
+## Manager-led property triage implementation — 2026-10-17
+- Added migration `supabase/migrations/20261017190000_property_file_triage.sql`: persistent `is_starred` and `file_tags`, allowed-label constraint, database trigger requiring manager authorization for tag/star changes, and a rebuilt authenticated `properties_client` view that excludes `owner_notes` and `internal_notes` and applies the active-user filter.
+- Updated `buildwise-app.js`: property cards show star and labels; manager-only edit UI stores `خوش‌قیمت`, `خوش‌فروش`, `پول لازم`, `تهاتر`; property edit uses an explicit allowed-field projection instead of `select('*')`.
+- Added focused assertions to `tests/unit/production-hardening.test.mjs` and wired that test into `npm test`.
+- Added decision D-026 to `.agent-control/DECISIONS.md` for manager-led valuation and file triage.
+- Focused source-level checks on current GitHub files: app JavaScript syntax PASS; test syntax PASS; property-triage regression block PASS.
+- NOT verified: full `npm test`, PostgreSQL migration execution, live RLS/trigger behavior, authenticated browser runtime, or deployment. No production migration/deploy was performed.
+- Integration PR #39 was closed without merge because the canonical implementation branch is diverged from `main` and the PR would have included accumulated unrelated branch changes. Reconcile branch divergence before creating a release PR.
+- Release remains BLOCKED; database backup/restore and migration parity gates remain open.
