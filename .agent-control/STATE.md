@@ -43,3 +43,17 @@ Unit/contract still PASS. 630 BLOCKED.
 - Authenticated browser/E2E tests with separate test users, staging acceptance, valid backup evidence, and tech-lead/product-owner approvals were not verified in this audit.
 - Checklist totals remain 35 DONE / 613 PARTIAL / 201 TODO / 1 BLOCKED (850 acceptance/architecture requirements, not an implementation percentage). No checklist item was promoted to DONE by this audit.
 - Next action: reconcile the live migration ledger against every SQL migration in Git history, confirm backup secrets and produce a verified restore drill, then rerun CI/security/browser acceptance on the exact release candidate SHA.
+
+## Follow-up verification — 2026-10-17 (CI completed)
+- The CI jobs triggered by the prior state-file update have now completed successfully on commit `da2a73ba94bc71deef0b01f982ab95d9aa1c59fd`:
+  - BuildWise Unit Tests: `npm test` passed — https://github.com/homaankoohandaz-sketch/homaan_crm/actions/runs/39026953260
+  - Application Validation (JavaScript syntax, release smoke, architecture contract, phase code map, infrastructure deployment contract): passed — https://github.com/homaankoohandaz-sketch/homaan_crm/actions/runs/39026953304
+  - Agent Control Plane Validation: passed — https://github.com/homaankoohandaz-sketch/homaan_crm/actions/runs/39026953238
+  - BuildWise Autonomous Worker Runtime test passed; worker execution itself was skipped because credentials are not configured — https://github.com/homaankoohandaz-sketch/homaan_crm/actions/runs/39026953239
+- Backup remediation PR #21 is open against `main`: https://github.com/homaankoohandaz-sketch/homaan_crm/pull/21
+  - Current PR head: `eb1f11f731968d79e35f0bf3ff5ff330fff94943`
+  - Application Validation, Unit Tests, QA, Phase Code Map, and worker runtime checks are green on that PR head.
+  - PR is not merged; backup workflow has not been verified to produce a downloadable encrypted artifact, and restore drill is not done.
+- Backup workflow requires repository variable `BACKUP_AGE_RECIPIENT` and secret `SUPABASE_DB_URL`; neither secret value is inspected or exposed by this audit. Maintainer setup and a manual workflow run remain required.
+- Current branch head at time of this note: `da2a73ba94bc71deef0b01f982ab95d9aa1c59fd`; its tests passed after completion. Branch protection is still disabled, and required checks are not enforced.
+- Release decision remains **BLOCKED** because migration history reconciliation, a verified encrypted backup + off-site copy + restore drill, live security finding disposition, browser/E2E staging evidence, and human approvals are still outstanding.
