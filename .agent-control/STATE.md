@@ -23,3 +23,10 @@ git rm -f ai-project-control-engine-a.js ai-project-control-engine-b.js 2>/dev/n
 
 ## Task Engine
 Unit/contract still PASS. 630 BLOCKED.
+
+## P0 backup and restore gate — OPEN
+- Known failed run: https://github.com/homaankoohandaz-sketch/homaan_crm/actions/runs/38116503290 (credential validation failed; no artifact produced by that run).
+- Workflow and runbook updated on `buildwise-implementation`; database dumps are encrypted with age before artifact upload because this repository is public.
+- Required maintainer setup: GitHub Actions secret `SUPABASE_DB_URL`; repository Actions variable `BACKUP_AGE_RECIPIENT` (age public recipient key); private age identity held outside GitHub/repository.
+- Required evidence still missing: successful scheduled/manual backup, verified encrypted artifact/checksums, separate off-site encrypted copy, and successful isolated-project restore drill.
+- Do not close this gate or authorize high-risk database changes/release until evidence is reviewed.
