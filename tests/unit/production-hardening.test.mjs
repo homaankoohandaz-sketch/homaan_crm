@@ -55,7 +55,7 @@ test('property file triage is persisted, visible, and manager-editable', async (
   assert.match(migration, /add column if not exists file_tags text\[\]/i);
   assert.match(migration, /is_starred, file_tags/i);
   assert.match(migration, /guard_property_file_triage/);
-  assert.match(migration, /and not public\\.is_manager_user\\(\\)/);
+  assert.match(migration, /and not public\.is_manager_user\(\)/);
   assert.match(migration, /properties_file_tags_allowed/);
   assert.match(migration, /where public\.is_active_user\(\)/i);
   assert.doesNotMatch(migration, /owner_notes,\s*internal_notes/i);
