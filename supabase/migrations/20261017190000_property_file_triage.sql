@@ -4,6 +4,32 @@ alter table public.properties
   add column if not exists is_starred boolean not null default false,
   add column if not exists file_tags text[] not null default '{}';
 
+alter table public.properties
+  add constraint properties_file_tags_allowed
+  check (file_tags <@ array['خوش‌قیمت','خوش‌فروش','پول لازم','تهاتر']::text[]);
+
+create or replace function public.guard_property_file_triage()
+returns trigger
+language plpgsql
+security invoker
+set search_path = ''
+as $
+begin
+  if (new.is_starred is distinct from old.is_starred
+      or new.file_tags is distinct from old.file_tags)
+     and not public.is_manager_user() then
+    raise exception 'manager_only';
+  end if;
+  return new;
+end;
+$;
+
+drop trigger if exists guard_property_file_triage on public.properties;
+create trigger guard_property_file_triage
+before update of is_starred, file_tags on public.properties
+for each row execute function public.guard_property_file_triage();
+
+
 -- Rebuild the view using the existing narrow security contract.
 -- The later legacy governance migration had reintroduced owner_notes/internal_notes
 -- into this view. Those fields are intentionally excluded here.
