@@ -143,7 +143,7 @@ async function chat(a: any, message: string) {
       else if (item.name === "check_identity" && write && canCheckIdentity(profile)) { const r = await checkIdentity(args.phone, a.token); result = safeIdentity(r); await logAction(profile.user_id, "chat_tool:check_identity", "person", null, { requested: true }, { exists: r.exists }); }
       else if (item.name === "create_request" && write) { pending.push({ action: "create_request", args: sanitizeRequest(profile, args) }); result = { status: "requires_confirmation", note: "Not executed. Ask the user to confirm using the confirm button." }; await logAction(profile.user_id, "chat_tool:create_request_proposed", "request", null, { fields: Object.keys(args) }, { status: "pending_confirmation" }); }
       else result = { error: "tool_not_allowed" };
-    } catch (e) { result = { error: "tool_failed" }; await logAction(profile.user_id, `chat_tool:${item.name}`, null, null, {}, { error: e instanceof Error ? e.message : String(e) }, false); }
+    } catch (e) { const code = safeErrorCode(e); result = { error: "tool_failed" }; await logAction(profile.user_id, `chat_tool:${item.name}`, null, null, {}, { error_code: code }, false); }
     toolOutputs.push({ type:"function_call_output", call_id:item.call_id, output:JSON.stringify(result) });
   }
   if (!toolOutputs.length) return { configured:true, text:first.output_text || "" };
@@ -233,7 +233,7 @@ async function analyzeDeal(a: any, input: any) {
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers:CORS });
   try {
-    const a = await actor(req); if (!a) return json({error:"unauthorized"},401);
+    const a = await actor(req); if (!a) { console.warn(JSON.stringify({event:"auth_rejected",code:"unauthorized"})); return json({error:"unauthorized"},401); }
     let body: any; try { body = await req.json(); } catch { throw new Error("invalid_json"); }
     if (!body || typeof body !== "object" || Array.isArray(body) || typeof body.action !== "string") throw new Error("invalid_input");
     if (body.action === "search_properties") { const data=await searchProperties(body); await logAction(a.user.id,"search_properties","property",null,{filters:body},{count:data.length}); return json({data}); }
