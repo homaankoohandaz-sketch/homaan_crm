@@ -114,39 +114,42 @@ export async function renderUnitSalesMatrixUI(projectId = window.pid) {
 
 export async function renderWorkflowUI(projectId = window.pid) {
   const rows = Array.isArray(window.__buildwiseWorkflowSteps) ? window.__buildwiseWorkflowSteps : [];
-  const steps = [...rows].sort((a,b) => Number(a.position ?? 0) - Number(b.position ?? 0));
+  let orderedSteps = [...rows].sort((a,b) => Number(a.position ?? 0) - Number(b.position ?? 0));
   const el = panel('Workflow · 498', '<div class="workflow-board"></div>');
   const board = el.querySelector('.workflow-board');
-  steps.forEach((s, i) => {
-    const card = document.createElement('article');
-    card.className = 'integration-card';
-    card.draggable = true;
-    card.dataset.index = String(i);
-    card.textContent = s.name || s.title || 'Step';
-    card.addEventListener('dragstart', e => e.dataTransfer.setData('text/plain', String(i)));
-    card.addEventListener('dragover', e => e.preventDefault());
-    card.addEventListener('drop', e => {
-      e.preventDefault();
-      const from = Number(e.dataTransfer.getData('text/plain'));
-      const reordered = reorderWorkflowSteps(steps, from, Number(card.dataset.index));
-      board.innerHTML = '';
-      reordered.forEach((item, idx) => {
-        const n = document.createElement('article');
-        n.className = 'integration-card';
-        n.draggable = true;
-        n.textContent = item.name || item.title || 'Step';
-        n.dataset.index = String(idx);
-        board.appendChild(n);
+
+  // Re-render through one path so every card keeps its drag handlers after a reorder.
+  const renderCards = () => {
+    board.replaceChildren();
+    orderedSteps.forEach((step, index) => {
+      const card = document.createElement('article');
+      card.className = 'integration-card';
+      card.draggable = true;
+      card.dataset.index = String(index);
+      card.textContent = step.name || step.title || 'Step';
+      card.addEventListener('dragstart', event => {
+        event.dataTransfer.setData('text/plain', String(index));
       });
+      card.addEventListener('dragover', event => event.preventDefault());
+      card.addEventListener('drop', event => {
+        event.preventDefault();
+        const from = Number(event.dataTransfer.getData('text/plain'));
+        const to = Number(card.dataset.index);
+        if (!Number.isInteger(from) || !Number.isInteger(to) || from === to) return;
+        orderedSteps = reorderWorkflowSteps(orderedSteps, from, to);
+        renderCards();
+      });
+      board.appendChild(card);
     });
-    board.appendChild(card);
-  });
+  };
+
+  renderCards();
   return el;
 }
 
 export async function renderTimelineUI(projectId = window.pid) {
-  const rows = buildTimeline(await queryTable('project_ai_alerts', projectId, 'id,title,created_at,severity,status'));
-  return panel('Timeline · 499', rows.map(x => '<div class="metric-line"><span>' + esc(x.occurred_at || x.created_at || '—') + '</span><b>' + esc(x.title || x.event_type || 'Event') + '</b><span class="pill">' + esc(x.status || '') + '</span></div>').join('') || '<span class="muted">رویدادی وجود ندارد.</span>');
+  const rows = buildTimeline(await queryTable('project_ai_alerts', projectId, 'id,title,alert_type,created_at,severity,status'));
+  return panel('Timeline · 499', rows.map(x => '<div class="metric-line"><span>' + esc(x.occurred_at || x.created_at || '—') + '</span><b>' + esc(x.title || x.alert_type || 'Event') + '</b><span class="pill">' + esc(x.status || '') + '</span></div>').join('') || '<span class="muted">رویدادی وجود ندارد.</span>');
 }
 
 export function installProfessionalAnimationSystem() {
