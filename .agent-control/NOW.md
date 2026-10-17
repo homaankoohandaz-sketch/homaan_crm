@@ -1,25 +1,24 @@
 # NOW — BuildWise AI
 
-as_of: 2026-10-17
+as_of: 2026-10-17 (Grok session continued)
 
 ## Current state
-- Access verified: GitHub (full for main work) + Supabase REST (secret key) + direct Postgres (password confirmed, Seoul/ap-northeast-2).
-- Control plane files present: NOW, STATE, SUMMARY, MASTER-ARCHITECTURE, MASTER-CHECKLIST-v3-850, BRIEF, ROADMAP, TASK_CONTRACT, AGENT_REGISTRY, DECISIONS.
-- PR #16 open on buildwise-implementation; CI described as green for unit/QA/validation; authenticated runtime/UI acceptance NOT done.
-- Database content: schema large (~234 exposed objects); operational tables mostly empty (properties/owners/crm_people/project_wbs/units/phases/procurement = 0 rows).
-- Backup workflow failing every night: missing GitHub secret `SUPABASE_DB_URL`.
+- Access: GitHub + Supabase REST + direct Postgres (Seoul) verified.
+- Offline DB backup: schema.sql + data.sql + full.dump produced, age-encrypted, checksummed. Evidence: `.agent-control/evidence/BACKUP-OFFLINE-2026-10-17-GROK.md`.
+- Data remediation on live DB: project_wbs=4, project_phases=3, project_milestones=3 for project 1 (چوگیا); deal #1 linked to lead_id=10.
+- Scheduled GitHub Actions backup still fails until human sets secrets.
+- Authenticated E2E (630) still not verified.
 
 ## Current objective
-1. Remediate database backup (set `SUPABASE_DB_URL` and verify artifact).
-2. Keep control-plane current after Grok session intake of rules 450–850.
-3. Do not mark any feature DONE without implementation + test + runtime verification.
+1. Human configures `SUPABASE_DB_URL` + `BACKUP_AGE_RECIPIENT` so scheduled backup can succeed.
+2. Continue closing concrete gaps with evidence (no false DONE).
 
 ## Current blocker
-- `SUPABASE_DB_URL` not set in repository Actions secrets → scheduled backup fails at "Verify backup credential is configured".
-- Authenticated E2E / checklist 630 still blocked (no runtime evidence).
-- Restricting `is_active_user()` EXECUTE from anon is blocked until public-role RLS scope is resolved.
+- **Human-only:** GitHub Actions secrets cannot be set by the agent connector.
+  - Secret `SUPABASE_DB_URL` = pooler URI with DB password
+  - Variable `BACKUP_AGE_RECIPIENT` = `age1s8l9rcpque8q9pwwwarecwgy4jtjfwm8yepmczz6mlq4xmrp6s4qhgw6zw`
+- 630 authenticated runtime/UI acceptance
 
 ## Next action
-1. Human: add GitHub Actions secret `SUPABASE_DB_URL` with verified connection URI (see STATE.md).
-2. Manually run "BuildWise Scheduled Database Backup" and confirm non-empty dump + manifest artifact.
-3. Continue only after backup is verified; then prioritize authenticated runtime acceptance before further feature claims.
+1. Human: set the two Actions values above, run workflow manually, confirm artifact.
+2. Agent: continue code/data/control-plane work that does not depend on those secrets.
