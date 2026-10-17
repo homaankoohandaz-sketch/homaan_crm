@@ -58,7 +58,6 @@ Unit/contract still PASS. 630 BLOCKED.
 - Current branch head at time of this note: `da2a73ba94bc71deef0b01f982ab95d9aa1c59fd`; its tests passed after completion. Branch protection is still disabled, and required checks are not enforced.
 - Release decision remains **BLOCKED** because migration history reconciliation, a verified encrypted backup + off-site copy + restore drill, live security finding disposition, browser/E2E staging evidence, and human approvals are still outstanding.
 
-
 ## Follow-up remediation — 2026-10-17 (customer portal XSS and live evidence)
 - Read-only inspection of the deployed Supabase Edge Function `customer-portal` (version 3) confirmed that its current HTML response still interpolates share titles/messages, property values, asset URLs, and file names without contextual escaping. Treat this as a live security finding; do not claim it is fixed in production.
 - Patched the development branch `buildwise-implementation` to add `supabase/functions/customer-portal/html.mjs` with HTML escaping and HTTPS-only URL validation; updated `supabase/functions/customer-portal/index.ts` to escape dynamic text, validate image/document URLs, add `rel="noopener noreferrer"`, and remove unused inline JSON serialization; added `tests/unit/customer-portal-html-escaping.test.mjs` and wired it into `npm test`.
@@ -67,3 +66,13 @@ Unit/contract still PASS. 630 BLOCKED.
 - Production `customer-portal` was **not deployed**: the branch file and deployed source have other behavioral differences, so a direct deployment from the branch could unintentionally change query filters/property display. Require reviewed, scoped deployment and a public-share smoke test before closing the live finding.
 - Live read-only audit confirmed 106 migration ledger entries and that the current roles for the 12 policies in the `scope_is_active_user_policies` proposal are already `authenticated` for the relevant SELECT policies. The migration ledger name/version still differs from the checked-in filename; exact SQL provenance and full migration parity remain unresolved. Do not reapply migration `20261017044414` or its differently named proposal.
 - Current development branch comparison to `main`: 7 commits ahead / 9 behind, diverged. Keep release blocked pending migration reconciliation, backup success + checksum + off-site copy + isolated restore drill, security/Auth settings review, authenticated browser E2E, and human approvals.
+
+## Grok session — 2026-10-17 (access + rules intake)
+- Human connected Grok to GitHub + Supabase.
+- Direct Postgres verified: password accepted; region Seoul (`aws-0-ap-northeast-2.pooler.supabase.com:6543`).
+- REST API with secret key: schema large (~234 exposed objects); operational tables mostly empty (properties/owners/crm_people/project_wbs/units/phases/procurement = 0).
+- Human delivered rules list 450–850 (agent sandbox, audit runtime, human approval, real-estate OS, project configurability, decision constitution, versioning, evidence classes, agent budgets, completion criteria, control-plane file roles).
+- Most items already present as checklist entries in MASTER-CHECKLIST-v3-850.md. No item marked DONE from intake alone.
+- NOW.md updated with current state / objective / blocker / next action.
+- Backup still requires human to set Actions secret `SUPABASE_DB_URL` (URI with DB password, not API key) and `BACKUP_AGE_RECIPIENT`, then manual run + artifact verification.
+- Next action for human: configure backup secrets and produce verified restore drill evidence.
