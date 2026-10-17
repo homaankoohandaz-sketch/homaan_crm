@@ -8,7 +8,7 @@ const migration = fs.readFileSync(
 );
 
 test("is_active_user execution is limited to authenticated API sessions", () => {
-  assert.match(migration, /REVOKE EXECUTE ON FUNCTION public\\.is_active_user\\(\\) FROM PUBLIC, anon;/i);
-  assert.match(migration, /GRANT EXECUTE ON FUNCTION public\\.is_active_user\\(\\) TO authenticated;/i);
+  assert.match(migration, /REVOKE EXECUTE ON FUNCTION public\.is_active_user\(\) FROM PUBLIC, anon;/i);
+  assert.match(migration, /GRANT EXECUTE ON FUNCTION public\.is_active_user\(\) TO authenticated;/i);
   assert.doesNotMatch(migration, /FROM PUBLIC, anon, authenticated/i);
 });
