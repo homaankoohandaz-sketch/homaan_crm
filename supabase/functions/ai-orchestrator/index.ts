@@ -19,6 +19,11 @@ const WRITE_ROLES = ["owner", "staff", "admin", "manager", "builder", "advisor",
 const canWrite = (profile: any) => WRITE_ROLES.includes(profile?.role);
 const isManager = (profile: any) => ["owner", "admin", "manager"].includes(profile?.role);
 const isAdvisor = (profile: any) => ["advisor", "agent"].includes(profile?.role);
+function assertRecordAccess(a: any, record: any) {
+  if (isManager(a.profile)) return;
+  const ownershipFields = ["assigned_to", "created_by", "advisor_id", "owner_id", "responsible_user", "user_id"];
+  if (!record || !ownershipFields.some((key) => record[key] != null && String(record[key]) === String(a.user.id))) throw new Error("forbidden");
+}
 
 function normalizePhone(input: string | null | undefined) {
   return String(input || "").trim().replace(/[۰-۹]/g, d => "0123456789"["۰۱۲۳۴۵۶۷۸۹".indexOf(d)]).replace(/[٠-٩]/g, d => "0123456789"["٠١٢٣٤٥٦٧٨٩".indexOf(d)]).replace(/\D/g, "");
@@ -113,6 +118,7 @@ async function createRequest(a: any, raw: any) {
   const userDb = createClient(SUPABASE_URL, ANON_KEY, { global: { headers: { Authorization: `Bearer ${a.token}` } }, auth: { persistSession: false } });
   const input = sanitizeRequest(profile, raw);
   let personId: number | null = input.person_id || null; let duplicate: any = null;
+  if (personId) { const { data: existingPerson, error: personError } = await db.from("crm_people").select("*").eq("id", personId).maybeSingle(); if (personError || !existingPerson) throw new Error("invalid_input"); assertRecordAccess(a, existingPerson); }
   if (!personId) { const { data: person, error } = await db.from("crm_people").insert({ full_name: input.full_name, person_type: "buyer", created_by: profile.user_id }).select("id").single(); if (error) throw error; personId = person.id; }
   if (input.phone) { const { data: phoneResult, error } = await userDb.rpc("crm_register_phone", { p_person_id: personId, p_phone: input.phone }); if (error) throw error; duplicate = { exists: Boolean(phoneResult?.duplicate) }; }
   const { data: request, error } = await db.from("crm_requests").insert({ person_id: personId, request_type: input.request_type, property_type: input.property_type, region: input.region, neighborhood: input.neighborhood, street: input.street, bedrooms: input.bedrooms, budget_min: input.budget_min, budget_max: input.budget_max, requirements: input.requirements, source: input.source, created_by: profile.user_id, assigned_to: input.assigned_to }).select("*").single(); if (error) throw error;
@@ -163,8 +169,15 @@ async function hoomanFieldFill(a: any, message: string, context: any, mode: stri
   return {configured:true,...parsed,request_id:data.id};
 }
 async function workspaceChat(a:any, workspaceId:number, message:string) {
+  if (!canWrite(a.profile)) throw new Error("forbidden");
   const {data:workspace,error:werr}=await db.from("deal_workspaces").select("*").eq("id",workspaceId).single();
   if(werr||!workspace) throw new Error("workspace_not_found");
+  if (isManager(a.profile)) { /* managers may access any workspace */ }
+  else if (["deal", "deals"].includes(String(workspace.entity_type || "").toLowerCase()) && Number.isFinite(Number(workspace.entity_id))) {
+    const {data:linkedDeal,error:linkedDealError}=await db.from("deals").select("*").eq("id",Number(workspace.entity_id)).maybeSingle();
+    if (linkedDealError || !linkedDeal) throw new Error("forbidden");
+    assertRecordAccess(a, linkedDeal);
+  } else throw new Error("forbidden");
   const {data:history}=await db.from("deal_workspace_messages").select("sender_role,message,created_at").eq("workspace_id",workspaceId).order("created_at",{ascending:false}).limit(30);
   await db.from("deal_workspace_messages").insert({workspace_id:workspaceId,sender_id:a.user.id,sender_role:a.profile.role,message,message_type:"chat"});
   if(!OPENAI_API_KEY) return {configured:false,text:"پیام ثبت شد. موتور AI هنوز کلید مدل فعال ندارد."};
@@ -186,6 +199,8 @@ function randomToken() {
 }
 async function createCustomerShare(a: any, input: any) {
   if (!canWrite(a.profile) || (!isAdvisor(a.profile) && !["owner","admin","manager","builder","staff"].includes(a.profile?.role))) throw new Error("forbidden");
+  if (input.deal_id != null) { const dealId=Number(input.deal_id); if(!Number.isSafeInteger(dealId)||dealId<1) throw new Error("invalid_input"); const {data:deal,error}=await db.from("deals").select("*").eq("id",dealId).maybeSingle(); if(error||!deal) throw new Error("invalid_input"); assertRecordAccess(a,deal); }
+  if (input.property_id != null) { const propertyId=Number(input.property_id); if(!Number.isSafeInteger(propertyId)||propertyId<1) throw new Error("invalid_input"); const {data:property,error}=await db.from("properties").select("*").eq("id",propertyId).maybeSingle(); if(error||!property) throw new Error("invalid_input"); assertRecordAccess(a,property); }
   const token = randomToken();
   const tokenHash = await hashToken(token);
   const expiresHours = Math.max(1, Math.min(720, Number(input.expires_in_hours) || 72));
@@ -218,6 +233,8 @@ async function analyzeDeal(a: any, input: any) {
   if (!Number.isFinite(dealId)) throw new Error("deal_id_required");
   const { data: deal, error } = await db.from("deals").select("*").eq("id", dealId).single();
   if (error || !deal) throw new Error("deal_not_found");
+  if (!canWrite(a.profile)) throw new Error("forbidden");
+  assertRecordAccess(a, deal);
   const property = deal.property_id ? (await db.from("properties").select("id,property_name,property_type,region,neighborhood,land_area,built_area,total_price,price_per_meter,barter_possible,barter_details,status").eq("id", deal.property_id).maybeSingle()).data : null;
   const lead = deal.lead_id ? (await db.from("leads").select("id,full_name,desired_request_type,desired_property_type,desired_region,budget_min,budget_max,status").eq("id", deal.lead_id).maybeSingle()).data : null;
   if (!OPENAI_API_KEY) return { configured: false, deal_id: dealId, message: "AI gateway فعال است اما کلید مدل تنظیم نشده است.", deal, property, lead };
