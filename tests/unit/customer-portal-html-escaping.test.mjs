@@ -24,6 +24,7 @@ test("customer portal escapes dynamic text and validates asset URLs before HTML 
   assert.match(source, /escapeHtml\(share\.title\)/);
   assert.match(source, /escapeHtml\(share\.message\)/);
   assert.match(source, /escapeHtml\(p\.property_name/);
+  assert.match(source, /\.map\(escapeHtml\)/, "every dynamic property-detail item must be escaped before HTML rendering");
   assert.match(source, /safeHttpsUrl\(x\.file_url\)/);
   assert.match(source, /rel="noopener noreferrer"/);
   assert.doesNotMatch(source, /const C=\$\{safe\}/);
