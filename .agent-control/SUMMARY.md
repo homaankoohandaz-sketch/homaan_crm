@@ -1,6 +1,6 @@
 # BuildWise AI — SUMMARY
 
-Updated: 2026-10-10 (Grok — EMERGENCY engine note)
+Updated: 2026-10-17 (Grok — access + rules intake)
 Branch: buildwise-implementation
 
 ## Single source of truth
@@ -9,6 +9,13 @@ Branch: buildwise-implementation
 - Release: `main`
 - Summary: this file | State: `.agent-control/STATE.md` | Checklist: MASTER-CHECKLIST-v3-850 (850)
 - NO second app. DONE requires runtime evidence. Agent commits: `[grok]`.
+
+## 2026-10-17 — Grok session
+- GitHub + Supabase REST + direct Postgres (Seoul pooler) access verified.
+- Rules list 450–850 received; largely already in MASTER-CHECKLIST-v3-850. No false DONE.
+- NOW.md / STATE.md updated with current state, objective, blocker, next action.
+- P0 backup still OPEN: human must set `SUPABASE_DB_URL` + `BACKUP_AGE_RECIPIENT` and produce verified artifact + restore drill.
+- Operational DB data sparse; schema large. Release remains BLOCKED per STATE.md gates.
 
 ## EMERGENCY 2026-10-10 — ai-project-control-engine.js
 - Push tool size limit truncated `ai-project-control-engine.js`.
@@ -34,9 +41,9 @@ Branch: buildwise-implementation
 
 ## Blocked without human
 1. 630 authenticated E2E
-2. 604/605 secrets
+2. Backup secrets + verified restore drill
 3. Full file restores (`buildwise-app.js`, `ai-project-control-engine.js`) via git show
-
+4. Migration ledger reconciliation (live 106 vs tree ~40)
 
 ## 2026-10-12 — Professional benchmark + performance/security execution
 - Supabase RLS: removed unrestricted project_kpi_snapshots_auth policy; active-user reads and can_write()-gated writes now apply.
