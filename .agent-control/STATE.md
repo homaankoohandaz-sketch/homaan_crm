@@ -104,3 +104,9 @@ Unit/contract still PASS. 630 BLOCKED.
 - Current `buildwise-implementation` tree contains 46 SQL files under `supabase/migrations/`.
 - A conservative normalized-name comparison matched only 27 live ledger names to repository filenames; several local filenames are not represented under their current names in the live ledger. This is not proof that every unmatched item is missing SQL behavior; names/timestamps have been rewritten or squashed in prior work.
 - Do not infer that the new migrations in this branch are safe to apply just because their SQL is additive. First map every live ledger entry to its source SQL (Git history, backups, or recovered deployed state), then reconcile objects and migration versions. Production migration application remains blocked.
+
+
+## Branch comparison refresh — 2026-10-17 16:28 UTC
+- GitHub compare API currently reports `buildwise-implementation` as diverged from `main`: 45 commits ahead, 11 behind, 26 changed files relative to the merge base.
+- Feature PR #39 was closed without merge; it would have included the accumulated branch delta rather than a scoped feature-only diff.
+- Keep implementation on the canonical branch, but do not create a release PR or merge until divergence is reconciled and all included changes are reviewed.
