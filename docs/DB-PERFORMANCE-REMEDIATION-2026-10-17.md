@@ -12,7 +12,7 @@ This is an evidence and execution plan, not authorization to change production s
 - A read-only catalog cross-check found 124 candidate FK constraints across **69 public tables** without an index whose leading key columns cover the FK columns in order.
 - Of those 124 candidates, **43 tables are 16 KiB**, **79 are >16 KiB and <=1 MiB**, and **2 are >1 MiB**; the largest affected table is about **2.3 MiB**. The advisor count alone does not justify adding every index immediately.
 - A sample of indexes with `idx_scan = 0` includes primary-key indexes, a UNIQUE constraint index (`properties_property_code_key`), and property search indexes (GIN/trigram). These must **not** be removed based on zero scans alone.
-- The 34 multiple-permissive-policy and 89 unused-index figures in the 2026-10-12 report are historical; re-run current advisors and inspect the catalog before treating them as today's counts.
+- A fresh advisor run at **2026-10-17 10:57:56 UTC** confirms **34 multiple-permissive-policy findings** and **89 unused-index findings** as current counts. These are candidate findings to review, not automatic instructions to consolidate policies or drop indexes.
 - Current security advisor output also includes 14 authenticated-callable SECURITY DEFINER functions. This is a separate security review item; do not modify their grants as part of index optimization.
 
 Reference benchmark: `docs/BUILDWISE-PROFESSIONAL-BENCHMARK-AND-EXECUTION-2026-10-12.md`.
