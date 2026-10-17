@@ -69,3 +69,10 @@ Read-only catalog queries on 2026-10-17 found:
 - Do not mark checklist item 630 (Production E2E) DONE without authenticated runtime evidence.
 - Do not mark backup strategy DONE until a successful encrypted artifact, checksum verification, off-site copy, and restore drill are evidenced.
 - No production migration, destructive operation, merge, or deployment is authorized by this status document.
+
+
+## Supabase Security Advisor refresh — 2026-10-17 11:05 UTC
+
+- Latest Security Advisor output reports 14 authenticated-callable SECURITY DEFINER functions, anonymous-role policy findings on multiple tables, and 34 multiple-permissive-policy findings.
+- This is broader than the focused 12-policy is_active_user() catalog query. Treat both as evidence with different scope; the complete policy inventory and predicate review remains OPEN. Do not claim all anon policies are restricted based only on the focused query.
+- No broad EXECUTE revocations, policy deletions, index changes, or production SQL were applied. Function-by-function and policy-by-policy review is required.
