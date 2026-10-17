@@ -63,3 +63,16 @@ A fresh read of the Supabase Security Advisor returned broader findings than the
 - The advisor also reported 34 multiple-permissive-policy findings. These are potential performance/maintainability issues and should be consolidated only after semantic equivalence and role behavior are verified.
 - These advisor findings are newer evidence and remain unresolved. No grants, policies, or production schema were changed by this audit.
 - Remediation order: (1) enumerate all anon/public policies and test access with an unauthenticated client; (2) review each SECURITY DEFINER function individually; (3) consolidate duplicate permissive policies only after tests. Do not blanket-revoke function EXECUTE or remove public policies needed by Edge Function-backed customer flows.
+
+
+## Full live policy inventory — 2026-10-17 11:12 UTC
+
+A separate read-only inventory now confirms **37 policies assigned to role `public` across 14 tables**: `activity_logs`, `app_roles`, `appointments`, `deals`, `followups`, `import_batches`, `invited_emails`, `leads`, `owners`, `properties`, `property_documents`, `property_images`, `property_photos`, and `user_reports`. Because `public` includes anonymous requests, these policies require explicit review even where predicates call helper functions that currently deny anon EXECUTE. The prior focused query covered only the 12 policies that call `is_active_user()` and was not a complete public-policy audit.
+
+A catalog inventory also found **40 SECURITY DEFINER functions in `public`, of which 14 are executable by `authenticated` and none by `anon`** in the current privilege check. The advisor's 14-function warning is therefore confirmed as a review list, not by itself evidence of a privilege bypass.
+
+### Immediate disposition
+
+- Treat public-role policy scope as an open P0 security review item. For each of the 37 policies, verify whether direct anonymous access is intended and test the actual anon request path.
+- Public intake/customer-share flows appear designed to use Edge Functions, but runtime checks and the deployed `public-request` implementation still need verification. Do not scope every policy to authenticated until that dependency check is complete.
+- Do not apply the checked-in 12-policy proposal on production: the live inventory is broader, and the exact migration source/version mismatch remains unresolved.
