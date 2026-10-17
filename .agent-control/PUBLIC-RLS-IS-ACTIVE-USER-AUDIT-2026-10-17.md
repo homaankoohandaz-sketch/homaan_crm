@@ -1,6 +1,6 @@
 # Public RLS / is_active_user audit — 2026-10-17
 
-Scope: live catalog query on Supabase project `beuestoewletjsgmigmf`, plus repository source on `buildwise-implementation`. Proposed migration is not applied.
+Scope: initial live catalog query on Supabase project `beuestoewletjsgmigmf`, plus repository source on `buildwise-implementation`. The original status below is historical; see **Live verification refresh** at the end for newer catalog evidence and the remaining migration-version reconciliation.
 
 ## Live RLS policies
 
@@ -35,3 +35,20 @@ The live `pg_policies` query filtered policies whose role is `public` or `anon` 
 - `tests/unit/is-active-user-public-rls.test.mjs` asserts the intended ACL/policy migration and that public intake continues to route through the public-request Edge Function while customer-portal continues to use its service-role client.
 - These are static contract tests. They do NOT prove deployed public pages respond successfully at runtime. A live unauthenticated GET/POST test against a safe test share and a public-request submission test are still required after a reviewed deployment.
 - This migration has NOT been applied to Supabase.
+
+
+## Live verification refresh — 2026-10-17 10:57 UTC
+
+A later read-only query against the same Supabase project found:
+
+- The live migration history contains version `20261017044414`, named `scope_is_active_user_policies_20261017`.
+- The repository contains `supabase/migrations/20261017120000_scope_is_active_user_policies.sql`, but version `20261017120000` was not present in the live migration list at the time of the query.
+- Live `pg_policies` rows for the 12 named policies in this audit now show role `{authenticated}`, not `{public}` or `{anon}`.
+- `has_function_privilege('anon', 'public.is_active_user()', 'EXECUTE')` returned false; authenticated EXECUTE returned true.
+- All ordinary tables in the live `public` schema returned by the RLS-disabled table query had RLS enabled.
+
+### Updated disposition
+
+The **live behavior currently matches the intended policy scope and function ACL** for the reviewed helper. The old statement that the proposed migration is definitely unapplied is stale as a description of live behavior. However, the applied SQL source/version has not been reconciled byte-for-byte with the repository file: live history reports version `20261017044414`, while the checked-in proposal is timestamped `20261017120000`.
+
+Do not reapply the proposed migration or create a duplicate timestamp migration merely to make the numbers match. First recover the exact SQL associated with live version `20261017044414` from the original change/authoritative deployment record, compare it with the checked-in file, and then correct repository migration parity through a reviewed, non-destructive change. Public customer flows still need authenticated/unauthenticated runtime regression tests; catalog evidence and static tests do not prove those flows work end to end.
