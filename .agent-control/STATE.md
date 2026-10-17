@@ -30,3 +30,16 @@ Unit/contract still PASS. 630 BLOCKED.
 - Required maintainer setup: GitHub Actions secret `SUPABASE_DB_URL`; repository Actions variable `BACKUP_AGE_RECIPIENT` (age public recipient key); private age identity held outside GitHub/repository.
 - Required evidence still missing: successful scheduled/manual backup, verified encrypted artifact/checksums, separate off-site encrypted copy, and successful isolated-project restore drill.
 - Do not close this gate or authorize high-risk database changes/release until evidence is reviewed.
+
+## Release gate verification — 2026-10-17 (read-only audit)
+- Release decision: **BLOCKED / DO NOT RELEASE**. This is a gate record, not an approval.
+- Audited development head before this note: `cacf8ed7cc631b73812dd80aacc471a973031056` (docs: track backup restore as an open P0 release gate).
+- CI runs observed successful on that exact SHA: BuildWise Unit Tests (run 1496), Application Validation (run 1613), Agent Control Plane Validation (run 693). GitHub combined commit status still reported `pending` with no status contexts; branch protection is disabled and no required checks are configured.
+- Branch comparison at audit time: `buildwise-implementation` vs `main` diverged; development branch 5 commits ahead and 9 behind. PR #16 is closed/merged, but current branch heads are not identical.
+- Supabase project status: ACTIVE_HEALTHY. Migration parity is **UNRESOLVED**: 106 migrations are recorded in the live ledger while only 40 SQL migration files were found in the development branch tree; version/file comparison did not match. Do not apply, delete, or rewrite migrations until each difference is reconciled.
+- Supabase security advisor still reports 14 authenticated-executable SECURITY DEFINER functions. Treat these as unresolved review findings, not proof of exploitable vulnerabilities; document intended exposure and validate grants/function bodies.
+- Performance advisor reports 124 unindexed foreign keys (INFO) plus other linter findings; triage by workload and add indexes only after query/lock impact review.
+- Backup/restore P0 remains OPEN: the previously recorded backup run failed credential validation and produced no artifact; successful encrypted artifact/checksum, off-site copy, and isolated restore drill remain unverified.
+- Authenticated browser/E2E tests with separate test users, staging acceptance, valid backup evidence, and tech-lead/product-owner approvals were not verified in this audit.
+- Checklist totals remain 35 DONE / 613 PARTIAL / 201 TODO / 1 BLOCKED (850 acceptance/architecture requirements, not an implementation percentage). No checklist item was promoted to DONE by this audit.
+- Next action: reconcile the live migration ledger against every SQL migration in Git history, confirm backup secrets and produce a verified restore drill, then rerun CI/security/browser acceptance on the exact release candidate SHA.
