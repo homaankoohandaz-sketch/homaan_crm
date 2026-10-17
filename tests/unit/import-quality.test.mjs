@@ -1,7 +1,7 @@
 import test from 'node:test';
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
-import { normalizeImportRows, validateImportRows, buildImportPreview, findDuplicateCandidates, rollbackPlan, editImportedRecord, isolateImportErrors, applyColumnEdits, buildDataQualityDashboard } from '../../src/domains/crm/import-quality.js';
+import { normalizeImportRows, validateImportRows, hasMappedImportData, buildImportPreview, findDuplicateCandidates, rollbackPlan, editImportedRecord, isolateImportErrors, applyColumnEdits, buildDataQualityDashboard } from '../../src/domains/crm/import-quality.js';
 
 test('import normalization preserves raw rows and normalizes numeric and phone fields', () => {
   const rows = normalizeImportRows([
@@ -12,6 +12,13 @@ test('import normalization preserves raw rows and normalizes numeric and phone f
   assert.equal(rows[0]._source_row, 1);
   assert.equal(rows[0]._source_raw['قیمت'], '1,200');
   assert.equal(rows[0].normalized_numbers.قیمت, 1200);
+});
+
+test('mapped-row guard rejects rows containing only unrelated columns', () => {
+  assert.equal(hasMappedImportData({ property_code: 'IMP-1', status: 'active' }, 'properties'), false);
+  assert.equal(hasMappedImportData({ property_name: 'آپارتمان', property_code: 'IMP-2' }, 'properties'), true);
+  assert.equal(hasMappedImportData({ full_name: 'علی' }, 'leads'), true);
+  assert.equal(hasMappedImportData({ observed_at: new Date().toISOString() }, 'market'), false);
 });
 
 test('import validation isolates invalid phone rows without dropping valid rows', () => {

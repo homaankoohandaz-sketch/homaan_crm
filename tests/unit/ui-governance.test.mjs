@@ -35,6 +35,14 @@ test('Excel import filters completely empty rows before mapping or insertion', (
   assert.match(importer, /filter\(hasMeaningfulImportData\)/);
 });
 
+test('Excel import filters rows that map to no target fields before API writes', () => {
+  assert.match(importer, /const eligible=batch\.filter\(x=>mapAny\(x\)\)/);
+  assert.match(importer, /batch\.map\(mapAny\)\.filter\(Boolean\)/);
+  assert.match(importer, /const mappedCache=new WeakMap\(\)/);
+  assert.match(importer, /cached\.batchId===importBatchId/);
+  assert.match(importer, /بدون داده قابل نگاشت/);
+});
+
 test('Excel import does not invent property records from empty rows', () => {
   assert.match(importer, /if\(!hasMeaningfulImportData\(raw\)\)return/);
 });
