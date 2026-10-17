@@ -14,7 +14,7 @@ import {
 import { createTaskRepository } from '../core/task-repository.js';
 
 const esc = (x) => String(x ?? '').replace(/[&<>"']/g, (c) => ({
-  '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  '&':'&','<':'<','>':'>','"':'"',"'":'&#39;'
 }[c]));
 const today = () => new Date().toISOString().slice(0, 10);
 const tomorrow = () => { const d = new Date(); d.setDate(d.getDate()+1); return d.toISOString().slice(0,10); };

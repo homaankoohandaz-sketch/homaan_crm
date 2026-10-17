@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { createBaseline, calculateVariance } from '../ai-project-control-engine.js';
+import { createBaseline, calculateVariance, analyzeCostOverrun } from '../ai-project-control-engine.js';
 
 const tasks = [
   { id: 1, planned_start: '2026-10-01', planned_finish: '2026-10-10', duration_days: 10, planned_cost: 1000, progress: 0 },
@@ -24,3 +24,11 @@ assert.equal(variance.scheduleVarianceDays, 2);
 assert.equal(variance.tasks[0].finishVarianceDays, 2);
 assert.equal(variance.tasks[1].finishVarianceDays, 2);
 console.log('ai-project-control baseline/variance tests passed');
+
+const zeroCost = analyzeCostOverrun(
+  [{ id: 1, planned_cost: 100, actual_cost: 0 }],
+  { current_budget: 0, actual_cost: 0 }
+);
+assert.equal(zeroCost.planned, 0);
+assert.equal(zeroCost.actual, 0);
+assert.equal(zeroCost.variance, 0);

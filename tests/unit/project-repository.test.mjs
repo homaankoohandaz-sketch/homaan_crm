@@ -45,10 +45,12 @@ test('project repository persists project fields without hierarchy in assumption
     totalSellable: 678.725,
     totalCapital: 73790000000,
     totalReturn: 146425500000,
-    status: 'active'
+    status: 'active',
+    createdBy: 'manager-1'
   });
   assert.equal(created.title, 'P1');
   assert.equal(rows[0].gross_built_area, 798.5);
+  assert.equal(rows[0].created_by, 'manager-1');
   assert.ok(!rows[0].assumptions?.projectHierarchy);
 });
 
