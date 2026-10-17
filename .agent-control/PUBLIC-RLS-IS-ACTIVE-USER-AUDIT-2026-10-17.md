@@ -52,3 +52,14 @@ A later read-only query against the same Supabase project found:
 The **live behavior currently matches the intended policy scope and function ACL** for the reviewed helper. The old statement that the proposed migration is definitely unapplied is stale as a description of live behavior. However, the applied SQL source/version has not been reconciled byte-for-byte with the repository file: live history reports version `20261017044414`, while the checked-in proposal is timestamped `20261017120000`.
 
 Do not reapply the proposed migration or create a duplicate timestamp migration merely to make the numbers match. First recover the exact SQL associated with live version `20261017044414` from the original change/authoritative deployment record, compare it with the checked-in file, and then correct repository migration parity through a reviewed, non-destructive change. Public customer flows still need authenticated/unauthenticated runtime regression tests; catalog evidence and static tests do not prove those flows work end to end.
+
+
+## Security Advisor refresh — 2026-10-17 11:05 UTC
+
+A fresh read of the Supabase Security Advisor returned broader findings than the targeted catalog query above:
+
+- 14 SECURITY DEFINER functions are callable by authenticated. This is a review queue, not proof that all 14 are exploitable. Review each function body, authorization guard, exposed data, and intended caller before changing EXECUTE grants.
+- The advisor reported anonymous-role policy findings on multiple tables, including activity_logs, agent_tool_permissions, and ai_actions. This is not identical in scope to the targeted query of the 12 named is_active_user() policies. Do not treat the earlier targeted result as proof that every policy in the project excludes anon; enumerate all live policies and inspect each USING/WITH CHECK predicate and role.
+- The advisor also reported 34 multiple-permissive-policy findings. These are potential performance/maintainability issues and should be consolidated only after semantic equivalence and role behavior are verified.
+- These advisor findings are newer evidence and remain unresolved. No grants, policies, or production schema were changed by this audit.
+- Remediation order: (1) enumerate all anon/public policies and test access with an unauthenticated client; (2) review each SECURITY DEFINER function individually; (3) consolidate duplicate permissive policies only after tests. Do not blanket-revoke function EXECUTE or remove public policies needed by Edge Function-backed customer flows.
