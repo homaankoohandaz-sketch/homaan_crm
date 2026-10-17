@@ -15,40 +15,63 @@ concurrency:
 jobs:
   backup:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
+    env:
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
     steps:
       - name: Verify backup credential is configured
-        env:
-          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        shell: bash
         run: |
           set -euo pipefail
-          test -n "$SUPABASE_DB_URL"
+          if [[ -z "${SUPABASE_DB_URL:-}" ]]; then
+            echo "::error::Missing GitHub Actions secret SUPABASE_DB_URL. Add it under Settings > Secrets and variables > Actions, using the Supabase Session pooler URI for this project, then rerun this workflow."
+            exit 1
+          fi
+          if [[ "$SUPABASE_DB_URL" != postgres://* && "$SUPABASE_DB_URL" != postgresql://* ]]; then
+            echo "::error::SUPABASE_DB_URL must be a PostgreSQL connection URI. The value is not printed."
+            exit 1
+          fi
 
-      - name: Install PostgreSQL client
-        run: |
-          set -euo pipefail
-          sudo apt-get update
-          sudo apt-get install -y postgresql-client
+      - name: Set up Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
 
-      - name: Create compressed PostgreSQL backup
-        env:
-          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+      - name: Create logical backup of roles, schema, and data
+        shell: bash
         run: |
           set -euo pipefail
           mkdir -p backup
-          pg_dump "$SUPABASE_DB_URL" \
-            --format=custom \
-            --no-owner \
-            --no-privileges \
-            --file="backup/buildwise-${GITHUB_RUN_ID}.dump"
-          pg_restore --list "backup/buildwise-${GITHUB_RUN_ID}.dump" > "backup/buildwise-${GITHUB_RUN_ID}.manifest"
-          test -s "backup/buildwise-${GITHUB_RUN_ID}.dump"
-          test -s "backup/buildwise-${GITHUB_RUN_ID}.manifest"
+          supabase db dump --db-url "$SUPABASE_DB_URL" -f backup/roles.sql --role-only
+          supabase db dump --db-url "$SUPABASE_DB_URL" -f backup/schema.sql
+          supabase db dump --db-url "$SUPABASE_DB_URL" -f backup/data.sql --data-only --use-copy
+          test -s backup/roles.sql
+          test -s backup/schema.sql
+          test -s backup/data.sql
+          grep -q "PostgreSQL database dump complete" backup/schema.sql
+          grep -q "PostgreSQL database dump complete" backup/data.sql
 
-      - name: Upload backup artifact
+      - name: Write backup manifest and checksums
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            echo "project_ref=beuestoewletjsgmigmf"
+            echo "created_at_utc=$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+            echo "github_run_id=$GITHUB_RUN_ID"
+            echo "github_run_attempt=$GITHUB_RUN_ATTEMPT"
+            echo "git_sha=$GITHUB_SHA"
+            echo "backup_format=Supabase CLI logical SQL dumps"
+            echo "contents=roles.sql,schema.sql,data.sql"
+            echo "restore_test=NOT_PERFORMED"
+          } > backup/manifest.txt
+          (cd backup && sha256sum roles.sql schema.sql data.sql manifest.txt > SHA256SUMS)
+          (cd backup && sha256sum --check SHA256SUMS)
+
+      - name: Upload private workflow artifact
         uses: actions/upload-artifact@v4
         with:
-          name: buildwise-db-backup-${{ github.run_id }}
+          name: buildwise-db-backup-${{ github.run_id }}-${{ github.run_attempt }}
           path: backup/
           if-no-files-found: error
-          retention-days: 7
+          retention-days: 30
