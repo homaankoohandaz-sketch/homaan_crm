@@ -18,22 +18,26 @@ jobs:
     timeout-minutes: 30
     env:
       SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
-      BACKUP_AGE_RECIPIENT: ${{ vars.BACKUP_AGE_RECIPIENT }}
+      BACKUP_ENCRYPTION_PASSPHRASE: ${{ secrets.BACKUP_ENCRYPTION_PASSPHRASE }}
     steps:
       - name: Verify backup credentials and encryption configuration
         shell: bash
         run: |
           set -euo pipefail
           if [[ -z "${SUPABASE_DB_URL:-}" ]]; then
-            echo "::error::Missing GitHub Actions secret SUPABASE_DB_URL. Add it under Settings > Secrets and variables > Actions using the Supabase Session pooler URI, then rerun this workflow."
+            echo "::error::Missing GitHub Actions secret SUPABASE_DB_URL. Configure the PostgreSQL connection URI in repository Actions secrets. The value is not printed."
             exit 1
           fi
           if [[ "$SUPABASE_DB_URL" != postgres://* && "$SUPABASE_DB_URL" != postgresql://* ]]; then
             echo "::error::SUPABASE_DB_URL must be a PostgreSQL connection URI. The value is not printed."
             exit 1
           fi
-          if [[ -z "${BACKUP_AGE_RECIPIENT:-}" || "$BACKUP_AGE_RECIPIENT" != age1* ]]; then
-            echo "::error::Missing or invalid repository variable BACKUP_AGE_RECIPIENT. Configure an age public recipient key before running; plaintext database backups must never be uploaded from this public repository."
+          if [[ -z "${BACKUP_ENCRYPTION_PASSPHRASE:-}" ]]; then
+            echo "::error::Missing GitHub Actions secret BACKUP_ENCRYPTION_PASSPHRASE. Add a strong, unique passphrase under Settings > Secrets and variables > Actions."
+            exit 1
+          fi
+          if [[ ${#BACKUP_ENCRYPTION_PASSPHRASE} -lt 24 ]]; then
+            echo "::error::BACKUP_ENCRYPTION_PASSPHRASE must be at least 24 characters. The value is not printed."
             exit 1
           fi
 
@@ -42,12 +46,12 @@ jobs:
         with:
           version: latest
 
-      - name: Install age encryption tool
+      - name: Install GnuPG encryption tool
         shell: bash
         run: |
           set -euo pipefail
           sudo apt-get update
-          sudo apt-get install -y age
+          sudo apt-get install -y gnupg
 
       - name: Create logical backup of roles, schema, and data
         shell: bash
@@ -67,12 +71,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          age -r "$BACKUP_AGE_RECIPIENT" -o backup/roles.sql.age backup/roles.sql
-          age -r "$BACKUP_AGE_RECIPIENT" -o backup/schema.sql.age backup/schema.sql
-          age -r "$BACKUP_AGE_RECIPIENT" -o backup/data.sql.age backup/data.sql
-          test -s backup/roles.sql.age
-          test -s backup/schema.sql.age
-          test -s backup/data.sql.age
+          gpg --batch --yes --pinentry-mode loopback --passphrase "$BACKUP_ENCRYPTION_PASSPHRASE" --symmetric --cipher-algo AES256 --output backup/roles.sql.gpg backup/roles.sql
+          gpg --batch --yes --pinentry-mode loopback --passphrase "$BACKUP_ENCRYPTION_PASSPHRASE" --symmetric --cipher-algo AES256 --output backup/schema.sql.gpg backup/schema.sql
+          gpg --batch --yes --pinentry-mode loopback --passphrase "$BACKUP_ENCRYPTION_PASSPHRASE" --symmetric --cipher-algo AES256 --output backup/data.sql.gpg backup/data.sql
+          test -s backup/roles.sql.gpg
+          test -s backup/schema.sql.gpg
+          test -s backup/data.sql.gpg
           rm -f backup/roles.sql backup/schema.sql backup/data.sql
 
       - name: Write backup manifest and checksums
@@ -85,12 +89,12 @@ jobs:
             echo "github_run_id=$GITHUB_RUN_ID"
             echo "github_run_attempt=$GITHUB_RUN_ATTEMPT"
             echo "git_sha=$GITHUB_SHA"
-            echo "backup_format=Supabase CLI logical SQL dumps encrypted with age"
-            echo "contents=roles.sql.age,schema.sql.age,data.sql.age"
-            echo "encryption=age; decrypt only with the separately held private identity"
+            echo "backup_format=Supabase CLI logical SQL dumps encrypted with GnuPG symmetric AES256"
+            echo "contents=roles.sql.gpg,schema.sql.gpg,data.sql.gpg"
+            echo "encryption=GnuPG symmetric AES256; decrypt with the separately stored BACKUP_ENCRYPTION_PASSPHRASE secret"
             echo "restore_test=NOT_PERFORMED"
           } > backup/manifest.txt
-          (cd backup && sha256sum roles.sql.age schema.sql.age data.sql.age manifest.txt > SHA256SUMS)
+          (cd backup && sha256sum roles.sql.gpg schema.sql.gpg data.sql.gpg manifest.txt > SHA256SUMS)
           (cd backup && sha256sum --check SHA256SUMS)
 
       - name: Upload encrypted backup artifact
