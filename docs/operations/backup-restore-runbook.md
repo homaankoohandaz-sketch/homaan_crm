@@ -87,6 +87,30 @@ Keep the P0 backup/restore gate **OPEN** until all of these are evidenced:
 
 Keep high-risk schema changes and production rollout blocked until the evidence is reviewed. A workflow file, configured secret, or successful dump alone is not proof of recoverability.
 
+
+## 8. Backup alternatives and selection
+
+| Option | Cost / dependency | Strength | Limitation | Decision |
+|---|---|---|---|---|
+| Supabase-managed daily backups | Paid plans; current documented retention: Pro 7 days, Team 14 days, Enterprise up to 30 days | Simplest managed restore | Free projects should not assume managed daily backups; Storage object bytes excluded | Use if a paid plan becomes acceptable |
+| Supabase PITR | Paid add-on and eligible compute | Restore to a point in time | More expensive; still needs separate file/object backup | Not the low-cost choice |
+| GitHub Actions + Supabase CLI + age | Existing workflow; needs database URI and age recipient | Automated logical dumps, checksums, audit trail | Temporary artifacts; public repo means plaintext is forbidden; dump success is not restore proof | Keep as layer 1; verify a real run |
+| Encrypted off-site object storage (Cloudflare R2 candidate) | R2 currently includes 10 GB-month storage and request allowances; excess is paid | Independent retention; no R2 egress fee | Needs bucket/API credentials and lifecycle policy; 10 GB may be insufficient | Preferred second copy if within free quota |
+| Encrypted local/offline copy | No new cloud subscription; trusted device and discipline required | Independent of cloud-account failure | Manual drift/device-loss risk | Additional copy, never the only copy |
+| Second Supabase project | Project/usage cost may apply | Fast recovery target and restore drill environment | Not independent if credentials/account are shared; may copy accidental corruption | Recovery target, not the only backup |
+| Third-party cloud drive | Existing plan/quota | Convenient off-site copy | Automation/access/data residency need review | Optional; upload ciphertext only |
+
+### Recommended low-cost layout
+
+1. Nightly GitHub Actions logical dump of roles/schema/data.
+2. Encrypt before artifact upload; keep the age private key outside GitHub and this public repository.
+3. Keep the encrypted GitHub artifact as a short-term copy, then copy the same ciphertext and checksum manifest to a private off-site bucket (R2 is a candidate if the dump fits its free allowance).
+4. Keep a separate offline encrypted recovery copy when feasible.
+5. Back up Supabase Storage object bytes separately; a database dump preserves metadata, not uploaded object contents.
+6. Run a quarterly restore drill in an isolated project and after material schema changes. Do not accept backup as DONE until restore and access checks pass.
+
+Do not configure another storage target until its credentials are stored privately and the workflow is tested. Never add credentials to source files or chat.
+
 ## References
 
 - [Supabase Database Backups](https://supabase.com/docs/guides/platform/backups)
