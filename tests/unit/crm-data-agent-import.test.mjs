@@ -24,4 +24,7 @@ test('bulk importer preserves rollback identity for every supported target', () 
   assert.match(importer, /failed_rows:allErrors\.length/);
   assert.match(importer, /expandContactPairRows/);
   assert.doesNotMatch(importer, /ورود متوقف شد/);
+  assert.match(importer, /imported_by:session\.user\.id/);
+  assert.match(importer, /data-archive-save/);
+  assert.match(importer, /data-archive-delete/);
 });
