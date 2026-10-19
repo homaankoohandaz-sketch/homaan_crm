@@ -30,6 +30,30 @@ function isMeaningfulRow(row) {
   return Object.values(row).some(value => value != null && String(value).trim() !== '');
 }
 
+export function expandContactPairRows(matrix = [], sheetName = 'Sheet3', sheetIndex = 0) {
+  return (matrix || []).flatMap((sourceRow, index) => {
+    const row = Array.isArray(sourceRow) ? sourceRow : [];
+    return [
+      { slot: 'left', name: row[0], phone: row[1] },
+      { slot: 'right', name: row[2], phone: row[3] }
+    ].filter((contact) => String(contact.name ?? '').trim() !== '' || String(contact.phone ?? '').trim() !== '')
+      .map((contact) => ({
+        full_name: String(contact.name ?? '').trim(),
+        mobile: String(contact.phone ?? '').trim(),
+        _target: 'leads',
+        _sheet_name: sheetName,
+        _sheet_index: sheetIndex,
+        _row_number: index + 1,
+        _raw_data: {
+          source_row: row,
+          contact_slot: contact.slot,
+          full_name: String(contact.name ?? '').trim(),
+          mobile: String(contact.phone ?? '').trim()
+        }
+      }));
+  });
+}
+
 export function normalizeImportRows(rows = []) {
   return (rows || [])
     .map((row, index) => isMeaningfulRow(row) ? normalizeOne(row, index) : null)
