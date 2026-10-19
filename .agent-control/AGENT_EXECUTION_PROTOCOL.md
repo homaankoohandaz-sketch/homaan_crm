@@ -294,3 +294,8 @@ Any new material decision that changes agent behavior, execution order, verifica
 No agent may silently override this protocol.
 
 If a later decision conflicts with this protocol, the later decision is authoritative only after it is explicitly recorded in the repository and this protocol is updated accordingly.
+
+
+## 7. Shared workspace rule
+
+Follow `BUILDWISE-SINGLE-SOURCE-OF-TRUTH.md` as the sole authority for repository/branch/file ownership. All agents and accounts work in `homaankoohandaz-sketch/homaan_crm` on `buildwise-implementation`; no per-agent branches or duplicate implementations. Use the existing task registry's `ALLOWED_FILES` as a one-writer lock. Parallel work is permitted only on disjoint files; overlapping edits are serialized. Return code, tests, and evidence to the shared branch and existing state records. `main` is release-only.
