@@ -62,7 +62,7 @@ Branch: buildwise-implementation
 
 ## 2026-10-19 — CRM integration status
 - CRM normalization import fixed; data-quality facade reuses the canonical `import-quality.js`; CRM regression test added to `npm test`.
-- Added a full-suite GitHub Actions workflow for the canonical branch. CI results have not yet been retrieved; no test-pass claim.
+- Added a full-suite GitHub Actions workflow for the canonical branch. GitHub Actions run `39290618908` passed `npm test` and `tests/release-smoke.mjs` on code commit `3e272704`; the CRM regression test was included. Later commits are documentation/state-only, with the newest workflow run still queued/running at last check.
 - Single workspace enforced in `BUILDWISE-SINGLE-SOURCE-OF-TRUTH.md`: one repository, one coding branch (`buildwise-implementation`), one writer per file, no per-agent branches or duplicate implementations.
 - Backup alternatives documented in the existing runbook. Backup execution and isolated restore remain unverified.
 - Production landing URL verified as `https://buildwis-ai.netlify.app`; authenticated E2E item 630 remains BLOCKED.
