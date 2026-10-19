@@ -110,3 +110,18 @@ Unit/contract still PASS. 630 BLOCKED.
 - GitHub compare API currently reports `buildwise-implementation` as diverged from `main`: 45 commits ahead, 11 behind, 26 changed files relative to the merge base.
 - Feature PR #39 was closed without merge; it would have included the accumulated branch delta rather than a scoped feature-only diff.
 - Keep implementation on the canonical branch, but do not create a release PR or merge until divergence is reconciled and all included changes are reviewed.
+
+
+## 2026-10-19 — CRM integration and single-workspace enforcement
+
+- Canonical coding branch remains `buildwise-implementation`; no implementation work was sent directly to `main`.
+- Fixed `src/domains/crm/operations.js` to use the existing browser-safe `BuildWiseNormalize` global. The previous named ESM import was incompatible with `src/core/data-normalization.js`, which is an IIFE and does not export named bindings.
+- Added `src/domains/crm/data-quality.js` as a thin facade over the existing `import-quality.js` implementation; no second import-quality engine was created.
+- Added `tests/crm-realestate-batch.test.js` and wired it into `npm test`.
+- Added `.github/workflows/buildwise-test-suite.yml` to run `npm test` and `tests/release-smoke.mjs` on pushes to the canonical implementation branch and relevant pull requests.
+- Updated `BUILDWISE-SINGLE-SOURCE-OF-TRUTH.md` and this protocol's existing canonical reference to enforce one repository/one coding branch/one writer per file. Parallel work is permitted only on disjoint declared `ALLOWED_FILES`; overlapping edits must be serialized. No per-agent/per-email branches or duplicate implementations.
+- Expanded the existing backup/restore runbook with alternatives: Supabase managed backups/PITR, encrypted GitHub Actions artifacts, encrypted off-site object storage (R2 candidate), local/offline encrypted copies, and a second Supabase recovery project. Recommended low-cost layout is encrypted scheduled dump + short-term artifact + encrypted off-site copy + isolated restore drill.
+- Corrected `docs/e2e/E2E-630-PRODUCTION-SCENARIO.md`: `buildwise-ai-h.netlify.app` returned HTTP 404; the actual Netlify primary URL `https://buildwis-ai.netlify.app` and branch alias both load the BuildWise AI landing page in read-only fetch checks.
+- Verification limitation: the GitHub connector returned no commit status contexts or workflow runs for the latest commits. The local runtime has no repository checkout and could not clone from GitHub due unavailable DNS/network. Therefore the new CRM test, full `npm test`, and release smoke are **not yet verified as executed**; do not mark them PASS.
+- Authenticated E2E item 630 remains BLOCKED. The saved `BuildWise Production E2E` browser profile currently reports no confirmed signed-in sites; do not assume it has a valid login session.
+- Release remains blocked: PR #40 is open, reports `mergeable=false`, and `buildwise-implementation` is diverged from `main` (53 commits ahead, 11 behind at this check). Do not merge the broad PR into `main` until conflicts/history are reconciled and CI, backup restore, migration parity, and authenticated E2E gates are evidenced.
