@@ -1,4 +1,5 @@
-import { normalizeRecord, normalizePhone } from '../../core/data-normalization.js';
+import '../../core/data-normalization.js';
+const { normalizeRecord, normalizePhone } = globalThis.BuildWiseNormalize;
 
 export function createImportBatch({ source = 'unknown', fileName = null, rowCount = 0, actorId = null, startedAt = new Date().toISOString() } = {}) {
   return {

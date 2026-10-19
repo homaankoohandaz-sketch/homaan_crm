@@ -1,6 +1,6 @@
 # BuildWise AI — SUMMARY
 
-Updated: 2026-10-10 (Grok — EMERGENCY engine note)
+Updated: 2026-10-19 (CRM integration + shared-workspace enforcement)
 Branch: buildwise-implementation
 
 ## Single source of truth
@@ -9,6 +9,13 @@ Branch: buildwise-implementation
 - Release: `main`
 - Summary: this file | State: `.agent-control/STATE.md` | Checklist: MASTER-CHECKLIST-v3-850 (850)
 - NO second app. DONE requires runtime evidence. Agent commits: `[grok]`.
+
+## 2026-10-17 — Grok session
+- GitHub + Supabase REST + direct Postgres (Seoul pooler) access verified.
+- Rules list 450–850 received; largely already in MASTER-CHECKLIST-v3-850. No false DONE.
+- NOW.md / STATE.md updated with current state, objective, blocker, next action.
+- P0 backup still OPEN: human must set `SUPABASE_DB_URL` + `BACKUP_AGE_RECIPIENT` and produce verified artifact + restore drill.
+- Operational DB data sparse; schema large. Release remains BLOCKED per STATE.md gates.
 
 ## EMERGENCY 2026-10-10 — ai-project-control-engine.js
 - Push tool size limit truncated `ai-project-control-engine.js`.
@@ -34,9 +41,9 @@ Branch: buildwise-implementation
 
 ## Blocked without human
 1. 630 authenticated E2E
-2. 604/605 secrets
+2. Backup secrets + verified restore drill
 3. Full file restores (`buildwise-app.js`, `ai-project-control-engine.js`) via git show
-
+4. Migration ledger reconciliation (live 106 vs tree ~40)
 
 ## 2026-10-12 — Professional benchmark + performance/security execution
 - Supabase RLS: removed unrestricted project_kpi_snapshots_auth policy; active-user reads and can_write()-gated writes now apply.
@@ -51,3 +58,12 @@ Branch: buildwise-implementation
 - Additional hardening: manager_edit_record now fails closed outside the active public_requests editor and allows only an explicit field list; non-null columns cannot be set to JSON null.
 - Fixed public-request editor payload to write the description into requirements.text (the actual JSONB column), and fixed UUID-based edit/save buttons to pass IDs through data attributes rather than unquoted JavaScript expressions.
 - Targeted local regression tests now pass **4/4**. Full CI and authenticated browser E2E still unconfirmed.
+
+
+## 2026-10-19 — CRM integration status
+- CRM normalization import fixed; data-quality facade reuses the canonical `import-quality.js`; CRM regression test added to `npm test`.
+- Added a full-suite GitHub Actions workflow for the canonical branch. GitHub Actions run `39290618908` passed `npm test` and `tests/release-smoke.mjs` on code commit `3e272704`; the CRM regression test was included. Later commits are documentation/state-only, with the newest workflow run still queued/running at last check.
+- Single workspace enforced in `BUILDWISE-SINGLE-SOURCE-OF-TRUTH.md`: one repository, one coding branch (`buildwise-implementation`), one writer per file, no per-agent branches or duplicate implementations.
+- Backup alternatives documented in the existing runbook. Backup execution and isolated restore remain unverified.
+- Production landing URL verified as `https://buildwis-ai.netlify.app`; authenticated E2E item 630 remains BLOCKED.
+- PR #40 remains open and unmergeable; `main` must not receive the accumulated diverged branch until migration, backup/restore, CI, and authenticated E2E gates are reconciled.

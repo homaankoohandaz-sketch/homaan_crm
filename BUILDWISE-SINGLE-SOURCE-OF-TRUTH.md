@@ -11,6 +11,17 @@ GitHub repository: `homaankoohandaz-sketch/homaan_crm`
 
 Workers (Grok / Claude / Codex / others) must modify this repository and this branch unless a task explicitly creates a temporary review branch. Temporary branches are disposable and are not sources of truth.
 
+## Shared workspace and file ownership (mandatory)
+
+- Grok, Claude, Codex, ChatGPT, and every connected account/email work in this same repository: `homaankoohandaz-sketch/homaan_crm`.
+- The only active coding branch is `buildwise-implementation`. Do not create per-agent or per-email implementation branches. Temporary review branches are allowed only when explicitly requested and must not become a second source of truth.
+- `main` is release-only. Never push implementation work directly to `main`.
+- Before editing, inspect the canonical file and current task queue. Reuse and modify the existing implementation; do not create a parallel file/module/test/engine when one already exists.
+- One writer per file at a time. Parallel agents may work only on disjoint files declared in the task contract's `ALLOWED_FILES`; if files overlap, serialize the work and hand off the same file rather than forking it.
+- Each task must name its owner, exact allowed files, acceptance test, and evidence location in the existing task registry. The worker must commit back to `buildwise-implementation` and update the existing `.agent-control/STATE.md` / `.agent-control/SUMMARY.md` only when relevant; never create alternate state or summary files.
+- Do not add `final`, `v2`, `new`, `copy`, or dated duplicate implementations. Historical evidence may be dated, but it is not a competing source of current state.
+- Before merge: inspect diff, run focused test, run full required suite/CI, reconcile migrations and backup safety, and record runtime blockers honestly. CI alone does not prove authenticated E2E.
+
 ## One release branch
 `main` is the ONLY release/production branch. It receives reviewed, tested implementation from `buildwise-implementation`.
 

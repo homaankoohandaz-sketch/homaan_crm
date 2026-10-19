@@ -47,3 +47,24 @@ test('navigation does not duplicate the same task section', () => {
   const matches = app.match(/\['tasks','پیگیری‌ها','✓'\]/g) || [];
   assert.equal(matches.length, 1);
 });
+
+test('property file triage is persisted, visible, and manager-editable', async () => {
+  const app = fs.readFileSync(new URL('../../buildwise-app.js', import.meta.url), 'utf8');
+  const migration = fs.readFileSync(new URL('../../supabase/migrations/20261017190000_property_file_triage.sql', import.meta.url), 'utf8');
+  assert.match(migration, /add column if not exists is_starred boolean/i);
+  assert.match(migration, /add column if not exists file_tags text\[\]/i);
+  assert.match(migration, /is_starred, file_tags/i);
+  assert.match(migration, /guard_property_file_triage/);
+  assert.match(migration, /and not public\.is_manager_user\(\)/);
+  assert.match(migration, /properties_file_tags_allowed/);
+  assert.match(migration, /where public\.is_active_user\(\)/i);
+  assert.doesNotMatch(migration, /owner_notes,\s*internal_notes/i);
+  assert.match(app, /status,is_starred,file_tags,created_at/);
+  assert.match(app, /function propertyCard\(x\)/);
+  assert.match(app, /x\.is_starred\?'★ '/);
+  for (const tag of ['خوش‌قیمت', 'خوش‌فروش', 'پول لازم', 'تهاتر']) assert.ok(app.includes(tag), 'missing property label: ' + tag);
+  assert.match(app, /async function editProperty\(id\)\{if\(!isManager\(\)\)/);
+  assert.match(app, /select\('id,property_name,property_type,region,neighborhood,built_area,bedrooms,total_price,price_per_meter,is_starred,file_tags'\)/);
+  assert.match(app, /is_starred:!!ep_starred\.checked/);
+  assert.match(app, /file_tags:\[\.\.\.\(ep_tag_good_price\.checked/);
+});

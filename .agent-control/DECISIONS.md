@@ -141,3 +141,12 @@ Rules:
 - No security issue is DONE without tests and runtime evidence where applicable.
 - Production data mutation, secret rotation, auth redesign, permission broadening, destructive tests and release actions retain existing human gates.
 Impact: The security standard is repository law, not a chat-only instruction. Its existence does not assert that current code or production has passed an audit.
+
+
+## D-026 — Manager-led valuation and property file triage
+Decision:
+- Property valuation and municipal feasibility remain manually entered and approved by the manager; AI may organize evidence but must not publish an automatic final valuation.
+- Property file triage uses a persistent star and the manager-editable labels `خوش‌قیمت`, `خوش‌فروش`, `پول لازم`, and `تهاتر`.
+- A market source failure must be visibly marked as stale/unavailable; a placeholder value must never be presented as a current market quote.
+- The authenticated property client view must exclude sensitive owner/internal notes and phone fields; UI hiding alone is not authorization.
+Impact: property triage and manual valuation are simple, auditable manager workflows, not separate AI engines.

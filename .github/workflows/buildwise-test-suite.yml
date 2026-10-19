@@ -1,0 +1,31 @@
+name: BuildWise Full Test Suite
+
+on:
+  push:
+    branches: [buildwise-implementation]
+  pull_request:
+    branches: [main, buildwise-implementation]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: buildwise-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify repository identity and canonical test command
+        run: |
+          node -e "const p=require('./package.json'); if(p.name!=='buildwise-ai'||!p.scripts.test) process.exit(1)"
+      - name: Run complete test suite
+        run: npm test
+      - name: Run release smoke checks
+        run: node tests/release-smoke.mjs
