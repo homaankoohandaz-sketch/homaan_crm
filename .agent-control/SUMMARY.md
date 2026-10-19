@@ -67,3 +67,11 @@ Branch: buildwise-implementation
 - Backup alternatives documented in the existing runbook. Backup execution and isolated restore remain unverified.
 - Production landing URL verified as `https://buildwis-ai.netlify.app`; authenticated E2E item 630 remains BLOCKED.
 - PR #40 remains open and unmergeable; `main` must not receive the accumulated diverged branch until migration, backup/restore, CI, and authenticated E2E gates are reconciled.
+
+
+## 2026-10-19 — Canonical main + Excel import
+- Canonical branch is `main`; main and the former implementation branch currently point to the same code head. No per-agent/email branches; one writer per file.
+- The implementation merge commit is `2e7a7e98`; latest verified test code commit `d51443c1` passed the full `npm test` suite and release smoke in GitHub Actions run `39292216698`.
+- Excel importer now routes Sheet1/Sheet4 to properties and headerless Sheet3 contact pairs to leads; it preserves contact pairs, allows rows with validation warnings to be attempted, stores raw values, and provides manager-only raw archive edit/delete. The required RLS delete policy was applied live.
+- Workbook audit expectation: 5,838 property/request rows + 130 property rows + 66 contacts = 6,034 normalized CRM attempts. Workbook data is **not yet loaded** into live Supabase; requires an authenticated CRM session and upload through the app.
+- Netlify production deploy is stale at commit `a4d8f074`; no authenticated Netlify session is configured, so current main has not yet been published. Authenticated E2E item 630 and backup/restore verification remain open.
