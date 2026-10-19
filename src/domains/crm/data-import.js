@@ -104,7 +104,7 @@ async function readRemote(){const p=document.getElementById('bw-di-preview');try
     for(const [batchTarget,targetRows] of groups.entries()){
       for(let i=0;i<targetRows.length;i+=CHUNK){
         const batch=targetRows.slice(i,i+CHUNK),r=await resilient(batch,batchTarget);ok+=r.ok;failed=failed.concat(r.fail);
-        const raw=batch.map(x=>({import_batch_id:importBatchId,entity_type:batchTarget,source_file:sourceFile,sheet_name:x._sheet_name,sheet_index:x._sheet_index,row_number:x._row_number,raw_data:x._raw_data||x,normalized_data:mapAny(x,batchTarget)}));
+        const raw=batch.map(x=>({import_batch_id:importBatchId,entity_type:batchTarget,source_file:sourceFile,sheet_name:x._sheet_name,sheet_index:x._sheet_index,row_number:x._row_number,imported_by:session.user.id,raw_data:x._raw_data||x,normalized_data:mapAny(x,batchTarget)}));
         const rawResult=await resilientRaw(raw);rawFailed=rawFailed.concat(rawResult.fail);processed+=batch.length;
         res.innerHTML='<div>پیشرفت: '+processed.toLocaleString('fa-IR')+' / '+rows.length.toLocaleString('fa-IR')+'</div><div>رکوردهای استاندارد موفق: '+ok.toLocaleString('fa-IR')+' · ناموفق: '+failed.length.toLocaleString('fa-IR')+' · آرشیو خام ناموفق: '+rawFailed.length.toLocaleString('fa-IR')+'</div><div>ردیف دارای هشدار اعتبارسنجی حذف نمی‌شود؛ همه رکوردها برای ورود تلاش می‌شوند و نسخه خام نگهداری می‌شود.</div>';
       }
@@ -115,7 +115,41 @@ async function readRemote(){const p=document.getElementById('bw-di-preview');try
     window.__bwRollbackImport=async function(){if(!importBatchId)return;const check=await dbi.rpc('is_manager_user');if(check.error||check.data!==true)return toast('Rollback فقط برای مدیر مجاز است','error');if(!confirm('این Batch به‌صورت کامل از داده‌های واردشده حذف می‌شود. ادامه؟'))return;const r=await dbi.rpc('rollback_import_batch',{p_batch_id:String(importBatchId)});if(r.error)return toast(r.error.message,'error');res.innerHTML='<div class="card"><b>Rollback انجام شد.</b><p>Batch '+E(importBatchId)+' به‌صورت دقیق و محدود حذف شد.</p><pre>'+E(JSON.stringify(r.data||{}))+'</pre></div>';};
     if(window.go)await go('properties');b.disabled=false;
   }
-  function addNav(){for(const id of ['sideNav','mobileNav','bottomNav']){const n=document.getElementById(id);if(!n||n.querySelector('#bw-di-nav'))continue;const b=document.createElement('button');b.id='bw-di-nav';b.className='nav-item';b.innerHTML='<i>⇧</i><span>ورود Excel</span>';b.onclick=open;n.appendChild(b)}}
+  let archiveOffset=0;
+  async function openArchive(){
+    const gate=await dbi.rpc('is_manager_user');
+    if(gate.error||gate.data!==true)return toast('مدیریت آرشیو خام فقط برای مدیر مجاز است','error');
+    archiveOffset=0;
+    window.modal('<h2>آرشیو و مدیریت داده‌های واردشده</h2><p>نسخه خام هر ردیف Excel با شیت و شماره ردیف نگهداری می‌شود. ویرایش و حذف فقط برای مدیر فعال است.</p><div id="bw-di-archive-list">در حال دریافت داده‌ها…</div><div class="modal-actions"><button class="btn" onclick="closeModal()">بستن</button></div>');
+    await loadArchive();
+  }
+  async function loadArchive(){
+    const p=document.getElementById('bw-di-archive-list');if(!p)return;
+    p.innerHTML='در حال دریافت داده‌ها…';
+    const r=await dbi.from('import_raw_rows').select('id,import_batch_id,entity_type,source_file,sheet_name,sheet_index,row_number,raw_data,normalized_data,created_at').order('id',{ascending:false}).range(archiveOffset,archiveOffset+49);
+    if(r.error){p.innerHTML='<div class="errorbox">'+E(r.error.message)+'</div>';return}
+    const items=r.data||[];
+    if(!items.length){p.innerHTML='<div class="card">در این صفحه رکوردی نیست.</div>';return}
+    p.innerHTML='<div class="card"><b>نمایش '+(archiveOffset+1)+' تا '+(archiveOffset+items.length)+' </b><input id="bw-di-archive-search" placeholder="جستجو در همین صفحه"></div><div id="bw-di-archive-items">'+items.map(x=>'<div class="card" data-archive-card="'+x.id+'"><b>#'+x.id+' · '+E(x.entity_type||'')+'</b><p>'+E(x.source_file||'')+' · '+E(x.sheet_name||'')+' · ردیف '+E(x.row_number||'')+' · Batch '+E(x.import_batch_id||'')+'</p><textarea data-archive-json="'+x.id+'" rows="7" style="width:100%;font-family:monospace">'+E(JSON.stringify(x.raw_data||{},null,2))+'</textarea><div class="modal-actions"><button class="btn primary" data-archive-save="'+x.id+'">ذخیره ویرایش</button><button class="btn" data-archive-delete="'+x.id+'">حذف رکورد</button></div></div>').join('')}</div><div class="modal-actions"><button class="btn" id="bw-di-archive-prev" '+(archiveOffset===0?'disabled':'')+'>قبلی</button><button class="btn" id="bw-di-archive-next" '+(items.length<50?'disabled':'')+'>بعدی</button></div>';
+    const search=document.getElementById('bw-di-archive-search');
+    search.oninput=()=>{const term=search.value.toLowerCase();document.querySelectorAll('#bw-di-archive-items [data-archive-card]').forEach(card=>{card.style.display=card.textContent.toLowerCase().includes(term)||card.querySelector('textarea')?.value.toLowerCase().includes(term)?'':'none'})};
+    p.querySelectorAll('[data-archive-save]').forEach(btn=>btn.onclick=async()=>{
+      const id=Number(btn.dataset.archiveSave),area=p.querySelector('[data-archive-json="'+id+'"]');let raw;
+      try{raw=JSON.parse(area.value)}catch(_){return toast('JSON معتبر نیست؛ تغییرات ذخیره نشد','error')}
+      const saved=await dbi.from('import_raw_rows').update({raw_data:raw,updated_at:new Date().toISOString()}).eq('id',id).select('id').maybeSingle();
+      if(saved.error||!saved.data)return toast(saved.error?.message||'ذخیره انجام نشد؛ سطح دسترسی را بررسی کنید','error');
+      toast('رکورد آرشیو ذخیره شد','success');
+    });
+    p.querySelectorAll('[data-archive-delete]').forEach(btn=>btn.onclick=async()=>{
+      const id=Number(btn.dataset.archiveDelete);if(!confirm('رکورد خام #'+id+' از آرشیو حذف شود؟ رکورد استاندارد ملک/خواهان جداگانه حذف نمی‌شود.'))return;
+      const deleted=await dbi.from('import_raw_rows').delete().eq('id',id).select('id').maybeSingle();
+      if(deleted.error||!deleted.data)return toast(deleted.error?.message||'حذف انجام نشد؛ سیاست حذف مدیر باید روی دیتابیس فعال باشد','error');
+      await loadArchive();toast('رکورد آرشیو حذف شد','success');
+    });
+    document.getElementById('bw-di-archive-prev').onclick=async()=>{archiveOffset=Math.max(0,archiveOffset-50);await loadArchive()};
+    document.getElementById('bw-di-archive-next').onclick=async()=>{archiveOffset+=50;await loadArchive()};
+  }
+  function addNav(){for(const id of ['sideNav','mobileNav','bottomNav']){const n=document.getElementById(id);if(!n)continue;if(!n.querySelector('#bw-di-nav')){const b=document.createElement('button');b.id='bw-di-nav';b.className='nav-item';b.innerHTML='<i>⇧</i><span>ورود Excel</span>';b.onclick=open;n.appendChild(b)}if(!n.querySelector('#bw-di-archive-nav')){const a=document.createElement('button');a.id='bw-di-archive-nav';a.className='nav-item';a.innerHTML='<i>▤</i><span>آرشیو Excel</span>';a.onclick=openArchive;n.appendChild(a)}}}
   function start(){addNav();new MutationObserver(addNav).observe(document.body,{childList:true,subtree:true});if(new URLSearchParams(location.search).get('open')==='import')setTimeout(open,0)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
 })();
