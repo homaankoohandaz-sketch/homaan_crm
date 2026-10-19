@@ -2,10 +2,10 @@
 // Canonical logic lives in import-quality.js; this module keeps the stable
 // public names used by tests/crm-realestate-batch.test.js.
 import '../../core/data-normalization.js';
-import { editImportedRecord, rollbackPlan, buildDataQualityDashboard as baseDashboard } from './import-quality.js';
+import { editImportedRecord, rollbackPlan, buildDataQualityDashboard as baseDashboard, expandContactPairRows } from './import-quality.js';
 import { findSamePhoneCandidates } from './operations.js';
 
-export { editImportedRecord };
+export { editImportedRecord, expandContactPairRows };
 
 // Canonical dashboard + duplicate-phone groups (merge is never automatic).
 export function buildDataQualityDashboard(rows = [], options = {}) {
