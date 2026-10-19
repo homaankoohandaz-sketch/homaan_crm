@@ -1,6 +1,6 @@
 # BuildWise AI — SUMMARY
 
-Updated: 2026-10-17 (Grok — access + rules intake)
+Updated: 2026-10-19 (CRM integration + shared-workspace enforcement)
 Branch: buildwise-implementation
 
 ## Single source of truth
@@ -58,3 +58,12 @@ Branch: buildwise-implementation
 - Additional hardening: manager_edit_record now fails closed outside the active public_requests editor and allows only an explicit field list; non-null columns cannot be set to JSON null.
 - Fixed public-request editor payload to write the description into requirements.text (the actual JSONB column), and fixed UUID-based edit/save buttons to pass IDs through data attributes rather than unquoted JavaScript expressions.
 - Targeted local regression tests now pass **4/4**. Full CI and authenticated browser E2E still unconfirmed.
+
+
+## 2026-10-19 — CRM integration status
+- CRM normalization import fixed; data-quality facade reuses the canonical `import-quality.js`; CRM regression test added to `npm test`.
+- Added a full-suite GitHub Actions workflow for the canonical branch. CI results have not yet been retrieved; no test-pass claim.
+- Single workspace enforced in `BUILDWISE-SINGLE-SOURCE-OF-TRUTH.md`: one repository, one coding branch (`buildwise-implementation`), one writer per file, no per-agent branches or duplicate implementations.
+- Backup alternatives documented in the existing runbook. Backup execution and isolated restore remain unverified.
+- Production landing URL verified as `https://buildwis-ai.netlify.app`; authenticated E2E item 630 remains BLOCKED.
+- PR #40 remains open and unmergeable; `main` must not receive the accumulated diverged branch until migration, backup/restore, CI, and authenticated E2E gates are reconciled.
