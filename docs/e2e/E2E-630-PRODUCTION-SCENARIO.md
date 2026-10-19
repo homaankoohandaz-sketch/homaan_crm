@@ -5,7 +5,7 @@ in a real browser with an approved test account and evidence is attached below.
 Rule source: MASTER-CHECKLIST-v3-850.md items 675, 737-742, 837-839 (no DONE without runtime + UI + security evidence).
 
 ## Preconditions
-- Target: https://buildwise-ai-h.netlify.app (production, main) and the buildwise-implementation deploy preview.
+- Target: https://buildwis-ai.netlify.app (Netlify primary URL; verify main deploy commit before production acceptance) and the buildwise-implementation deploy preview.
 - Three approved test accounts (never real customer data): owner, staff (full access except delete/user-admin), viewer (read-only).
 - Test data prefix: `E2E-<date>-` on every record so cleanup is exact. No production migrations, no force-push to main.
 - Live AI paths require OPENAI_API_KEY; if absent the AI step must FAIL CLOSED (expected, record as PASS for fail-closed).
