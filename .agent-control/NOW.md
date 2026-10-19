@@ -1,8 +1,9 @@
 # NOW — BuildWise AI
 
-as_of: 2026-10-17 (Grok session continued)
+as_of: 2026-10-17 (canonical main after reconciliation)
 
 ## Current state
+- Canonical branch: `main`; code and operational changes are unified in merge commit `2e7a7e98e1cc723385900e9a38b4979d05055871`.
 - Access: GitHub + Supabase REST + direct Postgres (Seoul) verified.
 - Offline DB backup: schema.sql + data.sql + full.dump produced, age-encrypted, checksummed. Evidence: `.agent-control/evidence/BACKUP-OFFLINE-2026-10-17-GROK.md`.
 - Data remediation on live DB: project_wbs=4, project_phases=3, project_milestones=3 for project 1 (چوگیا); deal #1 linked to lead_id=10.
