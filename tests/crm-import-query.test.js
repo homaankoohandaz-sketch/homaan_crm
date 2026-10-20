@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { buildSearchFilters, applyLocalSearch, applyLocalFilters } from '../src/domains/crm/query.js';
-import { normalizeImportRows, validateImportRows, buildImportPreview, findDuplicateCandidates } from '../src/domains/crm/import-quality.js';
+import { normalizeImportRows, validateImportRows, buildImportPreview, findDuplicateCandidates, deduplicateExactRows } from '../src/domains/crm/import-quality.js';
 
 const rows = [
   { full_name: 'Ali Ahmadi', region: 1, budget: 100 },
@@ -44,3 +44,15 @@ assert.equal(candidates[0].reason, 'same_property_code');
 assert.equal(candidates[0].candidates.length, 2);
 
 console.log('crm-import-query: passed');
+
+
+const exactRows = [
+  { خیابان: 'قصرالدشت', متراژ: '120', نوع: 'آپارتمان', _sheet_name: 'Sheet1', _row_number: 2, _raw_data: { خیابان: 'قصرالدشت', متراژ: '120', نوع: 'آپارتمان' } },
+  { نوع: 'آپارتمان', متراژ: '120', خیابان: 'قصرالدشت', _sheet_name: 'Sheet1', _row_number: 3, _raw_data: { خیابان: 'قصرالدشت', متراژ: '120', نوع: 'آپارتمان' } },
+  { خیابان: 'قصرالدشت', متراژ: '121', نوع: 'آپارتمان', _sheet_name: 'Sheet1', _row_number: 4 },
+  { خیابان: 'قصرالدشت', متراژ: '120', نوع: 'آپارتمان', _target: 'leads', _sheet_name: 'Sheet3', _row_number: 1 }
+];
+const deduped = deduplicateExactRows(exactRows);
+assert.equal(deduped.removedCount, 1, 'only exact duplicate data rows are removed');
+assert.equal(deduped.rows.length, 3, 'rows differing by any business value or target remain');
+assert.equal(deduped.rows[0]._row_number, 2, 'the first source row is retained');
