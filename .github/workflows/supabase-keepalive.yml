@@ -1,6 +1,8 @@
 name: Supabase Keepalive
 
-# Free-plan projects pause after ~1 week of inactivity. A light REST call every 3 days prevents it.
+# Free-plan projects pause after ~1 week of inactivity; this pings the API every 3 days.
+# GitHub disables scheduled workflows in public repos after 60 days without repo activity,
+# so the job also re-enables itself and the backup workflow (needs actions: write).
 on:
   workflow_dispatch:
   schedule:
@@ -8,19 +10,29 @@ on:
 
 permissions:
   contents: read
+  actions: write
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Ping Supabase REST API
+      - name: Ping Supabase (fails on any non-success HTTP status)
         env:
           SUPABASE_URL: https://beuestoewletjsgmigmf.supabase.co
           SUPABASE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
         run: |
           set -euo pipefail
           test -n "$SUPABASE_KEY"
-          code=$(curl -s -o /dev/null -w '%{http_code}' -H "apikey: $SUPABASE_KEY" "$SUPABASE_URL/rest/v1/")
-          echo "status=$code"
-          test "$code" -lt 500
+          # --fail makes curl exit non-zero on HTTP >= 400; retries cover transient errors.
+          curl --fail --silent --show-error --max-time 20 --retry 3 --retry-delay 5 --retry-all-errors \
+            -H "apikey: $SUPABASE_KEY" "$SUPABASE_URL/auth/v1/health" -o /dev/null
+          echo "Supabase auth health OK"
+
+      - name: Keep scheduled workflows enabled (60-day inactivity rule)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for wf in supabase-keepalive.yml database-backup.yml; do
+            gh api -X PUT "repos/${GITHUB_REPOSITORY}/actions/workflows/${wf}/enable" || echo "could not re-enable ${wf}"
+          done

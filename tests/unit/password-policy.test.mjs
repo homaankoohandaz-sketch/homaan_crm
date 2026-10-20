@@ -17,3 +17,11 @@ test('leaked password is rejected, fail-open on error', async () => {
   assert.equal(await validatePassword(pw, clean), null);
   assert.equal(await validatePassword(pw, down), null);
 });
+
+test('leak check times out instead of hanging signup', async () => {
+  const { isPasswordLeaked } = await import('../../src/core/password-policy.js');
+  const hang = (_u, { signal }) => new Promise((_, rej) => signal.addEventListener('abort', () => rej(new Error('aborted'))));
+  const t0 = Date.now();
+  assert.equal(await isPasswordLeaked('goodpass12345', hang, 50), false);
+  assert.ok(Date.now() - t0 < 1000);
+});

@@ -1,6 +1,6 @@
 // Password policy: length/complexity + leaked-password check via HIBP k-anonymity
 // (only the first 5 chars of the SHA-1 hash leave the browser). Free alternative
-// to Supabase "Leaked Password Protection" (Pro only). Fails open if API is unreachable.
+// to Supabase "Leaked Password Protection" (Pro only). Fails open (3s timeout) if the API is unreachable. Server-side copy: supabase/functions/advisor-signup/password-policy.mjs.
 export function checkPasswordBasics(password) {
   const p = String(password ?? '');
   if (p.length < 10) return 'رمز عبور باید حداقل ۱۰ کاراکتر باشد.';
@@ -13,10 +13,15 @@ async function sha1Hex(text) {
   return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, '0')).join('').toUpperCase();
 }
 
-export async function isPasswordLeaked(password, fetchImpl = globalThis.fetch) {
+export async function isPasswordLeaked(password, fetchImpl = globalThis.fetch, timeoutMs = 3000) {
   try {
     const hash = await sha1Hex(String(password ?? ''));
-    const res = await fetchImpl('https://api.pwnedpasswords.com/range/' + hash.slice(0, 5), { headers: { 'Add-Padding': 'true' } });
+    const ctrl = typeof AbortController === 'function' ? new AbortController() : null;
+    const timer = ctrl ? setTimeout(() => ctrl.abort(), timeoutMs) : null;
+    let res;
+    try {
+      res = await fetchImpl('https://api.pwnedpasswords.com/range/' + hash.slice(0, 5), { headers: { 'Add-Padding': 'true' }, signal: ctrl?.signal });
+    } finally { if (timer) clearTimeout(timer); }
     if (!res.ok) return false;
     const suffix = hash.slice(5);
     return (await res.text()).split('\n').some((line) => {
