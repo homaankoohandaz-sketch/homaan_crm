@@ -1,14 +1,16 @@
 # BuildWise AI — SUMMARY
 
-Updated: 2026-10-19 (CRM integration + shared-workspace enforcement)
-Branch: buildwise-implementation
+Updated: 2026-10-20 (experimental shared-workspace mode)
+Branch: main — experimental/internal review
 
 ## Single source of truth
 - Workspace: `homaankoohandaz-sketch/homaan_crm`
-- Code: `buildwise-implementation`
-- Release: `main`
-- Summary: this file | State: `.agent-control/STATE.md` | Checklist: MASTER-CHECKLIST-v3-850 (850)
-- NO second app. DONE requires runtime evidence. Agent commits: `[grok]`.
+- Active implementation branch: `main` — all nine phases, experimental/internal review
+- This is not a release candidate. Release hardening, backup rollout, final security audit, and release approval are deferred to Phase 09 / final stage.
+- Summary: this file | State: `.agent-control/STATE.md` | Architecture: `.agent-control/MASTER-ARCHITECTURE.md` | Checklist: `.agent-control/MASTER-CHECKLIST-v3-850.md`
+- Coordination: ChatGPT = architecture/task orchestration/review; Claude = coding; Grok = assigned implementation/review/runtime work; user = product decisions and shared review.
+- All workers target `main`; one writer per file, concurrent work only on disjoint declared files. Every handoff reports commit, tests, runtime evidence, blockers, and next task.
+- CI/test success is not equivalent to runtime/UI completion. Do not mark DONE without the checklist evidence criteria.
 
 ## 2026-10-17 — Grok session
 - GitHub + Supabase REST + direct Postgres (Seoul pooler) access verified.
