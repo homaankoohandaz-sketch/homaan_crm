@@ -1,0 +1,26 @@
+name: Supabase Keepalive
+
+# Free-plan projects pause after ~1 week of inactivity. A light REST call every 3 days prevents it.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "23 3 */3 * *"
+
+permissions:
+  contents: read
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ping Supabase REST API
+        env:
+          SUPABASE_URL: https://beuestoewletjsgmigmf.supabase.co
+          SUPABASE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+        run: |
+          set -euo pipefail
+          test -n "$SUPABASE_KEY"
+          code=$(curl -s -o /dev/null -w '%{http_code}' -H "apikey: $SUPABASE_KEY" "$SUPABASE_URL/rest/v1/")
+          echo "status=$code"
+          test "$code" -lt 500
