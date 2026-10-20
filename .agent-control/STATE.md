@@ -158,3 +158,10 @@ Unit/contract still PASS. 630 BLOCKED.
 - IMPORTANT: the uploaded workbook has NOT yet been imported into live Supabase. At the last database check, `properties=0`, `owners=0`, and `import_raw_rows=0`; the app import requires an authenticated CRM session and a browser file upload. Do not claim the workbook is already present until the batch reports counts and DB queries confirm them.
 - Netlify production currently serves deploy `6ad342d27b5cec5695f0b1ed` from old commit `a4d8f074fb6ef6dcb19e9ef1a09896bb322431d6`, not the latest main. The connected Netlify browser profile has no sign-in, so deployment of current main is blocked until the user signs in to Netlify. The public landing URL is `https://buildwis-ai.netlify.app`.
 - Production gates still open: publish latest main SHA, import and verify all 6,034 CRM attempts / raw archive rows, authenticated CRUD and role-isolation E2E (item 630), successful encrypted backup + restore drill, and reconcile migration ledger drift (previous audit: 106 live ledger entries vs 40 SQL files in the branch tree).
+
+## 2026-10-20 — Live Supabase re-verification (read-only, no DB writes)
+
+- Project `beuestoewletjsgmigmf`. Live `pg_policy`: every policy referencing `is_active_user()` is scoped to role `{authenticated}` (migration `20261017120000_scope_is_active_user_policies.sql` is applied). The older "blocked on policy scope" note is RESOLVED.
+- Live ACL: `is_active_user()` / `is_manager_user()` executable only by postgres, service_role, authenticated (anon/PUBLIC revoked).
+- Security advisor now: 1x `authenticated_security_definer_function_executable`, 134x `auth_allow_anonymous_sign_ins` (frontend never calls signInAnonymously; disable "Allow anonymous sign-ins" in Auth settings), 1x `auth_leaked_password_protection` (Pro-only; free substitute `src/core/password-policy.js`, client-side only).
+- Open: backup secrets/variable (`SUPABASE_DB_URL`, `BACKUP_AGE_RECIPIENT`), `SUPABASE_PUBLISHABLE_KEY` for keepalive, authenticated E2E (630), Excel data load.
