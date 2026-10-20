@@ -1,13 +1,20 @@
 # BuildWise AI — SINGLE SOURCE OF TRUTH
 
-Status: CANONICAL
-Effective: 2026-10-07
+Status: CANONICAL — EXPERIMENTAL / INTERNAL REVIEW
+Effective: 2026-10-20
+
+## Current operating mode
+- `main` is the only active implementation branch and shared review workspace for all nine phases.
+- Treat all current work as experimental/internal review, not release approval. Keep `main` updated with the latest reviewed code so the user, ChatGPT, Claude, and Grok can inspect the same state.
+- Backup rollout, final security hardening, release gates, and release approval are deferred to Phase 09 / the final stage. Do not claim they are complete.
+- Continue development without waiting for release readiness, while avoiding destructive data changes and secret exposure.
+- Each task must record commit SHA, changed files, tests, runtime/UI evidence, blockers, and next action. A passing CI run alone does not establish runtime completion.
 
 ## One repository
 GitHub repository: `homaankoohandaz-sketch/homaan_crm`
 
 ## One coding branch
-`main` is the ONLY active implementation and release branch.
+`main` is the ONLY active implementation branch and shared experimental review workspace. Release approval is a separate final-stage decision.
 
 Workers (Grok / Claude / Codex / ChatGPT / others and all connected accounts) modify this repository on `main`. No per-agent or per-email implementation branches. Temporary review branches are allowed only for explicit isolated review and must not become sources of truth.
 
@@ -15,7 +22,7 @@ Workers (Grok / Claude / Codex / ChatGPT / others and all connected accounts) mo
 
 - Grok, Claude, Codex, ChatGPT, and every connected account/email work in this same repository: `homaankoohandaz-sketch/homaan_crm`.
 - The only active coding branch is `main`. Do not create per-agent or per-email implementation branches. The former `buildwise-implementation` branch is retired after reconciliation.
-- `main` is the sole canonical branch for implementation and production. Every change must still pass tests and evidence gates before being considered complete.
+- `main` is the sole canonical branch for implementation and shared review. Code on `main` may be experimental and must not be described as production-ready solely because it is merged.
 - Before editing, inspect the canonical file and current task queue. Reuse and modify the existing implementation; do not create a parallel file/module/test/engine when one already exists.
 - One writer per file at a time. Parallel agents may work only on disjoint files declared in the task contract's `ALLOWED_FILES`; if files overlap, serialize the work and hand off the same file rather than forking it.
 - Each task must name its owner, exact allowed files, acceptance test, and evidence location in the existing task registry. The worker must commit back to `main` and update the existing `.agent-control/STATE.md` / `.agent-control/SUMMARY.md` only when relevant; never create alternate state or summary files.
@@ -23,7 +30,7 @@ Workers (Grok / Claude / Codex / ChatGPT / others and all connected accounts) mo
 - Before merge: inspect diff, run focused test, run full required suite/CI, reconcile migrations and backup safety, and record runtime blockers honestly. CI alone does not prove authenticated E2E.
 
 ## One branch
-`main` is the ONLY canonical implementation/release/production branch. All work lands here; no separate long-lived implementation branch.
+`main` is the ONLY active implementation branch. All experimental work for Phases 01–09 lands here; no separate long-lived implementation branch. Release readiness remains a separate Phase 09 gate.
 
 ## One canonical reference for each responsibility
 - Project summary / orientation: `.agent-control/SUMMARY.md`
