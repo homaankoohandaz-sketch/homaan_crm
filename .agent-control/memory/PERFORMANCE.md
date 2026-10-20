@@ -16,4 +16,4 @@ Append ONE compact event after every meaningful task:
 timestamp | task | agent | commit | status | paths | tests | decision/impact | next
 Never store secrets. Never mark DONE without evidence.
 
-- 2026-10-20 [claude] LIVE CHANGE: deployed Edge Function advisor-signup v1 (verify_jwt=false) to project beuestoewletjsgmigmf. Additive; enforces password policy server-side then calls auth.signUp. Source: supabase/functions/advisor-signup/. Not yet smoke-tested live (shell cannot reach Supabase). Rollback: delete the function; revert buildwise-app.js advisorSignup.
+- 2026-10-20 [claude] LIVE CHANGE: deployed Edge Function advisor-signup v1 (verify_jwt=false) to project beuestoewletjsgmigmf. Additive; enforces password policy server-side then calls auth.signUp. Source: supabase/functions/advisor-signup/. Not yet smoke-tested live (shell cannot reach Supabase). Rollback: delete the function; revert the advisorSignup change in the main app script.
