@@ -1,9 +1,20 @@
 # Agent Control State
 
-status: RESTORE IN PROGRESS via .agent-control/restore/ | Task Engine unit OK | 630 BLOCKED
+## CURRENT OPERATING MODE — 2026-10-20 (OVERRIDES OLDER RELEASE-ORIENTED NOTES)
+
+- Active branch: `main`. All nine product phases are developed, inspected, and shared from `main`; do not route active implementation to `buildwise-implementation` or another long-lived branch.
+- Lifecycle: **EXPERIMENTAL / INTERNAL REVIEW**. This is not a release candidate. The user and ChatGPT coordinate review with Claude and Grok; keep work visible in GitHub and update the current task/evidence records.
+- Priority: continue product implementation and integration across Phases 01–09 as needed. Do not block ordinary experimental development on release approval gates.
+- Defer backup rollout, release hardening, final security audit, and release approval to Phase 09 / final stage. Do not claim these are complete. Avoid destructive data changes and do not expose secrets; necessary basic access/data integrity safeguards still apply.
+- Keep `main` current with the latest reviewed experimental code. A successful commit or CI run is not proof of runtime/UI completion. Report separately: code landed, tests, browser/runtime evidence, known blockers, and next task.
+- Claude and Grok may work concurrently only on disjoint, explicitly declared files. One writer per file; coordinate overlapping edits before they land. Each handoff must include task, files changed, commit SHA, test evidence, runtime status, and remaining issues.
+- The uploaded master checklist and phase-start file are task inputs; canonical architecture/checklist/state files in this repository remain the shared record. Do not silently mark requirements DONE without evidence.
+
+
+status: EXPERIMENTAL / INTERNAL REVIEW — all 9 phases active on main
 project: BuildWise AI
-branch: buildwise-implementation
-active_task: restore-full-app-and-engine
+branch: main
+active_task: synchronize phase execution and coordinate Claude/Grok work on main
 last_batch: 2026-10-11 Grok upload restore package partial
 
 ## Restore on GitHub
