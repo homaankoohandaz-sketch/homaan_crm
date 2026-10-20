@@ -131,7 +131,13 @@ async function readRemote(){const p=document.getElementById('bw-di-preview');try
     if(r.error){p.innerHTML='<div class="errorbox">'+E(r.error.message)+'</div>';return}
     const items=r.data||[];
     if(!items.length){p.innerHTML='<div class="card">در این صفحه رکوردی نیست.</div>';return}
-    p.innerHTML='<div class="card"><b>نمایش '+(archiveOffset+1)+' تا '+(archiveOffset+items.length)+' </b><input id="bw-di-archive-search" placeholder="جستجو در همین صفحه"></div><div id="bw-di-archive-items">'+items.map(x=>'<div class="card" data-archive-card="'+x.id+'"><b>#'+x.id+' · '+E(x.entity_type||'')+'</b><p>'+E(x.source_file||'')+' · '+E(x.sheet_name||'')+' · ردیف '+E(x.row_number||'')+' · Batch '+E(x.import_batch_id||'')+'</p><textarea data-archive-json="'+x.id+'" rows="7" style="width:100%;font-family:monospace">'+E(JSON.stringify(x.raw_data||{},null,2))+'</textarea><div class="modal-actions"><button class="btn primary" data-archive-save="'+x.id+'">ذخیره ویرایش</button><button class="btn" data-archive-delete="'+x.id+'">حذف رکورد</button></div></div>').join('')}</div><div class="modal-actions"><button class="btn" id="bw-di-archive-prev" '+(archiveOffset===0?'disabled':'')+'>قبلی</button><button class="btn" id="bw-di-archive-next" '+(items.length<50?'disabled':'')+'>بعدی</button></div>';
+    const cards = items.map((x) => '<div class="card" data-archive-card="' + x.id + '">' +
+      '<b>#' + x.id + ' · ' + E(x.entity_type || '') + '</b><p>' + E(x.source_file || '') + ' · ' + E(x.sheet_name || '') + ' · ردیف ' + E(x.row_number || '') + ' · Batch ' + E(x.import_batch_id || '') + '</p>' +
+      '<textarea data-archive-json="' + x.id + '" rows="7" style="width:100%;font-family:monospace">' + E(JSON.stringify(x.raw_data || {}, null, 2)) + '</textarea>' +
+      '<div class="modal-actions"><button class="btn primary" data-archive-save="' + x.id + '">ذخیره ویرایش</button><button class="btn" data-archive-delete="' + x.id + '">حذف رکورد</button></div></div>').join('');
+    p.innerHTML = '<div class="card"><b>نمایش ' + (archiveOffset + 1) + ' تا ' + (archiveOffset + items.length) + ' </b><input id="bw-di-archive-search" placeholder="جستجو در همین صفحه"></div>' +
+      '<div id="bw-di-archive-items">' + cards + '</div>' +
+      '<div class="modal-actions"><button class="btn" id="bw-di-archive-prev" ' + (archiveOffset === 0 ? 'disabled' : '') + '>قبلی</button><button class="btn" id="bw-di-archive-next" ' + (items.length < 50 ? 'disabled' : '') + '>بعدی</button></div>';
     const search=document.getElementById('bw-di-archive-search');
     search.oninput=()=>{const term=search.value.toLowerCase();document.querySelectorAll('#bw-di-archive-items [data-archive-card]').forEach(card=>{card.style.display=card.textContent.toLowerCase().includes(term)||card.querySelector('textarea')?.value.toLowerCase().includes(term)?'':'none'})};
     p.querySelectorAll('[data-archive-save]').forEach(btn=>btn.onclick=async()=>{
