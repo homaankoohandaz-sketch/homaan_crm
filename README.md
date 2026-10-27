@@ -2,8 +2,8 @@
 
 > Canonical workspace and operating rules: `BUILDWISE-SINGLE-SOURCE-OF-TRUTH.md`
 > **Only coding/review branch: `main`.** The long-lived `buildwise-implementation` branch is retired; do not target it or use it as a source of truth.
-> Production site: https://buildwis-ai.netlify.app/
-> Current review preview: https://deploy-preview-47--buildwis-ai.netlify.app/
+ > **Current canonical app link (auto-deployed from `main`):** https://homaankoohandaz-sketch.github.io/homaan_crm/
+> Netlify primary URL `https://buildwis-ai.netlify.app/` is currently behind `main` (last verified Netlify deploy SHA `4c3432e`); do not use it for latest-code review until its deploy SHA matches `main`.
 
 ## Start here
 1. `BUILDWISE-SINGLE-SOURCE-OF-TRUTH.md` — the only authority for branch/workspace policy.
