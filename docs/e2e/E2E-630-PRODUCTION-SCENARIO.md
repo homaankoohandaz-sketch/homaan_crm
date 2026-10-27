@@ -5,8 +5,8 @@ in a real browser with an approved test account and evidence is attached below.
 Rule source: MASTER-CHECKLIST-v3-850.md items 675, 737-742, 837-839 (no DONE without runtime + UI + security evidence).
 
 ## Preconditions
-- Production target: https://buildwis-ai.netlify.app/ (do not accept until its deployed commit matches `main`).
-- Current review preview: https://deploy-preview-47--buildwis-ai.netlify.app/ (isolated preview of `main`; not production acceptance).
+- Current review target (auto-deployed from `main`): https://homaankoohandaz-sketch.github.io/homaan_crm/ (latest verified deployment commit `a307a12a`).
+- Netlify primary URL `https://buildwis-ai.netlify.app/` is stale at commit `4c3432e`; do not use it for acceptance until redeployed and its SHA matches `main`.
 - Three approved test accounts (never real customer data): owner, staff (full access except delete/user-admin), viewer (read-only).
 - Test data prefix: `E2E-<date>-` on every record so cleanup is exact. No production migrations, no force-push to main.
 - Live AI paths require OPENAI_API_KEY; if absent the AI step must FAIL CLOSED (expected, record as PASS for fail-closed).
