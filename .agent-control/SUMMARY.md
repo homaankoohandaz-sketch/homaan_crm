@@ -91,3 +91,9 @@ Branch: main — experimental/internal review
 - Netlify primary deployment is stale: last inspected deploy SHA `4c3432e3c4cda3ba03ed6527f91d806b4b718983`, while current main is `0fabd68e`. Do not use Netlify as the latest-code review link until redeployed and SHA-matched. Cloudflare Pages deploy is blocked by missing `CLOUDFLARE_API_TOKEN`.
 - Remaining PRs formerly targeting `buildwise-implementation` have been retargeted to `main`; GitHub currently reports conflicts/not-mergeable for them. Do not merge blindly; resolve and test each change against main.
 - Checklist source: `.agent-control/MASTER-CHECKLIST-v3-850.md` is the only canonical acceptance checklist. Item 670 remains unchecked (content-bot professional marketing assets lack runtime/UI acceptance evidence); item 630 remains blocked pending authenticated end-to-end evidence. Do not infer completion from unit tests alone.
+
+
+## 2026-10-27 — Publication safety workaround
+- GitHub Pages workflow now runs full tests and release/architecture/infrastructure checks before publishing; deployment depends on successful validation. Workflow commit: `06e8a9befc0d3596cc4a45558f48d84924592dab`.
+- Branch-protection settings remain inaccessible to the current GitHub integration (API 403); repository rulesets returned empty. This workaround prevents an untested/broken main commit from replacing the live Pages site, but does not block direct pushes or manual merges to main.
+- The new workflow result was pending at the time this note was written; verify CI before claiming it passed.
