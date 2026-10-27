@@ -166,6 +166,43 @@ export function applyColumnEdits(rows = [], edits = []) {
   return next;
 }
 
+
+/**
+ * Remove only rows whose complete user-data columns match exactly.
+ * Import bookkeeping metadata is excluded; semantic fields such as _target remain.
+ * Keeps the first row and reports how many exact duplicates were removed.
+ */
+export function deduplicateExactRows(rows = []) {
+  const metadata = new Set(['_sheet_name', '_sheet_index', '_row_number', '_raw_data', '_source_row', '_source_raw']);
+  const seen = new Set();
+  const uniqueRows = [];
+  let removedCount = 0;
+  const stable = (value) => {
+    if (Array.isArray(value)) return value.map(stable);
+    if (value && typeof value === 'object') {
+      return Object.fromEntries(Object.keys(value).sort().map((key) => [key, stable(value[key])]));
+    }
+    return value;
+  };
+  for (const row of rows || []) {
+    if (!row || typeof row !== 'object' || Array.isArray(row)) {
+      uniqueRows.push(row);
+      continue;
+    }
+    const comparable = Object.fromEntries(
+      Object.keys(row).filter((key) => !metadata.has(key)).sort().map((key) => [key, row[key]])
+    );
+    const signature = JSON.stringify(stable(comparable));
+    if (seen.has(signature)) {
+      removedCount += 1;
+      continue;
+    }
+    seen.add(signature);
+    uniqueRows.push(row);
+  }
+  return { rows: uniqueRows, removedCount, remainingCount: uniqueRows.length };
+}
+
 /**
  * Detection is non-destructive: it returns possible duplicate candidates.
  * It never authorizes merge/delete and never treats surname/phone alone as proof.
@@ -242,6 +279,7 @@ export const importQuality = {
   buildImportPreview,
   applyColumnEdits,
   findDuplicateCandidates,
+  deduplicateExactRows,
   editImportedRecord,
   rollbackPlan,
   buildDataQualityDashboard
