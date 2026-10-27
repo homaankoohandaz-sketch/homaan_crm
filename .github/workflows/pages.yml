@@ -5,8 +5,8 @@ on:
     branches: [main]
   workflow_dispatch:
 
-# Production GitHub Pages deploys only from main.
-# Feature branches must not overwrite the live site.
+# Fallback protection when repository-level branch protection is unavailable:
+# only main can publish, and publishing is blocked unless the full test suite passes.
 permissions:
   contents: read
   pages: write
@@ -17,8 +17,33 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  validate:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify repository and test command
+        run: node -e "const p=require('./package.json'); if(p.name!=='buildwise-ai'||!p.scripts.test) process.exit(1)"
+      - name: Run complete test suite
+        run: npm test
+      - name: Run release smoke checks
+        run: node tests/release-smoke.mjs
+      - name: Architecture contract test
+        run: node tests/architecture-contract.test.js
+      - name: Phase code map test
+        run: node tests/phase-code-map.test.js
+      - name: Infrastructure deployment contract test
+        run: node --test tests/infrastructure-deployment.test.mjs
+
   deploy:
     if: github.ref == 'refs/heads/main'
+    needs: validate
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
