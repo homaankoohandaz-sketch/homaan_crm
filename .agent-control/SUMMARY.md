@@ -81,3 +81,13 @@ Branch: main — experimental/internal review
 - 2026-10-20 [claude] Live read-only re-verification of is_active_user RLS/ACL and security advisors recorded in STATE.md; no live DB writes made.
 - 2026-10-20 [claude] Live read-only Supabase re-verification recorded in STATE.md (is_active_user RLS/ACL resolved; advisor status); no live DB writes.
 - 2026-10-20 [claude] Addressed review findings: server-side password enforcement (Edge Function advisor-signup, deployed; advisor signup now goes through it), 3s timeout on leak check, keepalive fails on HTTP errors (curl --fail + retries) and re-enables scheduled workflows (60-day rule). Remaining gap: direct Auth signUp API is still open until anonymous/public signups are restricted in dashboard; live smoke test pending.
+
+
+## 2026-10-27 — Canonical branch and deployment correction
+- Canonical code/review branch: `main` only. README and existing CI workflows now agree with `BUILDWISE-SINGLE-SOURCE-OF-TRUTH.md`.
+- The retired `buildwise-implementation` ref was fast-forwarded to the exact `main` SHA `0fabd68e5885e66cb154e77dc78a3b07c1171f76`; branch comparison is now identical (0 ahead / 0 behind). No open PR should target the retired branch.
+- Superseded PRs #43, #45, and preview-only #47 are closed. PR #48 was merged as `a307a12a` after focused regression coverage, full `npm test`, QA, phase-map, and application validation passed.
+- Canonical review URL: https://homaankoohandaz-sketch.github.io/homaan_crm/ . GitHub Pages deployment of `main` succeeded; browser smoke verified the BuildWise role-entry view and observed no JavaScript console errors.
+- Netlify primary deployment is stale: last inspected deploy SHA `4c3432e3c4cda3ba03ed6527f91d806b4b718983`, while current main is `0fabd68e`. Do not use Netlify as the latest-code review link until redeployed and SHA-matched. Cloudflare Pages deploy is blocked by missing `CLOUDFLARE_API_TOKEN`.
+- Remaining PRs formerly targeting `buildwise-implementation` have been retargeted to `main`; GitHub currently reports conflicts/not-mergeable for them. Do not merge blindly; resolve and test each change against main.
+- Checklist source: `.agent-control/MASTER-CHECKLIST-v3-850.md` is the only canonical acceptance checklist. Item 670 remains unchecked (content-bot professional marketing assets lack runtime/UI acceptance evidence); item 630 remains blocked pending authenticated end-to-end evidence. Do not infer completion from unit tests alone.
