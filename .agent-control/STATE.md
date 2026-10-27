@@ -178,3 +178,10 @@ Unit/contract still PASS. 630 BLOCKED.
 - Existing open PRs formerly based on `buildwise-implementation` were retargeted to `main`. GitHub reports them as not mergeable/conflicted; reconcile each diff against current main and run its focused + full tests before merging. Do not bulk-merge.
 - Checklist source of truth: `.agent-control/MASTER-CHECKLIST-v3-850.md`. Item 670 remains unchecked: content-bot code and unit tests exist, but the required professional marketing-asset workflow has not been verified in runtime/UI. Item 630 remains BLOCKED until authenticated E2E evidence exists. The 850-item checklist is canonical; old task counts are historical, not a second queue.
 - Next: (1) resolve open PR conflicts one by one, prioritizing import/runtime and security; (2) complete authenticated UI/E2E for item 630; (3) if Netlify is required, obtain an authenticated Netlify browser session and publish current main; (4) add `CLOUDFLARE_API_TOKEN` only if Cloudflare remains an intended production target.
+
+
+## Deployment safety fallback — 2026-10-27
+- Repository-level branch protection could not be read/changed through the current GitHub integration (branch-protection API returned 403); repository rulesets endpoint returned an empty list. This is an integration permission limitation, not proof that the account itself lacks admin access.
+- Workaround committed to `.github/workflows/pages.yml` at `06e8a9befc0d3596cc4a45558f48d84924592dab`: GitHub Pages deployment now depends on a validation job running `npm test`, release smoke checks, architecture contract, phase code map, and infrastructure deployment contract tests. If validation fails, Pages deployment is blocked.
+- This protects the published site from failing main commits but does **not** prevent a direct push/merge into `main`. Absolute merge protection still requires enabling GitHub branch protection/rulesets through an authenticated GitHub settings session with appropriate permissions.
+- The new workflow commit was pushed and file content re-read successfully; its CI result was still pending at last verification. Do not claim the new gate passed until its run finishes.
