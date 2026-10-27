@@ -2,9 +2,9 @@ name: BuildWise Full Test Suite
 
 on:
   push:
-    branches: [main, buildwise-implementation]
+    branches: [main]
   pull_request:
-    branches: [main, buildwise-implementation]
+    branches: [main]
 
 permissions:
   contents: read
