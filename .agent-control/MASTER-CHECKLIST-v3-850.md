@@ -1628,7 +1628,7 @@ FINAL MASTER OBJECTIVE
     and installable as PWA.
 
 670 [ ] Content Bot must turn prompts into
-    professional real-estate marketing assets.
+    professional real-estate marketing assets. Existing core/unit tests are not runtime/UI acceptance; do not mark DONE until the full workflow is verified.
 
 671 [ ] Open-source GitHub projects should be reused
     whenever legally compatible and technically suitable.
@@ -1890,4 +1890,4 @@ without actual implementation/testing/runtime verification.
 ### Status reconciliation — 2026-10-03 (evidence: local `npm test` on this branch, all green)
 - 082-100, 501-524, 525-545, 546-553, 555-564, 565-575 and 576-590 moved [ ] → [~] (105 items). Basis: implemented contracts with passing focused tests (market-history-082-100, landing-501-524, content-system-525-545, content-bot-546-575, market-data-576-590). Item 554 has no covering test and stays [ ].
 - No item was promoted to DONE. These remain PARTIAL until runtime + UI (+ security where applicable) evidence exists.
-- Counts after reconciliation: 35 DONE / 613 PARTIAL / 201 TODO / 1 BLOCKED.
+- Historical counts only (2026-10-03): 35 DONE / 613 PARTIAL / 201 TODO / 1 BLOCKED. These are not a current 2026-10-27 status total; use the current STATE.md evidence log for live blockers.
