@@ -1,8 +1,8 @@
 name: Application Validation
 
 on:
+  # Run on every PR target so retired-base PRs fail loudly instead of silently bypassing CI.
   pull_request:
-    branches: [main]
   push:
     branches: [main]
 
