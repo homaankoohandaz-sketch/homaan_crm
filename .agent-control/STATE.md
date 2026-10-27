@@ -165,3 +165,16 @@ Unit/contract still PASS. 630 BLOCKED.
 - Live ACL: `is_active_user()` / `is_manager_user()` executable only by postgres, service_role, authenticated (anon/PUBLIC revoked).
 - Security advisor now: 1x `authenticated_security_definer_function_executable`, 134x `auth_allow_anonymous_sign_ins` (frontend never calls signInAnonymously; disable "Allow anonymous sign-ins" in Auth settings), 1x `auth_leaked_password_protection` (Pro-only; free substitute `src/core/password-policy.js`, client-side only).
 - Open: backup secrets/variable (`SUPABASE_DB_URL`, `BACKUP_AGE_RECIPIENT`), `SUPABASE_PUBLISHABLE_KEY` for keepalive, authenticated E2E (630), Excel data load.
+
+
+## Current operational state — 2026-10-27 (supersedes older branch/deploy notes)
+- Single source of code: `main`. `buildwise-implementation` was fast-forwarded to the same SHA as main after confirming it had zero unique commits; comparison now reports identical refs.
+- Latest verified main at time of this record: `0fabd68e5885e66cb154e77dc78a3b07c1171f76`. Full test suite, application validation, QA, worker runtime, and GitHub Pages deployment passed on this SHA.
+- Current user review URL: https://homaankoohandaz-sketch.github.io/homaan_crm/ . Browser smoke: BuildWise AI title and four role-entry cards visible; no JavaScript console errors observed.
+- Netlify is NOT current: published deploy `6ade20cbeb9d4e580b599dbc` is a deploy-preview for SHA `4c3432e3c4cda3ba03ed6527f91d806b4b718983`, not current main. Netlify connector can inspect deploys but does not expose a deploy-trigger operation; no saved browser profile is signed into Netlify. Keep GitHub Pages as the review URL until Netlify is authenticated and republished from current main.
+- Cloudflare Pages deployment fails because `CLOUDFLARE_API_TOKEN` is absent. This is an external credential blocker; do not mark Cloudflare deployment healthy.
+- Excel exact-row deduplication was ported to the canonical branch via PR #48 and merged at `a307a12a027f1ad66f286d0ad1c5c6cf36af6299`. It only changes the import preview; it does not delete database rows. Regression coverage is now included in `npm test`; full suite passed before this documentation-only state update.
+- Closed superseded PRs: #43 (old-base Excel dedup), #45 (duplicate motion implementation; #46 already merged), #47 (preview-only PR targeting retired branch). PR #48 is merged.
+- Existing open PRs formerly based on `buildwise-implementation` were retargeted to `main`. GitHub reports them as not mergeable/conflicted; reconcile each diff against current main and run its focused + full tests before merging. Do not bulk-merge.
+- Checklist source of truth: `.agent-control/MASTER-CHECKLIST-v3-850.md`. Item 670 remains unchecked: content-bot code and unit tests exist, but the required professional marketing-asset workflow has not been verified in runtime/UI. Item 630 remains BLOCKED until authenticated E2E evidence exists. The 850-item checklist is canonical; old task counts are historical, not a second queue.
+- Next: (1) resolve open PR conflicts one by one, prioritizing import/runtime and security; (2) complete authenticated UI/E2E for item 630; (3) if Netlify is required, obtain an authenticated Netlify browser session and publish current main; (4) add `CLOUDFLARE_API_TOKEN` only if Cloudflare remains an intended production target.
