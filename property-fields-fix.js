@@ -1,7 +1,8 @@
-/* BuildWise property fields 2026-10-29e
+/* BuildWise property fields 2026-10-29f
  * Excel-critical fields always on forms/cards even when empty:
  * مالک، موبایل، خیابان، اسم، کوچه، فرعی، توضیحات
  * List reads from properties (not properties_client) so mobile/street are visible.
+ * No hard 300 cap: progressive range load + exact count + client filterProperties.
  */
 (function () {
   function whenReady(fn) {
@@ -170,28 +171,132 @@
       toast('ملک ذخیره شد', 'success');
     };
 
+    /* ---- list state: full count + progressive load (fixes hard 300 cap) ---- */
+    window.__bwPropPageSize = 500;
+    window.__bwPropOffset = 0;
+    window.__bwPropTotal = null;
+    window.__bwPropRows = [];
+
+    window.filterProperties = function () {
+      var qEl = document.getElementById('propertyQ');
+      var tEl = document.getElementById('propertyTypeFilter');
+      var q = ((qEl && qEl.value) || '').toLowerCase().trim();
+      var t = (tEl && tEl.value) || '';
+      var shown = 0;
+      document.querySelectorAll('#property-list > .property-card').forEach(function (el) {
+        var ok =
+          ((el.dataset.search || '').toLowerCase().indexOf(q) !== -1) &&
+          (!t || el.dataset.type === t);
+        el.style.display = ok ? '' : 'none';
+        if (ok) shown++;
+      });
+      var cnt = document.getElementById('propertyVisibleCount');
+      if (cnt) {
+        var totalKnown = window.__bwPropTotal != null ? window.__bwPropTotal : window.__bwPropRows.length;
+        cnt.textContent = shown + ' نمایش از ' + window.__bwPropRows.length + ' بارگذاری‌شده' +
+          (totalKnown != null ? ' / کل ' + totalKnown : '');
+      }
+    };
+
+    window.loadMoreProperties = async function () {
+      var btn = document.getElementById('btnLoadMoreProps');
+      if (btn) { btn.disabled = true; btn.textContent = 'در حال بارگذاری…'; }
+      try {
+        var size = window.__bwPropPageSize || 500;
+        var from = window.__bwPropOffset || 0;
+        var to = from + size - 1;
+        var r = await db
+          .from('properties')
+          .select(
+            'id,property_code,property_name,property_type,owner_name,mobile,street,alley,side_street,region,neighborhood,built_area,bedrooms,total_price,price_per_meter,description,status,is_starred,file_tags,created_at'
+          )
+          .order('created_at', { ascending: false })
+          .range(from, to);
+        if (r.error) {
+          if (typeof toast === 'function') toast(r.error.message, 'error');
+          return;
+        }
+        var batch = r.data || [];
+        window.__bwPropRows = (window.__bwPropRows || []).concat(batch);
+        window.__bwPropOffset = from + batch.length;
+        var list = document.getElementById('property-list');
+        if (list) {
+          var html = batch.map(propertyCard).join('');
+          list.insertAdjacentHTML('beforeend', html);
+        }
+        updatePropListChrome(batch.length < size);
+        if (typeof filterProperties === 'function') filterProperties();
+      } finally {
+        if (btn) { btn.disabled = false; btn.textContent = 'بارگذاری موارد بیشتر'; }
+      }
+    };
+
+    function updatePropListChrome(noMore) {
+      var totalKnown = window.__bwPropTotal;
+      var loaded = (window.__bwPropRows || []).length;
+      var cnt = document.getElementById('propertyVisibleCount');
+      if (cnt) {
+        cnt.textContent = loaded + ' بارگذاری‌شده' + (totalKnown != null ? ' / کل ' + totalKnown : '');
+      }
+      var wrap = document.getElementById('propLoadMoreWrap');
+      if (!wrap) return;
+      if (noMore || (totalKnown != null && loaded >= totalKnown)) {
+        wrap.innerHTML = '<span class="muted">همه موارد بارگذاری شد (' + loaded + ')</span>';
+      } else {
+        wrap.innerHTML = '<button id="btnLoadMoreProps" class="btn primary" type="button" onclick="loadMoreProperties()">بارگذاری موارد بیشتر</button>';
+      }
+    }
+
     window.properties = async function () {
-      var r = await db
-        .from('properties')
-        .select('id,property_code,property_name,property_type,owner_name,mobile,street,alley,side_street,region,neighborhood,built_area,bedrooms,total_price,price_per_meter,description,status,is_starred,file_tags,created_at')
-        .order('created_at', { ascending: false })
-        .limit(300);
+      window.__bwPropOffset = 0;
+      window.__bwPropRows = [];
       var canW = typeof canWrite === 'function' && canWrite();
       var pageFn = typeof page === 'function' ? page : function (t, s, a) {
         return '<div class="page-head"><h1>' + t + '</h1><p>' + s + '</p>' + (a || '') + '</div>';
       };
       var emptyFn = typeof empty === 'function' ? empty : function (t) { return '<div class="empty">' + t + '</div>'; };
       var errFn = typeof errbox === 'function' ? errbox : function (e) { return '<div class="errorbox">' + ((e && e.message) || e) + '</div>'; };
+
+      // exact total count (head request)
+      var countRes = await db.from('properties').select('id', { count: 'exact', head: true });
+      window.__bwPropTotal = countRes && typeof countRes.count === 'number' ? countRes.count : null;
+
+      var size = window.__bwPropPageSize || 500;
+      var r = await db
+        .from('properties')
+        .select(
+          'id,property_code,property_name,property_type,owner_name,mobile,street,alley,side_street,region,neighborhood,built_area,bedrooms,total_price,price_per_meter,description,status,is_starred,file_tags,created_at'
+        )
+        .order('created_at', { ascending: false })
+        .range(0, size - 1);
+
+      var batch = r.data || [];
+      window.__bwPropRows = batch.slice();
+      window.__bwPropOffset = batch.length;
+
+      var totalLabel =
+        window.__bwPropTotal != null
+          ? batch.length + ' نمایش اولیه / کل ' + window.__bwPropTotal
+          : batch.length + ' مورد';
+
       main.innerHTML =
-        pageFn('املاک', 'فایل‌ها — مالک، موبایل، خیابان، فرعی، توضیحات', canW ? _btn('+ افزودن ملک', 'propertyForm()', true) : '') +
-        '<div class="toolbar"><input id="propertyQ" placeholder="جستجوی اسم، مالک، خیابان، موبایل، کد" oninput="filterProperties()">' +
+        pageFn('املاک', 'فایل‌ها — مالک، موبایل، خیابان، فرعی، توضیحات (بدون سقف ۳۰۰)', canW ? _btn('+ افزودن ملک', 'propertyForm()', true) : '') +
+        '<div class="toolbar">' +
+        '<input id="propertyQ" placeholder="جستجوی اسم، مالک، خیابان، موبایل، کد" oninput="filterProperties()">' +
         '<select id="propertyTypeFilter" onchange="filterProperties()"><option value="">همه انواع</option><option>آپارتمان</option><option>کلنگی</option><option>ویلایی</option><option>تجاری</option><option>زمین</option></select>' +
-        '<span class="muted">' + ((r.data || []).length) + ' مورد</span></div>' +
+        '<span id="propertyVisibleCount" class="muted">' + totalLabel + '</span></div>' +
         '<div id="property-list" class="data-grid">' +
-        (r.error ? errFn(r.error) : (r.data || []).map(propertyCard).join('') || emptyFn('ملکی ثبت نشده است')) +
-        '</div>';
+        (r.error ? errFn(r.error) : batch.map(propertyCard).join('') || emptyFn('ملکی ثبت نشده است')) +
+        '</div>' +
+        '<div id="propLoadMoreWrap" style="padding:16px;text-align:center"></div>';
+
+      updatePropListChrome(batch.length < size);
+      // re-apply client search after paint
+      setTimeout(function () {
+        if (typeof filterProperties === 'function') filterProperties();
+      }, 0);
     };
 
-    console.info('[BuildWise] property-fields-fix 20261029e active');
+    console.info('[BuildWise] property-fields-fix 20261029f — no 300 cap, filter+loadMore active');
   });
 })();
