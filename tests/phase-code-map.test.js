@@ -17,7 +17,7 @@ const expectedRuntimeOrder = [
 
 let cursor = -1;
 for (const src of expectedRuntimeOrder) {
-  const next = index.indexOf('src="' + src + '"');
+  const next = index.indexOf('src="' + src);
   assert.ok(next > cursor, 'runtime script order broken: ' + src);
   cursor = next;
 }
