@@ -1,3 +1,9 @@
+## EXECUTION GATE CLARIFICATION — 2026-10-29
+
+- **Experimental/internal execution gate: OPEN.** Claude and other authorized workers should proceed immediately with the real test suite, advisor parsing, live-site checks, bug fixes, and non-destructive integration work. Do not pause ordinary development merely because the production release gate is blocked.
+- **Production release gate: remains BLOCKED until evidence closes the release criteria.** This is not permission to label the product release-ready, skip failed tests, bypass access controls, or perform unsafe production database changes.
+- Record test results, advisor findings, live URL/runtime observations, exact commit SHA, and unresolved blockers. Fix what can be fixed safely; continue independent work while any external credential or human approval is pending.
+
 # Agent Control State
 
 ## CURRENT OPERATING MODE — 2026-10-20 (OVERRIDES OLDER RELEASE-ORIENTED NOTES)
