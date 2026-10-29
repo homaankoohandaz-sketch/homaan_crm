@@ -74,3 +74,65 @@ Compare `main`, all active feature branches, GitHub PRs/commits, the live Supaba
 - Next batch:
 
 A commit is not proof of a completed feature. A green unit test is not proof of authenticated runtime behavior. Keep working through safe tasks and report the truth of the evidence.
+
+
+## Command 1 — Extract executable instructions from a specific commit
+
+Use this prompt with a commit SHA, commit URL, or branch/ref:
+
+> You are the BuildWise commit-audit and task-extraction agent. Repository: `homaankoohandaz-sketch/homaan_crm`. Canonical integration branch: `main`.
+>
+> Target commit/ref: `<PASTE_SHA_OR_URL_HERE>`.
+>
+> Inspect the target commit's metadata, full diff, changed files, parent/merge-base, adjacent commits, related tests, linked issues/PRs, and relevant canonical docs. Also inspect current `main` before classifying any work as missing. For each change, extract:
+> 1. Explicit instructions, decisions, TODOs, FIXMEs, acceptance criteria, and follow-up work stated in the commit message, diff, comments, tests, docs, and linked work items.
+> 2. Implicit required work evidenced by incomplete code paths, missing tests, broken references, unhandled errors, stale docs, migration mismatches, deployment drift, or incomplete user workflows. Clearly label inferred items separately from explicit instructions.
+> 3. Files changed and behavior changed; dependencies; security/data risks; duplicate or superseded work; tests that exist and tests missing.
+> 4. Whether each item is already in current `main`, partially present, absent, superseded, conflicting, or cannot be verified. Compare actual file contents and history; do not rely on branch names or commit messages alone.
+> 5. One actionable task per row with a stable task ID, priority (P0–P3), exact paths, dependency, implementation instruction, acceptance criteria, test command, runtime evidence needed, and recommended destination.
+>
+> Output an extraction ledger with columns: ID | origin SHA/path/line | explicit or inferred | instruction/task | current-main status | dependencies | risk | acceptance test | evidence | recommended action.
+>
+> Do not implement during extraction. Do not mark a task DONE because code exists. Do not infer that a branch must be merged. Preserve user data, secrets, migrations, RLS, and authentication. Finish with a prioritized execution queue and a list of unresolved questions that truly require human input.
+
+### Expected extraction output
+
+Save the results as `.agent-control/extractions/<short-sha>-instructions.md` when repository write access is available. Include the target SHA, extraction date, current `main` SHA, file list, task ledger, evidence links, and a clear distinction between explicit and inferred instructions. Avoid duplicating tasks already tracked in the master checklist; link to their existing checklist IDs.
+
+## Command 2 — Execute the extracted instructions
+
+Use this prompt after reviewing the extraction ledger:
+
+> You are the BuildWise implementation agent. Repository: `homaankoohandaz-sketch/homaan_crm`. Canonical branch: `main`. Extraction ledger: `.agent-control/extractions/<short-sha>-instructions.md`. Execute every safe, actionable task in the ledger; do not stop after writing a plan.
+>
+> Start by fetching current `main` and the ledger again. Recheck each task against current code so work already completed is not repeated. Order work by dependencies and risk. Implement independent tasks in coherent batches; keep edits small and attributable. For every task:
+> 1. Inspect the existing implementation and relevant callers before editing.
+> 2. Add or update a regression/acceptance test first when feasible.
+> 3. Implement in the canonical module; do not create duplicate engines, schemas, routes, or competing sources of truth.
+> 4. Run the targeted test and relevant suite; fix regressions introduced by the change.
+> 5. For UI work, verify real browser behavior where runtime tools are available, including mobile, RTL, accessibility, empty/error/loading states, and console/network failures.
+> 6. For Supabase work, inspect the live schema and migration ledger first. Use forward-only migrations. Do not rewrite migration history, apply speculative schema changes, delete data, or weaken RLS/authentication. If a destructive operation or credential is required, complete safe preparatory work and report the precise external blocker.
+> 7. For branches, compare base/head and identify unique commits/files. Port only changes that are not already in `main`; resolve conflicts deliberately. Never force-push or rewrite shared history. Do not merge a divergent branch wholesale merely to reduce the number of commits.
+> 8. Update the extraction ledger and canonical checklist with evidence, not assumptions. Record task status as implemented, tested, runtime-verified, blocked, or not applicable; these statuses are distinct.
+> 9. Commit coherent changes to `main` when authorized repository tools permit. After committing, fetch the commit and changed files to verify the result.
+> 10. If deployment access exists, deploy only after the relevant tests pass, then fetch deployment metadata and verify the deployed SHA and URL. Never claim deployment based on a GitHub commit alone.
+>
+> Continue through all safe tasks without waiting for optional architectural sign-off. Do not bypass security, data-integrity, test, or human-authorization requirements. Do not fabricate success if a tool, credential, test runner, or browser is unavailable.
+>
+> Final report must list: task IDs completed; commit SHA/link; changed files; exact test commands/results; browser/runtime evidence; Supabase migration/schema status; deployed URL/SHA; remaining tasks and concrete blockers. Then continue with the next safe batch rather than ending at a status report.
+
+## Command 3 — One-shot combined extraction and execution
+
+> In `homaankoohandaz-sketch/homaan_crm`, inspect target commit `<SHA_OR_URL>`. First produce and save a traceable extraction ledger of every explicit instruction and evidence-supported inferred follow-up, comparing all work against current `main`. Then execute the extracted tasks in dependency order, skipping only tasks proven already complete or tasks genuinely blocked by missing external access, credentials, or required human authorization. For each task, inspect current code, add regression tests, implement, run tests, update the canonical checklist/ledger, and commit coherent changes to `main`. Reconcile branches by selective porting, not blind merging. Protect production data, secrets, RLS, authentication, and migration history. Verify each resulting commit and, when possible, the actual deployed SHA. Do not stop at a plan, do not mark work DONE without evidence, and report every unverified or blocked item precisely.
+
+## Default execution order
+
+1. Identify target commit and current `main` SHA.
+2. Extract explicit instructions and evidence-based inferred work.
+3. Compare extracted items against current `main`, checklist, open issues/PRs, and deployment.
+4. Deduplicate and order by dependencies and risk.
+5. Execute tests-first implementation in safe batches.
+6. Reconcile schema/migrations without destructive guessing.
+7. Commit to `main`, verify SHA and changed files.
+8. Verify deployment separately.
+9. Update task ledger and report remaining work.
