@@ -1,78 +1,197 @@
-/* BuildWise motion system — original implementation inspired by glass surfaces and liquid navigation.
-   No third-party runtime dependency. Respects reduced-motion and existing app architecture. */
+/* BuildWise motion system v20261029g — strengthened
+   Glass surfaces, liquid nav, staggered entrances, tactile feedback.
+   Progressive enhancement only. Honors prefers-reduced-motion. */
 :root{
- --bw-glass:rgba(255,255,255,.76);--bw-glass-line:rgba(255,255,255,.78);
- --bw-glass-shadow:0 18px 50px rgba(23,54,74,.10);
- --bw-motion:cubic-bezier(.22,1,.36,1);
+  --bw-glass:rgba(255,255,255,.78);
+  --bw-glass-line:rgba(255,255,255,.82);
+  --bw-glass-shadow:0 20px 56px rgba(23,54,74,.12);
+  --bw-motion:cubic-bezier(.22,1,.36,1);
+  --bw-motion-out:cubic-bezier(.4,0,.2,1);
+  --bw-accent-soft:rgba(13,102,87,.14);
+  --bw-accent-glow:rgba(13,102,87,.22);
 }
-@keyframes bw-rise-in{from{opacity:0;transform:translate3d(0,12px,0) scale(.99)}to{opacity:1;transform:translate3d(0,0,0) scale(1)}}
-@keyframes bw-soft-glow{0%,100%{box-shadow:0 0 0 0 rgba(13,102,87,0)}50%{box-shadow:0 0 0 5px rgba(13,102,87,.06)}}
-@keyframes bw-liquid-settle{0%{border-radius:50% 50% 44% 56%/55% 45% 55% 45%;transform:scale(.92)}60%{border-radius:42% 58% 52% 48%/48% 58% 42% 52%;transform:scale(1.025)}100%{border-radius:16px;transform:scale(1)}}
-@keyframes bw-shimmer{0%{background-position:180% 0}100%{background-position:-180% 0}}
-/* Pebble-inspired authentication: glass panel, soft ambient light, tactile focus states. */
+@keyframes bw-rise-in{
+  from{opacity:0;transform:translate3d(0,18px,0) scale(.97);filter:blur(4px)}
+  to{opacity:1;transform:translate3d(0,0,0) scale(1);filter:blur(0)}
+}
+@keyframes bw-rise-in-soft{
+  from{opacity:0;transform:translate3d(0,10px,0)}
+  to{opacity:1;transform:translate3d(0,0,0)}
+}
+@keyframes bw-scale-pop{
+  0%{opacity:0;transform:scale(.88)}
+  70%{opacity:1;transform:scale(1.03)}
+  100%{opacity:1;transform:scale(1)}
+}
+@keyframes bw-float{
+  0%,100%{transform:translate3d(0,0,0)}
+  50%{transform:translate3d(14px,-18px,0)}
+}
+@keyframes bw-soft-glow{
+  0%,100%{box-shadow:0 0 0 0 rgba(13,102,87,0)}
+  50%{box-shadow:0 0 0 6px rgba(13,102,87,.08)}
+}
+@keyframes bw-metric-grow{
+  from{transform:scaleX(.04);opacity:.2}
+  to{transform:scaleX(1);opacity:.8}
+}
+@keyframes bw-nav-pulse{
+  0%,100%{box-shadow:inset 0 1px 0 rgba(255,255,255,.85),0 4px 14px rgba(13,102,87,.08)}
+  50%{box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 6px 20px rgba(13,102,87,.16)}
+}
 .auth-page{
- position:relative;isolation:isolate;overflow:hidden;
- background:radial-gradient(ellipse at 15% 15%,rgba(166,208,199,.55),transparent 38%),
- radial-gradient(ellipse at 85% 80%,rgba(188,204,225,.55),transparent 38%),
- linear-gradient(145deg,#eef3f2,#f6f4ef)!important;
+  position:relative;isolation:isolate;overflow:hidden;
+  background:
+    radial-gradient(ellipse at 12% 12%,rgba(166,208,199,.65),transparent 42%),
+    radial-gradient(ellipse at 88% 82%,rgba(188,204,225,.6),transparent 40%),
+    linear-gradient(145deg,#eef3f2,#f6f4ef)!important;
 }
-.auth-page:before,.auth-page:after{content:"";position:absolute;z-index:-1;pointer-events:none;border-radius:50%;filter:blur(2px);opacity:.55}
-.auth-page:before{width:270px;height:270px;top:-95px;left:-65px;background:linear-gradient(145deg,rgba(255,255,255,.9),rgba(13,102,87,.1));animation:bw-float 12s ease-in-out infinite}
-.auth-page:after{width:340px;height:340px;right:-130px;bottom:-150px;background:linear-gradient(145deg,rgba(255,255,255,.8),rgba(23,54,74,.12));animation:bw-float 15s ease-in-out infinite reverse}
-@keyframes bw-float{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(12px,-15px,0)}}
+.auth-page:before,.auth-page:after{
+  content:"";position:absolute;z-index:-1;pointer-events:none;border-radius:50%;
+  filter:blur(3px);opacity:.6;
+}
+.auth-page:before{
+  width:300px;height:300px;top:-100px;left:-70px;
+  background:linear-gradient(145deg,rgba(255,255,255,.95),rgba(13,102,87,.14));
+  animation:bw-float 11s ease-in-out infinite;
+}
+.auth-page:after{
+  width:380px;height:380px;right:-140px;bottom:-160px;
+  background:linear-gradient(145deg,rgba(255,255,255,.85),rgba(23,54,74,.14));
+  animation:bw-float 14s ease-in-out infinite reverse;
+}
 .auth-card{
- background:var(--bw-glass)!important;backdrop-filter:blur(24px) saturate(135%);-webkit-backdrop-filter:blur(24px) saturate(135%);
- border:1px solid var(--bw-glass-line)!important;border-radius:28px!important;
- box-shadow:var(--bw-glass-shadow),inset 0 1px 0 rgba(255,255,255,.85)!important;
- animation:bw-rise-in .65s var(--bw-motion) both;
+  background:var(--bw-glass)!important;
+  backdrop-filter:blur(28px) saturate(140%);
+  -webkit-backdrop-filter:blur(28px) saturate(140%);
+  border:1px solid var(--bw-glass-line)!important;
+  border-radius:28px!important;
+  box-shadow:var(--bw-glass-shadow),inset 0 1px 0 rgba(255,255,255,.9)!important;
+  animation:bw-scale-pop .7s var(--bw-motion) both;
 }
-.auth-card .brand-mark{box-shadow:0 8px 20px rgba(23,54,74,.2);transition:transform .35s var(--bw-motion)}
-.auth-card .brand-mark:hover{transform:translateY(-2px) rotate(-4deg)}
-.auth-card input{transition:border-color .22s,box-shadow .22s,background .22s,transform .22s}
-.auth-card input:focus{background:rgba(255,255,255,.96);transform:translateY(-1px);box-shadow:0 0 0 4px rgba(13,102,87,.09)!important}
-.auth-card .btn{transition:transform .22s var(--bw-motion),box-shadow .22s,filter .22s}
-.auth-card .btn.primary{box-shadow:0 8px 18px rgba(13,102,87,.17)}
-.auth-card .btn:hover{transform:translateY(-1px)}
-/* Accord-inspired surface hierarchy and motion, without replacing existing business logic. */
-.card,.stat,.property-card,.lead-card,.deal-card,.project-card,.match-card,.integration-card{
- transition:transform .26s var(--bw-motion),box-shadow .26s,border-color .26s;
+.auth-card .brand-mark{
+  box-shadow:0 10px 24px rgba(23,54,74,.22);
+  transition:transform .4s var(--bw-motion),box-shadow .4s;
 }
-.card:hover,.stat:hover,.property-card:hover,.lead-card:hover,.deal-card:hover,.project-card:hover,.match-card:hover,.integration-card:hover{
- border-color:rgba(13,102,87,.24);box-shadow:0 12px 30px rgba(23,54,74,.075);transform:translateY(-2px);
+.auth-card .brand-mark:hover{
+  transform:translateY(-3px) rotate(-6deg) scale(1.04);
+  box-shadow:0 14px 28px rgba(23,54,74,.28);
 }
-.bw-motion-enter{animation:bw-rise-in .48s var(--bw-motion) both}
-.bw-motion-enter:nth-child(2){animation-delay:35ms}.bw-motion-enter:nth-child(3){animation-delay:70ms}.bw-motion-enter:nth-child(4){animation-delay:105ms}.bw-motion-enter:nth-child(5){animation-delay:140ms}.bw-motion-enter:nth-child(6){animation-delay:175ms}
-.metric-bar i{transform-origin:right center;animation:bw-metric-grow .8s var(--bw-motion) both}
-@keyframes bw-metric-grow{from{transform:scaleX(.05);opacity:.25}to{transform:scaleX(1);opacity:.75}}
-/* Meniscus-inspired liquid pill for the existing five-item mobile navigation. */
-.bottom-nav{
- --bw-pill-left:0px;--bw-pill-width:20%;
- position:fixed;isolation:isolate;overflow:hidden;
- background:rgba(255,255,255,.84)!important;
- border-top:1px solid rgba(222,219,211,.78)!important;
- backdrop-filter:blur(22px) saturate(145%);-webkit-backdrop-filter:blur(22px) saturate(145%);
- box-shadow:0 -10px 32px rgba(23,54,74,.07);
+.auth-card input{transition:border-color .25s,box-shadow .25s,background .25s,transform .25s}
+.auth-card input:focus{
+  background:rgba(255,255,255,.98);
+  transform:translateY(-2px);
+  box-shadow:0 0 0 5px rgba(13,102,87,.12)!important;
 }
-.bottom-nav:before{
- content:"";position:absolute;z-index:-1;top:6px;bottom:6px;
- left:var(--bw-pill-left);width:var(--bw-pill-width);
- border-radius:15px;
- background:linear-gradient(135deg,rgba(13,102,87,.13),rgba(13,102,87,.055));
- border:1px solid rgba(13,102,87,.10);
- box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 3px 12px rgba(13,102,87,.07);
- transition:left .48s var(--bw-motion),width .48s var(--bw-motion),border-radius .35s;
- pointer-events:none;
+.auth-card .btn{
+  transition:transform .28s var(--bw-motion),box-shadow .28s,filter .28s;
+  position:relative;overflow:hidden;
 }
-.bottom-nav .nav-item{position:relative;z-index:1;min-height:58px;transition:color .2s,transform .28s var(--bw-motion);background:transparent!important}
-.bottom-nav .nav-item.active{color:var(--bw-accent)!important;font-weight:800}
-.bottom-nav .nav-item.active i{transform:translateY(-2px) scale(1.1)}
-.bottom-nav .nav-item i{transition:transform .3s var(--bw-motion);font-size:17px}
-.bottom-nav .nav-item span{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.bottom-nav .nav-item:active{transform:scale(.94)}
-/* Soft focus and reduced visual noise for touch devices. */
-button:focus-visible,a:focus-visible{outline:3px solid rgba(13,102,87,.45);outline-offset:2px}
-@media(max-width:900px){.content{scroll-behavior:smooth}.card,.stat,.property-card,.lead-card,.deal-card,.project-card,.match-card,.integration-card{will-change:auto}}
+.auth-card .btn.primary{box-shadow:0 10px 22px rgba(13,102,87,.2)}
+.auth-card .btn:hover{transform:translateY(-2px);filter:brightness(1.03)}
+.auth-card .btn:active{transform:translateY(0) scale(.98)}
+.card,.stat,.property-card,.lead-card,.deal-card,.project-card,.match-card,.integration-card,
+.role-card,.public-hero,.data-grid > *{
+  transition:transform .32s var(--bw-motion),box-shadow .32s var(--bw-motion),border-color .28s,filter .28s;
+  will-change:transform;
+}
+.card:hover,.stat:hover,.property-card:hover,.lead-card:hover,.deal-card:hover,
+.project-card:hover,.match-card:hover,.integration-card:hover,.role-card:hover{
+  border-color:rgba(13,102,87,.28);
+  box-shadow:0 16px 36px rgba(23,54,74,.1),0 0 0 1px rgba(13,102,87,.06);
+  transform:translateY(-4px) scale(1.012);
+}
+.card:active,.property-card:active,.lead-card:active,.role-card:active{
+  transform:translateY(-1px) scale(.995);
+}
+.bw-motion-enter{animation:bw-rise-in .55s var(--bw-motion) both}
+.bw-motion-enter:nth-child(1){animation-delay:0ms}
+.bw-motion-enter:nth-child(2){animation-delay:40ms}
+.bw-motion-enter:nth-child(3){animation-delay:80ms}
+.bw-motion-enter:nth-child(4){animation-delay:120ms}
+.bw-motion-enter:nth-child(5){animation-delay:160ms}
+.bw-motion-enter:nth-child(6){animation-delay:200ms}
+.bw-motion-enter:nth-child(7){animation-delay:240ms}
+.bw-motion-enter:nth-child(8){animation-delay:280ms}
+.bw-motion-enter:nth-child(9){animation-delay:320ms}
+.bw-motion-enter:nth-child(10){animation-delay:360ms}
+.bw-motion-enter:nth-child(n+11){animation-delay:400ms}
+.bw-motion-pop{animation:bw-scale-pop .5s var(--bw-motion) both}
+.metric-bar i{transform-origin:right center;animation:bw-metric-grow .85s var(--bw-motion) both}
+.stat{position:relative;overflow:hidden}
+.stat:hover{animation:bw-soft-glow 1.6s ease-in-out infinite}
+.btn,.button,button.btn{
+  transition:transform .22s var(--bw-motion),box-shadow .22s,filter .22s,background .2s;
+}
+.btn:hover,button.btn:hover{transform:translateY(-1px)}
+.btn:active,button.btn:active{transform:translateY(0) scale(.97)}
+.btn.primary:hover{box-shadow:0 10px 24px rgba(13,102,87,.22)}
+.bottom-nav,#bottomNav{
+  --bw-pill-left:0px;--bw-pill-width:20%;
+  position:fixed;isolation:isolate;overflow:hidden;
+  background:rgba(255,255,255,.88)!important;
+  border-top:1px solid rgba(222,219,211,.8)!important;
+  backdrop-filter:blur(26px) saturate(150%);
+  -webkit-backdrop-filter:blur(26px) saturate(150%);
+  box-shadow:0 -12px 36px rgba(23,54,74,.09);
+}
+.bottom-nav:before,#bottomNav:before{
+  content:"";position:absolute;z-index:0;top:5px;bottom:5px;
+  left:var(--bw-pill-left);width:var(--bw-pill-width);
+  border-radius:16px;
+  background:linear-gradient(145deg,rgba(13,102,87,.18),rgba(13,102,87,.08));
+  border:1px solid rgba(13,102,87,.14);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.85),0 4px 16px rgba(13,102,87,.12);
+  transition:left .5s var(--bw-motion),width .5s var(--bw-motion),border-radius .4s var(--bw-motion),background .35s;
+  pointer-events:none;
+  animation:bw-nav-pulse 3.2s ease-in-out infinite;
+}
+.bottom-nav .nav-item,#bottomNav .nav-item{
+  position:relative;z-index:1;min-height:58px;
+  transition:color .25s,transform .32s var(--bw-motion);
+  background:transparent!important;
+}
+.bottom-nav .nav-item.active,#bottomNav .nav-item.active{
+  color:var(--bw-accent,#0d6657)!important;
+  font-weight:800;
+}
+.bottom-nav .nav-item.active i,#bottomNav .nav-item.active i{transform:translateY(-3px) scale(1.15)}
+.bottom-nav .nav-item i,#bottomNav .nav-item i{
+  transition:transform .32s var(--bw-motion);
+  font-size:17px;display:inline-block;
+}
+.bottom-nav .nav-item:active,#bottomNav .nav-item:active{transform:scale(.92)}
+.bottom-nav .nav-item span,#bottomNav .nav-item span{
+  max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  transition:opacity .25s,transform .25s;
+}
+.bottom-nav .nav-item.active span,#bottomNav .nav-item.active span{transform:translateY(-1px)}
+.role-card,[data-role],.auth-roles > *,.gateway-card{
+  transition:transform .35s var(--bw-motion),box-shadow .35s,border-color .3s;
+}
+.role-card:hover,[data-role]:hover,.gateway-card:hover{
+  transform:translateY(-5px) scale(1.02);
+  box-shadow:0 18px 40px rgba(23,54,74,.12);
+}
+#modal:not([hidden]),.modal-backdrop{animation:bw-rise-in-soft .28s var(--bw-motion) both}
+#modalBox,.modal-box,.modal-content{animation:bw-scale-pop .42s var(--bw-motion) both}
+.page-head,main .content > *:first-child{animation:bw-rise-in-soft .45s var(--bw-motion) both}
+.toolbar{animation:bw-rise-in-soft .4s var(--bw-motion) .05s both}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{
+  outline:3px solid rgba(13,102,87,.5);outline-offset:2px;
+}
+@media(max-width:900px){
+  .content{scroll-behavior:smooth}
+  .card,.stat,.property-card,.lead-card,.deal-card,.project-card,.match-card,.integration-card{will-change:auto}
+  .bw-motion-enter{animation-duration:.48s}
+}
 @media(prefers-reduced-motion:reduce){
- *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
- .bw-motion-enter{animation:none!important}
+  *,*:before,*:after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
+    transition-duration:.01ms!important;
+  }
+  .bw-motion-enter,.bw-motion-pop,.auth-card,#modalBox{animation:none!important}
+  .bottom-nav:before,#bottomNav:before{animation:none!important}
 }
