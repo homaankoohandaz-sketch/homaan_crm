@@ -97,3 +97,6 @@ Branch: main — experimental/internal review
 - GitHub Pages workflow now runs full tests and release/architecture/infrastructure checks before publishing; deployment depends on successful validation. Workflow commit: `06e8a9befc0d3596cc4a45558f48d84924592dab`.
 - Branch-protection settings remain inaccessible to the current GitHub integration (API 403); repository rulesets returned empty. This workaround prevents an untested/broken main commit from replacing the live Pages site, but does not block direct pushes or manual merges to main.
 - The new workflow result was pending at the time this note was written; verify CI before claiming it passed.
+
+## 2026-10-29 — phase-code-map test tolerates cache-bust query
+- `tests/phase-code-map.test.js` now enforces runtime script order while accepting `?v=` cache-bust suffixes, and accepts either quote style for the construction-adapter dynamic import. `index.html` is unchanged. Root cause: cache-bust query strings broke the previous exact-string assertion. Fix committed to `main` in `594cef3408ae8f21f0bd0bb099c586fb0d880fe3`. Verify CI on the updated main SHA before claiming the suite passes.
