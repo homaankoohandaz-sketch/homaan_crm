@@ -17,13 +17,15 @@ const expectedRuntimeOrder = [
 
 let cursor = -1;
 for (const src of expectedRuntimeOrder) {
-  const next = index.indexOf('src="' + src);
+  // Script tags may carry a cache-bust query (e.g. ?v=20261029g); order is still enforced.
+  const match = new RegExp('src="' + src.replace(/[.*+?^${}()|[\]\\\/]/g, '\\$&') + '(?:\\?[^"]*)?"').exec(index);
+  const next = match ? match.index : -1;
   assert.ok(next > cursor, 'runtime script order broken: ' + src);
   cursor = next;
 }
 
 assert.ok(
-  index.includes('import("./src/domains/construction/browser-adapter.js")'),
+  /import\(["']\.\/src\/domains\/construction\/browser-adapter\.js["']\)/.test(index),
   'construction browser adapter must be loaded'
 );
 assert.ok(!index.includes('src="./phase-app.js"'), 'legacy phase-app.js must not be loaded');
