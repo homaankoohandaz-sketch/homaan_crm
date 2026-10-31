@@ -1,109 +1,100 @@
-version: 3
-policy: autonomous
-active_task: P0-control-plane-unify-and-worker-loop
+version: 4
+policy: evidence-first
+active_task: AUDIT-000-reconcile-baseline
+operating_mode: experimental-personal-trial
+canonical_branch: main
+product_scope: all-nine-phases-active
+user_data_policy: preserve-existing-data
+release_target: personal-trial
+
+priorities:
+  - P0: audit-and-discrepancy-register
+  - P1: excel-import
+  - P1: google-sheets-import
+  - P1: search-and-filters
+  - P1: permissions-and-rls
+  - P1: backup-and-restore
+  - P2: unified-task-engine
+  - P2: ui-and-motion
+
+execution_rules:
+  - no-destructive-production-data-changes-without-explicit-approval
+  - no-migration-apply-or-repair-before-sql-provenance-reconciliation
+  - no-blind-merge-or-force-push
+  - one-writer-per-file
+  - every-task-has-allowed-files-acceptance-and-evidence
+  - done-requires-implementation-tests-runtime-ui-and-security-evidence-as-applicable
+  - all-nine-phases-are-active-for-audit-and-planning; trial-delivery-is-incremental
 
 tasks:
-  - id: TASK-000-ARCHITECTURE-BASELINE
-    status: VERIFIED_PARTIAL
-    depends_on: []
+  - id: AUDIT-000-reconcile-baseline
+    status: IN_PROGRESS
     owner: architecture
-    worker: grok
-    reviewer: claude
-  - id: TASK-001-PLATFORM-AUTH-CAPABILITIES
+    depends_on: []
+    acceptance: repository branch and PR inventory; canonical-doc contradictions; checklist status; deployment SHA; live Supabase migration/security/backup evidence; discrepancy register with source and severity
+    evidence: .agent-control/STATE.md
+  - id: AUDIT-001-nine-phase-capability-map
     status: QUEUED
-    depends_on: [TASK-000-ARCHITECTURE-BASELINE]
-    owner: platform
-    worker: grok
-    reviewer: claude
-  - id: TASK-002-CRM-MVP
+    owner: architecture
+    depends_on: [AUDIT-000-reconcile-baseline]
+    acceptance: all 850 canonical checklist items mapped to phase/domain, implementation, tests, runtime evidence, dependencies and status; no invented task IDs
+    evidence: .agent-control/MASTER-CHECKLIST-v3-850.md
+  - id: DATA-001-preservation-and-import-contract
     status: QUEUED
-    depends_on: [TASK-001-PLATFORM-AUTH-CAPABILITIES]
+    owner: data_import
+    depends_on: [AUDIT-000-reconcile-baseline]
+    acceptance: import contract preserves raw workbook, every row/column, batch identity and rollback isolation; no production write during tests
+    evidence: tests/ and .agent-control/STATE.md
+  - id: CRM-001-excel-import
+    status: QUEUED
     owner: crm
-    worker: grok
-    reviewer: claude
-  - id: TASK-003-LAND-CALCULATION
+    depends_on: [DATA-001-preservation-and-import-contract]
+    acceptance: representative multi-sheet workbook imports with row/column counts reconciled, preview/validation/error isolation/duplicate review/rollback verified
+    evidence: tests/ and browser test report
+  - id: CRM-002-google-sheets-import
     status: QUEUED
-    depends_on: [TASK-002-CRM-MVP]
-    owner: land
-    worker: grok
-    reviewer: claude
-  - id: TASK-004-RLS-ROLE-HARDENING
+    owner: crm
+    depends_on: [DATA-001-preservation-and-import-contract]
+    acceptance: explicit OAuth/permission boundary, read-only-by-default source access, selected-sheet preview, repeatable batch import, revoked-token and API-error handling
+    evidence: tests/ and browser test report
+  - id: CRM-003-search-and-filters
     status: QUEUED
-    depends_on: [TASK-002-CRM-MVP]
+    owner: crm
+    depends_on: [AUDIT-000-reconcile-baseline]
+    acceptance: search/filter across agreed CRM entities with Persian/Arabic digit normalization, permission-aware results, pagination and no cross-account leakage
+    evidence: tests/ and browser test report
+  - id: SEC-001-permissions-and-rls
+    status: QUEUED
     owner: qa_security
-    worker: grok
-    reviewer: claude
-  - id: TASK-005-OWNER-BUILDER-PORTALS
+    depends_on: [AUDIT-000-reconcile-baseline]
+    acceptance: role/action/table matrix; anon/authenticated/manager cross-user tests; function grants and SECURITY DEFINER review; no widening of access
+    evidence: security audit report and tests
+  - id: OPS-001-backup-and-restore
     status: QUEUED
-    depends_on: [TASK-003-LAND-CALCULATION, TASK-004-RLS-ROLE-HARDENING]
-    owner: app
-    worker: grok
-    reviewer: claude
-  - id: TASK-006-PROJECT-CONTROL-VERTICAL
+    owner: platform
+    depends_on: [AUDIT-000-reconcile-baseline]
+    acceptance: encrypted backup artifact, checksum verification, off-site encrypted copy, private-key custody and successful isolated restore; no plaintext artifact
+    evidence: backup manifest and restore drill report
+  - id: CORE-001-unified-task-engine
     status: QUEUED
-    depends_on: [TASK-004-RLS-ROLE-HARDENING]
-    owner: project_control
-    worker: grok
-    reviewer: claude
-  - id: TASK-007-DEAL-INTELLIGENCE
-    status: QUEUED
-    depends_on: [TASK-002-CRM-MVP, TASK-003-LAND-CALCULATION]
-    owner: deal_intelligence
-    worker: grok
-    reviewer: claude
-  - id: TASK-008-ACCOUNTING-SEPARATE
-    status: QUEUED
-    depends_on: [TASK-006-PROJECT-CONTROL-VERTICAL]
-    owner: finance
-    worker: grok
-    reviewer: claude
-    release_blocking: false
-  - id: TASK-009-PUBLIC-WEBSITE-SEPARATE
-    status: QUEUED
-    depends_on: []
-    owner: website
-    worker: grok
-    reviewer: claude
-    release_blocking: false
-  - id: TASK-010-REMAINING-CHECKLIST
-    status: QUEUED
-    depends_on: [TASK-005-OWNER-BUILDER-PORTALS, TASK-006-PROJECT-CONTROL-VERTICAL, TASK-007-DEAL-INTELLIGENCE]
-    owner: master
-    worker: grok
-    reviewer: claude
-  - id: TASK-011-UNIFIED-TASK-ENGINE-CORE
-    status: DONE_FOCUSED
-    depends_on: []
     owner: core
-    worker: chatgpt
-    reviewer: claude
-    release_blocking: true
-  - id: TEST-SUITE-COVERAGE
-    status: VERIFIED_PARTIAL
-    depends_on: []
-    owner: qa
-    worker: chatgpt
-    reviewer: claude
-    release_blocking: false
-  - id: P0-control-plane-unify-and-worker-loop
-    status: READY
-    depends_on: []
-    owner: control_plane
-    worker: grok
-    reviewer: claude
-
-parallel_lanes:
-  - QA/security
-  - tests
-  - data_import
-  - valuation
-  - architecture_visual
-  - deployment
-  - accounting
-  - public_website
+    depends_on: [AUDIT-000-reconcile-baseline, SEC-001-permissions-and-rls]
+    acceptance: assignment, calendar, reminders, priority, starred, yes/no response, completion, defer-to-tomorrow and audit tested in CRM/construction/procurement contexts
+    evidence: tests/ and browser test report
+  - id: UI-001-personal-trial-ux
+    status: QUEUED
+    owner: app
+    depends_on: [CRM-001-excel-import, CRM-002-google-sheets-import, CRM-003-search-and-filters]
+    acceptance: responsive end-to-end workflows, loading/empty/error/success states, accessibility and reduced-motion behavior; no visual-only completion
+    evidence: browser screenshots and runtime report
+  - id: PHASE-02-09-integration
+    status: QUEUED
+    owner: architecture
+    depends_on: [AUDIT-001-nine-phase-capability-map]
+    acceptance: each phase has dependency map, retained/rework/rebuild decision and a small independently testable vertical slice; no expansion beyond trial-critical path without explicit prioritization
+    evidence: phase acceptance matrix
 
 advance_rule:
   only_verified_dependencies: true
-  no_user_intervention_between_tasks: true
   max_worker_iterations: 3
   done_requires: implementation_tests_runtime_evidence
