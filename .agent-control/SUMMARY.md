@@ -100,3 +100,12 @@ Branch: main — experimental/internal review
 
 ## 2026-10-29 — phase-code-map test tolerates cache-bust query
 - `tests/phase-code-map.test.js` now enforces runtime script order while accepting `?v=` cache-bust suffixes, and accepts either quote style for the construction-adapter dynamic import. `index.html` is unchanged. Root cause: cache-bust query strings broke the previous exact-string assertion. Fix committed to `main` in `594cef3408ae8f21f0bd0bb099c586fb0d880fe3`. Verify CI on the updated main SHA before claiming the suite passes.
+
+
+## 2026-10-31 — User-approved operational reset (D-027)
+- Delivery process is being rebuilt; retain existing code only when audit evidence supports it; preserve current user data.
+- All nine phases remain active for audit/planning and controlled implementation. Target is a personal trial, delivered incrementally; all nine phases are not a prerequisite for the first usable trial.
+- Priority: Excel import, Google Sheets import, search, permissions, backup/restore, unified Task Engine, UI.
+- main remains canonical review branch. Current compare: main is 24 commits ahead of buildwise-implementation; numerous old feature branches/open PRs remain. No blind merge.
+- Current migration parity, backup/restore, live security state, deployment SHA, authenticated E2E and Excel/Sheets runtime behavior are UNVERIFIED until freshly evidenced.
+- .agent-control/TASK-QUEUE.yaml v4 sequences audit first and defines acceptance/evidence for each priority.
