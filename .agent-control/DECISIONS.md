@@ -150,3 +150,15 @@ Decision:
 - A market source failure must be visibly marked as stale/unavailable; a placeholder value must never be presented as a current market quote.
 - The authenticated property client view must exclude sensitive owner/internal notes and phone fields; UI hiding alone is not authorization.
 Impact: property triage and manual valuation are simple, auditable manager workflows, not separate AI engines.
+
+
+## D-027 — Operational reset: evidence-led nine-phase rebuild process (2026-10-31)
+Decision confirmed by the product owner:
+- Rebuild the delivery process and retain only existing code that passes evidence-based review; do not discard or overwrite existing user data.
+- All nine product phases remain active for audit/planning and controlled implementation. The personal trial is the delivery target; this does not mean all nine phases must be complete before the first usable trial.
+- Prioritize Excel import, Google Sheets import, search, permissions, backup/restore, unified tasks, then UI polish. Cross-cutting safety, data integrity and release controls remain mandatory dependencies.
+- Audit repository and live environment first; publish a discrepancy register before implementation tasks are marked ready.
+- Preserve current Supabase data. No destructive migration, reset, bulk rewrite, migration repair, production deploy, secret rotation, or branch force-update without separate explicit approval and a verified recovery path.
+- GitHub main is the shared implementation/review baseline. Existing branches and PRs are evidence sources only; no blind merge. One writer per file and bounded tasks remain mandatory.
+- A requirement is DONE only with implementation, relevant automated tests, runtime/UI evidence and security evidence where applicable, tied to an exact commit SHA. Unknown or unavailable evidence remains UNVERIFIED/PARTIAL.
+Supersedes the earlier temporary 2026-10-18 scope decision to deactivate phases 02–09. It does not supersede the safety gates or the nine-phase architecture.
