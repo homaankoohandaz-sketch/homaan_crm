@@ -222,3 +222,14 @@ No production data reset, destructive migration, migration repair, schema change
 
 ### Current active task
 AUDIT-000-reconcile-baseline — produce a current discrepancy register and evidence pack before implementation tasks advance. See .agent-control/TASK-QUEUE.yaml v4.
+
+
+## Supabase live read-only snapshot — 2026-10-31 (connector observation)
+- Project `beuestoewletjsgmigmf` returned `ACTIVE_HEALTHY`, Postgres 17.6.1.166, region `ap-northeast-2`.
+- Live migration ledger: 108 entries. Latest: `20261024100056` / `property_file_triage_and_market_batch_column_20261024`. This confirms the historical count of 106 is stale. It does NOT establish local SQL parity; local tree reconciliation remains required.
+- Public schema: 133 tables; all 133 reported with RLS enabled in the compact table listing. This does not prove policies are correctly scoped or tested.
+- Nonzero table counts include properties 6,039; import_batches 6; import_raw_rows 250; activity_logs 9,609; ai_actions 610; leads 5; deals 1; construction_projects 1; customer_shares 1; workflow_templates 7. These are live row counts, not proof that each workflow works. Preserve these records.
+- Security advisor: 14 authenticated-executable SECURITY DEFINER findings; 34 multiple-permissive-policy findings (performance category, including policies for anon and authenticated roles); leaked-password protection disabled warning; anonymous sign-in warning also returned. Each function/policy requires intent and privilege review; do not blanket-revoke or rewrite policies.
+- Performance advisor: 124 unindexed-FK findings (INFO) and 87 unused-index findings (INFO). Do not bulk-create/drop indexes without workload and lock-impact review.
+- Edge Functions: 12 ACTIVE entries observed, including `google-sheets-sync` v6, `crm-data-agent` v5, `public-request` v4, `customer-portal` v3, and `ai-orchestrator` v14. Listing is not a function-level security or behavior acceptance test.
+- No database writes, migration applies/repairs, function deployments, or Auth changes were made during this snapshot.
