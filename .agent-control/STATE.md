@@ -191,3 +191,34 @@ Unit/contract still PASS. 630 BLOCKED.
 - Workaround committed to `.github/workflows/pages.yml` at `06e8a9befc0d3596cc4a45558f48d84924592dab`: GitHub Pages deployment now depends on a validation job running `npm test`, release smoke checks, architecture contract, phase code map, and infrastructure deployment contract tests. If validation fails, Pages deployment is blocked.
 - This protects the published site from failing main commits but does **not** prevent a direct push/merge into `main`. Absolute merge protection still requires enabling GitHub branch protection/rulesets through an authenticated GitHub settings session with appropriate permissions.
 - The new workflow commit was pushed and file content re-read successfully; its CI result was still pending at last verification. Do not claim the new gate passed until its run finishes.
+
+
+## Operational reset and repository audit — 2026-10-31
+
+User-approved operating decision (D-027): rebuild the delivery process, retain code only when evidence supports it, preserve current user data, keep all nine phases active for audit/planning and controlled implementation, and target a personal trial. Priority order: Excel, Google Sheets, search, permissions, backup/restore, unified tasks, UI. This supersedes the 2026-10-18 temporary decision to deactivate phases 02–09; it does not waive safety gates.
+
+### Read-only repository evidence captured
+- Repository: homaankoohandaz-sketch/homaan_crm; public; default branch main; current branch metadata retrieved 2026-10-31.
+- main and buildwise-implementation are not equivalent. GitHub compare reports main is 24 commits ahead of buildwise-implementation (0 commits ahead in the reverse direction; status behind). Do not merge or reset either branch based on this alone.
+- Branch inventory returns dozens of historical/feature branches, including old implementation, security, backup, import, personal CRM, and UI motion branches. Inventory must be triaged; existence does not mean code is integrated or safe.
+- Open PR inventory includes unresolved audit/migration reconciliation, performance, customer-portal XSS, RLS hardening, public-request CORS, AI Edge hardening, CRM empty-row import, backup encryption, and anonymous-access security work. PRs are not automatically accepted as correct or mergeable.
+- Canonical TASK-QUEUE.yaml on main was stale/inconsistent with the current operating decision and is replaced by evidence-first task queue v4.
+- STATE.md contains contradictory historical notes: active branch main versus older restore/workflow notes referencing buildwise-implementation; historical migration counts and backup failures must not be treated as current live measurements.
+- MASTER-CHECKLIST-v3-850.md is the canonical 850-item acceptance register. Embedded historical counts explicitly are not current totals. Preserve existing states until item-by-item evidence review.
+- DECISIONS.md has D-001 through D-026. D-027 records the user's current operating decision.
+- PHASE-CURRENT-ARCHITECTURE.md is explicitly a deprecated pointer, not an active phase plan.
+
+### Confirmed discrepancies / unresolved evidence
+1. Branch strategy: main is canonical in current docs, but many feature branches and open PRs remain; buildwise-implementation is 24 commits behind main. Reconcile each PR/branch by file-level diff and tests; no blind merge.
+2. Migration provenance: historical STATE/PR evidence reports major mismatch between live migration ledger and repository SQL files, including differing names/versions. Current live ledger has not been re-read in this audit; treat parity as UNVERIFIED and prohibit apply/repair until current read-only comparison.
+3. Backup: historical run failed credential validation and PRs document missing successful encrypted artifact/off-site copy/restore drill. Current successful restore evidence was not retrieved; status UNVERIFIED/OPEN.
+4. Security: historical reports identify 14 authenticated-executable SECURITY DEFINER functions, overlapping/multiple permissive policies and unresolved customer-portal/public-request concerns. Current live grants/policies and deployments were not re-read in this audit; status UNVERIFIED, not a claim of current vulnerability count.
+5. Runtime/deployment: current exact GitHub Pages/Netlify deployed SHA and authenticated browser acceptance were not freshly verified in this audit. No claim of current site freshness or personal-trial readiness.
+6. CRM imports: main's history documents Excel importer work and an expected workbook of 6,034 normalized attempts, but the workbook was explicitly not loaded in the recorded evidence. Current live data/import behavior remains unverified.
+7. Phase scope: current user confirms all nine phases active. This means audit/planning and controlled development across all phases; personal-trial delivery remains incremental and does not require all 9 phases complete first.
+
+### Safety boundaries
+No production data reset, destructive migration, migration repair, schema change, bulk import, secret rotation, force push, blind PR merge or production deployment was performed by this audit. Existing data must be preserved. All status changes require exact commit + tests + runtime/UI + security evidence as applicable.
+
+### Current active task
+AUDIT-000-reconcile-baseline — produce a current discrepancy register and evidence pack before implementation tasks advance. See .agent-control/TASK-QUEUE.yaml v4.
