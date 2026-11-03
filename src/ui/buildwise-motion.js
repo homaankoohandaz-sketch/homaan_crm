@@ -98,7 +98,8 @@
   async function loadSharedBackground(){
     var client=window.db;if(!client)return null;
     var r=await client.from('ui_modules').select('config').eq('id','app-settings').maybeSingle();
-    if(r.error||!r.data||!r.data.config||!r.data.config.appearance)return null;
+    if(r.error)return null;
+    if(!r.data||!r.data.config||!r.data.config.appearance){try{localStorage.removeItem(BG_KEY)}catch(_){}applyBgSettings(BG_DEFAULTS);return BG_DEFAULTS;}
     var shared=Object.assign({},BG_DEFAULTS,r.data.config.appearance);
     try{localStorage.setItem(BG_KEY,JSON.stringify(shared))}catch(_){}
     applyBgSettings(shared);return shared;
