@@ -69,3 +69,12 @@ test('unified visual system is dark, responsive, and RTL-aware', () => {
   assert.match(css, /@media\s*\(max-width:\s*1050px\)/);
   assert.match(css, /--bw-bg:\s*#0b1020/i);
 });
+
+
+test('all role-authorized core modules remain in navigation; database display settings cannot hide the property bank', () => {
+  assert.match(app, /const NAV=ALL_NAV;/);
+  assert.match(app, /const allowedNav=\(\)=>ROLE_ACCESS\[normalizedRole\(role\)\]\|\|\['dashboard'\]/);
+  assert.match(app, /function effectiveNav\(\)\{return NAV\.filter\(\(\[id\]\)=>canAccess\(id\)\)\}/);
+  assert.match(app, /\['properties','املاک','⌂'\]/);
+  assert.match(app, /\['market','بازار و ارزش‌گذاری','◌'\]/);
+});
