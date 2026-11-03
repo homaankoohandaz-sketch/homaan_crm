@@ -22,6 +22,8 @@ test('global search searches property type, owner name, and owner mobile on the 
   assert.match(app, /mobile/);
   assert.match(app, /property_type/);
   assert.match(app, /scheduleGlobalSearch/);
+  assert.match(app, /import_raw_rows/);
+  assert.match(app, /normalized_data->>mobile/);
 });
 
 test('property cards expose manager delete action as well as edit', () => {
