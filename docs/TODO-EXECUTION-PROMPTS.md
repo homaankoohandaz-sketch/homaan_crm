@@ -1,3 +1,5 @@
+> D-028 OVERRIDE — READ FIRST: .agent-control/ARCHIVE-FREEZE.md is the controlling instruction. Checklist ranges 066-100, 191-235, 343-367 and 453-476 are ARCHIVED/FROZEN. Do not select, generate, assign or execute prompts for those IDs. Their old TODO/PARTIAL status is historical only. The freeze overrides all prompt blocks and inventories below.
+
 # BuildWise — TODO Execution Prompts
 
 **Canonical source:** `.agent-control/MASTER-CHECKLIST-v3-850.md` (v3, 001–850)
