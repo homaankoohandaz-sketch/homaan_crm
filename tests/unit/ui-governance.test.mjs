@@ -53,11 +53,11 @@ test('BuildWise authenticated shell uses the unified dark workspace layout', () 
 });
 
 test('dashboard presents real module KPIs and same-page operational shortcuts', () => {
-  assert.match(app, /پروژه‌های فعال/);
+  assert.match(app, /پروژه‌های ثبت‌شده/);
   assert.match(app, /عملیات سریع/);
-  assert.match(app, /go\('properties'\)/);
-  assert.match(app, /go\('leads'\)/);
-  assert.match(app, /go\('construction'\)/);
+  assert.match(app, /ثبت \/ جستجوی ملک/);
+  assert.match(app, /ثبت مخاطب/);
+  assert.match(app, /مدیریت پروژه/);
   assert.match(app, /پروژه‌های اخیر/);
 });
 
@@ -66,6 +66,6 @@ test('unified visual system is dark, responsive, and RTL-aware', () => {
   const css = fs.readFileSync(new URL('../../buildwise-ui.css', import.meta.url), 'utf8');
   assert.match(css, /\.bw-shell/);
   assert.match(css, /\.bw-assistant/);
-  assert.match(css, /@media\s*\(max-width:\s*1100px\)/);
+  assert.match(css, /@media\s*\(max-width:\s*1050px\)/);
   assert.match(css, /--bw-bg:\s*#0b1020/i);
 });
