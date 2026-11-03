@@ -217,75 +217,75 @@ B — CRM / DATA MANAGEMENT
 C — REAL ESTATE INTELLIGENCE
 ==================================================
 
-066 [~] Land Analysis
+066 [~] Land Analysis [ARCHIVED]
 
-067 [~] Development Feasibility
+067 [~] Development Feasibility [ARCHIVED]
 
-068 [~] Municipal Regulation Evidence
+068 [~] Municipal Regulation Evidence [ARCHIVED]
 
-069 [~] Participation Analysis
+069 [~] Participation Analysis [ARCHIVED]
 
-070 [~] Barter Analysis
+070 [~] Barter Analysis [ARCHIVED]
 
-071 [~] Investor Matching
+071 [~] Investor Matching [ARCHIVED]
 
-072 [~] Builder Matching
+072 [~] Builder Matching [ARCHIVED]
 
-073 [~] Supplier Matching
+073 [~] Supplier Matching [ARCHIVED]
 
-074 [~] Property Matching
+074 [~] Property Matching [ARCHIVED]
 
-075 [~] Opportunity Radar
+075 [~] Opportunity Radar [ARCHIVED]
 
-076 [✓] Valuation Engine
+076 [✓] Valuation Engine [ARCHIVED]
 
-077 [~] Comparable Evidence
+077 [~] Comparable Evidence [ARCHIVED]
 
-078 [✓] Construction Cost Engine
+078 [✓] Construction Cost Engine [ARCHIVED]
 
-079 [~] ROI / Profit Scenarios
+079 [~] ROI / Profit Scenarios [ARCHIVED]
 
-080 [~] Gold Comparison
+080 [~] Gold Comparison [ARCHIVED]
 
-081 [~] Dollar Comparison
+081 [~] Dollar Comparison [ARCHIVED]
 
-082 [~] Historical Market Analysis
+082 [~] Historical Market Analysis [ARCHIVED]
 
-083 [~] Live Market Snapshot
+083 [~] Live Market Snapshot [ARCHIVED]
 
-084 [~] Scenario Forecasting
+084 [~] Scenario Forecasting [ARCHIVED]
 
-085 [~] Liquidity Analysis
+085 [~] Liquidity Analysis [ARCHIVED]
 
-086 [~] Deal Risk Analysis
+086 [~] Deal Risk Analysis [ARCHIVED]
 
-087 [~] Market Data Timestamp
+087 [~] Market Data Timestamp [ARCHIVED]
 
-088 [~] Daily Gold Price Update
+088 [~] Daily Gold Price Update [ARCHIVED]
 
-089 [~] Daily Dollar Price Update
+089 [~] Daily Dollar Price Update [ARCHIVED]
 
-090 [~] Property Price vs Gold
+090 [~] Property Price vs Gold [ARCHIVED]
 
-091 [~] Property Price vs Dollar
+091 [~] Property Price vs Dollar [ARCHIVED]
 
-092 [~] Property Value in Grams of 18K Gold
+092 [~] Property Value in Grams of 18K Gold [ARCHIVED]
 
-093 [~] 6-Month Historical Comparison
+093 [~] 6-Month Historical Comparison [ARCHIVED]
 
-094 [~] 12-Month Historical Comparison
+094 [~] 12-Month Historical Comparison [ARCHIVED]
 
-095 [~] 18-Month Historical Comparison
+095 [~] 18-Month Historical Comparison [ARCHIVED]
 
-096 [~] 24-Month Historical Comparison
+096 [~] 24-Month Historical Comparison [ARCHIVED]
 
-097 [~] Historical Performance Chart
+097 [~] Historical Performance Chart [ARCHIVED]
 
-098 [~] Future Scenario Chart
+098 [~] Future Scenario Chart [ARCHIVED]
 
-099 [~] Proposal-Ready Investment Analysis
+099 [~] Proposal-Ready Investment Analysis [ARCHIVED]
 
-100 [~] Clearly distinguish forecast/scenario from guarantee
+100 [~] Clearly distinguish forecast/scenario from guarantee [ARCHIVED]
 
 
 ==================================================
@@ -501,95 +501,95 @@ F — AI PROJECT CONTROL
 G — PROFESSIONAL PROJECT ACCOUNTING
 ==================================================
 
-191 [~] Project Accounting Core
+191 [~] Project Accounting Core [ARCHIVED]
 
-192 [~] Project-specific Ledger
+192 [~] Project-specific Ledger [ARCHIVED]
 
-193 [~] Project Bank/Cash Accounts
+193 [~] Project Bank/Cash Accounts [ARCHIVED]
 
-194 [~] Budget
+194 [~] Budget [ARCHIVED]
 
-195 [~] Revised Budget
+195 [~] Revised Budget [ARCHIVED]
 
-196 [~] Actual Cost
+196 [~] Actual Cost [ARCHIVED]
 
-197 [~] Committed Cost
+197 [~] Committed Cost [ARCHIVED]
 
-198 [~] Forecast Cost
+198 [~] Forecast Cost [ARCHIVED]
 
-199 [~] Remaining Cost
+199 [~] Remaining Cost [ARCHIVED]
 
-200 [~] Total Project Cost
+200 [~] Total Project Cost [ARCHIVED]
 
-201 [~] Cost by WBS
+201 [~] Cost by WBS [ARCHIVED]
 
-202 [~] Cost by Phase
+202 [~] Cost by Phase [ARCHIVED]
 
-203 [~] Cost by Floor
+203 [~] Cost by Floor [ARCHIVED]
 
-204 [~] Cost by Unit
+204 [~] Cost by Unit [ARCHIVED]
 
-205 [~] Cost by Contractor
+205 [~] Cost by Contractor [ARCHIVED]
 
-206 [~] Cost by Supplier
+206 [~] Cost by Supplier [ARCHIVED]
 
-207 [~] Cost by Material
+207 [~] Cost by Material [ARCHIVED]
 
-208 [~] Cost by Purchase
+208 [~] Cost by Purchase [ARCHIVED]
 
-209 [~] Cost by Invoice
+209 [~] Cost by Invoice [ARCHIVED]
 
-210 [~] Cost by Payment
+210 [~] Cost by Payment [ARCHIVED]
 
-211 [~] Cost by Date
+211 [~] Cost by Date [ARCHIVED]
 
-212 [~] Toman Accounting
+212 [~] Toman Accounting [ARCHIVED]
 
-213 [~] Dollar Equivalent
+213 [~] Dollar Equivalent [ARCHIVED]
 
-214 [~] Gold Equivalent
+214 [~] Gold Equivalent [ARCHIVED]
 
-215 [~] Historical Exchange Rate at Transaction Date
+215 [~] Historical Exchange Rate at Transaction Date [ARCHIVED]
 
-216 [~] Current Equivalent Value
+216 [~] Current Equivalent Value [ARCHIVED]
 
-217 [~] Cost Inflation Tracking
+217 [~] Cost Inflation Tracking [ARCHIVED]
 
-218 [~] Cost Variance
+218 [~] Cost Variance [ARCHIVED]
 
-219 [~] Budget vs Actual
+219 [~] Budget vs Actual [ARCHIVED]
 
-220 [~] Committed vs Actual
+220 [~] Committed vs Actual [ARCHIVED]
 
-221 [~] Forecast at Completion
+221 [~] Forecast at Completion [ARCHIVED]
 
-222 [~] Cash Flow
+222 [~] Cash Flow [ARCHIVED]
 
-223 [~] Project Receivables
+223 [~] Project Receivables [ARCHIVED]
 
-224 [~] Project Payables
+224 [~] Project Payables [ARCHIVED]
 
-225 [~] Contractor Payments
+225 [~] Contractor Payments [ARCHIVED]
 
-226 [~] Supplier Payments
+226 [~] Supplier Payments [ARCHIVED]
 
-227 [~] Advance Payments
+227 [~] Advance Payments [ARCHIVED]
 
-228 [~] Retention
+228 [~] Retention [ARCHIVED]
 
-229 [~] Installments
+229 [~] Installments [ARCHIVED]
 
-230 [~] Payment Schedule
+230 [~] Payment Schedule [ARCHIVED]
 
-231 [~] Payment Approval
+231 [~] Payment Approval [ARCHIVED]
 
-232 [~] Invoice Upload
+232 [~] Invoice Upload [ARCHIVED]
 
-233 [~] Receipt Upload
+233 [~] Receipt Upload [ARCHIVED]
 
-234 [~] Accounting Document Archive
+234 [~] Accounting Document Archive [ARCHIVED]
 
-235 [~] Financial Audit Trail
+235 [~] Financial Audit Trail [ARCHIVED]
 
 
 ==================================================
@@ -830,55 +830,55 @@ K — PROJECT KPI / CONTROL CENTER
 L — WORKFLOW ENGINE
 ==================================================
 
-343 [~] Workflow Engine
+343 [~] Workflow Engine [ARCHIVED]
 
-344 [~] Visual Workflow Builder
+344 [~] Visual Workflow Builder [ARCHIVED]
 
-345 [~] Trigger
+345 [~] Trigger [ARCHIVED]
 
-346 [~] Condition
+346 [~] Condition [ARCHIVED]
 
-347 [~] Action
+347 [~] Action [ARCHIVED]
 
-348 [~] Approval
+348 [~] Approval [ARCHIVED]
 
-349 [~] Notification
+349 [~] Notification [ARCHIVED]
 
-350 [~] Assignment
+350 [~] Assignment [ARCHIVED]
 
-351 [~] Escalation
+351 [~] Escalation [ARCHIVED]
 
-352 [~] Deadline
+352 [~] Deadline [ARCHIVED]
 
-353 [~] Recurring Workflow
+353 [~] Recurring Workflow [ARCHIVED]
 
-354 [~] Conditional Workflow
+354 [~] Conditional Workflow [ARCHIVED]
 
-355 [~] Project Workflow Templates
+355 [~] Project Workflow Templates [ARCHIVED]
 
-356 [~] Procurement Workflow
+356 [~] Procurement Workflow [ARCHIVED]
 
-357 [~] Sales Workflow
+357 [~] Sales Workflow [ARCHIVED]
 
-358 [~] Contract Workflow
+358 [~] Contract Workflow [ARCHIVED]
 
-359 [~] Construction Workflow
+359 [~] Construction Workflow [ARCHIVED]
 
-360 [~] Accounting Workflow
+360 [~] Accounting Workflow [ARCHIVED]
 
-361 [~] AI Workflow
+361 [~] AI Workflow [ARCHIVED]
 
-362 [~] Human Approval Workflow
+362 [~] Human Approval Workflow [ARCHIVED]
 
-363 [~] Workflow History
+363 [~] Workflow History [ARCHIVED]
 
-364 [~] Workflow Audit
+364 [~] Workflow Audit [ARCHIVED]
 
-365 [~] Custom Workflow per Project
+365 [~] Custom Workflow per Project [ARCHIVED]
 
-366 [~] Custom Workflow per Builder
+366 [~] Custom Workflow per Builder [ARCHIVED]
 
-367 [~] Custom Workflow per User
+367 [~] Custom Workflow per User [ARCHIVED]
 
 
 ==================================================
@@ -1079,60 +1079,60 @@ Q — AGENT / AUTOMATION INFRASTRUCTURE
 R — CONSTRUCTION CONTROL
 ==================================================
 
-453 [~] Project Model
+453 [~] Project Model [ARCHIVED]
     Canonical project-control repository verified by CI.
 
-454 [~] WBS
+454 [~] WBS [ARCHIVED]
     WBS included in canonical vertical and verified by CI.
 
-455 [~] Schedule
+455 [~] Schedule [ARCHIVED]
     Schedule repository CRUD/validation and management tests pass in CI.
 
-456 [~] Gantt
+456 [~] Gantt [ARCHIVED]
 
-457 [~] Baseline
+457 [~] Baseline [ARCHIVED]
     Baseline/version logic exists and passes project-management tests; runtime pending.
 
-458 [~] Variance
+458 [~] Variance [ARCHIVED]
     Schedule variance and delay detection verified by CI.
 
-459 [~] BOQ
+459 [~] BOQ [ARCHIVED]
 
-460 [~] Procurement
+460 [~] Procurement [ARCHIVED]
 
-461 [~] Supplier Commitment
+461 [~] Supplier Commitment [ARCHIVED]
 
-462 [~] RFI
+462 [~] RFI [ARCHIVED]
 
-463 [~] Submittal
+463 [~] Submittal [ARCHIVED]
 
-464 [~] Quality
+464 [~] Quality [ARCHIVED]
 
-465 [~] HSE
+465 [~] HSE [ARCHIVED]
     Canonical `project_hse` schema now live and tracked; authenticated runtime CRUD remains pending.
 
-466 [~] Risk
+466 [~] Risk [ARCHIVED]
 
-467 [~] Corrective Action
+467 [~] Corrective Action [ARCHIVED]
     Canonical `project_corrective_actions` schema now live and tracked; authenticated runtime CRUD remains pending.
 
-468 [~] Site Diary
+468 [~] Site Diary [ARCHIVED]
 
-469 [~] Daily Report
+469 [~] Daily Report [ARCHIVED]
 
-470 [~] Crew Management
+470 [~] Crew Management [ARCHIVED]
 
-471 [~] Equipment Management
+471 [~] Equipment Management [ARCHIVED]
 
-472 [~] Material Management
+472 [~] Material Management [ARCHIVED]
 
-473 [~] Work Progress Photos
+473 [~] Work Progress Photos [ARCHIVED]
 
-474 [~] Geotagged Progress
+474 [~] Geotagged Progress [ARCHIVED]
 
-475 [~] Before / After Progress
+475 [~] Before / After Progress [ARCHIVED]
 
-476 [~] AI Progress Verification
+476 [~] AI Progress Verification [ARCHIVED]
 
 
 ==================================================
