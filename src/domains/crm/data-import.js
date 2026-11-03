@@ -151,6 +151,6 @@ async function readRemote(){const p=document.getElementById('bw-di-preview');try
     document.getElementById('bw-di-archive-next').onclick=async()=>{archiveOffset+=50;await loadArchive()};
   }
   function addNav(){for(const id of ['sideNav','mobileNav','bottomNav']){const n=document.getElementById(id);if(!n)continue;if(!n.querySelector('#bw-di-nav')){const b=document.createElement('button');b.id='bw-di-nav';b.className='nav-item';b.innerHTML='<i>⇧</i><span>ورود Excel</span>';b.onclick=open;n.appendChild(b)}if(!n.querySelector('#bw-di-archive-nav')){const a=document.createElement('button');a.id='bw-di-archive-nav';a.className='nav-item';a.innerHTML='<i>▤</i><span>آرشیو Excel</span>';a.onclick=openArchive;n.appendChild(a)}}}
-  function start(){addNav();new MutationObserver(addNav).observe(document.body,{childList:true,subtree:true});if(new URLSearchParams(location.search).get('open')==='import')setTimeout(open,0)}
+  function start(){window.__bwOpenImport=open;window.__bwOpenArchive=openArchive;addNav();new MutationObserver(addNav).observe(document.body,{childList:true,subtree:true});if(new URLSearchParams(location.search).get('open')==='import')setTimeout(open,0)}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
 })();
