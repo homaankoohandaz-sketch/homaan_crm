@@ -1,6 +1,6 @@
 # BuildWise AI — SUMMARY
 
-Updated: 2026-11-03 — backup intentionally deferred; testing-only operating mode
+Updated: 2026-11-03 — BuildWise scope narrowed; archived Project Control verticals
 Branch: main — experimental/internal review
 
 ## CURRENT OVERRIDING OPERATING INSTRUCTIONS (2026-11-03)
@@ -13,6 +13,11 @@ Branch: main — experimental/internal review
 - Do not reopen backup merely because an old document labels it P0, OPEN, BLOCKED, or a release gate. This 2026-11-03 user decision supersedes all older backup instructions and status notes.
 - Reconsider backup only when the project reaches the final pre-web-release stage. Until then, leave backup-related systems and settings untouched.
 
+### Current execution mode: CRM-FIRST IMPLEMENTATION
+- User has explicitly authorized this product-scope change. Documentation/control-plane scope updates are permitted; no code/data/schema deletion is authorized by this decision.
+- BuildWise active delivery is focused on core real-estate CRM and transaction workflows.
+- Archived checklist ranges: 066–100, 191–235, 343–367, 453–476. Do not implement or expose these as active BuildWise modules. Preserve their existing code and data.
+
 ### Current execution mode: TESTING ONLY
 - Do not write or modify application code, create implementation commits, merge branches, run migrations, or change the live database unless the user explicitly authorizes a specific change.
 - Continue permitted read-only audits, tests, runtime/UI verification, evidence collection, and reporting that do not touch backup or create production risk.
@@ -20,7 +25,7 @@ Branch: main — experimental/internal review
 
 ## Single source of truth
 - Workspace: `homaankoohandaz-sketch/homaan_crm`
-- Active implementation/review branch: `main` — all nine phases remain in scope for audit and testing; experimental/internal review only.
+- Active implementation/review branch: `main` — current BuildWise scope is CRM-first; archived ranges are deferred; experimental/internal review only.
 - This is not a release candidate. Release approval remains a separate final-stage decision.
 - Summary: this file | State: `.agent-control/STATE.md` | Architecture: `.agent-control/MASTER-ARCHITECTURE.md` | Checklist: `.agent-control/MASTER-CHECKLIST-v3-850.md`
 - Coordination: ChatGPT = architecture/task orchestration/review; Claude = coding only when explicitly authorized; Grok = assigned review/runtime/test work; user = product decisions and shared review.
@@ -116,3 +121,11 @@ Branch: main — experimental/internal review
 - Live URL fetched successfully and public authentication entry rendered. Authenticated dashboard and module interaction remain unverified because no authenticated browser session was available.
 - Cloudflare Pages workflow remains failed on this SHA; GitHub Pages is the canonical deployed review URL per README.
 - Next: authenticated browser walkthrough of each role and module, then tune each module's internal page layout/inline actions against the common shell. No schema, migration, or live database changes were made.
+
+
+## 2026-11-03 — BuildWise scope narrowed (D-028)
+- User decision: move checklist ranges 066–100, 191–235, 343–367 and 453–476 out of active BuildWise delivery into the archive for a possible future Project Control app.
+- The canonical 850-item checklist keeps every item and its previous status, with an added [ARCHIVED] marker on these ranges.
+- Current BuildWise priority is a practical CRM / property / deal workflow. Archived modules are not current release blockers and must not be surfaced as active modules.
+- This is a scope/documentation change only. No application code, database schema, migrations, Supabase data, or deployed runtime was modified. Existing code remains preserved pending a later safe extraction or reintegration decision.
+- The earlier D-027 all-nine-phases-active planning scope is superseded only for product scope; safety and data-preservation rules remain active.
