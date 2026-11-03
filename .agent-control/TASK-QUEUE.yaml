@@ -1,7 +1,7 @@
 version: 4
 policy: evidence-first
-active_task: AUDIT-000-reconcile-baseline
-operating_mode: experimental-personal-trial
+active_task: ARCH-001-final-buildwise-architecture
+operating_mode: crm-first-final-architecture-review
 canonical_branch: main
 product_scope: focused-real-estate-crm-first
 user_data_policy: preserve-existing-data
@@ -13,7 +13,7 @@ priorities:
   - P1: google-sheets-import
   - P1: search-and-filters
   - P1: permissions-and-rls
-  - P2: unified-task-engine
+  - P2: crm-follow-up-and-customer-sharing
   - P2: ui-and-motion
 
 execution_rules:
@@ -28,18 +28,18 @@ execution_rules:
   - preserve-archived-code-schemas-migrations-and-data; no-destructive-removal
 
 tasks:
+  - id: ARCH-001-final-buildwise-architecture
+    status: IN_PROGRESS
+    owner: master_architect
+    depends_on: []
+    acceptance: inspect current main source, active UI/routes, database schema and migration lineage, actual runtime and deploy; define the smallest coherent CRM-first BuildWise product; classify each retained active module as keep/rework/disable; list dependencies and release critical path; Grok and Claude independently review; one final decision is recorded for Product Owner approval. Do not touch frozen ranges.
+    evidence: .agent-control/FINAL-ARCHITECTURE-RECOMMENDATION.md
   - id: AUDIT-000-reconcile-baseline
     status: IN_PROGRESS
     owner: architecture
     depends_on: []
     acceptance: repository branch and PR inventory; canonical-doc contradictions; checklist status; deployment SHA; live Supabase migration/security/backup evidence; discrepancy register with source and severity
     evidence: .agent-control/STATE.md
-  - id: AUDIT-001-nine-phase-capability-map
-    status: QUEUED
-    owner: architecture
-    depends_on: [AUDIT-000-reconcile-baseline]
-    acceptance: map only active-scope checklist items to implementation, tests, runtime evidence and dependencies; mark 066-100, 191-235, 343-367 and 453-476 archived; no invented task IDs
-    evidence: .agent-control/MASTER-CHECKLIST-v3-850.md
   - id: DATA-001-preservation-and-import-contract
     status: QUEUED
     owner: data_import
@@ -88,12 +88,6 @@ tasks:
     depends_on: [CRM-001-excel-import, CRM-002-google-sheets-import, CRM-003-search-and-filters]
     acceptance: responsive end-to-end workflows, loading/empty/error/success states, accessibility and reduced-motion behavior; no visual-only completion
     evidence: browser screenshots and runtime report
-  - id: PHASE-02-09-integration
-    status: QUEUED
-    owner: architecture
-    depends_on: [AUDIT-001-nine-phase-capability-map]
-    acceptance: each phase has dependency map, retained/rework/rebuild decision and a small independently testable vertical slice; no expansion beyond trial-critical path without explicit prioritization
-    evidence: phase acceptance matrix
 
 advance_rule:
   only_verified_dependencies: true
@@ -109,3 +103,14 @@ archived_product_scope:
     - 343-367 # workflow engine and automation
     - 453-476 # construction/project control
   policy: preserve-code-data-and-migrations; no-active-build; no-navigation-exposure; reactivate-only-by-explicit-decision
+
+archive_freeze:
+  authority: .agent-control/ARCHIVE-FREEZE.md
+  decision: D-028
+  frozen_ranges: [066-100, 191-235, 343-367, 453-476]
+  policy: FROZEN_DO_NOT_TOUCH
+  applies_to: [chatgpt, grok, claude, codex, all_workers, human_owner, automated_task_generators]
+  excluded_from: [active_queue, prompts, estimates, progress, release_blockers, navigation]
+  preserve_existing_code_schema_migrations_and_data: true
+  exceptions_require_explicit_product_owner_decision: true
+
