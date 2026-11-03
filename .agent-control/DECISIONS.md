@@ -162,3 +162,14 @@ Decision confirmed by the product owner:
 - GitHub main is the shared implementation/review baseline. Existing branches and PRs are evidence sources only; no blind merge. One writer per file and bounded tasks remain mandatory.
 - A requirement is DONE only with implementation, relevant automated tests, runtime/UI evidence and security evidence where applicable, tied to an exact commit SHA. Unknown or unavailable evidence remains UNVERIFIED/PARTIAL.
 Supersedes the earlier temporary 2026-10-18 scope decision to deactivate phases 02–09. It does not supersede the safety gates or the nine-phase architecture.
+
+
+## D-028 — Narrow BuildWise scope; archive Project Control verticals (2026-11-03)
+Decision confirmed by the product owner:
+- Narrow current BuildWise delivery to a practical, usable real-estate CRM and transaction workspace so it can become real and useful sooner.
+- Archive the complete canonical checklist ranges 066–100, 191–235, 343–367 and 453–476 from active BuildWise implementation.
+- These ranges are reserved for a future Project Control product. Later they may be reintegrated into BuildWise or extracted into a standalone app, only after a separate decision.
+- Preserve existing source code, database schemas, migrations, records, and shared dependencies. This is not authorization to delete code, drop tables, rewrite migrations, or alter production data.
+- Archived features must not be treated as current release blockers or exposed as active BuildWise navigation. Shared infrastructure may remain only where necessary for active CRM workflows.
+- This decision supersedes D-027 only on product scope: the earlier all-nine-phases-active planning rule is no longer valid. D-027 safety gates, data preservation and evidence-first delivery remain in force.
+- The checklist remains the single acceptance register; archived IDs are visibly tagged [ARCHIVED] while retaining their prior status marker for historical traceability.
