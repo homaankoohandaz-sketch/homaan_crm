@@ -101,7 +101,7 @@ async function dashboard(){
   const projectCards=projectRows.length?projectRows.map(x=>'<div class="bw-project-row"><div><b>'+esc(x.title||'پروژه بدون عنوان')+'</b><small>'+esc(stateLabel(x.status))+' · '+date(x.created_at)+'</small></div><strong>'+money(x.estimated_cost)+'</strong></div>').join(''):empty('پروژه‌ای ثبت نشده است','برای شروع، یک پروژه در ماژول مدیریت پروژه ایجاد کنید.');
   const activityCards=activity.slice(0,5).map(x=>'<div class="bw-list-row"><div><b>'+esc(x.actor_name||'کاربر سیستم')+'</b><small>'+esc(x.action||'فعالیت')+'</small></div><small>'+date(x.created_at)+'</small></div>').join('')||empty('فعالیتی ثبت نشده است');
   const activeProjectCount=projectCount?.count??projectRows.length;
-  main.innerHTML=page('داشبورد','نمای کلی کسب‌وکار، فرصت‌ها و پروژه‌های BuildWise')+
+  main.innerHTML=page('داشبورد','نمای کلی بانک املاک، مخاطبان و معاملات')+
     '<div class="bw-welcome"><div><span class="eyebrow">BUILDWISE WORKSPACE</span><h2>به فضای کاری BuildWise خوش آمدید</h2><p>اطلاعات و عملیات اصلی را از همین صفحه مدیریت کنید.</p></div><button class="btn primary" onclick="go(\'properties\')">ثبت یا مشاهده فایل ملک</button></div>'+
     '<div class="bw-kpi-grid">'+
       '<button class="bw-kpi" onclick="go(\'properties\')"><span class="bw-kpi-icon purple">⌂</span><small>کل املاک</small><strong>'+money(p.count||0)+'</strong><em>مشاهده بانک فایل ←</em></button>'+
