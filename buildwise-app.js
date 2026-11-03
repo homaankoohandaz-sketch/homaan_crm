@@ -67,14 +67,11 @@ async function globalSearch(value=''){
   const leadRows=unique([...(leadsByName.data||[]),...(leadsByPhone.data||[])]);
   const dealRows=dealsByType.data||[];
   const section=(title,rows,render,route)=>'<section class="bw-panel"><div class="bw-panel-head"><h3>'+title+' ('+rows.length+')</h3><button class="btn" onclick="go(\''+route+'\')">رفتن به ماژول</button></div>'+(rows.length?rows.map(render).join(''):empty('نتیجه‌ای پیدا نشد'))+'</section>';
-  const propertyResults=propertyRows.map(x=>'<article class="bw-search-result"><b>'+esc(x.property_name||x.property_code||'ملک')+'</b><small>'+esc(x.property_type||'')+' · '+esc(x.neighborhood||'')+' · '+money(x.total_price)+'</small></article>').join('');
-  const leadResults=leadRows.map(x=>'<article class="bw-search-result"><b>'+esc(x.full_name||'مخاطب')+'</b><small>'+esc(x.phone||'بدون شماره')+' · '+esc(x.desired_property_type||'')+' · بودجه '+money(x.budget_max)+'</small></article>').join('');
-  const dealResults=dealRows.map(x=>'<article class="bw-search-result"><b>'+esc(x.deal_type||'معامله')+'</b><small>'+money(x.final_price)+' · '+esc(stateLabel(x.status))+' · '+date(x.deal_date)+'</small></article>').join('');
   main.innerHTML=page('جستجوی سراسری','نتایج عبارت «'+esc(q)+'» در چند ماژول BuildWise')+
     '<div class="bw-dashboard-grid">'+
-    section('املاک',propertyRows,()=>propertyResults,'properties')+
-    section('مخاطبان',leadRows,()=>leadResults,'leads')+
-    section('معاملات',dealRows,()=>dealResults,'deals')+'</div>';
+    section('املاک',propertyRows,x=>'<article class="bw-search-result"><b>'+esc(x.property_name||x.property_code||'ملک')+'</b><small>'+esc(x.property_type||'')+' · '+esc(x.neighborhood||'')+' · '+money(x.total_price)+'</small></article>','properties')+
+    section('مخاطبان',leadRows,x=>'<article class="bw-search-result"><b>'+esc(x.full_name||'مخاطب')+'</b><small>'+esc(x.phone||'بدون شماره')+' · '+esc(x.desired_property_type||'')+' · بودجه '+money(x.budget_max)+'</small></article>','leads')+
+    section('معاملات',dealRows,x=>'<article class="bw-search-result"><b>'+esc(x.deal_type||'معامله')+'</b><small>'+money(x.final_price)+' · '+esc(stateLabel(x.status))+' · '+date(x.deal_date)+'</small></article>','deals')+'</div>';
 }
 async function assistantSubmit(){const prompt=document.getElementById('bwAssistantPrompt')?.value?.trim();if(!prompt)return toast('درخواست خود را وارد کنید','error');await go('ai');const input=document.getElementById('aiInput');if(input){input.value=prompt;await sendAI()}}
 function effectiveNav(){const base=uiModules.length?uiModules.filter(x=>!x.deleted&&x.visible).sort((a,b)=>a.sort_order-b.sort_order).map(x=>[x.id,x.label,x.icon]):NAV;return base.filter(([id])=>canAccess(id))}
