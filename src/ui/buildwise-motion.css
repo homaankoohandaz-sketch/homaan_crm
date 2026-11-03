@@ -195,3 +195,18 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{
   .bw-motion-enter,.bw-motion-pop,.auth-card,#modalBox{animation:none!important}
   .bottom-nav:before,#bottomNav:before{animation:none!important}
 }
+
+/* Halvo-inspired editable glass background */
+@keyframes bw-halvo-drift{0%,100%{transform:scale(1.025) translate3d(0,0,0)}50%{transform:scale(1.045) translate3d(-.5%,.5%,0)}}
+body.bw-custom-bg{background:transparent!important;isolation:isolate}
+body.bw-custom-bg:before{content:"";position:fixed;inset:-2%;z-index:-2;pointer-events:none;background-image:var(--bw-user-bg-image);background-size:var(--bw-user-bg-fit,cover);background-position:var(--bw-user-bg-position,center);background-repeat:no-repeat;opacity:var(--bw-user-bg-opacity,.42);filter:blur(var(--bw-user-bg-blur,0px));transform:scale(1.025)}
+body.bw-custom-bg:after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(135deg,rgba(9,26,39,.18),rgba(13,102,87,.08),rgba(20,30,49,.16))}
+body.bw-custom-bg .bw-shell,body.bw-custom-bg .bw-workspace,body.bw-custom-bg .bw-content-grid,body.bw-custom-bg .content{background:transparent!important}
+body.bw-custom-bg .bw-sidebar,body.bw-custom-bg .bw-assistant,body.bw-custom-bg .card,body.bw-custom-bg .property-card,body.bw-custom-bg .lead-card,body.bw-custom-bg .deal-card,body.bw-custom-bg .project-card,body.bw-custom-bg .match-card,body.bw-custom-bg .integration-card,body.bw-custom-bg .stat{background:rgba(255,255,255,.76)!important;border-color:rgba(255,255,255,.7)!important;backdrop-filter:blur(22px) saturate(145%);-webkit-backdrop-filter:blur(22px) saturate(145%);box-shadow:0 18px 48px rgba(9,26,39,.12),inset 0 1px 0 rgba(255,255,255,.85)}
+body.bw-custom-bg .bw-topbar{background:rgba(18,43,58,.72)!important;backdrop-filter:blur(24px) saturate(150%);-webkit-backdrop-filter:blur(24px) saturate(150%)}
+.bw-bg-studio{grid-column:1/-1;min-width:0;padding:18px!important}
+.bw-bg-title{display:flex;align-items:center;justify-content:space-between;gap:12px}.bw-bg-title b{display:block;font-size:15px}.bw-bg-title small{display:block;color:#72818a;font-size:11px;margin-top:4px}
+.bw-bg-preview{height:150px;border-radius:16px;margin:14px 0;background:radial-gradient(circle at 25% 25%,#8db8b1,transparent 42%),linear-gradient(135deg,#17364a,#0d6657);background-size:cover;background-position:center;display:grid;place-items:center;color:#fff;text-shadow:0 1px 8px #0008;border:1px solid rgba(255,255,255,.65);overflow:hidden}
+.bw-bg-check{display:flex;flex-direction:row;align-items:center;gap:10px}.bw-bg-check input{width:auto;min-height:auto}
+@media(prefers-reduced-motion:no-preference){body.bw-custom-bg.bw-bg-motion-on:before{animation:bw-halvo-drift 34s ease-in-out infinite}body.bw-bg-motion-on .bw-bg-studio{animation:bw-rise-in-soft .6s var(--bw-motion) both}}
+@media(prefers-reduced-motion:reduce){body.bw-custom-bg:before{filter:none;animation:none}}
