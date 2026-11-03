@@ -92,3 +92,23 @@ test('data hub exposes real Excel import and raw archive actions', () => {
   assert.match(app, /\['data','داده‌ها و ورود اطلاعات','▤'\]/);
   assert.match(importer, /window\.__bwOpenImport=open;window\.__bwOpenArchive=openArchive/);
 });
+
+
+test('archived project-control, market intelligence and workflow modules are absent from active navigation', () => {
+  assert.doesNotMatch(app, /\['construction','ساخت و پروژه'/);
+  assert.doesNotMatch(app, /\['market','بازار و ارزش‌گذاری'/);
+  assert.doesNotMatch(app, /\['automation','اتوماسیون'/);
+  assert.doesNotMatch(app, /construction:\['tasks'/);
+  assert.doesNotMatch(app, /go\('construction'\)/);
+  assert.doesNotMatch(app, /go\('market'\)/);
+});
+
+test('BuildWise assistant shortcuts do not route users into archived product areas', () => {
+  assert.doesNotMatch(app, /تحلیل بازار و ارزش‌گذاری/);
+  assert.doesNotMatch(app, /وضعیت پروژه‌های ساخت/);
+});
+
+test('all agent and human instructions carry an explicit archive freeze gate', () => {
+  const files = ['../.agent-control/ARCHIVE-FREEZE.md', '../../AGENTS.md', '../../CLAUDE.md'];
+  for (const file of files) assert.ok(fs.existsSync(new URL(file, import.meta.url)));
+});
