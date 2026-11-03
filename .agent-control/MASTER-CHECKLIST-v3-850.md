@@ -7,6 +7,23 @@ Real Estate Operating System (REOS)
 [~] PARTIAL = بخشی پیاده شده
 [ ] TODO = انجام نشده
 [⛔] BLOCKED = نیازمند دسترسی/احراز هویت خارجی
+[ARCHIVED] = خارج از دامنه اجرایی فعلی BuildWise؛ شرح و وضعیت تاریخی حفظ می‌شود
+
+
+==================================================
+PRODUCT SCOPE DECISION — 2026-11-03
+==================================================
+
+ARCHIVED FROM ACTIVE BUILDWISE DELIVERY — FUTURE PROJECT-CONTROL APP
+The following complete checklist ranges are archived and are NOT active BuildWise implementation targets:
+- 066–100: real-estate intelligence / market analysis / feasibility / liquidity / valuation scenarios.
+- 191–235: professional project accounting and financial control.
+- 343–367: workflow engine and project/business workflow automation.
+- 453–476: professional project/construction control (WBS, schedule, Gantt, baseline, variance, RFI, quality, HSE, site diary and progress).
+
+Each item keeps its prior [✓]/[~]/[ ] status as historical evidence and receives [ARCHIVED]. Archived does not mean deleted, cancelled forever, or verified complete. Do not build, expand, expose as active navigation, or treat these ranges as blockers for the first usable BuildWise release. Preserve existing code, schemas, migrations, records and dependencies; do not perform destructive removals. Future reactivation requires a new explicit product decision. The archived scope may later be integrated back into BuildWise or extracted into a standalone Project Control app.
+
+This scope decision does not automatically archive adjacent checklist items outside these exact ranges. If a shared dependency is needed by active CRM work, retain only the minimum safe shared contract; do not reactivate the archived product feature.
 
 ==================================================
 A — CORE REOS ARCHITECTURE
