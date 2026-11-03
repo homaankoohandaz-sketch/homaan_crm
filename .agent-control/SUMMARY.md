@@ -129,3 +129,11 @@ Branch: main — experimental/internal review
 - Current BuildWise priority is a practical CRM / property / deal workflow. Archived modules are not current release blockers and must not be surfaced as active modules.
 - This is a scope/documentation change only. No application code, database schema, migrations, Supabase data, or deployed runtime was modified. Existing code remains preserved pending a later safe extraction or reintegration decision.
 - The earlier D-027 all-nine-phases-active planning scope is superseded only for product scope; safety and data-preservation rules remain active.
+
+
+## 2026-11-03 — D-028/D-029 authoritative scope and architecture
+- Archive freeze is mandatory for all humans and agents: .agent-control/ARCHIVE-FREEZE.md. Frozen ranges: 066-100, 191-235, 343-367, 453-476.
+- Active product: CRM-first real-estate operations. No second app/repository and no rebuild from zero.
+- Main navigation and dashboard have been narrowed; archived construction, market and workflow routes are not in role navigation or route dispatch. Data Hub is now scoped to property/contact import and raw archive.
+- Read-only live Supabase architecture audit completed; see .agent-control/FINAL-ARCHITECTURE-RECOMMENDATION.md for evidence, risks and shortest finalization path.
+- Final architecture status is DRAFT pending Grok review, Claude review and Product Owner approval. Do not start broad implementation until that decision is recorded.
