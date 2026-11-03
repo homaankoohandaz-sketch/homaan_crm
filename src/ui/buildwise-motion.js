@@ -123,6 +123,7 @@
           for (var j = 0; j < record.addedNodes.length; j++) {
             var n = record.addedNodes[j];
             if (n.nodeType === 1) animateNewSurfaces(n);
+            mountBackgroundStudio();
           }
         }
         if (record.target && record.target.closest) {
