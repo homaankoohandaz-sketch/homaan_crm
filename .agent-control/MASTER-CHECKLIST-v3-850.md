@@ -217,75 +217,75 @@ B — CRM / DATA MANAGEMENT
 C — REAL ESTATE INTELLIGENCE
 ==================================================
 
-066 [~] Land Analysis [ARCHIVED]
+066 [~] Land Analysis [ARCHIVED — FROZEN]
 
-067 [~] Development Feasibility [ARCHIVED]
+067 [~] Development Feasibility [ARCHIVED — FROZEN]
 
-068 [~] Municipal Regulation Evidence [ARCHIVED]
+068 [~] Municipal Regulation Evidence [ARCHIVED — FROZEN]
 
-069 [~] Participation Analysis [ARCHIVED]
+069 [~] Participation Analysis [ARCHIVED — FROZEN]
 
-070 [~] Barter Analysis [ARCHIVED]
+070 [~] Barter Analysis [ARCHIVED — FROZEN]
 
-071 [~] Investor Matching [ARCHIVED]
+071 [~] Investor Matching [ARCHIVED — FROZEN]
 
-072 [~] Builder Matching [ARCHIVED]
+072 [~] Builder Matching [ARCHIVED — FROZEN]
 
-073 [~] Supplier Matching [ARCHIVED]
+073 [~] Supplier Matching [ARCHIVED — FROZEN]
 
-074 [~] Property Matching [ARCHIVED]
+074 [~] Property Matching [ARCHIVED — FROZEN]
 
-075 [~] Opportunity Radar [ARCHIVED]
+075 [~] Opportunity Radar [ARCHIVED — FROZEN]
 
-076 [✓] Valuation Engine [ARCHIVED]
+076 [✓] Valuation Engine [ARCHIVED — FROZEN]
 
-077 [~] Comparable Evidence [ARCHIVED]
+077 [~] Comparable Evidence [ARCHIVED — FROZEN]
 
-078 [✓] Construction Cost Engine [ARCHIVED]
+078 [✓] Construction Cost Engine [ARCHIVED — FROZEN]
 
-079 [~] ROI / Profit Scenarios [ARCHIVED]
+079 [~] ROI / Profit Scenarios [ARCHIVED — FROZEN]
 
-080 [~] Gold Comparison [ARCHIVED]
+080 [~] Gold Comparison [ARCHIVED — FROZEN]
 
-081 [~] Dollar Comparison [ARCHIVED]
+081 [~] Dollar Comparison [ARCHIVED — FROZEN]
 
-082 [~] Historical Market Analysis [ARCHIVED]
+082 [~] Historical Market Analysis [ARCHIVED — FROZEN]
 
-083 [~] Live Market Snapshot [ARCHIVED]
+083 [~] Live Market Snapshot [ARCHIVED — FROZEN]
 
-084 [~] Scenario Forecasting [ARCHIVED]
+084 [~] Scenario Forecasting [ARCHIVED — FROZEN]
 
-085 [~] Liquidity Analysis [ARCHIVED]
+085 [~] Liquidity Analysis [ARCHIVED — FROZEN]
 
-086 [~] Deal Risk Analysis [ARCHIVED]
+086 [~] Deal Risk Analysis [ARCHIVED — FROZEN]
 
-087 [~] Market Data Timestamp [ARCHIVED]
+087 [~] Market Data Timestamp [ARCHIVED — FROZEN]
 
-088 [~] Daily Gold Price Update [ARCHIVED]
+088 [~] Daily Gold Price Update [ARCHIVED — FROZEN]
 
-089 [~] Daily Dollar Price Update [ARCHIVED]
+089 [~] Daily Dollar Price Update [ARCHIVED — FROZEN]
 
-090 [~] Property Price vs Gold [ARCHIVED]
+090 [~] Property Price vs Gold [ARCHIVED — FROZEN]
 
-091 [~] Property Price vs Dollar [ARCHIVED]
+091 [~] Property Price vs Dollar [ARCHIVED — FROZEN]
 
-092 [~] Property Value in Grams of 18K Gold [ARCHIVED]
+092 [~] Property Value in Grams of 18K Gold [ARCHIVED — FROZEN]
 
-093 [~] 6-Month Historical Comparison [ARCHIVED]
+093 [~] 6-Month Historical Comparison [ARCHIVED — FROZEN]
 
-094 [~] 12-Month Historical Comparison [ARCHIVED]
+094 [~] 12-Month Historical Comparison [ARCHIVED — FROZEN]
 
-095 [~] 18-Month Historical Comparison [ARCHIVED]
+095 [~] 18-Month Historical Comparison [ARCHIVED — FROZEN]
 
-096 [~] 24-Month Historical Comparison [ARCHIVED]
+096 [~] 24-Month Historical Comparison [ARCHIVED — FROZEN]
 
-097 [~] Historical Performance Chart [ARCHIVED]
+097 [~] Historical Performance Chart [ARCHIVED — FROZEN]
 
-098 [~] Future Scenario Chart [ARCHIVED]
+098 [~] Future Scenario Chart [ARCHIVED — FROZEN]
 
-099 [~] Proposal-Ready Investment Analysis [ARCHIVED]
+099 [~] Proposal-Ready Investment Analysis [ARCHIVED — FROZEN]
 
-100 [~] Clearly distinguish forecast/scenario from guarantee [ARCHIVED]
+100 [~] Clearly distinguish forecast/scenario from guarantee [ARCHIVED — FROZEN]
 
 
 ==================================================
@@ -501,95 +501,95 @@ F — AI PROJECT CONTROL
 G — PROFESSIONAL PROJECT ACCOUNTING
 ==================================================
 
-191 [~] Project Accounting Core [ARCHIVED]
+191 [~] Project Accounting Core [ARCHIVED — FROZEN]
 
-192 [~] Project-specific Ledger [ARCHIVED]
+192 [~] Project-specific Ledger [ARCHIVED — FROZEN]
 
-193 [~] Project Bank/Cash Accounts [ARCHIVED]
+193 [~] Project Bank/Cash Accounts [ARCHIVED — FROZEN]
 
-194 [~] Budget [ARCHIVED]
+194 [~] Budget [ARCHIVED — FROZEN]
 
-195 [~] Revised Budget [ARCHIVED]
+195 [~] Revised Budget [ARCHIVED — FROZEN]
 
-196 [~] Actual Cost [ARCHIVED]
+196 [~] Actual Cost [ARCHIVED — FROZEN]
 
-197 [~] Committed Cost [ARCHIVED]
+197 [~] Committed Cost [ARCHIVED — FROZEN]
 
-198 [~] Forecast Cost [ARCHIVED]
+198 [~] Forecast Cost [ARCHIVED — FROZEN]
 
-199 [~] Remaining Cost [ARCHIVED]
+199 [~] Remaining Cost [ARCHIVED — FROZEN]
 
-200 [~] Total Project Cost [ARCHIVED]
+200 [~] Total Project Cost [ARCHIVED — FROZEN]
 
-201 [~] Cost by WBS [ARCHIVED]
+201 [~] Cost by WBS [ARCHIVED — FROZEN]
 
-202 [~] Cost by Phase [ARCHIVED]
+202 [~] Cost by Phase [ARCHIVED — FROZEN]
 
-203 [~] Cost by Floor [ARCHIVED]
+203 [~] Cost by Floor [ARCHIVED — FROZEN]
 
-204 [~] Cost by Unit [ARCHIVED]
+204 [~] Cost by Unit [ARCHIVED — FROZEN]
 
-205 [~] Cost by Contractor [ARCHIVED]
+205 [~] Cost by Contractor [ARCHIVED — FROZEN]
 
-206 [~] Cost by Supplier [ARCHIVED]
+206 [~] Cost by Supplier [ARCHIVED — FROZEN]
 
-207 [~] Cost by Material [ARCHIVED]
+207 [~] Cost by Material [ARCHIVED — FROZEN]
 
-208 [~] Cost by Purchase [ARCHIVED]
+208 [~] Cost by Purchase [ARCHIVED — FROZEN]
 
-209 [~] Cost by Invoice [ARCHIVED]
+209 [~] Cost by Invoice [ARCHIVED — FROZEN]
 
-210 [~] Cost by Payment [ARCHIVED]
+210 [~] Cost by Payment [ARCHIVED — FROZEN]
 
-211 [~] Cost by Date [ARCHIVED]
+211 [~] Cost by Date [ARCHIVED — FROZEN]
 
-212 [~] Toman Accounting [ARCHIVED]
+212 [~] Toman Accounting [ARCHIVED — FROZEN]
 
-213 [~] Dollar Equivalent [ARCHIVED]
+213 [~] Dollar Equivalent [ARCHIVED — FROZEN]
 
-214 [~] Gold Equivalent [ARCHIVED]
+214 [~] Gold Equivalent [ARCHIVED — FROZEN]
 
-215 [~] Historical Exchange Rate at Transaction Date [ARCHIVED]
+215 [~] Historical Exchange Rate at Transaction Date [ARCHIVED — FROZEN]
 
-216 [~] Current Equivalent Value [ARCHIVED]
+216 [~] Current Equivalent Value [ARCHIVED — FROZEN]
 
-217 [~] Cost Inflation Tracking [ARCHIVED]
+217 [~] Cost Inflation Tracking [ARCHIVED — FROZEN]
 
-218 [~] Cost Variance [ARCHIVED]
+218 [~] Cost Variance [ARCHIVED — FROZEN]
 
-219 [~] Budget vs Actual [ARCHIVED]
+219 [~] Budget vs Actual [ARCHIVED — FROZEN]
 
-220 [~] Committed vs Actual [ARCHIVED]
+220 [~] Committed vs Actual [ARCHIVED — FROZEN]
 
-221 [~] Forecast at Completion [ARCHIVED]
+221 [~] Forecast at Completion [ARCHIVED — FROZEN]
 
-222 [~] Cash Flow [ARCHIVED]
+222 [~] Cash Flow [ARCHIVED — FROZEN]
 
-223 [~] Project Receivables [ARCHIVED]
+223 [~] Project Receivables [ARCHIVED — FROZEN]
 
-224 [~] Project Payables [ARCHIVED]
+224 [~] Project Payables [ARCHIVED — FROZEN]
 
-225 [~] Contractor Payments [ARCHIVED]
+225 [~] Contractor Payments [ARCHIVED — FROZEN]
 
-226 [~] Supplier Payments [ARCHIVED]
+226 [~] Supplier Payments [ARCHIVED — FROZEN]
 
-227 [~] Advance Payments [ARCHIVED]
+227 [~] Advance Payments [ARCHIVED — FROZEN]
 
-228 [~] Retention [ARCHIVED]
+228 [~] Retention [ARCHIVED — FROZEN]
 
-229 [~] Installments [ARCHIVED]
+229 [~] Installments [ARCHIVED — FROZEN]
 
-230 [~] Payment Schedule [ARCHIVED]
+230 [~] Payment Schedule [ARCHIVED — FROZEN]
 
-231 [~] Payment Approval [ARCHIVED]
+231 [~] Payment Approval [ARCHIVED — FROZEN]
 
-232 [~] Invoice Upload [ARCHIVED]
+232 [~] Invoice Upload [ARCHIVED — FROZEN]
 
-233 [~] Receipt Upload [ARCHIVED]
+233 [~] Receipt Upload [ARCHIVED — FROZEN]
 
-234 [~] Accounting Document Archive [ARCHIVED]
+234 [~] Accounting Document Archive [ARCHIVED — FROZEN]
 
-235 [~] Financial Audit Trail [ARCHIVED]
+235 [~] Financial Audit Trail [ARCHIVED — FROZEN]
 
 
 ==================================================
@@ -830,55 +830,55 @@ K — PROJECT KPI / CONTROL CENTER
 L — WORKFLOW ENGINE
 ==================================================
 
-343 [~] Workflow Engine [ARCHIVED]
+343 [~] Workflow Engine [ARCHIVED — FROZEN]
 
-344 [~] Visual Workflow Builder [ARCHIVED]
+344 [~] Visual Workflow Builder [ARCHIVED — FROZEN]
 
-345 [~] Trigger [ARCHIVED]
+345 [~] Trigger [ARCHIVED — FROZEN]
 
-346 [~] Condition [ARCHIVED]
+346 [~] Condition [ARCHIVED — FROZEN]
 
-347 [~] Action [ARCHIVED]
+347 [~] Action [ARCHIVED — FROZEN]
 
-348 [~] Approval [ARCHIVED]
+348 [~] Approval [ARCHIVED — FROZEN]
 
-349 [~] Notification [ARCHIVED]
+349 [~] Notification [ARCHIVED — FROZEN]
 
-350 [~] Assignment [ARCHIVED]
+350 [~] Assignment [ARCHIVED — FROZEN]
 
-351 [~] Escalation [ARCHIVED]
+351 [~] Escalation [ARCHIVED — FROZEN]
 
-352 [~] Deadline [ARCHIVED]
+352 [~] Deadline [ARCHIVED — FROZEN]
 
-353 [~] Recurring Workflow [ARCHIVED]
+353 [~] Recurring Workflow [ARCHIVED — FROZEN]
 
-354 [~] Conditional Workflow [ARCHIVED]
+354 [~] Conditional Workflow [ARCHIVED — FROZEN]
 
-355 [~] Project Workflow Templates [ARCHIVED]
+355 [~] Project Workflow Templates [ARCHIVED — FROZEN]
 
-356 [~] Procurement Workflow [ARCHIVED]
+356 [~] Procurement Workflow [ARCHIVED — FROZEN]
 
-357 [~] Sales Workflow [ARCHIVED]
+357 [~] Sales Workflow [ARCHIVED — FROZEN]
 
-358 [~] Contract Workflow [ARCHIVED]
+358 [~] Contract Workflow [ARCHIVED — FROZEN]
 
-359 [~] Construction Workflow [ARCHIVED]
+359 [~] Construction Workflow [ARCHIVED — FROZEN]
 
-360 [~] Accounting Workflow [ARCHIVED]
+360 [~] Accounting Workflow [ARCHIVED — FROZEN]
 
-361 [~] AI Workflow [ARCHIVED]
+361 [~] AI Workflow [ARCHIVED — FROZEN]
 
-362 [~] Human Approval Workflow [ARCHIVED]
+362 [~] Human Approval Workflow [ARCHIVED — FROZEN]
 
-363 [~] Workflow History [ARCHIVED]
+363 [~] Workflow History [ARCHIVED — FROZEN]
 
-364 [~] Workflow Audit [ARCHIVED]
+364 [~] Workflow Audit [ARCHIVED — FROZEN]
 
-365 [~] Custom Workflow per Project [ARCHIVED]
+365 [~] Custom Workflow per Project [ARCHIVED — FROZEN]
 
-366 [~] Custom Workflow per Builder [ARCHIVED]
+366 [~] Custom Workflow per Builder [ARCHIVED — FROZEN]
 
-367 [~] Custom Workflow per User [ARCHIVED]
+367 [~] Custom Workflow per User [ARCHIVED — FROZEN]
 
 
 ==================================================
@@ -1079,60 +1079,60 @@ Q — AGENT / AUTOMATION INFRASTRUCTURE
 R — CONSTRUCTION CONTROL
 ==================================================
 
-453 [~] Project Model [ARCHIVED]
+453 [~] Project Model [ARCHIVED — FROZEN]
     Canonical project-control repository verified by CI.
 
-454 [~] WBS [ARCHIVED]
+454 [~] WBS [ARCHIVED — FROZEN]
     WBS included in canonical vertical and verified by CI.
 
-455 [~] Schedule [ARCHIVED]
+455 [~] Schedule [ARCHIVED — FROZEN]
     Schedule repository CRUD/validation and management tests pass in CI.
 
-456 [~] Gantt [ARCHIVED]
+456 [~] Gantt [ARCHIVED — FROZEN]
 
-457 [~] Baseline [ARCHIVED]
+457 [~] Baseline [ARCHIVED — FROZEN]
     Baseline/version logic exists and passes project-management tests; runtime pending.
 
-458 [~] Variance [ARCHIVED]
+458 [~] Variance [ARCHIVED — FROZEN]
     Schedule variance and delay detection verified by CI.
 
-459 [~] BOQ [ARCHIVED]
+459 [~] BOQ [ARCHIVED — FROZEN]
 
-460 [~] Procurement [ARCHIVED]
+460 [~] Procurement [ARCHIVED — FROZEN]
 
-461 [~] Supplier Commitment [ARCHIVED]
+461 [~] Supplier Commitment [ARCHIVED — FROZEN]
 
-462 [~] RFI [ARCHIVED]
+462 [~] RFI [ARCHIVED — FROZEN]
 
-463 [~] Submittal [ARCHIVED]
+463 [~] Submittal [ARCHIVED — FROZEN]
 
-464 [~] Quality [ARCHIVED]
+464 [~] Quality [ARCHIVED — FROZEN]
 
-465 [~] HSE [ARCHIVED]
+465 [~] HSE [ARCHIVED — FROZEN]
     Canonical `project_hse` schema now live and tracked; authenticated runtime CRUD remains pending.
 
-466 [~] Risk [ARCHIVED]
+466 [~] Risk [ARCHIVED — FROZEN]
 
-467 [~] Corrective Action [ARCHIVED]
+467 [~] Corrective Action [ARCHIVED — FROZEN]
     Canonical `project_corrective_actions` schema now live and tracked; authenticated runtime CRUD remains pending.
 
-468 [~] Site Diary [ARCHIVED]
+468 [~] Site Diary [ARCHIVED — FROZEN]
 
-469 [~] Daily Report [ARCHIVED]
+469 [~] Daily Report [ARCHIVED — FROZEN]
 
-470 [~] Crew Management [ARCHIVED]
+470 [~] Crew Management [ARCHIVED — FROZEN]
 
-471 [~] Equipment Management [ARCHIVED]
+471 [~] Equipment Management [ARCHIVED — FROZEN]
 
-472 [~] Material Management [ARCHIVED]
+472 [~] Material Management [ARCHIVED — FROZEN]
 
-473 [~] Work Progress Photos [ARCHIVED]
+473 [~] Work Progress Photos [ARCHIVED — FROZEN]
 
-474 [~] Geotagged Progress [ARCHIVED]
+474 [~] Geotagged Progress [ARCHIVED — FROZEN]
 
-475 [~] Before / After Progress [ARCHIVED]
+475 [~] Before / After Progress [ARCHIVED — FROZEN]
 
-476 [~] AI Progress Verification [ARCHIVED]
+476 [~] AI Progress Verification [ARCHIVED — FROZEN]
 
 
 ==================================================
@@ -1908,3 +1908,6 @@ without actual implementation/testing/runtime verification.
 - 082-100, 501-524, 525-545, 546-553, 555-564, 565-575 and 576-590 moved [ ] → [~] (105 items). Basis: implemented contracts with passing focused tests (market-history-082-100, landing-501-524, content-system-525-545, content-bot-546-575, market-data-576-590). Item 554 has no covering test and stays [ ].
 - No item was promoted to DONE. These remain PARTIAL until runtime + UI (+ security where applicable) evidence exists.
 - Historical counts only (2026-10-03): 35 DONE / 613 PARTIAL / 201 TODO / 1 BLOCKED. These are not a current 2026-10-27 status total; use the current STATE.md evidence log for live blockers.
+
+## D-028 FROZEN TASK POLICY
+See .agent-control/ARCHIVE-FREEZE.md. IDs 066–100, 191–235, 343–367 and 453–476 are [ARCHIVED — FROZEN]. Their original status markers are historical metadata only. Exclude these IDs from active task generation, progress, prompts and release gates. Do not resume until an explicit new Product Owner decision lifts the freeze.
