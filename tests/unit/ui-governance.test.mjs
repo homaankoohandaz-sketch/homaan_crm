@@ -78,3 +78,8 @@ test('all role-authorized core modules remain in navigation; database display se
   assert.match(app, /\['properties','املاک','⌂'\]/);
   assert.match(app, /\['market','بازار و ارزش‌گذاری','◌'\]/);
 });
+
+
+test('every standard navigation route has a dispatcher target', () => {
+  assert.match(app, /const f=\{requests,tasks:window\.taskCenter,promotions,dashboard,properties,leads,deals,search,construction,market,matching,room,automation,customerflow,ai,'app-settings':appSettings\}\[id\]/);
+});
