@@ -2,9 +2,9 @@ const U='https://beuestoewletjsgmigmf.supabase.co';
 const K='sb_publishable_dE92Qm9EtMv4sdNRXF7SRg_7ox1xYax';
 const db=supabase.createClient(U,K); window.db=db;
 let me=null,role=null,tab='dashboard',requestedRole=null;
-const CRM_PHASE_NAV=new Set(['requests','tasks','dashboard','properties','leads','deals','customerflow','app-settings']);
+const CRM_PHASE_NAV=new Set(['requests','tasks','promotions','dashboard','properties','leads','deals','search','construction','market','matching','room','automation','customerflow','ai','app-settings']);
 const ALL_NAV=[['requests','درخواست‌ها','◉'],['tasks','پیگیری‌ها','✓'],['promotions','پروموشن','✦'],['dashboard','داشبورد','⌂'],['properties','املاک','⌂'],['leads','خواهان‌ها','◉'],['deals','معاملات','◆'],['search','جستجوی هوشمند','⌕'],['construction','ساخت و پروژه','▦'],['market','بازار و ارزش‌گذاری','◌'],['matching','تطبیق','⇄'],['room','ROOM','◇'],['automation','اتوماسیون','⚙'],['customerflow','مشتری → مشاور','↗'],['ai','دستیار AI','✦'],['app-settings','مدیریت اپ','⚙']];
-const NAV=window.__BUILDWISE_CRM_ONLY===false?ALL_NAV:ALL_NAV.filter(([id])=>CRM_PHASE_NAV.has(id));
+const NAV=ALL_NAV;
 let uiModules=[];
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const n=x=>x===''||x==null?null:Number(x); const money=x=>x==null||x===''||Number.isNaN(Number(x))?'—':Number(x).toLocaleString('fa-IR'); const date=x=>x?new Date(x).toLocaleDateString('fa-IR'):'—';
@@ -13,7 +13,7 @@ function toast(msg,type='info'){let el=document.getElementById('bw-toast');if(!e
 function busy(t='در حال بارگذاری...'){return `<div class="loading"><span class="spinner"></span>${esc(t)}</div>`} function empty(t='داده‌ای وجود ندارد',s='اطلاعات این بخش هنوز ثبت نشده است.'){return `<div class="empty"><strong>${esc(t)}</strong><span>${esc(s)}</span></div>`} function errbox(e){console.error(e);return `<div class="errorbox"><strong>بارگذاری این بخش انجام نشد.</strong><span>${esc(e?.message||'خطای نامشخص')}</span><button class="btn" onclick="go(tab)">تلاش دوباره</button></div>`}
 const ROLE_ACCESS={owner:['requests','tasks','promotions','dashboard','properties','leads','deals','search','construction','market','matching','room','automation','customerflow','ai','app-settings'],manager:['requests','tasks','promotions','dashboard','properties','leads','deals','search','construction','market','matching','room','automation','customerflow','ai','app-settings'],advisor:['requests','tasks','dashboard','properties','leads','deals','search','matching','room','customerflow','ai'],agent:['requests','tasks','dashboard','properties','leads','deals','search','matching','room','customerflow','ai'],builder:['tasks','dashboard','properties','deals','search','construction','market','room','customerflow','ai'],staff:['requests','tasks','dashboard','properties','leads','deals','search','matching','room','customerflow','ai']};
 const normalizedRole=r=>r==='agent'?'advisor':r;
-const allowedNav=()=>{const items=ROLE_ACCESS[normalizedRole(role)]||['dashboard'];return window.__BUILDWISE_CRM_ONLY===false?items:items.filter(id=>CRM_PHASE_NAV.has(id))};
+const allowedNav=()=>ROLE_ACCESS[normalizedRole(role)]||['dashboard'];
 const canAccess=id=>allowedNav().includes(id); window.__BUILDWISE_PHASE_MODE='crm-only';
 const canWrite=()=>['owner','staff','manager','builder'].includes(normalizedRole(role)); window.canWrite=canWrite; window.canAccess=canAccess; const btn=(t,fn,p=false)=>`<button class="btn ${p?'primary':''}" onclick="${fn}">${esc(t)}</button>`; const stat=(t,v,m='')=>`<div class="stat"><span>${esc(t)}</span><strong>${esc(v)}</strong><small>${esc(m)}</small></div>`;
 function page(t,s,a=''){return `<div class="page-head"><div><div class="eyebrow">BUILDWISE</div><h1>${esc(t)}</h1><p>${esc(s)}</p></div><div class="page-actions">${a}</div></div>`} function card(t,b){return `<section class="card"><div class="card-title">${esc(t)}</div>${b}</section>`}
@@ -74,7 +74,7 @@ async function globalSearch(value=''){
     section('معاملات',dealRows,x=>'<article class="bw-search-result"><b>'+esc(x.deal_type||'معامله')+'</b><small>'+money(x.final_price)+' · '+esc(stateLabel(x.status))+' · '+date(x.deal_date)+'</small></article>','deals')+'</div>';
 }
 async function assistantSubmit(){const prompt=document.getElementById('bwAssistantPrompt')?.value?.trim();if(!prompt)return toast('درخواست خود را وارد کنید','error');await go('ai');const input=document.getElementById('aiInput');if(input){input.value=prompt;await sendAI()}}
-function effectiveNav(){const base=uiModules.length?uiModules.filter(x=>!x.deleted&&x.visible).sort((a,b)=>a.sort_order-b.sort_order).map(x=>[x.id,x.label,x.icon]):NAV;return base.filter(([id])=>canAccess(id))}
+function effectiveNav(){return NAV.filter(([id])=>canAccess(id))}
 function drawNav(){const visible=effectiveNav();const h=visible.map(([id,l,i])=>`<button class="nav-item ${tab===id?'active':''}" onclick="go('${id}')"><i>${i}</i><span>${l}</span></button>`).join('');sideNav.innerHTML=h;if(mobileNav)mobileNav.innerHTML='';bottomNav.innerHTML=visible.slice(0,5).map(([id,l,i])=>`<button class="nav-item ${tab===id?'active':''}" onclick="go('${id}')"><i>${i}</i><span>${l}</span></button>`).join('')}
 async function go(id){if(!canAccess(id)){toast('این بخش برای نقش فعلی مجاز نیست','error');return go('dashboard')}tab=id;drawNav();main.innerHTML=busy();try{const f={requests,tasks:window.taskCenter,dashboard,properties,leads,deals,search,construction,market,matching,room,automation,customerflow,ai,'app-settings':appSettings}[id];await f()}catch(e){main.innerHTML=errbox(e)}}
 async function dashboard(){
