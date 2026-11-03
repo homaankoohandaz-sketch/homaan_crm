@@ -76,7 +76,7 @@ async function globalSearch(value=''){
 async function assistantSubmit(){const prompt=document.getElementById('bwAssistantPrompt')?.value?.trim();if(!prompt)return toast('درخواست خود را وارد کنید','error');await go('ai');const input=document.getElementById('aiInput');if(input){input.value=prompt;await sendAI()}}
 function effectiveNav(){return NAV.filter(([id])=>canAccess(id))}
 function drawNav(){const visible=effectiveNav();const h=visible.map(([id,l,i])=>`<button class="nav-item ${tab===id?'active':''}" onclick="go('${id}')"><i>${i}</i><span>${l}</span></button>`).join('');sideNav.innerHTML=h;if(mobileNav)mobileNav.innerHTML='';bottomNav.innerHTML=visible.slice(0,5).map(([id,l,i])=>`<button class="nav-item ${tab===id?'active':''}" onclick="go('${id}')"><i>${i}</i><span>${l}</span></button>`).join('')}
-async function go(id){if(!canAccess(id)){toast('این بخش برای نقش فعلی مجاز نیست','error');return go('dashboard')}tab=id;drawNav();main.innerHTML=busy();try{const f={requests,tasks:window.taskCenter,dashboard,properties,leads,deals,search,construction,market,matching,room,automation,customerflow,ai,'app-settings':appSettings}[id];await f()}catch(e){main.innerHTML=errbox(e)}}
+async function go(id){if(!canAccess(id)){toast('این بخش برای نقش فعلی مجاز نیست','error');return go('dashboard')}tab=id;drawNav();main.innerHTML=busy();try{const f={requests,tasks:window.taskCenter,promotions,dashboard,properties,leads,deals,search,construction,market,matching,room,automation,customerflow,ai,'app-settings':appSettings}[id];await f()}catch(e){main.innerHTML=errbox(e)}}
 async function dashboard(){
   const [p,l,d,t,req,roles,acts,projects,projectCount]=await Promise.all([
     db.from('properties_client').select('id',{count:'exact',head:true}),
