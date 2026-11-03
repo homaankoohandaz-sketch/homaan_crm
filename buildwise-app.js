@@ -50,13 +50,38 @@ async function appSettings(){if(!isManager())return toast('فقط مدیر به 
 async function saveUiModule(id){if(!isManager())return toast('فقط مدیر مجاز است','error');const r=await db.rpc('manager_edit_ui_module',{p_id:id,p_label:document.getElementById('ui_label_'+id)?.value,p_icon:document.getElementById('ui_icon_'+id)?.value,p_visible:document.getElementById('ui_visible_'+id)?.checked,p_sort_order:Number(document.getElementById('ui_sort_'+id)?.value||100)});if(r.error)return toast(r.error.message,'error');await loadUiModules();drawNav();await appSettings();toast('تنظیمات بخش ذخیره شد','success')}
 async function deleteUiModule(id){if(!isManager())return toast('فقط مدیر مجاز است','error');if(!confirm('این بخش از اپ حذف و برای کاربران مخفی می‌شود. ادامه؟'))return;const r=await db.rpc('manager_delete_ui_module',{p_id:id});if(r.error)return toast(r.error.message,'error');await loadUiModules();drawNav();await appSettings();toast('بخش حذف شد','success')}
 function renderShell(){document.body.innerHTML=`<div class="app bw-shell"><aside class="sidebar bw-sidebar"><div class="brand bw-brand"><div class="brand-mark small">BW</div><div><b>BuildWise AI</b><small>Real Estate Operating System</small></div></div><div class="side-label">فضای کاری</div><nav id="sideNav"></nav><section class="bw-sidebar-promo"><b>فرصت جدید دارید؟</b><p>فایل، مشتری یا پروژه جدید را از همین‌جا وارد جریان کار کنید.</p><button class="btn primary" onclick="go('properties')">مشاهده بانک املاک</button></section><div class="bw-user-card"><div class="bw-user-avatar">BW</div><div><b>${esc(me?.user_metadata?.full_name||me?.email||'کاربر BuildWise')}</b><small>${esc(role||'کاربر')}</small></div><button class="icon-btn" onclick="logout()" title="خروج">↪</button></div></aside><div class="bw-workspace"><header class="topbar bw-topbar"><div class="bw-global-search"><span>⌕</span><input id="bwGlobalQuery" placeholder="جستجو در املاک، مشتریان و معاملات..." onkeydown="if(event.key==='Enter')globalSearch(this.value)"><button class="btn" onclick="globalSearch(document.getElementById('bwGlobalQuery').value)">جستجو</button></div><div class="top-actions"><span class="role">${esc(role||'')}</span><span class="bw-date">${new Date().toLocaleDateString('fa-IR')}</span></div></header><div class="bw-content-grid"><main class="content"><div id="mobileNav" class="mobile-nav"></div><section id="main"></section></main><aside class="bw-assistant"><div class="bw-assistant-head"><span class="bw-ai-orb">✦</span><div><b>دستیار هوشمند BuildWise</b><small>همراه تصمیم‌گیری و عملیات</small></div></div><p>از داده‌های واقعی املاک، مشتریان و پروژه‌ها سؤال کنید.</p><button class="bw-ai-action" onclick="go('matching')">پیشنهاد تطبیق خواهان و ملک <span>←</span></button><button class="bw-ai-action" onclick="go('market')">تحلیل بازار و ارزش‌گذاری <span>←</span></button><button class="bw-ai-action" onclick="go('construction')">وضعیت پروژه‌های ساخت <span>←</span></button><div class="bw-assistant-input"><textarea id="bwAssistantPrompt" rows="2" placeholder="درخواست خود را بنویسید..."></textarea><button class="btn primary" onclick="assistantSubmit()">ارسال</button></div><small class="bw-assistant-note">اجرای عملیات تابع سطح دسترسی حساب شماست.</small></aside></div></div><nav id="bottomNav" class="bottom-nav"></nav><div id="modal" class="modal" hidden><div id="modalBox" class="modal-box"></div></div><div id="bw-toast" class="bw-toast" hidden></div></div>`;drawNav()}
-async function globalSearch(value=''){const q=String(value||'').trim();await go('search');if(q&&document.getElementById('s_neighborhood')){document.getElementById('s_neighborhood').value=q;await runSearch()}}
+async function globalSearch(value=''){
+  const q=String(value||'').trim();if(!q)return toast('عبارت جستجو را وارد کنید','error');
+  if(!canAccess('search'))return toast('دسترسی به جستجوی سراسری برای نقش فعلی فعال نیست','error');
+  tab='search';drawNav();main.innerHTML=busy('جستجو در ماژول‌های مرتبط...');
+  const term='%'+q+'%';
+  const [propertiesByName,propertiesByArea,leadsByName,leadsByPhone,dealsByType]=await Promise.all([
+    db.from('properties_client').select('id,property_code,property_name,property_type,region,neighborhood,built_area,bedrooms,total_price,price_per_meter,status,is_starred,file_tags,created_at').ilike('property_name',term).limit(12),
+    db.from('properties_client').select('id,property_code,property_name,property_type,region,neighborhood,built_area,bedrooms,total_price,price_per_meter,status,is_starred,file_tags,created_at').ilike('neighborhood',term).limit(12),
+    db.from('leads').select('id,full_name,phone,desired_property_type,desired_region,budget_max,status').ilike('full_name',term).limit(12),
+    db.from('leads').select('id,full_name,phone,desired_property_type,desired_region,budget_max,status').ilike('phone',term).limit(12),
+    db.from('deals').select('id,deal_type,final_price,status,deal_date').ilike('deal_type',term).limit(12)
+  ]);
+  const unique=(rows)=>[...new Map(rows.filter(Boolean).map(x=>[String(x.id),x])).values()];
+  const propertyRows=unique([...(propertiesByName.data||[]),...(propertiesByArea.data||[])]);
+  const leadRows=unique([...(leadsByName.data||[]),...(leadsByPhone.data||[])]);
+  const dealRows=dealsByType.data||[];
+  const section=(title,rows,render,route)=>'<section class="bw-panel"><div class="bw-panel-head"><h3>'+title+' ('+rows.length+')</h3><button class="btn" onclick="go(\''+route+'\')">رفتن به ماژول</button></div>'+(rows.length?rows.map(render).join(''):empty('نتیجه‌ای پیدا نشد'))+'</section>';
+  const propertyResults=propertyRows.map(x=>'<article class="bw-search-result"><b>'+esc(x.property_name||x.property_code||'ملک')+'</b><small>'+esc(x.property_type||'')+' · '+esc(x.neighborhood||'')+' · '+money(x.total_price)+'</small></article>').join('');
+  const leadResults=leadRows.map(x=>'<article class="bw-search-result"><b>'+esc(x.full_name||'مخاطب')+'</b><small>'+esc(x.phone||'بدون شماره')+' · '+esc(x.desired_property_type||'')+' · بودجه '+money(x.budget_max)+'</small></article>').join('');
+  const dealResults=dealRows.map(x=>'<article class="bw-search-result"><b>'+esc(x.deal_type||'معامله')+'</b><small>'+money(x.final_price)+' · '+esc(stateLabel(x.status))+' · '+date(x.deal_date)+'</small></article>').join('');
+  main.innerHTML=page('جستجوی سراسری','نتایج عبارت «'+esc(q)+'» در چند ماژول BuildWise')+
+    '<div class="bw-dashboard-grid">'+
+    section('املاک',propertyRows,()=>propertyResults,'properties')+
+    section('مخاطبان',leadRows,()=>leadResults,'leads')+
+    section('معاملات',dealRows,()=>dealResults,'deals')+'</div>';
+}
 async function assistantSubmit(){const prompt=document.getElementById('bwAssistantPrompt')?.value?.trim();if(!prompt)return toast('درخواست خود را وارد کنید','error');await go('ai');const input=document.getElementById('aiInput');if(input){input.value=prompt;await sendAI()}}
 function effectiveNav(){const base=uiModules.length?uiModules.filter(x=>!x.deleted&&x.visible).sort((a,b)=>a.sort_order-b.sort_order).map(x=>[x.id,x.label,x.icon]):NAV;return base.filter(([id])=>canAccess(id))}
 function drawNav(){const visible=effectiveNav();const h=visible.map(([id,l,i])=>`<button class="nav-item ${tab===id?'active':''}" onclick="go('${id}')"><i>${i}</i><span>${l}</span></button>`).join('');sideNav.innerHTML=h;if(mobileNav)mobileNav.innerHTML='';bottomNav.innerHTML=visible.slice(0,5).map(([id,l,i])=>`<button class="nav-item ${tab===id?'active':''}" onclick="go('${id}')"><i>${i}</i><span>${l}</span></button>`).join('')}
 async function go(id){if(!canAccess(id)){toast('این بخش برای نقش فعلی مجاز نیست','error');return go('dashboard')}tab=id;drawNav();main.innerHTML=busy();try{const f={requests,tasks:window.taskCenter,dashboard,properties,leads,deals,search,construction,market,matching,room,automation,customerflow,ai,'app-settings':appSettings}[id];await f()}catch(e){main.innerHTML=errbox(e)}}
 async function dashboard(){
-  const [p,l,d,t,req,roles,acts,projects]=await Promise.all([
+  const [p,l,d,t,req,roles,acts,projects,projectCount]=await Promise.all([
     db.from('properties_client').select('id',{count:'exact',head:true}),
     db.from('leads').select('id',{count:'exact',head:true}),
     db.from('deals').select('id',{count:'exact',head:true}),
@@ -77,14 +102,14 @@ async function dashboard(){
   const advisorCards=advisorRows.length?advisorRows.map(x=>'<div class="bw-list-row"><div><b>'+esc(x.name)+'</b><small>'+money(x.requests)+' ارجاع · '+money(x.activity)+' فعالیت</small></div><span class="badge">مشاور</span></div>').join(''):empty('هنوز فعالیتی برای نمایش وجود ندارد');
   const projectCards=projectRows.length?projectRows.map(x=>'<div class="bw-project-row"><div><b>'+esc(x.title||'پروژه بدون عنوان')+'</b><small>'+esc(stateLabel(x.status))+' · '+date(x.created_at)+'</small></div><strong>'+money(x.estimated_cost)+'</strong></div>').join(''):empty('پروژه‌ای ثبت نشده است','برای شروع، یک پروژه در ماژول مدیریت پروژه ایجاد کنید.');
   const activityCards=activity.slice(0,5).map(x=>'<div class="bw-list-row"><div><b>'+esc(x.actor_name||'کاربر سیستم')+'</b><small>'+esc(x.action||'فعالیت')+'</small></div><small>'+date(x.created_at)+'</small></div>').join('')||empty('فعالیتی ثبت نشده است');
-  const activeProjectCount=projectRows.filter(x=>!['completed','closed','cancelled'].includes(String(x.status||'').toLowerCase())).length;
+  const activeProjectCount=projectCount.count||0;
   main.innerHTML=page('داشبورد','نمای کلی کسب‌وکار، فرصت‌ها و پروژه‌های BuildWise')+
     '<div class="bw-welcome"><div><span class="eyebrow">BUILDWISE WORKSPACE</span><h2>به فضای کاری BuildWise خوش آمدید</h2><p>اطلاعات و عملیات اصلی را از همین صفحه مدیریت کنید.</p></div><button class="btn primary" onclick="go(\'properties\')">ثبت یا مشاهده فایل ملک</button></div>'+
     '<div class="bw-kpi-grid">'+
       '<button class="bw-kpi" onclick="go(\'properties\')"><span class="bw-kpi-icon purple">⌂</span><small>کل املاک</small><strong>'+money(p.count||0)+'</strong><em>مشاهده بانک فایل ←</em></button>'+
       '<button class="bw-kpi" onclick="go(\'leads\')"><span class="bw-kpi-icon blue">♙</span><small>مشتریان و خواهان‌ها</small><strong>'+money(l.count||0)+'</strong><em>مدیریت مخاطبان ←</em></button>'+
       '<button class="bw-kpi" onclick="go(\'deals\')"><span class="bw-kpi-icon orange">⇄</span><small>معاملات ثبت‌شده</small><strong>'+money(d.count||0)+'</strong><em>مشاهده معاملات ←</em></button>'+
-      '<button class="bw-kpi" onclick="go(\'construction\')"><span class="bw-kpi-icon green">▦</span><small>پروژه‌های فعال</small><strong>'+money(activeProjectCount)+'</strong><em>کنترل پروژه‌ها ←</em></button>'+
+      '<button class="bw-kpi" onclick="go(\'construction\')"><span class="bw-kpi-icon green">▦</span><small>پروژه‌های ثبت‌شده</small><strong>'+money(activeProjectCount)+'</strong><em>کنترل پروژه‌ها ←</em></button>'+
     '</div>'+
     '<div class="bw-dashboard-grid"><section class="bw-panel bw-panel-wide"><div class="bw-panel-head"><div><h3>عملیات سریع</h3><p>دسترسی مستقیم به کارهای پرتکرار</p></div></div><div class="bw-quick-grid">'+
       '<button onclick="go(\'properties\')"><span>⌂</span><b>ثبت / جستجوی ملک</b><small>بانک املاک</small></button>'+
