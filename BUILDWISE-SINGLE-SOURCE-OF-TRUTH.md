@@ -64,3 +64,7 @@ A worker must not:
 
 ## Handoff
 Every completed task returns its evidence to the canonical repository. Chat is not the source of truth.
+
+
+## Product scope freeze (D-028)
+Read `.agent-control/ARCHIVE-FREEZE.md` before selecting or generating tasks. Frozen checklist ranges: 066-100, 191-235, 343-367, 453-476. Exclude them from active implementation, planning, prompts, estimates, progress and release blockers for every agent and human. Preserve code and data; do not delete. BuildWise is CRM-first until final architecture is approved by the Product Owner.
