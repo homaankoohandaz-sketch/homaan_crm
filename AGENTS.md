@@ -62,3 +62,7 @@ BuildWise is now organized around `.agent-control/SUMMARY.md` and `.agent-contro
 - `SUPABASE_SERVICE_ROLE_KEY` is server-only and must never be shipped to browser code, logs, prompts, or client-visible files.
 - Privileged database operations may use the service-role client only after the caller's Supabase Auth identity and BuildWise role have been verified.
 - New protected Edge Functions must define their allowed roles explicitly with `requireRole(req, [...])`.
+
+
+## MANDATORY ARCHIVE FREEZE
+Read `.agent-control/ARCHIVE-FREEZE.md` before selecting any task. The ranges 066-100, 191-235, 343-367 and 453-476 are frozen. No agent or human may implement, plan, estimate, reopen, prompt, or dispatch work in these ranges. If encountered, stop that task, leave files/data untouched, mark `FROZEN — DO NOT TOUCH`, and return to active CRM-first work. This overrides older roadmap, prompts, phase files and TODO labels. Only a new explicit Product Owner decision recorded in DECISIONS.md and ARCHIVE-FREEZE.md can lift the freeze.
