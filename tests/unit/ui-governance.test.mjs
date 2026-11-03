@@ -81,7 +81,7 @@ test('all role-authorized core modules remain in navigation; database display se
 
 
 test('every standard navigation route has a dispatcher target', () => {
-  assert.match(app, /const f=\{requests,tasks:window\.taskCenter,promotions,dashboard,properties,leads,deals,search,construction,market,matching,room,automation,customerflow,ai,'app-settings':appSettings\}\[id\]/);
+  assert.match(app, /const f=\{requests,tasks:window\.taskCenter,promotions,dashboard,properties,leads,deals,search,construction,market,data:dataHub,matching,room,automation,customerflow,ai,'app-settings':appSettings\}\[id\]/);
 });
 
 
@@ -90,5 +90,5 @@ test('data hub exposes real Excel import and raw archive actions', () => {
   assert.match(app, /window\.__bwOpenImport\?\.\(\)/);
   assert.match(app, /window\.__bwOpenArchive\?\.\(\)/);
   assert.match(app, /\['data','داده‌ها و ورود اطلاعات','▤'\]/);
-  assert.match(imp, /window\.__bwOpenImport=open;window\.__bwOpenArchive=openArchive/);
+  assert.match(importer, /window\.__bwOpenImport=open;window\.__bwOpenArchive=openArchive/);
 });
