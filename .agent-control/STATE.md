@@ -247,3 +247,11 @@ AUDIT-000-reconcile-baseline — produce a current discrepancy register and evid
 - Live URL fetched successfully and public authentication entry rendered. Authenticated dashboard and module interaction remain unverified because no authenticated browser session was available.
 - Cloudflare Pages workflow remains failed on this SHA; GitHub Pages is the canonical deployed review URL per README.
 - Next: authenticated browser walkthrough of each role and module, then tune each module's internal page layout/inline actions against the common shell. No schema, migration, or live database changes were made.
+
+
+## 2026-11-03 — Product scope change (D-028)
+- Active BuildWise delivery narrowed to CRM-first real-estate operations to accelerate a usable release.
+- Archived from active scope: checklist 066–100 (market/municipal/valuation analysis), 191–235 (project accounting), 343–367 (workflow engine), 453–476 (construction/project control).
+- Archive markers were added to the canonical checklist while retaining historical status markers.
+- No source modules, routes, database tables, migrations, records or deployment were deleted/changed in this documentation-only step. The next implementation step must inspect active navigation and feature dependencies before hiding/removing any entry points.
+- Future destination: possible integrated return or independent Project Control app; no second repository/app is authorized yet.
