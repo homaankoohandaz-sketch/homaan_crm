@@ -35,6 +35,6 @@ test('deal records expose manager edit and delete actions', () => {
 test('Halvo-style background studio supports image upload and editable appearance', () => {
   assert.match(motion, /bw-bg-upload/);
   assert.match(motion, /localStorage/);
-  assert.match(motion, /background-position/);
+  assert.match(motion, /bw-bg-position/);
   assert.match(motionCss, /body\.bw-custom-bg/);
 });
