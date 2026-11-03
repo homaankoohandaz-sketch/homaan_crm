@@ -109,6 +109,6 @@ test('BuildWise assistant shortcuts do not route users into archived product are
 });
 
 test('all agent and human instructions carry an explicit archive freeze gate', () => {
-  const files = ['../.agent-control/ARCHIVE-FREEZE.md', '../../AGENTS.md', '../../CLAUDE.md'];
+  const files = ['../../.agent-control/ARCHIVE-FREEZE.md', '../../AGENTS.md', '../../CLAUDE.md'];
   for (const file of files) assert.ok(fs.existsSync(new URL(file, import.meta.url)));
 });
