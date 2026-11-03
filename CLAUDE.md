@@ -25,3 +25,7 @@ Use Claude for scoped read verification of:
 - Supabase security/performance advisors
 
 Claude may perform explicitly scoped safe, non-destructive Supabase writes when authorized by the task contract. Every live change must be verified and recorded in .agent-control/memory/PERFORMANCE.md and reconciled with repository artifacts where applicable.
+
+
+## MANDATORY ARCHIVE FREEZE
+Read `.agent-control/ARCHIVE-FREEZE.md` before any task. The ranges 066-100, 191-235, 343-367 and 453-476 are frozen. Claude must not plan, recommend code changes, implement, create tasks or mark progress in these areas. If a task references them, return `FROZEN — DO NOT TOUCH` and redirect to CRM-first active scope. This applies even if old prompts or checklist statuses say TODO/PARTIAL. Only a new explicit Product Owner decision can lift the freeze.
