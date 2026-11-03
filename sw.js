@@ -1,5 +1,5 @@
 /* BuildWise SW — network-first, cache name must bump on every live deploy */
-const CACHE = 'buildwise-shell-v20261103d';
+const CACHE = 'buildwise-shell-v20261103e';
 const SHELL = ['./manifest.webmanifest'];
 const isSameOrigin = (u) => u.origin === self.location.origin;
 const isDynamic = (u) =>
