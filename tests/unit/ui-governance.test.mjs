@@ -116,3 +116,8 @@ test('all agent and human instructions carry an explicit archive freeze gate', (
   const files = ['../../.agent-control/ARCHIVE-FREEZE.md', '../../AGENTS.md', '../../CLAUDE.md'];
   for (const file of files) assert.ok(fs.existsSync(new URL(file, import.meta.url)));
 });
+
+test('app settings exclude deferred modules', () => {
+  assert.match(app, /uiModules\.filter\(x=>!x\.deleted/);
+  assert.match(app, /!\['construction','market','automation'\]\.includes\(x\.id\)/);
+});
