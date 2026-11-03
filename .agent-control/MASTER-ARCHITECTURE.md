@@ -1,15 +1,14 @@
 # BuildWise AI — MASTER ARCHITECTURE
 
 ## 1. Mission
-BuildWise AI is a Real Estate Operating System for real estate, development, construction, investment, sales and project control.
+BuildWise AI is the focused real-estate CRM and transaction workspace. Professional market intelligence, project accounting, workflow automation and construction/project control are deferred to a future product decision.
 
 ## 2. Mother architecture
 User / Manager
 → Identity & Permissions
 → CRM / Data Foundation
-→ Real-estate Intelligence
-→ Project / Construction OS
-→ Sales / Finance / Procurement
+→ Core property / deal operations
+→ CRM search, import, matching and follow-up
 → Customer / Builder Portals
 → AI Decision & Action Layer
 → Agent / Automation Control Plane
@@ -21,23 +20,23 @@ Cross-cutting: audit, versioning, evidence, permissions, memory, analytics.
 ### 01 — CRM Core & Identity
 People, owners, buyers, investors, builders, suppliers, properties, requests, leads, files, phones, import, normalization, permissions, audit.
 
-### 02 — Land / Feasibility / Valuation
-Land analysis, municipal evidence, development feasibility, construction cost, valuation, comparables, ROI and scenarios.
+### 02 — Deferred: Land / Market Intelligence
+Checklist 066–100 is archived. No active implementation of municipal-rule intelligence, market feeds, liquidity/price comparisons, gold/dollar comparison, investment scenarios or investment reports in the current BuildWise delivery.
 
 ### 03 — Matching / Deal Intelligence
 Opportunity detection, matching, deal workspace, risk, participation, barter, investor/builder/supplier/property matching.
 
-### 04 — Project & Construction Control
-Project hierarchy, WBS, schedule, Gantt, dependencies, BOQ, procurement, progress, quality, HSE, RFI, risk and corrective action.
+### 04 — Deferred: Project / Construction Control
+Checklist 453–476 is archived for a future Project Control app. Do not expand WBS, schedule, Gantt, baseline, variance, RFI, quality, HSE, site diary or construction-progress capabilities in the current BuildWise delivery.
 
-### 05 — Finance / Procurement / Sales
-Project accounting, cash flow, commitments, payments, material purchasing, sales inventory, pricing, offers and proposals.
+### 05 — Deferred: Project Accounting
+Checklist 191–235 is archived. Project ledger, project budgets, actual/committed cost, cash flow, project payables/receivables, payment workflows and financial audit are deferred. Core property/deal payment notes required for brokerage operations remain distinct and may stay in scope.
 
 ### 06 — Customer / Builder Portals & Showroom
 Customer room, builder workspace, project presentation, media, floor/unit views, requests, shareable outputs.
 
-### 07 — AI / Agents / Automation
-Section AI, AI gateway, tool registry, task contracts, model routing, workers, handoffs, memory, audit, approvals and failure recovery.
+### 07 — AI / Agents (bounded core only)
+Keep only the minimum AI/agent infrastructure needed by active CRM and data workflows. Checklist 343–367 workflow engine, triggers, conditions, actions, approvals, notifications, escalation and workflow history is archived.
 
 ### 08 — Website / Marketing / Content
 Landing site, product demos, PWA presentation, Instagram/YouTube/LinkedIn content, real-estate video/content bot.
@@ -50,8 +49,8 @@ Tests, security, RLS, secrets, deployment, observability, backup, rollback, envi
 - `buildwise-app.js`: current primary browser application.
 - `src/core/`: shared infrastructure and runtime.
 - `src/domains/crm/`: CRM domain.
-- `src/domains/construction/`: construction domain.
-- `src/domains/finance/`: finance/feasibility domain.
+- `src/domains/construction/`: preserved historical/deferred domain; do not expand in current BuildWise scope.
+- `src/domains/finance/`: preserve shared contracts and historical/deferred modules; do not expand project accounting or archived feasibility features.
 - `src/domains/matching/`: matching domain.
 - `src/ai/`: AI gateway/contracts.
 - `src/agent-control/`: runtime worker registry/adapter.
@@ -73,7 +72,7 @@ Root-level legacy engines/pages are transitional. Do not add new root-level feat
 9. Stable decisions belong here; execution status belongs in `.agent-control/STATE.md`. Do not create another status/state file.
 
 ## 6. Current decisions
-- BuildWise remains a unified REOS, not a collection of independent apps.
+- BuildWise current delivery is narrowed to a usable real-estate CRM and transaction workspace; archived project-control capabilities may later return or become a standalone app.
 - Accounting and public presentation may progress independently and must not block the core CRM launch.
 - n8n is optional and never a hard dependency.
 - External workers are considered operational only after runtime + authentication + repository access + bounded non-production execution + tests + evidence.
@@ -132,3 +131,7 @@ Canonical security documents:
 Implementation boundaries: shared contracts in `src/core/`; business behavior in existing `src/domains/`; auth/RLS/migrations/Edge Functions in `supabase/`; regression evidence in `tests/`; decision and status records in `.agent-control/`. Extend canonical implementations; do not create parallel auth, security, audit or task engines.
 
 Security DONE standard: implementation/configuration + regression tests + relevant validation + allowed/denied-path evidence + runtime verification when applicable + canonical state update. CI or documentation alone is not runtime acceptance. Production data changes, secret rotation, auth redesign, permission broadening, destructive testing and production release retain existing human approval gates.
+
+
+## 14. Product scope boundary — 2026-11-03
+The following canonical checklist ranges are archived from current BuildWise delivery: 066–100, 191–235, 343–367 and 453–476. The archive is a product-scope boundary, not a code/data deletion instruction. Keep existing files, schemas, migrations and user data intact. Do not surface archived capabilities as active navigation or spend implementation cycles on them. Shared dependencies may remain only where required by active CRM functionality and must not silently expand the deferred product. The future Project Control app is a possible later extraction, not an approved second app/repository today.
