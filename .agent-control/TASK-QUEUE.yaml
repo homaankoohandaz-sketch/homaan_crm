@@ -40,6 +40,24 @@ tasks:
     depends_on: []
     acceptance: repository branch and PR inventory; canonical-doc contradictions; checklist status; deployment SHA; live Supabase migration/security/backup evidence; discrepancy register with source and severity
     evidence: .agent-control/STATE.md
+  - id: ARCH-002-grok-independent-review
+    status: QUEUED
+    owner: grok
+    depends_on: [ARCH-001-final-buildwise-architecture]
+    acceptance: independent challenge of CRM-first product boundary, module keep/disable decisions, risks and shortest delivery sequence; do not inspect or propose work for frozen ranges
+    evidence: review report attached to FINAL-ARCHITECTURE-RECOMMENDATION.md
+  - id: ARCH-003-claude-independent-review
+    status: QUEUED
+    owner: claude
+    depends_on: [ARCH-001-final-buildwise-architecture]
+    acceptance: independent architecture/data-model/security review of CRM-first proposal; identify conflicts and testable corrections; do not inspect or propose work for frozen ranges
+    evidence: review report attached to FINAL-ARCHITECTURE-RECOMMENDATION.md
+  - id: ARCH-004-product-owner-final-decision
+    status: BLOCKED_ON_REVIEWS
+    owner: product_owner
+    depends_on: [ARCH-002-grok-independent-review, ARCH-003-claude-independent-review]
+    acceptance: reconcile both reviews and record one binding final BuildWise architecture decision before broad feature implementation
+    evidence: .agent-control/DECISIONS.md
   - id: DATA-001-preservation-and-import-contract
     status: QUEUED
     owner: data_import
