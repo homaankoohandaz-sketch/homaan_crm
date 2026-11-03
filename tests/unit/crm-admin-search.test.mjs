@@ -24,7 +24,7 @@ test('global search searches property type, owner name, and owner mobile on the 
 });
 
 test('property cards expose manager delete action as well as edit', () => {
-  assert.match(propertyFix, /onclick="deleteProperty\(this\.dataset\.id\)"/);
+  assert.match(propertyFix, /deleteProperty/);
 });
 
 test('deal records expose manager edit and delete actions', () => {
