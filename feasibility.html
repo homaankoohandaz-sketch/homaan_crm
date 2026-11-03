@@ -69,7 +69,7 @@ th.bear{color:var(--red)}
 <script>
 const U='https://beuestoewletjsgmigmf.supabase.co',K='sb_publishable_dE92Qm9EtMv4sdNRXF7SRg_7ox1xYax';
 const db=supabase.createClient(U,K);
-let me=null;
+let me=null,role=null;
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money=x=>x==null||x===''||Number.isNaN(Number(x))?'—':Math.round(Number(x)).toLocaleString('fa-IR')+' تومان';
 const num=x=>x===''||x==null?null:Number(x);
@@ -84,6 +84,8 @@ async function boot(){
   const s=(await db.auth.getSession()).data.session;
   if(!s){content.innerHTML='<div class="card"><p>برای استفاده از این ابزار ابتدا باید در CRM وارد شوید.</p><a class="btn primary" href="index.html" style="display:block;text-align:center;text-decoration:none;padding:12px;margin-top:10px">ورود به CRM</a></div>';setStep(0);return}
   me=s.user;
+  const roleResult=await db.from('app_roles').select('role,active').eq('user_id',me.id).maybeSingle();
+  role=roleResult.data?.active?roleResult.data.role:null;
   step1();
 }
 
@@ -225,14 +227,31 @@ async function saveAnalysis(){
 }
 
 async function loadMyList(){
-  const r=await db.from('construction_projects').select('id,title,land_area,estimated_cost,expected_sale_price,assumptions,created_at').order('created_at',{ascending:false}).limit(20);
+  const r=await db.from('construction_projects').select('*').order('created_at',{ascending:false}).limit(100);
   const el=document.getElementById('myList');
-  if(r.error){el.innerHTML='<div class="empty">خطا در بارگذاری</div>';return}
-  const rows=r.data||[];
+  if(r.error){el.innerHTML='<div class="empty">خطا در بارگذاری: '+esc(r.error.message)+'</div>';return}
+  const rows=r.data||[],canManage=['owner','admin','manager'].includes(role);
   el.innerHTML=rows.length?rows.map(x=>{
     const irr=x.assumptions?.irr_base;
-    return `<div class="list-row"><div><b>${esc(x.title||'بدون عنوان')}</b><small>${new Date(x.created_at).toLocaleDateString('fa-IR')} · ${x.land_area?x.land_area+' متر':''}</small></div><span class="badge">${irr!=null?'IRR '+Math.round(irr)+'%':'تحلیل‌شده'}</span></div>`
+    const editor=canManage?'<details class="calc-edit"><summary>ویرایش اطلاعات محاسبه</summary><div class="form-grid"><label>عنوان<input id="calc_title_'+x.id+'" value="'+esc(x.title||'')+'"></label><label>مساحت زمین<input id="calc_land_'+x.id+'" type="number" value="'+esc(x.land_area??'')+'"></label><label>سطح اشغال %<input id="calc_foot_'+x.id+'" type="number" value="'+esc(x.footprint_percent??'')+'"></label><label>طبقات<input id="calc_floors_'+x.id+'" type="number" value="'+esc(x.floors??'')+'"></label><label>تعداد واحد<input id="calc_units_'+x.id+'" type="number" value="'+esc(x.units??'')+'"></label><label>زیربنای ناخالص<input id="calc_gross_'+x.id+'" type="number" value="'+esc(x.gross_built_area??'')+'"></label><label>متراژ قابل فروش<input id="calc_sellable_'+x.id+'" type="number" value="'+esc(x.net_sellable_area??'')+'"></label><label>هزینه کل<input id="calc_cost_'+x.id+'" type="number" value="'+esc(x.estimated_cost??'')+'"></label><label>فروش کل<input id="calc_sale_'+x.id+'" type="number" value="'+esc(x.expected_sale_price??'')+'"></label><label>مدت ماه<input id="calc_months_'+x.id+'" type="number" value="'+esc(x.expected_duration_months??'')+'"></label><label>وضعیت<input id="calc_status_'+x.id+'" value="'+esc(x.status||'draft')+'"></label></div><button class="btn primary" onclick="saveCalculation('+x.id+')">ذخیره تغییرات</button></details><button class="btn" onclick="deleteCalculation('+x.id+')">حذف محاسبه</button>':'';
+    return '<div class="list-row"><div><b>'+esc(x.title||'بدون عنوان')+'</b><small>'+new Date(x.created_at).toLocaleDateString('fa-IR')+' · '+(x.land_area?money(x.land_area)+' متر':'')+'</small></div><span class="badge">'+(irr!=null?'IRR '+Math.round(irr)+'%':'تحلیل‌شده')+'</span><div class="calc-actions">'+editor+'</div></div>';
   }).join(''):'<div class="empty">هنوز تحلیلی ذخیره نشده است</div>';
+}
+async function saveCalculation(id){
+  if(!['owner','admin','manager'].includes(role))return alert('فقط مدیر مجاز است');
+  const get=suffix=>document.getElementById('calc_'+suffix+'_'+id);
+  const title=get('title').value.trim();if(!title)return alert('عنوان الزامی است');
+  const patch={title,land_area:num(get('land').value),footprint_percent:num(get('foot').value),floors:num(get('floors').value),units:num(get('units').value),gross_built_area:num(get('gross').value),net_sellable_area:num(get('sellable').value),estimated_cost:num(get('cost').value),expected_sale_price:num(get('sale').value),expected_duration_months:num(get('months').value),status:get('status').value.trim()||'draft',updated_at:new Date().toISOString()};
+  const r=await db.from('construction_projects').update(patch).eq('id',id).select('id').maybeSingle();
+  if(r.error||!r.data)return alert('ویرایش انجام نشد: '+(r.error?.message||'مجوز یا شناسه رکورد را بررسی کنید'));
+  loadMyList();
+}
+async function deleteCalculation(id){
+  if(!['owner','admin','manager'].includes(role))return alert('فقط مدیر مجاز است');
+  if(!confirm('این محاسبه و پرونده ذخیره‌شده حذف شود؟'))return;
+  const r=await db.from('construction_projects').delete().eq('id',id).select('id').maybeSingle();
+  if(r.error||!r.data)return alert('حذف انجام نشد: '+(r.error?.message||'مجوز یا وابستگی‌های رکورد را بررسی کنید'));
+  loadMyList();
 }
 
 window.addEventListener('DOMContentLoaded',boot);
