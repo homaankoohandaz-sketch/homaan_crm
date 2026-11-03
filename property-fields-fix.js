@@ -111,7 +111,7 @@
         '<div class="property-meta"><span>' + _money(x.built_area) + ' متر</span><span>' + (x.bedrooms != null ? x.bedrooms : '—') + ' خواب</span><span>' + _money(x.price_per_meter) + ' / متر</span></div>' +
         '<strong class="price">' + _money(x.total_price) + '</strong>' +
         (typeof isManager === 'function' && isManager()
-          ? '<div class="modal-actions"><button class="btn" data-id="' + _esc(x.id) + '" onclick="editProperty(this.dataset.id)">ویرایش</button></div>'
+          ? '<div class="modal-actions"><button class="btn" data-id="' + _esc(x.id) + '" onclick="editProperty(this.dataset.id)">ویرایش</button><button class="btn" data-id="' + _esc(x.id) + '" onclick="deleteProperty(this.dataset.id)">حذف</button></div>'
           : '') +
         '</article>'
       );
