@@ -45,3 +45,13 @@ test('saved feasibility calculations expose manager edit and delete actions', ()
   assert.match(feasibility, /async function deleteCalculation\(id\)/);
   assert.match(feasibility, /construction_projects/);
 });
+
+test('Halvo background is saved centrally for all authenticated users', () => {
+  assert.match(motion, /from\('ui_modules'\)/);
+  assert.match(motion, /config\.appearance/);
+  assert.match(app, /__bwApplySharedBackground/);
+});
+
+test('lead records expose manager delete action', () => {
+  assert.match(app, /async function deleteLead\(id\)/);
+});
