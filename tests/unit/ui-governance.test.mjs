@@ -76,12 +76,14 @@ test('all role-authorized core modules remain in navigation; database display se
   assert.match(app, /const allowedNav=\(\)=>ROLE_ACCESS\[normalizedRole\(role\)\]\|\|\['dashboard'\]/);
   assert.match(app, /function effectiveNav\(\)\{return NAV\.filter\(\(\[id\]\)=>canAccess\(id\)\)\}/);
   assert.match(app, /\['properties','املاک','⌂'\]/);
-  assert.match(app, /\['market','بازار و ارزش‌گذاری','◌'\]/);
+  assert.match(app, /\['properties','املاک','⌂'\]/);
+  assert.match(app, /\['deals','معاملات','◆'\]/);
+  assert.match(app, /\['data','ورود و مدیریت داده‌ها','▤'\]/);
 });
 
 
 test('every standard navigation route has a dispatcher target', () => {
-  assert.match(app, /const f=\{requests,tasks:window\.taskCenter,promotions,dashboard,properties,leads,deals,search,construction,market,data:dataHub,matching,room,automation,customerflow,ai,'app-settings':appSettings\}\[id\]/);
+  assert.match(app, /const f=\{requests,tasks:window\.taskCenter,promotions,dashboard,properties,leads,deals,search,data:dataHub,matching,room,customerflow,ai,'app-settings':appSettings\}\[id\]/);
 });
 
 
@@ -89,7 +91,7 @@ test('data hub exposes real Excel import and raw archive actions', () => {
   assert.match(app, /async function dataHub\(\)/);
   assert.match(app, /window\.__bwOpenImport\?\.\(\)/);
   assert.match(app, /window\.__bwOpenArchive\?\.\(\)/);
-  assert.match(app, /\['data','داده‌ها و ورود اطلاعات','▤'\]/);
+  assert.match(app, /\['data','ورود و مدیریت داده‌ها','▤'\]/);
   assert.match(importer, /window\.__bwOpenImport=open;window\.__bwOpenArchive=openArchive/);
 });
 
