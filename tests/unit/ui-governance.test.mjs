@@ -53,12 +53,14 @@ test('BuildWise authenticated shell uses the unified dark workspace layout', () 
 });
 
 test('dashboard presents real module KPIs and same-page operational shortcuts', () => {
-  assert.match(app, /پروژه‌های ثبت‌شده/);
   assert.match(app, /عملیات سریع/);
   assert.match(app, /ثبت \/ جستجوی ملک/);
   assert.match(app, /ثبت مخاطب/);
-  assert.match(app, /مدیریت پروژه/);
-  assert.match(app, /پروژه‌های اخیر/);
+  assert.match(app, /پیگیری‌های باز/);
+  assert.match(app, /ورود اطلاعات/);
+  assert.doesNotMatch(app, /پروژه‌های ثبت‌شده/);
+  assert.doesNotMatch(app, /پروژه‌های اخیر/);
+  assert.doesNotMatch(app, /محاسبه و ارزش‌گذاری/);
 });
 
 test('unified visual system is dark, responsive, and RTL-aware', () => {
