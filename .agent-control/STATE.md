@@ -233,3 +233,17 @@ AUDIT-000-reconcile-baseline — produce a current discrepancy register and evid
 - Performance advisor: 124 unindexed-FK findings (INFO) and 87 unused-index findings (INFO). Do not bulk-create/drop indexes without workload and lock-impact review.
 - Edge Functions: 12 ACTIVE entries observed, including `google-sheets-sync` v6, `crm-data-agent` v5, `public-request` v4, `customer-portal` v3, and `ai-orchestrator` v14. Listing is not a function-level security or behavior acceptance test.
 - No database writes, migration applies/repairs, function deployments, or Auth changes were made during this snapshot.
+
+
+## 2026-11-03 — Unified BuildWise UI implementation
+- User explicitly authorized the visual redesign and code changes, overriding the prior testing-only restriction for this scoped UI task.
+- Applied a shared RTL dark workspace shell to the authenticated app: persistent sidebar, global search, central module workspace, contextual BuildWise assistant rail, responsive mobile navigation, and consistent dark styling for existing module cards/forms/tables.
+- Rebuilt the dashboard with database-backed KPIs, recent projects, request mix, team activity, and direct operational shortcuts. No illustrative business figures were introduced.
+- Global search now queries the existing properties, leads, and deals tables and renders grouped results; it does not change underlying module permissions.
+- Cache-busting updated to 20261103a in index assets and service-worker cache.
+- Implementation files: `buildwise-app.js`, `buildwise-ui.css`, `index.html`, `sw.js`; tests: `tests/unit/ui-governance.test.mjs`; full test command now includes the UI governance suite in `package.json`.
+- Code commit before this state record: `468e01deb172ca9c58dd913d59bce4a0a76bdc26`; latest test-assertion commit: `7171d7f98658d3cc8f34e1c7cd473021a680d3fa`.
+- Verification on `7171d7f98658d3cc8f34e1c7cd473021a680d3fa`: BuildWise Full Test Suite PASS; Application Validation PASS; GitHub Pages deployment PASS.
+- Live URL fetched successfully and public authentication entry rendered. Authenticated dashboard and module interaction remain unverified because no authenticated browser session was available.
+- Cloudflare Pages workflow remains failed on this SHA; GitHub Pages is the canonical deployed review URL per README.
+- Next: authenticated browser walkthrough of each role and module, then tune each module's internal page layout/inline actions against the common shell. No schema, migration, or live database changes were made.
