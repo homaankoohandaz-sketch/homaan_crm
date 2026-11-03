@@ -29,7 +29,7 @@ execution_rules:
 
 tasks:
   - id: ARCH-001-final-buildwise-architecture
-    status: IN_PROGRESS
+    status: READY_FOR_REVIEW
     owner: master_architect
     depends_on: []
     acceptance: inspect current main source, active UI/routes, database schema and migration lineage, actual runtime and deploy; define the smallest coherent CRM-first BuildWise product; classify each retained active module as keep/rework/disable; list dependencies and release critical path; Grok and Claude independently review; one final decision is recorded for Product Owner approval. Do not touch frozen ranges.
