@@ -6,6 +6,7 @@ const app = readFileSync(new URL('../../buildwise-app.js', import.meta.url), 'ut
 const propertyFix = readFileSync(new URL('../../property-fields-fix.js', import.meta.url), 'utf8');
 const motion = readFileSync(new URL('../../src/ui/buildwise-motion.js', import.meta.url), 'utf8');
 const motionCss = readFileSync(new URL('../../src/ui/buildwise-motion.css', import.meta.url), 'utf8');
+const feasibility = readFileSync(new URL('../../feasibility.html', import.meta.url), 'utf8');
 
 test('owner/admin/manager accounts receive manager UI permissions', () => {
   assert.match(app, /function isManager\(\)\s*\{\s*return\s*\['owner','admin','manager'\]\.includes\(normalizedRole\(role\)\)\s*\}/);
@@ -37,4 +38,10 @@ test('Halvo-style background studio supports image upload and editable appearanc
   assert.match(motion, /localStorage/);
   assert.match(motion, /bw-bg-position/);
   assert.match(motionCss, /body\.bw-custom-bg/);
+});
+
+test('saved feasibility calculations expose manager edit and delete actions', () => {
+  assert.match(feasibility, /async function saveCalculation\(id\)/);
+  assert.match(feasibility, /async function deleteCalculation\(id\)/);
+  assert.match(feasibility, /construction_projects/);
 });
