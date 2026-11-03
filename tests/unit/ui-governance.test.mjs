@@ -56,7 +56,7 @@ test('dashboard presents real module KPIs and same-page operational shortcuts', 
   assert.match(app, /عملیات سریع/);
   assert.match(app, /ثبت \/ جستجوی ملک/);
   assert.match(app, /ثبت مخاطب/);
-  assert.match(app, /پیگیری‌های باز/);
+  assert.match(app, /پیگیری کارها/);
   assert.match(app, /ورود اطلاعات/);
   assert.doesNotMatch(app, /پروژه‌های ثبت‌شده/);
   assert.doesNotMatch(app, /پروژه‌های اخیر/);
