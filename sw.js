@@ -1,11 +1,11 @@
 /* BuildWise SW — network-first, cache name must bump on every live deploy */
-const CACHE = 'buildwise-shell-v20261103c';
+const CACHE = 'buildwise-shell-v20261103d';
 const SHELL = ['./manifest.webmanifest'];
 const isSameOrigin = (u) => u.origin === self.location.origin;
 const isDynamic = (u) =>
   u.pathname.includes('/functions/') ||
   u.hostname.includes('supabase.co') ||
-  u.search.includes('v=');
+
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
