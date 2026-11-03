@@ -173,3 +173,7 @@ Decision confirmed by the product owner:
 - Archived features must not be treated as current release blockers or exposed as active BuildWise navigation. Shared infrastructure may remain only where necessary for active CRM workflows.
 - This decision supersedes D-027 only on product scope: the earlier all-nine-phases-active planning rule is no longer valid. D-027 safety gates, data preservation and evidence-first delivery remain in force.
 - The checklist remains the single acceptance register; archived IDs are visibly tagged [ARCHIVED] while retaining their prior status marker for historical traceability.
+
+
+## D-029 — Finalize BuildWise around CRM-first product (2026-11-03)
+Decision recommendation: retain the existing repository and Supabase project; narrow the active product to property bank, CRM people/requests, import, search, matching, deals, CRM follow-up, customer sharing, roles/security and bounded AI. Do not rebuild from zero or create a second app now. The four D-028 ranges remain frozen. The recommendation is recorded in .agent-control/FINAL-ARCHITECTURE-RECOMMENDATION.md and awaits independent Grok and Claude review and final Product Owner approval. No schema/data cleanup is authorized by this recommendation.
