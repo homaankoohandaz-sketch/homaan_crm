@@ -107,17 +107,13 @@ async function dashboard(){
       '<button class="bw-kpi" onclick="go(\'properties\')"><span class="bw-kpi-icon purple">⌂</span><small>کل املاک</small><strong>'+money(p.count||0)+'</strong><em>مشاهده بانک فایل ←</em></button>'+
       '<button class="bw-kpi" onclick="go(\'leads\')"><span class="bw-kpi-icon blue">♙</span><small>مشتریان و خواهان‌ها</small><strong>'+money(l.count||0)+'</strong><em>مدیریت مخاطبان ←</em></button>'+
       '<button class="bw-kpi" onclick="go(\'deals\')"><span class="bw-kpi-icon orange">⇄</span><small>معاملات ثبت‌شده</small><strong>'+money(d.count||0)+'</strong><em>مشاهده معاملات ←</em></button>'+
-      '<button class="bw-kpi" onclick="go(\'construction\')"><span class="bw-kpi-icon green">▦</span><small>پروژه‌های ثبت‌شده</small><strong>'+money(activeProjectCount)+'</strong><em>کنترل پروژه‌ها ←</em></button>'+
     '</div>'+
     '<div class="bw-dashboard-grid"><section class="bw-panel bw-panel-wide"><div class="bw-panel-head"><div><h3>عملیات سریع</h3><p>دسترسی مستقیم به کارهای پرتکرار</p></div></div><div class="bw-quick-grid">'+
       '<button onclick="go(\'properties\')"><span>⌂</span><b>ثبت / جستجوی ملک</b><small>بانک املاک</small></button>'+
       '<button onclick="go(\'leads\')"><span>♙</span><b>ثبت مخاطب</b><small>CRM</small></button>'+
       '<button onclick="go(\'deals\')"><span>⇄</span><b>ثبت معامله</b><small>معاملات</small></button>'+
-      '<button onclick="go(\'construction\')"><span>▦</span><b>مدیریت پروژه</b><small>ساخت‌وساز</small></button>'+
-      '<button onclick="go(\'market\')"><span>⌁</span><b>محاسبه و ارزش‌گذاری</b><small>تحلیل ملک</small></button>'+
       '<button onclick="go(\'tasks\')"><span>✓</span><b>پیگیری کارها</b><small>وظایف</small></button>'+
     '</div></section><section class="bw-panel"><div class="bw-panel-head"><div><h3>ترکیب درخواست‌ها</h3><p>بر اساس درخواست‌های ثبت‌شده</p></div><button class="btn" onclick="go(\'requests\')">مشاهده همه</button></div>'+requestCards+'</section>'+
-    '<section class="bw-panel"><div class="bw-panel-head"><div><h3>پروژه‌های اخیر</h3><p>آخرین پروژه‌های ثبت‌شده</p></div><button class="btn" onclick="go(\'construction\')">همه پروژه‌ها</button></div>'+projectCards+'</section>'+
     '<section class="bw-panel"><div class="bw-panel-head"><div><h3>عملکرد تیم</h3><p>ارجاع و فعالیت ثبت‌شده</p></div></div>'+advisorCards+'</section>'+
     '<section class="bw-panel bw-panel-wide"><div class="bw-panel-head"><div><h3>آخرین فعالیت‌ها</h3><p>ردپای عملیات در سیستم</p></div></div>'+activityCards+'</section></div>';
 }
