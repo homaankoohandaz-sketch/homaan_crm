@@ -4,7 +4,7 @@ const SHELL = ['./manifest.webmanifest'];
 const isSameOrigin = (u) => u.origin === self.location.origin;
 const isDynamic = (u) =>
   u.pathname.includes('/functions/') ||
-  u.hostname.includes('supabase.co') ||
+  u.hostname.includes('supabase.co');
 
 
 self.addEventListener('install', (event) => {
