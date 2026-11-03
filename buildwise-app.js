@@ -86,7 +86,8 @@ async function dashboard(){
     db.from('public_requests').select('id,request_type,status,assigned_agent_id,created_at').order('created_at',{ascending:false}).limit(500),
     db.from('app_roles').select('user_id,full_name,role,active').eq('active',true),
     db.from('activity_logs').select('actor_id,actor_name,action,created_at').order('created_at',{ascending:false}).limit(500),
-    db.from('construction_projects').select('id,title,status,estimated_cost,expected_sale_price,created_at').order('created_at',{ascending:false}).limit(5)
+    db.from('construction_projects').select('id,title,status,estimated_cost,expected_sale_price,created_at').order('created_at',{ascending:false}).limit(5),
+    db.from('construction_projects').select('id',{count:'exact',head:true})
   ]);
   const requests=req.data||[], users=roles.data||[], activity=acts.data||[], projectRows=projects.data||[];
   const requestTypeCounts={};requests.forEach(x=>{const k=x.request_type||'سایر';requestTypeCounts[k]=(requestTypeCounts[k]||0)+1});
@@ -99,7 +100,7 @@ async function dashboard(){
   const advisorCards=advisorRows.length?advisorRows.map(x=>'<div class="bw-list-row"><div><b>'+esc(x.name)+'</b><small>'+money(x.requests)+' ارجاع · '+money(x.activity)+' فعالیت</small></div><span class="badge">مشاور</span></div>').join(''):empty('هنوز فعالیتی برای نمایش وجود ندارد');
   const projectCards=projectRows.length?projectRows.map(x=>'<div class="bw-project-row"><div><b>'+esc(x.title||'پروژه بدون عنوان')+'</b><small>'+esc(stateLabel(x.status))+' · '+date(x.created_at)+'</small></div><strong>'+money(x.estimated_cost)+'</strong></div>').join(''):empty('پروژه‌ای ثبت نشده است','برای شروع، یک پروژه در ماژول مدیریت پروژه ایجاد کنید.');
   const activityCards=activity.slice(0,5).map(x=>'<div class="bw-list-row"><div><b>'+esc(x.actor_name||'کاربر سیستم')+'</b><small>'+esc(x.action||'فعالیت')+'</small></div><small>'+date(x.created_at)+'</small></div>').join('')||empty('فعالیتی ثبت نشده است');
-  const activeProjectCount=projectCount.count||0;
+  const activeProjectCount=projectCount?.count??projectRows.length;
   main.innerHTML=page('داشبورد','نمای کلی کسب‌وکار، فرصت‌ها و پروژه‌های BuildWise')+
     '<div class="bw-welcome"><div><span class="eyebrow">BUILDWISE WORKSPACE</span><h2>به فضای کاری BuildWise خوش آمدید</h2><p>اطلاعات و عملیات اصلی را از همین صفحه مدیریت کنید.</p></div><button class="btn primary" onclick="go(\'properties\')">ثبت یا مشاهده فایل ملک</button></div>'+
     '<div class="bw-kpi-grid">'+
