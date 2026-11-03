@@ -3,7 +3,7 @@ policy: evidence-first
 active_task: AUDIT-000-reconcile-baseline
 operating_mode: experimental-personal-trial
 canonical_branch: main
-product_scope: all-nine-phases-active
+product_scope: focused-real-estate-crm-first
 user_data_policy: preserve-existing-data
 release_target: personal-trial
 
@@ -13,7 +13,6 @@ priorities:
   - P1: google-sheets-import
   - P1: search-and-filters
   - P1: permissions-and-rls
-  - P1: backup-and-restore
   - P2: unified-task-engine
   - P2: ui-and-motion
 
@@ -24,7 +23,9 @@ execution_rules:
   - one-writer-per-file
   - every-task-has-allowed-files-acceptance-and-evidence
   - done-requires-implementation-tests-runtime-ui-and-security-evidence-as-applicable
-  - all-nine-phases-are-active-for-audit-and-planning; trial-delivery-is-incremental
+  - current-buildwise-scope-is-focused-crm-and-real-estate-transactions
+  - archived-ranges-are-not-active-implementation-targets
+  - preserve-archived-code-schemas-migrations-and-data; no-destructive-removal
 
 tasks:
   - id: AUDIT-000-reconcile-baseline
@@ -37,7 +38,7 @@ tasks:
     status: QUEUED
     owner: architecture
     depends_on: [AUDIT-000-reconcile-baseline]
-    acceptance: all 850 canonical checklist items mapped to phase/domain, implementation, tests, runtime evidence, dependencies and status; no invented task IDs
+    acceptance: map only active-scope checklist items to implementation, tests, runtime evidence and dependencies; mark 066-100, 191-235, 343-367 and 453-476 archived; no invented task IDs
     evidence: .agent-control/MASTER-CHECKLIST-v3-850.md
   - id: DATA-001-preservation-and-import-contract
     status: QUEUED
@@ -79,7 +80,7 @@ tasks:
     status: QUEUED
     owner: core
     depends_on: [AUDIT-000-reconcile-baseline, SEC-001-permissions-and-rls]
-    acceptance: assignment, calendar, reminders, priority, starred, yes/no response, completion, defer-to-tomorrow and audit tested in CRM/construction/procurement contexts
+    acceptance: assignment, reminders, priority, starred, yes/no response, completion, defer-to-tomorrow and audit tested only in CRM/file/customer follow-up contexts; no project/construction/procurement workflow engine
     evidence: tests/ and browser test report
   - id: UI-001-personal-trial-ux
     status: QUEUED
@@ -98,3 +99,13 @@ advance_rule:
   only_verified_dependencies: true
   max_worker_iterations: 3
   done_requires: implementation_tests_runtime_evidence
+
+
+archived_product_scope:
+  future_product: project-control-app (not approved as a second repo/app yet)
+  checklist_ranges:
+    - 066-100 # market intelligence, municipal evidence, valuation scenarios
+    - 191-235 # project accounting and financial control
+    - 343-367 # workflow engine and automation
+    - 453-476 # construction/project control
+  policy: preserve-code-data-and-migrations; no-active-build; no-navigation-exposure; reactivate-only-by-explicit-decision
