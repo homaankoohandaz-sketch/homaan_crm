@@ -94,3 +94,6 @@ Then the mandatory SUMMARY footer.
 
 ## Context discipline
 Do not request the whole repository. Request only the missing file/section/diff needed to decide the issue.
+
+## Active Product Scope — D-028
+The authoritative active scope is defined in .agent-control/ARCHIVE-FREEZE.md. The following ranges have status FROZEN — DO NOT TOUCH: 066-100, 191-235, 343-367, 453-476. Claude's allowed review work is limited to the current CRM-first BuildWise scope. When an archived ID appears in a task, handoff, checklist or prompt, classify it as frozen and return to the active CRM queue. This instruction overrides older planning notes and task prompts. Scope changes require a new explicit Product Owner decision.
