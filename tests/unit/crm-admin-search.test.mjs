@@ -64,3 +64,17 @@ test('manager role is normalized consistently and displayed as a Persian manager
   assert.match(app, /window\.isManager=isManager/);
   assert.match(app, /<small>\$\{esc\(roleLabel\(role\)\)\}<\/small>/);
 });
+
+
+test('manager CRUD controls cover properties, deals and imported raw records', () => {
+  const importer = readFileSync(new URL('../../src/domains/crm/data-import.js', import.meta.url), 'utf8');
+  assert.match(propertyFix, /window\.editProperty = async function/);
+  assert.match(propertyFix, /window\.savePropertyEdit = async function/);
+  assert.match(app, /async function deleteProperty\(id\)/);
+  assert.match(app, /async function editDeal\(id\)/);
+  assert.match(app, /async function saveDealEdit\(id\)/);
+  assert.match(app, /async function deleteDeal\(id\)/);
+  assert.match(importer, /data-archive-save/);
+  assert.match(importer, /data-archive-delete/);
+  assert.match(importer, /const gate=await dbi\.rpc\('is_manager_user'\)/);
+});
