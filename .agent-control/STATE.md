@@ -312,3 +312,13 @@ AUDIT-000-reconcile-baseline — produce a current discrepancy register and evid
 - Full Test Suite: PASS; BuildWise QA: PASS; Application Validation: PASS.
 - GitHub Pages deploy attempt failed after artifact retries: first attempt HTTP 502, rerun then found three duplicate `github-pages` artifacts. This is a workflow retry artifact issue, not an application test failure. A clean new deployment run is required.
 - No production tasks or property records were created/modified. Authenticated task create/update E2E remains unverified.
+
+
+## 2026-11-04 — Living-room glass theme and final Pages release
+
+- Latest app SHA: `5f782cababc051e1982e13d7f4599c8ab182563b`.
+- Added a real living-room background photo from Unsplash under the warm smoked-glass surfaces; dark overlay preserves text contrast. Photo is published under the Unsplash License.
+- Dashboard cleanup, task status adapter, CRM-only follow-up selector and manager UI are included in this release.
+- Full Test Suite: PASS; BuildWise QA: PASS; Application Validation: PASS; GitHub Pages deployment: PASS.
+- Live HTML/cache stamp verified: `20261104taskfix4`.
+- Cloudflare Pages remains non-canonical; GitHub Pages is the verified deployment.
