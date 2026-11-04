@@ -81,18 +81,16 @@ function effectiveNav(){return NAV.filter(([id])=>canAccess(id))}
 function drawNav(){const visible=effectiveNav();const h=visible.map(([id,l,i])=>`<button class="nav-item ${tab===id?'active':''}" onclick="go('${id}')"><i>${i}</i><span>${l}</span></button>`).join('');sideNav.innerHTML=h;if(mobileNav)mobileNav.innerHTML='';bottomNav.innerHTML=visible.slice(0,5).map(([id,l,i])=>`<button class="nav-item ${tab===id?'active':''}" onclick="go('${id}')"><i>${i}</i><span>${l}</span></button>`).join('')}
 async function go(id){if(!canAccess(id)){toast('این بخش برای نقش فعلی مجاز نیست','error');return go('dashboard')}tab=id;drawNav();main.innerHTML=busy();try{const f={requests,tasks:window.taskCenter,promotions,dashboard,properties,leads,deals,search,data:dataHub,matching,room,customerflow,ai,'app-settings':appSettings}[id];await f()}catch(e){main.innerHTML=errbox(e)}}
 async function dashboard(){
-  const [p,l,d,t,req,roles,acts,projects,projectCount]=await Promise.all([
+  const [p,l,d,t,req,roles,acts]=await Promise.all([
     db.from('properties_client').select('id',{count:'exact',head:true}),
     db.from('leads').select('id',{count:'exact',head:true}),
     db.from('deals').select('id',{count:'exact',head:true}),
-    db.from('tasks').select('id',{count:'exact',head:true}).in('status',['pending','open','in_progress']),
+    db.from('tasks').select('id',{count:'exact',head:true}).eq('status','pending'),
     db.from('public_requests').select('id,request_type,status,assigned_agent_id,created_at').order('created_at',{ascending:false}).limit(500),
     db.from('app_roles').select('user_id,full_name,role,active').eq('active',true),
     db.from('activity_logs').select('actor_id,actor_name,action,created_at').order('created_at',{ascending:false}).limit(500),
-    db.from('construction_projects').select('id,title,status,estimated_cost,expected_sale_price,created_at').order('created_at',{ascending:false}).limit(5),
-    db.from('construction_projects').select('id',{count:'exact',head:true})
   ]);
-  const requests=req.data||[], users=roles.data||[], activity=acts.data||[], projectRows=projects.data||[];
+  const requests=req.data||[], users=roles.data||[], activity=acts.data||[];
   const requestTypeCounts={};requests.forEach(x=>{const k=x.request_type||'سایر';requestTypeCounts[k]=(requestTypeCounts[k]||0)+1});
   const typeRows=Object.entries(requestTypeCounts).sort((a,b)=>b[1]-a[1]).slice(0,6),maxType=Math.max(1,...typeRows.map(x=>x[1]));
   const requestCards=typeRows.length?typeRows.map(x=>'<div class="bw-metric-line"><div><span>'+esc(x[0])+'</span><b>'+money(x[1])+'</b></div><i><em style="width:'+Math.round(x[1]/maxType*100)+'%"></em></i></div>').join(''):empty('درخواستی ثبت نشده است');
@@ -101,9 +99,7 @@ async function dashboard(){
   activity.forEach(x=>{const k=String(x.actor_id||'');if(k&&advisorMap[k])advisorMap[k].activity++});
   const advisorRows=Object.values(advisorMap).sort((a,b)=>(b.requests-a.requests)||(b.activity-a.activity)).slice(0,5);
   const advisorCards=advisorRows.length?advisorRows.map(x=>'<div class="bw-list-row"><div><b>'+esc(x.name)+'</b><small>'+money(x.requests)+' ارجاع · '+money(x.activity)+' فعالیت</small></div><span class="badge">مشاور</span></div>').join(''):empty('هنوز فعالیتی برای نمایش وجود ندارد');
-  const projectCards=projectRows.length?projectRows.map(x=>'<div class="bw-project-row"><div><b>'+esc(x.title||'پروژه بدون عنوان')+'</b><small>'+esc(stateLabel(x.status))+' · '+date(x.created_at)+'</small></div><strong>'+money(x.estimated_cost)+'</strong></div>').join(''):empty('پروژه‌ای ثبت نشده است','برای شروع، یک پروژه در ماژول مدیریت پروژه ایجاد کنید.');
   const activityCards=activity.slice(0,5).map(x=>'<div class="bw-list-row"><div><b>'+esc(x.actor_name||'کاربر سیستم')+'</b><small>'+esc(x.action||'فعالیت')+'</small></div><small>'+date(x.created_at)+'</small></div>').join('')||empty('فعالیتی ثبت نشده است');
-  const activeProjectCount=projectCount?.count??projectRows.length;
   main.innerHTML=page('داشبورد','نمای کلی بانک املاک، مخاطبان و معاملات')+
     '<div class="bw-welcome"><div><span class="eyebrow">BUILDWISE WORKSPACE</span><h2>به فضای کاری BuildWise خوش آمدید</h2><p>اطلاعات و عملیات اصلی را از همین صفحه مدیریت کنید.</p></div><button class="btn primary" onclick="go(\'properties\')">ثبت یا مشاهده فایل ملک</button></div>'+
     '<div class="bw-kpi-grid">'+
