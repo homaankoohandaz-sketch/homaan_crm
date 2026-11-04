@@ -255,3 +255,15 @@ AUDIT-000-reconcile-baseline — produce a current discrepancy register and evid
 - Archive markers were added to the canonical checklist while retaining historical status markers.
 - No source modules, routes, database tables, migrations, records or deployment were deleted/changed in this documentation-only step. The next implementation step must inspect active navigation and feature dependencies before hiding/removing any entry points.
 - Future destination: possible integrated return or independent Project Control app; no second repository/app is authorized yet.
+
+
+## 2026-11-04 — CRM import and manager-access execution
+
+- Latest code SHA: `b5f11472cb4080918dae801971385b67dfb594c1`.
+- Implemented canonical Persian/Arabic property import mapper in `src/domains/crm/property-import-mapper.js`; `data-import.js` now passes source workbook, sheet and row provenance.
+- Added regression coverage for 222.xlsx owner/mobile/street/alley/side_street, Persian numeric values, alternate header spellings, and deterministic source-row IDs.
+- Existing database identity range is confirmed: 5,838 records, `IMP-222-00001` through `IMP-222-05838`. Stable mapper reproduces this range for 222.xlsx / Sheet2 without changing production data.
+- Manager role handling now trims/case-normalizes role values, exposes `window.isManager` to UI extensions, and displays the Persian role label in the sidebar (owner account displays as مدیر اصلی).
+- Full Test Suite: PASS on SHA above. BuildWise QA: PASS. Application Validation: PASS. GitHub Pages deployment is still running at report time; do not claim the new SHA is live until the deployment run succeeds.
+- Live data remains unchanged. The original 222.xlsx workbook is not present in the repository or current project files. No deletion, re-import, bulk update, migration, backup or security change was performed.
+- Supabase ledger remains 108 migrations, latest `20261024100056`. Do not add/apply migrations until provenance reconciliation is complete.
