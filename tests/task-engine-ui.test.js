@@ -51,3 +51,12 @@ test('active Task Center is CRM-only and supports property, lead, request and de
   assert.doesNotMatch(ui, /<option value="procurement">/);
   assert.doesNotMatch(ui, /'builder'\]\./);
 });
+
+test('task creation links to actual CRM records instead of asking users to type record IDs', () => {
+  assert.match(ui, /window\.taskLoadRelatedOptions/);
+  for (const table of ['properties_client','leads','public_requests','crm_people','deals','customer_shares']) {
+    assert.match(ui, new RegExp("table:'" + table + "'"));
+  }
+  assert.match(ui, /id="te_related"><option/);
+  assert.doesNotMatch(ui, /field\('te_related','شناسه پرونده/);
+});
