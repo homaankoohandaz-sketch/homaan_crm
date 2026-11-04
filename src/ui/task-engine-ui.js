@@ -125,9 +125,10 @@ async function taskCreateForm(){
   const users=await loadAssignees();
   const options=users.map(u=>'<option value="'+esc(u.user_id)+'">'+esc(u.full_name||u.user_id)+' · '+esc(u.role||'')+'</option>').join('');
   modal('<h2>پیگیری جدید</h2><div class="form-grid">'
-    +field('te_title','عنوان')+field('te_related','شناسه پرونده / موجودیت')
+    +field('te_title','عنوان')
     +'<input id="te_context" type="hidden" value="crm">'
-    +'<label>نوع پرونده<select id="te_subject"><option value="property">ملک</option><option value="lead">خواهان</option><option value="request">درخواست</option><option value="contact">مخاطب</option><option value="deal">معامله</option><option value="customer_share">ارسال به مشتری</option></select></label>'
+    +'<label>نوع پرونده<select id="te_subject" onchange="window.taskLoadRelatedOptions()"><option value="property">ملک</option><option value="lead">خواهان</option><option value="request">درخواست</option><option value="contact">مخاطب</option><option value="deal">معامله</option><option value="customer_share">ارسال به مشتری</option></select></label>'
+    +'<label>پرونده مرتبط<select id="te_related"><option value="">در حال دریافت پرونده‌ها…</option></select></label>'
     +'<label>مسئول<select id="te_assigned">'+options+'</select></label>'
     +field('te_date','تاریخ',''+today(),'date')+field('te_time','ساعت','','time')+field('te_deadline','مهلت','','datetime-local')
     +'<label>اولویت<select id="te_priority"><option value="normal">عادی</option><option value="important">مهم</option><option value="critical">بحرانی</option><option value="low">کم</option></select></label>'
@@ -135,7 +136,28 @@ async function taskCreateForm(){
     +'</div><label>شرح<textarea id="te_description" rows="4"></textarea></label>'
     +'<label class="check-row"><input id="te_notify" type="checkbox"> فعال‌سازی یادآوری</label>'
     +'<div class="modal-actions"><button class="btn" onclick="closeModal()">انصراف</button><button class="btn primary" onclick="window.taskCreate()">ثبت پیگیری</button></div>');
+  await window.taskLoadRelatedOptions();
 }
+
+
+window.taskLoadRelatedOptions = async function(){
+  const type=document.getElementById('te_subject')?.value||'property';
+  const select=document.getElementById('te_related');if(!select)return;
+  const configs={
+    property:{table:'properties_client',fields:'id,property_name,property_code,region',label:x=>(x.property_name||x.property_code||('ملک #'+x.id))+' · منطقه '+(x.region||'—')},
+    lead:{table:'leads',fields:'id,full_name,mobile',label:x=>(x.full_name||'خواهان #'+x.id)+' · '+(x.mobile||'')},
+    request:{table:'public_requests',fields:'id,full_name,request_type,property_type',label:x=>(x.full_name||'درخواست‌دهنده')+' · '+(x.request_type||x.property_type||'درخواست')},
+    contact:{table:'crm_people',fields:'id,full_name,person_type',label:x=>(x.full_name||'مخاطب #'+x.id)+' · '+(x.person_type||'')},
+    deal:{table:'deals',fields:'id,deal_type,final_price',label:x=>'معامله #'+x.id+' · '+(x.deal_type||'')+' · '+(x.final_price??'')},
+    customer_share:{table:'customer_shares',fields:'id,title,status',label:x=>(x.title||'پیشنهاد #'+x.id)+' · '+(x.status||'')}
+  };
+  const config=configs[type];if(!config)return;
+  select.innerHTML='<option value="">در حال دریافت…</option>';
+  const result=await window.db.from(config.table).select(config.fields).order('created_at',{ascending:false}).limit(200);
+  if(result.error){select.innerHTML='<option value="">خطا در دریافت پرونده‌ها</option>';return toast(result.error.message,'error')}
+  const rows=result.data||[];
+  select.innerHTML='<option value="">'+(rows.length?'انتخاب پرونده':'پرونده‌ای ثبت نشده است')+'</option>'+rows.map(x=>'<option value="'+esc(x.id)+'">'+esc(config.label(x))+'</option>').join('');
+};
 
 async function taskCreate(){
   try{
