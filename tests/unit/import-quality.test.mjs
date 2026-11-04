@@ -1,6 +1,7 @@
 import test from 'node:test';
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
+import { mapPropertyImportRow } from '../../src/domains/crm/property-import-mapper.js';
 import { normalizeImportRows, validateImportRows, buildImportPreview, findDuplicateCandidates, rollbackPlan, editImportedRecord, isolateImportErrors, applyColumnEdits, buildDataQualityDashboard } from '../../src/domains/crm/import-quality.js';
 
 test('import normalization preserves raw rows and normalizes numeric and phone fields', () => {
@@ -183,4 +184,55 @@ test('canonical Excel mapper matches headers with spaces and Persian/Arabic vari
   assert.match(importer, /street:pick\(o,\['street','خیابان'\]\)/);
   assert.match(importer, /alley:pick\(o,\['alley','کوچه'\]\)/);
   assert.match(importer, /side_street:pick\(o,\['side_street','فرعی'\]\)/);
+});
+
+
+test('222.xlsx canonical Persian headers map owner and all address fields without loss', () => {
+  const mapped = mapPropertyImportRow({
+    'نوع ملک': 'آپارتمان',
+    'مالک': 'هومان آزمایشی',
+    'موبايل': '۰۹۱۲۱۲۳۴۵۶۷',
+    'خیابان': 'قصرالدشت',
+    'اسم': 'واحد ۱۲',
+    'کوچه': '۱۲۵',
+    'فرعی': 'شمالی',
+    'زیربنا': '۱۴۵',
+    'زمین': '۲۴۰',
+    'طبقه': '۳',
+    'خواب': '۲',
+    'توضیحات': 'نمونه',
+    'قيمت کل': '۱۲,۵۰۰,۰۰۰,۰۰۰',
+    'قيمت متري': '۸۶,۲۰۰,۰۰۰',
+    'ورودی': '۱۰۰',
+    'رهن کامل': '۰',
+    'رهن': '۵۰۰,۰۰۰,۰۰۰',
+    'اجاره': '۲۰,۰۰۰,۰۰۰',
+    'کل طبقات': '۵',
+    'سن بنا': '۲'
+  }, { generatedCode: 'TEST-222-1' });
+  assert.equal(mapped.property_code, 'TEST-222-1');
+  assert.equal(mapped.owner_name, 'هومان آزمایشی');
+  assert.equal(mapped.street, 'قصرالدشت');
+  assert.equal(mapped.property_name, 'واحد ۱۲');
+  assert.equal(mapped.alley, '۱۲۵');
+  assert.equal(mapped.side_street, 'شمالی');
+  assert.equal(mapped.mobile, '09121234567');
+  assert.equal(mapped.built_area, 145);
+  assert.equal(mapped.land_area, 240);
+  assert.equal(mapped.total_floors, 5);
+  assert.equal(mapped.building_age, 2);
+  assert.equal(mapped.total_price, 12500000000);
+});
+
+test('property mapper accepts alternate Persian owner and address header spellings', () => {
+  const mapped = mapPropertyImportRow({
+    'نام مالک': 'مالک دوم',
+    'خيابان': 'معالی آباد',
+    'نام کوچه': 'کوچه ۴',
+    'فرعي': 'غربی'
+  }, { generatedCode: 'TEST-222-2' });
+  assert.equal(mapped.owner_name, 'مالک دوم');
+  assert.equal(mapped.street, 'معالی آباد');
+  assert.equal(mapped.alley, 'کوچه ۴');
+  assert.equal(mapped.side_street, 'غربی');
 });

@@ -1,3 +1,4 @@
+import { mapPropertyImportRow } from './property-import-mapper.js';
 import { validateImportRows, buildImportPreview, applyColumnEdits, buildDataQualityDashboard, expandContactPairRows, deduplicateExactRows } from './import-quality.js';
 /* BuildWise AI — Canonical Data Importer (merged v1 + v2) */
 (function(){
@@ -13,40 +14,7 @@ import { validateImportRows, buildImportPreview, applyColumnEdits, buildDataQual
   const pick=(o,a)=>{const wanted=new Set(a.map(N));for(const [key,value] of Object.entries(o||{})){if(wanted.has(N(key))&&value!==undefined&&value!==null&&String(value).trim()!=='')return value}return ''};
   let xp;
   async function loadX(){if(window.XLSX)return; if(xp)return xp; xp=new Promise((ok,no)=>{const urls=['https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js','https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js'];let i=0;const next=()=>{if(window.XLSX)return ok();if(i>=urls.length){xp=null;return no(Error('کتابخانه Excel بارگذاری نشد.'))}const s=document.createElement('script');s.src=urls[i++];s.onload=()=>window.XLSX?ok():next();s.onerror=next;document.head.appendChild(s)};next()});return xp}
-  function mapProperty(o){return {
-    property_code:String(pick(o,['property_code','code','کد','کد_ملک'])||('IMP-'+Date.now()+'-'+Math.random().toString(36).slice(2,8))),
-    source:source,
-    rate:String(pick(o,['rate','نرخ','رتبه'])||'')||null,
-    property_name:pick(o,['property_name','name','title','عنوان','نام','اسم'])||pick(o,['street','خیابان']),
-    property_type:pick(o,['property_type','type','نوع_ملک','نوع']),
-    request_type:pick(o,['request_type','نوع_درخواست','درخواست']),
-    ownership_type:pick(o,['ownership_type','مالکیت']),
-    owner_name:pick(o,['owner_name','owner','مالک']),
-    region:num(pick(o,['region','zone','منطقه'])),
-    neighborhood:pick(o,['neighborhood','area_name','محله']),
-    street:pick(o,['street','خیابان']),
-    alley:pick(o,['alley','کوچه']),
-    side_street:pick(o,['side_street','فرعی']),
-    floor:num(pick(o,['floor','طبقه'])),
-    total_floors:num(pick(o,['total_floors','total_floors','کل_طبقات'])),
-    building_age:num(pick(o,['building_age','age','سن_بنا'])),
-    land_area:num(pick(o,['land_area','land','زمین','مساحت_زمین'])),
-    built_area:num(pick(o,['built_area','area','metrage','متراژ','زیربنا'])),
-    bedrooms:num(pick(o,['bedrooms','rooms','خواب'])),
-    total_price:num(pick(o,['total_price','price','قیمت','قیمت_کل'])),
-    price_per_meter:num(pick(o,['price_per_meter','ppm','قیمت_متری','قيمت_متري'])),
-    entry_price:num(pick(o,['entry_price','entry','ورودی'])),
-    full_deposit:num(pick(o,['full_deposit','رهن_کامل'])),
-    deposit_amount:num(pick(o,['deposit_amount','deposit','رهن'])),
-    rent_amount:num(pick(o,['rent_amount','rent','اجاره'])),
-    emergency_phone:normalizePhone(pick(o,['emergency_phone','تلفن_ضروري','تلفن ضروری'])),
-    mobile:normalizePhone(pick(o,['mobile','phone','موبایل','موبايل','تلفن'])),
-    status:pick(o,['status','وضعیت'])||'active',
-    activity_status:pick(o,['activity_status','وضعیت']),
-    listing_type:pick(o,['listing_type','نوع_ورودی','نوع ورودی']),
-    year_registered:String(pick(o,['year_registered','سال','سال_ثبت'])||'')||null,
-    description:pick(o,['description','توضیحات'])
-  }};
+  function mapProperty(o){return mapPropertyImportRow(o,{source,normalizeNumber:num,normalizePhone,generatedCode:'IMP-'+Date.now()+'-'+Math.random().toString(36).slice(2,8)})}
   function mapLead(o){return {full_name:pick(o,['full_name','name','نام','نام_خانوادگی']),mobile:pick(o,['mobile','phone','موبایل','تلفن']),desired_property_type:pick(o,['desired_property_type','property_type','نوع_ملک']),desired_region:num(pick(o,['desired_region','region','منطقه'])),budget_min:num(pick(o,['budget_min','حداقل_بودجه'])),budget_max:num(pick(o,['budget_max','budget','حداکثر_بودجه','بودجه'])),status:pick(o,['status','وضعیت'])||'active',source:source,notes:pick(o,['notes','یادداشت','توضیحات'])}};
   function mapMarket(o){var area=num(pick(o,['area','metrage','متراژ'])),total=num(pick(o,['total_price','price','قیمت'])),ppm=num(pick(o,['price_per_meter','ppm','قیمت_متری']));if(ppm==null&&area>0&&total!=null)ppm=total/area;return {source_type:source==='excel'?'excel':'google_sheets',external_id:String(pick(o,['external_id','record_id','id','شناسه','کد'])||''),observed_at:pick(o,['observed_at','date','تاریخ'])||new Date().toISOString(),region:num(pick(o,['region','منطقه'])),neighborhood:pick(o,['neighborhood','محله']),property_type:pick(o,['property_type','نوع_ملک','نوع']),area:area,bedrooms:num(pick(o,['bedrooms','خواب'])),age_years:num(pick(o,['age_years','age','سن_بنا'])),floor_number:num(pick(o,['floor_number','floor','طبقه'])),total_price:total,price_per_meter:ppm,listing_status:pick(o,['listing_status','status','وضعیت'])||'active',raw_payload:o}};
 function hasMeaningfulImportData(o){return Object.entries(o||{}).some(([k,v])=>!String(k).startsWith('_')&&v!==null&&v!==undefined&&String(v).trim()!=='')}
