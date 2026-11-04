@@ -1,6 +1,6 @@
 version: 4
 policy: evidence-first
-active_task: ARCH-001-final-buildwise-architecture
+active_task: DATA-001-preservation-and-import-contract
 operating_mode: crm-first-final-architecture-review
 canonical_branch: main
 product_scope: focused-real-estate-crm-first
@@ -59,7 +59,7 @@ tasks:
     acceptance: reconcile both reviews and record one binding final BuildWise architecture decision before broad feature implementation
     evidence: .agent-control/DECISIONS.md
   - id: DATA-001-preservation-and-import-contract
-    status: QUEUED
+    status: IN_PROGRESS
     owner: data_import
     depends_on: [AUDIT-000-reconcile-baseline]
     acceptance: import contract preserves raw workbook, every row/column, batch identity and rollback isolation; no production write during tests
