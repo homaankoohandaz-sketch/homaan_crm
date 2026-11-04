@@ -174,3 +174,13 @@ test('rollback migration is manager-only, exact-batch scoped and search-path pin
   assert.match(sql, /revoke all on function public\.rollback_import_batch\(text\) from public, anon/);
   assert.match(sql, /grant execute on function public\.rollback_import_batch\(text\) to authenticated/);
 });
+
+test('canonical Excel mapper matches headers with spaces and Persian/Arabic variants', () => {
+  const importer = fs.readFileSync(new URL('../../src/domains/crm/data-import.js', import.meta.url), 'utf8');
+  assert.match(importer, /wanted=new Set\(a\.map\(N\)\)/);
+  assert.match(importer, /for\(const \[key,value\] of Object\.entries\(o\|\|\{\}\)\)/);
+  assert.match(importer, /owner_name:pick\(o,\['owner_name','owner','مالک'\]\)/);
+  assert.match(importer, /street:pick\(o,\['street','خیابان'\]\)/);
+  assert.match(importer, /alley:pick\(o,\['alley','کوچه'\]\)/);
+  assert.match(importer, /side_street:pick\(o,\['side_street','فرعی'\]\)/);
+});
