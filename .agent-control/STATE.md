@@ -267,3 +267,14 @@ AUDIT-000-reconcile-baseline — produce a current discrepancy register and evid
 - Full Test Suite: PASS on SHA above. BuildWise QA: PASS. Application Validation: PASS. GitHub Pages deployment is still running at report time; do not claim the new SHA is live until the deployment run succeeds.
 - Live data remains unchanged. The original 222.xlsx workbook is not present in the repository or current project files. No deletion, re-import, bulk update, migration, backup or security change was performed.
 - Supabase ledger remains 108 migrations, latest `20261024100056`. Do not add/apply migrations until provenance reconciliation is complete.
+
+
+## 2026-11-04 — Import QA and manager UI follow-up
+
+- Latest reviewed main SHA: `343ec1314bbdfa8b67c5dbef0458a8ed3535378e`.
+- Full Test Suite: PASS. BuildWise QA: PASS. Application Validation: PASS. GitHub Pages deployment: PASS.
+- Live release stamp and cache version verified at `20261104crmfix3`.
+- Import preview now displays field coverage before database writes for owner, street, alley, side_street, mobile and property name. This makes missing source columns visible before import.
+- Stable 222.xlsx / Sheet2 source-row IDs are covered by tests and match the existing `IMP-222-00001` … `IMP-222-05838` sequence.
+- Manager role label/capability bridge is tested; property, deal and imported-raw-record CRUD controls have regression coverage. Authenticated browser E2E remains unverified because no authenticated browser session is available.
+- No production rows changed. Original 222.xlsx is still needed for actual reconciliation. Cloudflare Pages remains an external deployment failure; GitHub Pages is the verified live host.
