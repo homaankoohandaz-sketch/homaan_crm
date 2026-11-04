@@ -187,3 +187,49 @@ test('task repository calendar queries filter via canonical engine helpers', asy
   const crm = await repo.listByContext('crm');
   assert.equal(crm.length, 2);
 });
+
+
+test('task repository maps domain states to the live pending/done constraint', async () => {
+  const client = createFakeClient();
+  const repo = createTaskRepository(client);
+  const created = await repo.create({ ...baseTask, id: 'task-100' });
+  assert.equal(client.rows.get('task-100').status, 'pending');
+  assert.equal(created.status, 'open');
+  const answered = await repo.respond('task-100', 'yes');
+  assert.equal(client.rows.get('task-100').status, 'pending');
+  assert.equal(client.rows.get('task-100').response, 'yes');
+  assert.equal(answered.status, 'in_progress');
+  const completed = await repo.complete('task-100');
+  assert.equal(client.rows.get('task-100').status, 'done');
+  assert.equal(client.rows.get('task-100').response, 'yes');
+  assert.equal(completed.status, 'completed');
+});
+
+test('CRM property and lead tasks map to the existing nullable subject type and foreign keys', async () => {
+  const client = createFakeClient();
+  const repo = createTaskRepository(client);
+  const property = await repo.create({ ...baseTask, id: 'task-property', subject_type: 'property', related_entity_id: '42' });
+  const storedProperty = client.rows.get('task-property');
+  assert.equal(storedProperty.subject_type, null);
+  assert.equal(storedProperty.property_id, 42);
+  assert.equal(storedProperty.related_entity_id, 'property:42');
+  assert.equal(property.subject_type, 'property');
+  assert.equal(property.related_entity_id, '42');
+
+  const lead = await repo.create({ ...baseTask, id: 'task-lead', subject_type: 'lead', related_entity_id: '7' });
+  const storedLead = client.rows.get('task-lead');
+  assert.equal(storedLead.subject_type, null);
+  assert.equal(storedLead.lead_id, 7);
+  assert.equal(lead.subject_type, 'lead');
+  assert.equal(lead.related_entity_id, '7');
+});
+
+test('rejected task persists as done with a negative response and is restored as rejected', async () => {
+  const client = createFakeClient();
+  const repo = createTaskRepository(client);
+  await repo.create({ ...baseTask, id: 'task-rejected' });
+  const rejected = await repo.reject('task-rejected', 'not relevant');
+  assert.equal(client.rows.get('task-rejected').status, 'done');
+  assert.equal(client.rows.get('task-rejected').response, 'no');
+  assert.equal(rejected.status, 'rejected');
+});
