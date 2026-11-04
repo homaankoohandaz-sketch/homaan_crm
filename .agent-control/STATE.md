@@ -288,3 +288,15 @@ AUDIT-000-reconcile-baseline — produce a current discrepancy register and evid
 - Full Test Suite: PASS; BuildWise QA: PASS; Application Validation: PASS; GitHub Pages deployment: PASS.
 - Live HTML/cache version verified: `20261104crmfix4`.
 - Authenticated database search results and cross-role visibility remain unverified without a live authenticated browser session.
+
+
+## 2026-11-04 — CRM task engine compatibility
+
+- Latest app SHA: `c5483e61f2be8ae74fe3942b564ca9aede953fe0`.
+- Live `tasks.status` constraint accepts only `pending` and `done`; the domain engine previously wrote `open`, `in_progress`, `completed`, and `rejected`. Added a persistence adapter that maps domain states to the existing DB values and reconstructs them on reads.
+- CRM task subjects now support property, lead, request, contact, customer share and deal without a schema migration. Property/lead relations use the existing `property_id`/`lead_id` columns and nullable `subject_type`.
+- Active Task Center is limited to `context_type='crm'`; construction/procurement task options are removed from the active UI. Existing engine support/schema remains preserved.
+- Full Test Suite: PASS; BuildWise QA: PASS; Application Validation: PASS; GitHub Pages deployment: PASS.
+- Live HTML/cache version verified: `20261104taskfix1`.
+- No production task rows were created; live task count remains zero. The persistence adapter is unit-tested against the actual DB status contract. Authenticated insert/update E2E remains unverified.
+- No migration was added: live migration ledger has 108 entries while the repository contains 47 migration files; drift reconciliation is still required before any new migration.
