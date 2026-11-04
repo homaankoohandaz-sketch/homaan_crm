@@ -300,3 +300,15 @@ AUDIT-000-reconcile-baseline — produce a current discrepancy register and evid
 - Live HTML/cache version verified: `20261104taskfix1`.
 - No production task rows were created; live task count remains zero. The persistence adapter is unit-tested against the actual DB status contract. Authenticated insert/update E2E remains unverified.
 - No migration was added: live migration ledger has 108 entries while the repository contains 47 migration files; drift reconciliation is still required before any new migration.
+
+
+## 2026-11-04 — CRM dashboard and task follow-up completion pass
+
+- App source SHA: `4b71cceeff4e9584466ed94434b078c274fee757`.
+- Dashboard no longer queries archived `construction_projects`; task KPI now uses the live `tasks.status='pending'` value.
+- Task engine adapter now persists domain lifecycle using database-supported `pending/done` plus `response=yes/no`, and reconstructs canonical states.
+- CRM task form links follow-ups to actual properties, leads, public requests, contacts, deals and customer shares using database-backed selectors.
+- Active Task Center reads only `context_type='crm'`; archived construction/procurement task options are removed from active UI.
+- Full Test Suite: PASS; BuildWise QA: PASS; Application Validation: PASS.
+- GitHub Pages deploy attempt failed after artifact retries: first attempt HTTP 502, rerun then found three duplicate `github-pages` artifacts. This is a workflow retry artifact issue, not an application test failure. A clean new deployment run is required.
+- No production tasks or property records were created/modified. Authenticated task create/update E2E remains unverified.
