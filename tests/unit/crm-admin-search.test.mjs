@@ -78,3 +78,14 @@ test('manager CRUD controls cover properties, deals and imported raw records', (
   assert.match(importer, /data-archive-delete/);
   assert.match(importer, /const gate=await dbi\.rpc\('is_manager_user'\)/);
 });
+
+
+test('property search supports one-character text, address, owner, area and status filters', () => {
+  assert.match(app, /const raw=String\(s_q\?\.value\|\|'\'\)\.trim\(\)/);
+  assert.match(app, /const manager=isManager\(\);const table=manager\?'properties':'properties_client'/);
+  assert.match(app, /s_area_min/);
+  assert.match(app, /s_area_max/);
+  assert.match(app, /s_status/);
+  assert.match(app, /variants\.map\(term=>col\+'\.ilike\.%'\+term\+'%'/);
+  assert.match(app, /limit\(200\)/);
+});
