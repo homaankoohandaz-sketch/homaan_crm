@@ -179,7 +179,7 @@ test('rollback migration is manager-only, exact-batch scoped and search-path pin
 test('canonical Excel importer delegates to the tested Persian header mapper', () => {
   const importer = fs.readFileSync(new URL('../../src/domains/crm/data-import.js', import.meta.url), 'utf8');
   const mapper = fs.readFileSync(new URL('../../src/domains/crm/property-import-mapper.js', import.meta.url), 'utf8');
-  assert.match(importer, /import \\{ mapPropertyImportRow, summarizePropertyImportRows \\} from '\\.\\/property-import-mapper\\.js'/);
+  assert.match(importer, /import \{ mapPropertyImportRow, summarizePropertyImportRows \} from '\.\/property-import-mapper\.js'/);
   assert.match(importer, /function mapProperty\(o\)\{return mapPropertyImportRow\(/);
   for (const field of ['owner_name','street','alley','side_street','mobile','property_name']) {
     assert.match(mapper, new RegExp(field + ':'));
