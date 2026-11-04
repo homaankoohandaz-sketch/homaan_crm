@@ -20,13 +20,14 @@ const today = () => new Date().toISOString().slice(0, 10);
 const tomorrow = () => { const d = new Date(); d.setDate(d.getDate()+1); return d.toISOString().slice(0,10); };
 const faDate = (x) => x ? new Date(x).toLocaleDateString('fa-IR') : '—';
 const priorityLabel = { critical:'بحرانی', important:'مهم', normal:'عادی', low:'کم' };
-const contextLabel = { crm:'CRM / مشتری', construction:'ساخت / کارگاه', procurement:'خرید / تأمین' };
+const contextLabel = { crm:'CRM / مشتری' };
+const subjectLabel = { deal:'معامله', property:'ملک', lead:'خواهان', request:'درخواست', contact:'مخاطب', customer_share:'ارسال به مشتری' };
 const statusLabel = { open:'باز', in_progress:'در حال پیگیری', completed:'تکمیل', rejected:'رد شده', overdue:'معوق' };
 
 let repo;
 function repository(){ return repo ??= createTaskRepository(window.db); }
 function actor(){ return window.me?.id || null; }
-function canManage(){ return ['owner','admin','manager','staff','builder'].includes(window.role); }
+function canManage(){ return ['owner','admin','manager','staff'].includes(String(window.role||'').trim().toLowerCase()); }
 function modal(html){ window.modal?.(html); }
 function close(){ window.closeModal?.(); }
 function toast(message, type='info'){ window.toast?.(message, type); }
@@ -49,7 +50,7 @@ function taskCard(t){
     actions.push('<button class="btn" onclick="window.taskToggleStar(\''+esc(t.id)+'\','+(!t.starred)+')">'+(t.starred?'حذف ستاره':'ستاره')+'</button>');
   }
   return '<article class="integration-card task-card">'
-    +'<div class="row"><span class="badge">'+esc(badge)+'</span><span class="badge">'+esc(priorityLabel[t.priority]||t.priority||'عادی')+'</span><small>'+esc(contextLabel[t.context_type]||t.context_type||'—')+'</small></div>'
+    +'<div class="row"><span class="badge">'+esc(badge)+'</span><span class="badge">'+esc(priorityLabel[t.priority]||t.priority||'عادی')+'</span><small>'+esc(contextLabel[t.context_type]||'CRM')+' · '+esc(subjectLabel[t.subject_type]||'پرونده')+'</small></div>'
     +'<h3>'+esc(t.title||'بدون عنوان')+'</h3>'
     +'<p>'+esc(t.description||'')+'</p>'
     +'<div class="task-meta"><span>تاریخ: '+esc(faDate(t.scheduled_date))+'</span><span>ساعت: '+esc(t.scheduled_time||'—')+'</span><span>یادآوری: '+esc(t.reminder_at?faDate(t.reminder_at):'ندارد')+'</span></div>'
@@ -59,8 +60,8 @@ function taskCard(t){
 }
 
 async function loadTasks(){
-  const rows = await repository().list({ orderBy:{column:'scheduled_date'}, ascending:true, limit:500 });
-  return Array.isArray(rows) ? rows : [];
+  const rows = await repository().list({ filters:[{column:'context_type',value:'crm'}], orderBy:{column:'scheduled_date'}, ascending:true, limit:500 });
+  return Array.isArray(rows) ? rows.filter(t => t.context_type === 'crm') : [];
 }
 
 async function notifyTaskCandidates(rows){
@@ -125,8 +126,8 @@ async function taskCreateForm(){
   const options=users.map(u=>'<option value="'+esc(u.user_id)+'">'+esc(u.full_name||u.user_id)+' · '+esc(u.role||'')+'</option>').join('');
   modal('<h2>پیگیری جدید</h2><div class="form-grid">'
     +field('te_title','عنوان')+field('te_related','شناسه پرونده / موجودیت')
-    +'<label>زمینه<select id="te_context"><option value="crm">CRM / مشتری</option><option value="construction">ساخت / کارگاه</option><option value="procurement">خرید / تأمین</option></select></label>'
-    +'<label>نوع موجودیت<select id="te_subject"><option value="deal">معامله</option><option value="construction">ساخت</option><option value="purchase">خرید</option></select></label>'
+    +'<input id="te_context" type="hidden" value="crm">'
+    +'<label>نوع پرونده<select id="te_subject"><option value="property">ملک</option><option value="lead">خواهان</option><option value="request">درخواست</option><option value="contact">مخاطب</option><option value="deal">معامله</option><option value="customer_share">ارسال به مشتری</option></select></label>'
     +'<label>مسئول<select id="te_assigned">'+options+'</select></label>'
     +field('te_date','تاریخ',''+today(),'date')+field('te_time','ساعت','','time')+field('te_deadline','مهلت','','datetime-local')
     +'<label>اولویت<select id="te_priority"><option value="normal">عادی</option><option value="important">مهم</option><option value="critical">بحرانی</option><option value="low">کم</option></select></label>'
