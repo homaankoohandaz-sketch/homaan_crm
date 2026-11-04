@@ -35,6 +35,18 @@ const ALIASES = Object.freeze({
 });
 const NUMBER_FIELDS = new Set(['region','floor','total_floors','building_age','land_area','built_area','bedrooms','total_price','price_per_meter','entry_price','full_deposit','deposit_amount','rent_amount']);
 
+function stableGeneratedCode({ sourceFile, sheetName, sheetIndex, rowNumber } = {}) {
+  const file = String(sourceFile || '').split(/[\\/]/).pop().replace(/\\.[^.]+$/, '').trim();
+  const sequence = Math.max(1, Number(rowNumber) - 1 || 1);
+  if (/^222$/i.test(file) && (sheetName === 'Sheet2' || sheetName == null || sheetName === '')) {
+    return 'IMP-222-' + String(sequence).padStart(5, '0');
+  }
+  if (!file || !rowNumber) return 'IMP-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8);
+  const slug = file.normalize('NFKD').replace(/[^a-zA-Z0-9]+/g, '-').replace(/^-|-$/g, '').toLowerCase().slice(0, 24) || 'file';
+  const sheet = String(sheetIndex == null ? 0 : Number(sheetIndex) + 1).padStart(2, '0');
+  return 'IMP-' + slug + '-' + sheet + '-' + String(sequence).padStart(5, '0');
+}
+
 function readValue(row, aliases) {
   const wanted = new Set(aliases.map(BN.normalizeKey));
   for (const [key, value] of Object.entries(row || {})) {
@@ -48,7 +60,11 @@ export function mapPropertyImportRow(row, {
   source = 'excel',
   normalizeNumber = BN.normalizeNumber,
   normalizePhone = BN.normalizePhone,
-  generatedCode = null
+  generatedCode = null,
+  sourceFile = null,
+  sheetName = null,
+  sheetIndex = null,
+  rowNumber = null
 } = {}) {
   const mapped = {};
   for (const [field, aliases] of Object.entries(ALIASES)) {
@@ -61,7 +77,7 @@ export function mapPropertyImportRow(row, {
       mapped[field] = value;
     }
   }
-  mapped.property_code = String(mapped.property_code || generatedCode || ('IMP-' + Date.now() + '-' + Math.random().toString(36).slice(2, 8)));
+  mapped.property_code = String(mapped.property_code || generatedCode || stableGeneratedCode({ sourceFile, sheetName, sheetIndex, rowNumber }));
   mapped.source = source;
   if (!mapped.status) mapped.status = 'active';
   return mapped;
