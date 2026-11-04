@@ -129,3 +129,6 @@ test('Excel import preview shows owner and address mapping coverage before datab
   assert.match(importer, /owner_name:'مالک'/);
   assert.match(importer, /side_street:'فرعی'/);
 });
+
+
+test('CRM dashboard excludes archived project queries and uses valid task status', () => { const start=app.indexOf('async function dashboard()'); const end=app.indexOf('\nasync function ',start+30); const dashboard=app.slice(start,end); assert.ok(start>=0&&end>start); assert.doesNotMatch(dashboard,/construction_projects|projectCount|projectCards/); assert.match(dashboard,/from\('tasks'\)[\s\S]*?eq\('status','pending'\)/); });
