@@ -5,6 +5,7 @@ import fs from 'node:fs';
 const app = fs.readFileSync(new URL('../../buildwise-app.js', import.meta.url), 'utf8');
 const index = fs.readFileSync(new URL('../../index.html', import.meta.url), 'utf8');
 const importer = fs.readFileSync(new URL('../../src/domains/crm/data-import.js', import.meta.url), 'utf8');
+const css = fs.readFileSync(new URL('../../buildwise-ui.css', import.meta.url), 'utf8');
 
 test('navigation is not duplicated between the top mobile strip and bottom navigation', () => {
   assert.match(app, /mobileNav\.innerHTML=''/);
@@ -132,3 +133,10 @@ test('Excel import preview shows owner and address mapping coverage before datab
 
 
 test('CRM dashboard excludes archived project queries and uses valid task status', () => { const start=app.indexOf('async function dashboard()'); const end=app.indexOf('\nasync function ',start+30); const dashboard=app.slice(start,end); assert.ok(start>=0&&end>start); assert.doesNotMatch(dashboard,/construction_projects|projectCount|projectCards/); assert.match(dashboard,/from\('tasks'\)[\s\S]*?eq\('status','pending'\)/); });
+
+test('BuildWise uses a real living-room photo under dark smoked-glass panels', () => {
+  assert.match(css, /images\.unsplash\.com\/photo-1771371428960-35a50c2d4e7c/);
+  assert.match(css, /background-size:cover/);
+  assert.match(css, /rgba\(10,15,18,\.56\)/);
+  assert.match(css, /backdrop-filter:blur\(28px\)/);
+});
