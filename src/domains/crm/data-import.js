@@ -10,7 +10,7 @@ import { validateImportRows, buildImportPreview, applyColumnEdits, buildDataQual
   const E=x=>String(x==null?'':x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const N=x=>BN.normalizeKey?BN.normalizeKey(x):String(x==null?'':x).trim().toLowerCase().replace(/[يى]/g,'ی').replace(/ك/g,'ک').replace(/[\s\-\/]+/g,'_').replace(/[()]/g,'');
   const num=x=>BN.normalizeNumber?BN.normalizeNumber(x):(()=>{if(x===''||x==null)return null;const n=Number(String(x).replace(/[,٬]/g,''));return Number.isFinite(n)?n:null})();
-  const pick=(o,a)=>{for(const k of a){const v=o[N(k)];if(v!==undefined&&v!==null&&String(v).trim()!=='')return v}return ''};
+  const pick=(o,a)=>{const wanted=new Set(a.map(N));for(const [key,value] of Object.entries(o||{})){if(wanted.has(N(key))&&value!==undefined&&value!==null&&String(value).trim()!=='')return value}return ''};
   let xp;
   async function loadX(){if(window.XLSX)return; if(xp)return xp; xp=new Promise((ok,no)=>{const urls=['https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js','https://unpkg.com/xlsx@0.18.5/dist/xlsx.full.min.js'];let i=0;const next=()=>{if(window.XLSX)return ok();if(i>=urls.length){xp=null;return no(Error('کتابخانه Excel بارگذاری نشد.'))}const s=document.createElement('script');s.src=urls[i++];s.onload=()=>window.XLSX?ok():next();s.onerror=next;document.head.appendChild(s)};next()});return xp}
   function mapProperty(o){return {
