@@ -57,3 +57,10 @@ test('Halvo background is saved centrally for all authenticated users', () => {
 test('lead records expose manager delete action', () => {
   assert.match(app, /async function deleteLead\(id\)/);
 });
+
+
+test('manager role is normalized consistently and displayed as a Persian manager label', () => {
+  assert.match(app, /const normalizedRole=r=>\{const value=String\(r\?\?''\)\.trim\(\)\.toLowerCase\(\)/);
+  assert.match(app, /window\.isManager=isManager/);
+  assert.match(app, /<small>\$\{esc\(roleLabel\(role\)\)\}<\/small>/);
+});
