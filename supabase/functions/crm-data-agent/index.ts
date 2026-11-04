@@ -28,7 +28,7 @@ const ALLOWED: Record<string, string[]> = {
     "rate", "region", "neighborhood", "street", "alley", "side_street", "floor", "total_floors",
     "building_age", "year_registered", "land_area", "built_area", "bedrooms", "total_price",
     "price_per_meter", "entry_price", "full_deposit", "deposit_amount", "rent_amount",
-    "mobile", "emergency_phone", "status", "activity_status", "listing_type", "description", "import_batch_id",
+    "mobile", "emergency_phone", "status", "activity_status", "listing_type", "description", "source", "import_batch_id",
   ],
   leads: [
     "full_name", "mobile", "desired_property_type", "desired_region", "budget_min", "budget_max", "status", "notes", "source", "import_batch_id",
