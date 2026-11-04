@@ -56,7 +56,7 @@ export function createTaskRepository(client, { table = 'tasks' } = {}) {
       return allTasks(options);
     },
 
-    getById(id, options) {
+    async getById(id, options) {
       return fromPersistence(await repository.getById(id, options));
     },
 
