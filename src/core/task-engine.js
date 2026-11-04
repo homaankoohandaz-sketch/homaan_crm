@@ -1,5 +1,5 @@
 const CONTEXT_TYPES = new Set(['crm', 'construction', 'procurement']);
-const SUBJECT_TYPES = new Set(['deal', 'construction', 'purchase']);
+const SUBJECT_TYPES = new Set(['deal', 'property', 'lead', 'request', 'contact', 'customer_share', 'construction', 'purchase']);
 const PRIORITIES = new Set(['critical', 'important', 'normal', 'low']);
 const STATUSES = new Set(['open', 'in_progress', 'completed', 'rejected', 'overdue']);
 const RESPONSES = new Set(['yes', 'no', null]);
@@ -191,6 +191,7 @@ export function moveTaskToTomorrow(
     scheduled_date: tomorrow,
     moved_to_date: tomorrow,
     status: 'open',
+    response: null,
     updated_at: now,
   };
   return appendTaskAudit(next, 'moved', {
