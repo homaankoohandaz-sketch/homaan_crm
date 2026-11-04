@@ -1,7 +1,7 @@
 import test from 'node:test';
 import fs from 'node:fs';
 import assert from 'node:assert/strict';
-import { mapPropertyImportRow } from '../../src/domains/crm/property-import-mapper.js';
+import { mapPropertyImportRow, summarizePropertyImportRows } from '../../src/domains/crm/property-import-mapper.js';
 import { normalizeImportRows, validateImportRows, buildImportPreview, findDuplicateCandidates, rollbackPlan, editImportedRecord, isolateImportErrors, applyColumnEdits, buildDataQualityDashboard } from '../../src/domains/crm/import-quality.js';
 
 test('import normalization preserves raw rows and normalizes numeric and phone fields', () => {
@@ -262,4 +262,18 @@ test('non-canonical import files receive deterministic codes from source and row
   });
   assert.equal(a.property_code, 'IMP-new-properties-01-00001');
   assert.equal(a.property_code, b.property_code);
+});
+
+
+test('import preview reports field coverage for owner and complete property address', () => {
+  const summary = summarizePropertyImportRows([
+    { 'مالک': 'مالک ۱', 'خیابان': 'قصرالدشت', 'کوچه': '۱۲۵', 'فرعی': 'شمالی', 'موبايل': '۰۹۱۲۱۲۳۴۵۶۷', 'اسم': 'واحد ۱', _target: 'properties' },
+    { 'مالک': '', 'خیابان': 'معالی آباد', 'کوچه': '', 'فرعی': '', 'موبايل': '۰۹۱۳۱۲۳۴۵۶۷', 'اسم': 'واحد ۲', _target: 'properties' }
+  ]);
+  assert.equal(summary.totalRows, 2);
+  assert.equal(summary.coverage.owner_name.filled, 1);
+  assert.equal(summary.coverage.street.filled, 2);
+  assert.equal(summary.coverage.alley.filled, 1);
+  assert.equal(summary.coverage.side_street.filled, 1);
+  assert.equal(summary.coverage.mobile.filled, 2);
 });
