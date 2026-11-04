@@ -39,3 +39,15 @@ test('ROLE_ACCESS grants tasks to all operational roles', () => {
 });
 
 console.log('task engine UI binding contract: PASS');
+
+
+test('active Task Center is CRM-only and supports property, lead, request and deal follow-ups', () => {
+  assert.match(ui, /filters:\[\{column:'context_type',value:'crm'\}\]/);
+  assert.match(ui, /value="crm"/);
+  for (const subject of ['property','lead','request','contact','deal','customer_share']) {
+    assert.match(ui, new RegExp('value="' + subject + '"'));
+  }
+  assert.doesNotMatch(ui, /<option value="construction">/);
+  assert.doesNotMatch(ui, /<option value="procurement">/);
+  assert.doesNotMatch(ui, /'builder'\]\./);
+});
