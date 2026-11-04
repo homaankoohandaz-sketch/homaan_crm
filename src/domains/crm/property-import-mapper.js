@@ -84,3 +84,20 @@ export function mapPropertyImportRow(row, {
   if (!mapped.status) mapped.status = 'active';
   return mapped;
 }
+
+
+export function summarizePropertyImportRows(rows = [], options = {}) {
+  const sourceRows = (rows || []).filter(row => row && typeof row === 'object' && (row._target || 'properties') === 'properties');
+  const mapped = sourceRows.map(row => mapPropertyImportRow(row, {
+    ...options,
+    sheetName: row._sheet_name ?? options.sheetName,
+    sheetIndex: row._sheet_index ?? options.sheetIndex,
+    rowNumber: row._row_number ?? options.rowNumber
+  }));
+  const fields = ['owner_name','street','alley','side_street','mobile','property_name'];
+  const coverage = Object.fromEntries(fields.map(field => {
+    const filled = mapped.filter(row => row[field] != null && String(row[field]).trim() !== '').length;
+    return [field, { filled, missing: mapped.length - filled, percent: mapped.length ? filled / mapped.length : 0 }];
+  }));
+  return { totalRows: mapped.length, coverage, sample: mapped.slice(0, 10) };
+}
