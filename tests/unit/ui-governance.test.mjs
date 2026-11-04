@@ -121,3 +121,11 @@ test('app settings exclude deferred modules', () => {
   assert.match(app, /uiModules\.filter\(x=>!x\.deleted/);
   assert.match(app, /!\['construction','market','automation'\]\.includes\(x\.id\)/);
 });
+
+
+test('Excel import preview shows owner and address mapping coverage before database writes', () => {
+  assert.match(importer, /summarizePropertyImportRows/);
+  assert.match(importer, /کنترل نگاشت ستون‌های اصلی به بانک املاک/);
+  assert.match(importer, /owner_name:'مالک'/);
+  assert.match(importer, /side_street:'فرعی'/);
+});
