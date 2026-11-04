@@ -176,14 +176,18 @@ test('rollback migration is manager-only, exact-batch scoped and search-path pin
   assert.match(sql, /grant execute on function public\.rollback_import_batch\(text\) to authenticated/);
 });
 
-test('canonical Excel mapper matches headers with spaces and Persian/Arabic variants', () => {
+test('canonical Excel importer delegates to the tested Persian header mapper', () => {
   const importer = fs.readFileSync(new URL('../../src/domains/crm/data-import.js', import.meta.url), 'utf8');
-  assert.match(importer, /wanted=new Set\(a\.map\(N\)\)/);
-  assert.match(importer, /for\(const \[key,value\] of Object\.entries\(o\|\|\{\}\)\)/);
-  assert.match(importer, /owner_name:pick\(o,\['owner_name','owner','مالک'\]\)/);
-  assert.match(importer, /street:pick\(o,\['street','خیابان'\]\)/);
-  assert.match(importer, /alley:pick\(o,\['alley','کوچه'\]\)/);
-  assert.match(importer, /side_street:pick\(o,\['side_street','فرعی'\]\)/);
+  const mapper = fs.readFileSync(new URL('../../src/domains/crm/property-import-mapper.js', import.meta.url), 'utf8');
+  assert.match(importer, /import \{ mapPropertyImportRow \} from '\.\/property-import-mapper\.js'/);
+  assert.match(importer, /function mapProperty\(o\)\{return mapPropertyImportRow\(/);
+  for (const field of ['owner_name','street','alley','side_street','mobile','property_name']) {
+    assert.match(mapper, new RegExp(field + ':'));
+  }
+  assert.match(mapper, /مالک/);
+  assert.match(mapper, /خیابان/);
+  assert.match(mapper, /کوچه/);
+  assert.match(mapper, /فرعی/);
 });
 
 
