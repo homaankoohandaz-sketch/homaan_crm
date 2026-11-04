@@ -1,25 +1,33 @@
 # NOW — BuildWise AI
 
-as_of: 2026-10-17 (canonical main after reconciliation)
+as_of: 2026-11-04
+canonical_branch: main
+active_task: DATA-001-preservation-and-import-contract
+operating_mode: CRM-first; evidence-first; preserve production data
+release_target: personal trial
 
-## Current state
-- Canonical branch: `main`; code and operational changes are unified in merge commit `2e7a7e98e1cc723385900e9a38b4979d05055871`.
-- Access: GitHub + Supabase REST + direct Postgres (Seoul) verified.
-- Offline DB backup: schema.sql + data.sql + full.dump produced, age-encrypted, checksummed. Evidence: `.agent-control/evidence/BACKUP-OFFLINE-2026-10-17-GROK.md`.
-- Data remediation on live DB: project_wbs=4, project_phases=3, project_milestones=3 for project 1 (چوگیا); deal #1 linked to lead_id=10.
-- Scheduled GitHub Actions backup still fails until human sets secrets.
-- Authenticated E2E (630) still not verified.
+## Latest implementation
+- Main SHA: `b5f11472cb4080918dae801971385b67dfb594c1`.
+- Canonical Persian Excel property mapper extracted and tested.
+- 222.xlsx / Sheet2 stable row identity now reproduces the existing `IMP-222-00001` … `IMP-222-05838` identifiers.
+- Manager role normalization and Persian sidebar role label fixed.
+- Full Test Suite: PASS; BuildWise QA: PASS; Application Validation: PASS.
+- GitHub Pages deployment for this SHA must be checked before sharing as live.
 
-## Current objective
-1. Human configures `SUPABASE_DB_URL` + `BACKUP_AGE_RECIPIENT` so scheduled backup can succeed.
-2. Continue closing concrete gaps with evidence (no false DONE).
+## Live data facts
+- properties: 6,039 total; 5,838 canonical 222.xlsx records.
+- On those 5,838 records: owner_name 0; mobile 5,838; street 4,967; alley 0; side_street 0; property_name 5,838.
+- import_raw_rows: 250 rows for “فایلهای مرتب شده .xlsx”.
+- import_batches 5 and 6: processing; 6,034 total rows each; successful_rows 0. These are not verified successful imports.
+- Supabase migration ledger: 108 entries, latest 20261024100056.
 
-## Current blocker
-- **Human-only:** GitHub Actions secrets cannot be set by the agent connector.
-  - Secret `SUPABASE_DB_URL` = pooler URI with DB password
-  - Variable `BACKUP_AGE_RECIPIENT` = `age1s8l9rcpque8q9pwwwarecwgy4jtjfwm8yepmczz6mlq4xmrp6s4qhgw6zw`
-- 630 authenticated runtime/UI acceptance
+## Next
+1. Verify GitHub Pages deploy for current SHA.
+2. Obtain the original 222.xlsx workbook and create a dry-run row/column reconciliation report.
+3. Repair owner/alley/side_street by stable property_code matching while preserving IDs and relations; no bulk delete.
+4. Continue active CRM work: import preview/validation/error isolation, search, manager record operations, people/requests, deals, follow-ups, customer sharing and bounded AI.
 
-## Next action
-1. Human: set the two Actions values above, run workflow manually, confirm artifact.
-2. Agent: continue code/data/control-plane work that does not depend on those secrets.
+## Gates
+- No bulk deletion, reset, blind migration repair or data rewrite.
+- Backup rollout and final security audit remain deferred as instructed.
+- D-028 archived ranges remain frozen and preserved.
