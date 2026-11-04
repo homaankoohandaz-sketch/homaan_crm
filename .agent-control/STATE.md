@@ -278,3 +278,13 @@ AUDIT-000-reconcile-baseline — produce a current discrepancy register and evid
 - Stable 222.xlsx / Sheet2 source-row IDs are covered by tests and match the existing `IMP-222-00001` … `IMP-222-05838` sequence.
 - Manager role label/capability bridge is tested; property, deal and imported-raw-record CRUD controls have regression coverage. Authenticated browser E2E remains unverified because no authenticated browser session is available.
 - No production rows changed. Original 222.xlsx is still needed for actual reconciliation. Cloudflare Pages remains an external deployment failure; GitHub Pages is the verified live host.
+
+
+## 2026-11-04 — CRM search batch
+
+- Latest app SHA: `d4199d6cf06f91903a9685aa68d83969fa0f408f`.
+- Added one-character text search and advanced property filters: owner/name/code/address, price range, area range, region, neighborhood, type, bedrooms and status.
+- Search is role-aware: manager queries the properties table (including mobile); other roles query the restricted `properties_client` view without mobile.
+- Full Test Suite: PASS; BuildWise QA: PASS; Application Validation: PASS; GitHub Pages deployment: PASS.
+- Live HTML/cache version verified: `20261104crmfix4`.
+- Authenticated database search results and cross-role visibility remain unverified without a live authenticated browser session.
