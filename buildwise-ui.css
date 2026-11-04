@@ -142,3 +142,13 @@ table{color:#f3f5f6!important}th{color:#c5cdd0!important}td{border-color:rgba(25
 .bw-card h1,.bw-card h2,.bw-card h3,.bw-panel h1,.bw-panel h2,.bw-panel h3,.bw-assistant h1,.bw-assistant h2,.bw-assistant h3,.card h1,.card h2,.card h3,.property-card h3,.lead-card h3,.deal-card h3,.project-card h3{color:#fff!important}
 .bw-sidebar,.sidebar{background:rgba(17,24,28,.82)!important}
 .bw-topbar,.topbar{background:rgba(16,22,26,.82)!important}
+
+/* Warm architectural living-room backdrop — Unsplash image, free under Unsplash License */
+body{
+  background-image:linear-gradient(180deg,rgba(10,15,18,.56),rgba(10,15,18,.68)),url('https://images.unsplash.com/photo-1771371428960-35a50c2d4e7c?auto=format&fit=crop&fm=jpg&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&ixlib=rb-4.1.0&q=60&w=3000');
+  background-size:cover;background-position:center;background-attachment:fixed;background-repeat:no-repeat;
+}
+body:before{
+  background:linear-gradient(90deg,rgba(9,14,17,.24),rgba(9,14,17,.08) 48%,rgba(9,14,17,.28)),linear-gradient(0deg,rgba(9,14,17,.32),transparent 55%);
+}
+@media(max-width:760px){body{background-attachment:scroll;background-position:center center}}
