@@ -36,7 +36,9 @@ const ALIASES = Object.freeze({
 const NUMBER_FIELDS = new Set(['region','floor','total_floors','building_age','land_area','built_area','bedrooms','total_price','price_per_meter','entry_price','full_deposit','deposit_amount','rent_amount']);
 
 function stableGeneratedCode({ sourceFile, sheetName, sheetIndex, rowNumber } = {}) {
-  const file = String(sourceFile || '').split(/[\\/]/).pop().replace(/\\.[^.]+$/, '').trim();
+  const baseName = String(sourceFile || '').split(/[\\/]/).pop();
+  const dot = baseName.lastIndexOf('.');
+  const file = (dot > 0 ? baseName.slice(0, dot) : baseName).trim();
   const sequence = Math.max(1, Number(rowNumber) - 1 || 1);
   if (/^222$/i.test(file) && (sheetName === 'Sheet2' || sheetName == null || sheetName === '')) {
     return 'IMP-222-' + String(sequence).padStart(5, '0');
