@@ -240,3 +240,26 @@ test('property mapper accepts alternate Persian owner and address header spellin
   assert.equal(mapped.alley, 'کوچه ۴');
   assert.equal(mapped.side_street, 'غربی');
 });
+
+
+test('222.xlsx Sheet2 row provenance recreates the original stable property code', () => {
+  const first = mapPropertyImportRow({ 'مالک': 'مالک اول', 'خیابان': 'قصرالدشت' }, {
+    sourceFile: '222.xlsx', sheetName: 'Sheet2', sheetIndex: 1, rowNumber: 2
+  });
+  const last = mapPropertyImportRow({ 'مالک': 'مالک آخر', 'خیابان': 'معالی آباد' }, {
+    sourceFile: '222.xlsx', sheetName: 'Sheet2', sheetIndex: 1, rowNumber: 5839
+  });
+  assert.equal(first.property_code, 'IMP-222-00001');
+  assert.equal(last.property_code, 'IMP-222-05838');
+});
+
+test('non-canonical import files receive deterministic codes from source and row provenance', () => {
+  const a = mapPropertyImportRow({ 'اسم': 'A' }, {
+    sourceFile: 'new-properties.xlsx', sheetName: 'Sheet1', sheetIndex: 0, rowNumber: 2
+  });
+  const b = mapPropertyImportRow({ 'اسم': 'A' }, {
+    sourceFile: 'new-properties.xlsx', sheetName: 'Sheet1', sheetIndex: 0, rowNumber: 2
+  });
+  assert.equal(a.property_code, 'IMP-new-properties-01-00001');
+  assert.equal(a.property_code, b.property_code);
+});
