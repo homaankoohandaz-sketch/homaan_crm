@@ -111,3 +111,27 @@ input,select,textarea{background:rgba(13,17,22,.34)!important;border-color:rgba(
 @media(max-width:760px){.mobile-nav,.bottom-nav{background:rgba(25,30,36,.74)!important;border-top:1px solid rgba(255,255,255,.18)!important;backdrop-filter:blur(28px) saturate(145%);-webkit-backdrop-filter:blur(28px) saturate(145%)}.bw-content-grid{padding-bottom:110px}.bw-panel,.bw-kpi,.bw-welcome{border-radius:19px!important}}
 @media(prefers-reduced-motion:no-preference){.card,.stat,.bw-panel,.bw-kpi,.bw-quick-grid button,.btn{transition:background .22s ease,border-color .22s ease,box-shadow .22s ease,transform .22s ease}.bw-panel:hover,.card:hover{box-shadow:inset 0 1px rgba(255,255,255,.2),0 22px 50px rgba(0,0,0,.22)!important}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* BuildWise glass visual system — warm architectural backdrop + smoked glass */
+:root{--bw-bg:#171a1c;--bw-surface:rgba(224,229,230,.115);--bw-ink:#f4f6f7;--bw-muted:#c1c8cb;--bw-line:rgba(255,255,255,.17);--bw-primary:#26343b;--bw-accent:#48b9ee;--bw-shadow:0 18px 55px rgba(0,0,0,.22);--bw-radius:20px}
+html,body{background:#171a1c;color:var(--bw-ink)}
+body{background:radial-gradient(ellipse at 8% 82%,rgba(185,137,91,.25),transparent 35%),radial-gradient(ellipse at 92% 8%,rgba(123,151,164,.24),transparent 38%),linear-gradient(135deg,#25282a 0%,#121719 55%,#30271f 100%);background-attachment:fixed}
+body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:linear-gradient(90deg,rgba(13,16,17,.2),transparent 30%,rgba(10,12,13,.2)),radial-gradient(ellipse at 50% 100%,rgba(198,161,123,.12),transparent 55%);backdrop-filter:saturate(.8)}
+.bw-shell,.app{background:transparent!important;color:#f4f6f7}
+.bw-sidebar,.sidebar{background:rgba(192,201,205,.13)!important;border-color:rgba(255,255,255,.16)!important;backdrop-filter:blur(28px) saturate(125%);-webkit-backdrop-filter:blur(28px) saturate(125%);box-shadow:0 20px 60px rgba(0,0,0,.16),inset 0 1px rgba(255,255,255,.18)}
+.bw-topbar,.topbar{background:rgba(28,35,39,.48)!important;border:1px solid rgba(255,255,255,.13);backdrop-filter:blur(30px) saturate(130%);-webkit-backdrop-filter:blur(30px) saturate(130%);box-shadow:0 10px 35px rgba(0,0,0,.12)}
+.bw-content,.content,.bw-content-grid{background:transparent!important}
+.bw-card,.bw-kpi,.bw-panel,.bw-assistant,.card,.stat,.property-card,.lead-card,.deal-card,.project-card,.match-card,.integration-card,.auth-card,.entry-card{background:rgba(218,225,228,.13)!important;border:1px solid rgba(255,255,255,.16)!important;color:#f4f6f7!important;border-radius:22px!important;backdrop-filter:blur(26px) saturate(130%);-webkit-backdrop-filter:blur(26px) saturate(130%);box-shadow:0 18px 48px rgba(0,0,0,.17),inset 0 1px 0 rgba(255,255,255,.13)!important}
+.bw-kpi strong,.bw-panel h3,.bw-card h3,.card-title,.page-head h1,.property-card b,.lead-card b,.deal-card b,.project-card b{color:#f7f8f9!important}
+.bw-kpi small,.bw-panel p,.bw-card p,.page-head p,.muted,.bw-muted{color:#c4cccf!important}
+.nav-item{color:#f1f4f5!important}.nav-item:hover,.nav-item.active{background:rgba(255,255,255,.17)!important;color:#fff!important;border:1px solid rgba(255,255,255,.13)}
+input,select,textarea{background:rgba(20,25,28,.38)!important;color:#fff!important;border-color:rgba(255,255,255,.2)!important;border-radius:13px!important}
+input::placeholder,textarea::placeholder{color:#c0c7ca!important}
+.btn,.bw-quick-grid button{background:rgba(218,225,228,.14)!important;color:#f6f8f9!important;border-color:rgba(255,255,255,.2)!important;backdrop-filter:blur(16px)}
+.btn.primary,.bw-quick-grid button.primary{background:linear-gradient(135deg,#39aee9,#287dc2)!important;border-color:rgba(95,202,255,.65)!important;color:#fff!important;box-shadow:0 8px 24px rgba(28,145,211,.2)}
+.btn:hover,.bw-quick-grid button:hover{transform:translateY(-1px);background:rgba(255,255,255,.2)!important}
+table{color:#f3f5f6!important}th{color:#c5cdd0!important}td{border-color:rgba(255,255,255,.12)!important}
+.bw-bottom-nav,.bottom-nav,.mobile-nav{background:rgba(27,33,36,.75)!important;border-top:1px solid rgba(255,255,255,.16)!important;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
+.bw-toast{background:rgba(35,43,47,.88)!important;color:#fff!important;backdrop-filter:blur(18px)}
+@media(max-width:760px){body{background-attachment:scroll}.bw-content-grid,.content{padding-bottom:105px!important}.bw-card,.bw-kpi,.bw-panel,.card,.stat,.property-card,.lead-card,.deal-card,.project-card,.match-card{border-radius:18px!important}.bw-bottom-nav,.bottom-nav,.mobile-nav{position:fixed;bottom:env(safe-area-inset-bottom,0);left:10px;right:10px;border-radius:20px 20px 0 0;z-index:40}}
+@media(prefers-reduced-motion:no-preference){.bw-card,.bw-kpi,.bw-panel,.card,.stat,.property-card,.lead-card,.deal-card,.project-card,.btn,.nav-item{transition:background .22s ease,border-color .22s ease,box-shadow .22s ease,transform .22s ease}.bw-card:hover,.bw-panel:hover,.card:hover{box-shadow:0 22px 55px rgba(0,0,0,.22),inset 0 1px rgba(255,255,255,.18)!important}}
