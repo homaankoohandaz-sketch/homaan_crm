@@ -152,3 +152,6 @@ body:before{
   background:linear-gradient(90deg,rgba(9,14,17,.24),rgba(9,14,17,.08) 48%,rgba(9,14,17,.28)),linear-gradient(0deg,rgba(9,14,17,.32),transparent 55%);
 }
 @media(max-width:760px){body{background-attachment:scroll;background-position:center center}}
+
+/* Manager-wide property table */
+.bw-manager-table-wrap{width:100%;overflow:auto;border:1px solid rgba(255,255,255,.16);border-radius:14px;background:rgba(10,13,18,.72);max-height:72vh}.bw-manager-table{width:100%;border-collapse:separate;border-spacing:0;white-space:nowrap;font-size:12px}.bw-manager-table th,.bw-manager-table td{padding:9px 11px;text-align:right;border-bottom:1px solid rgba(255,255,255,.09)}.bw-manager-table th{position:sticky;top:0;background:#20242b;color:#f5f7fb;z-index:2}.bw-manager-table td{color:#edf0f5}.bw-manager-table tbody tr:hover{background:rgba(255,255,255,.06)}.bw-manager-table input{accent-color:#8b7cff}
