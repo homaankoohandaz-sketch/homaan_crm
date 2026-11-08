@@ -1,3 +1,19 @@
+## 2026-11-08 — Grok migration inventory (read-only)
+
+- Created `.agent-control/MIGRATION-INVENTORY-2026-11-08.md`.
+- Current `main` contains **51** SQL files under `supabase/migrations/`.
+- Last documented live ledger count (FINAL-ARCHITECTURE-RECOMMENDATION, 2026-11-03): **108** records, latest version then `20261024100056`.
+- Four new migration files dated 2026-11-08 exist on main and are **unapplied**:
+  - `20261108153053_consolidate_rls_policies_and_centralize_role_checks.sql`
+  - `20261108153251_set_shared_role_helper_security_invoker.sql`
+  - `20261108153357_centralize_construction_project_role_predicates.sql`
+  - `20261108160000_construction_project_role_shares.sql`
+- Migration parity remains **UNRESOLVED**. No production apply, delete or rewrite performed or authorized by this update.
+- This contributes evidence to AUDIT-000-reconcile-baseline (Git-side inventory only). Live ledger pull and full provenance mapping are still required before any schema change on the live project.
+- Policy reaffirmed: `no-migration-apply-or-repair-before-sql-provenance-reconciliation`.
+
+---
+
 ## EXECUTION GATE CLARIFICATION — 2026-10-29
 
 - **Experimental/internal execution gate: OPEN.** Claude and other authorized workers should proceed immediately with the real test suite, advisor parsing, live-site checks, bug fixes, and non-destructive integration work. Do not pause ordinary development merely because the production release gate is blocked.
@@ -78,7 +94,7 @@ Unit/contract still PASS. 630 BLOCKED.
 ## Follow-up remediation — 2026-10-17 (customer portal XSS and live evidence)
 - Read-only inspection of the deployed Supabase Edge Function `customer-portal` (version 3) confirmed that its current HTML response still interpolates share titles/messages, property values, asset URLs, and file names without contextual escaping. Treat this as a live security finding; do not claim it is fixed in production.
 - Patched the development branch `buildwise-implementation` to add `supabase/functions/customer-portal/html.mjs` with HTML escaping and HTTPS-only URL validation; updated `supabase/functions/customer-portal/index.ts` to escape dynamic text, validate image/document URLs, add `rel="noopener noreferrer"`, and remove unused inline JSON serialization; added `tests/unit/customer-portal-html-escaping.test.mjs` and wired it into `npm test`.
-- Verification by re-reading GitHub files confirmed the escaped interpolation, URL validation, regression test file, and package script are present. Commit sequence: helper `f082012dcc7aa6f25a813ef23d458fb0599b45c2`, tests `ea5ba1a15c1f349f45bc07bbe0878f2aa4a8fc60`, function source `0e0a65d2ba7913b681c756cd1630a73ee9fee362`, test wiring `9a3738861c1dbe671c8dec57ac6b96e556add1aa`.
+- Verification by re-reading GitHub files confirmed the escaped interpolation, URL validation, regression test file, and package script are present. Commit sequence: helper `f082012dcc7aa6f25a813ef23b9c1f178095f2`, tests `ea5ba1a15c1f349f45bc07bbe0878f2aa4a8fc60`, function source `0e0a65d2ba7913b681c756cd1630a73ee9fee362`, test wiring `9a3738861c1dbe671c8dec57ac6b96e556add1aa`.
 - CI results for the latest commit were not yet available through the connector at the time of this note; no successful local full-suite execution is claimed.
 - Production `customer-portal` was **not deployed**: the branch file and deployed source have other behavioral differences, so a direct deployment from the branch could unintentionally change query filters/property display. Require reviewed, scoped deployment and a public-share smoke test before closing the live finding.
 - Live read-only audit confirmed 106 migration ledger entries and that the current roles for the 12 policies in the `scope_is_active_user_policies` proposal are already `authenticated` for the relevant SELECT policies. The migration ledger name/version still differs from the checked-in filename; exact SQL provenance and full migration parity remain unresolved. Do not reapply migration `20261017044414` or its differently named proposal.
@@ -140,185 +156,4 @@ Unit/contract still PASS. 630 BLOCKED.
 - Expanded the existing backup/restore runbook with alternatives: Supabase managed backups/PITR, encrypted GitHub Actions artifacts, encrypted off-site object storage (R2 candidate), local/offline encrypted copies, and a second Supabase recovery project. Recommended low-cost layout is encrypted scheduled dump + short-term artifact + encrypted off-site copy + isolated restore drill.
 - Corrected `docs/e2e/E2E-630-PRODUCTION-SCENARIO.md`: `buildwise-ai-h.netlify.app` returned HTTP 404; the actual Netlify primary URL `https://buildwis-ai.netlify.app` and branch alias both load the BuildWise AI landing page in read-only fetch checks.
 - CI verification: GitHub Actions `BuildWise Full Test Suite` run #1 (run ID `39290618908`) completed successfully on commit `3e2727047625a7dd98395987af7778fe02774c32`; both `Run complete test suite` (`npm test`) and `Run release smoke checks` passed. The CRM regression test was wired into `npm test` before that run and was included. Later commits `4ef630a`, `038c50d`, and `c172509` contain documentation/state updates only; their newest workflow run was queued/running at the last check. This CI result does not prove authenticated E2E. Direct local execution was unavailable because no repository checkout was mounted and GitHub clone access failed DNS.
-- Authenticated E2E item 630 remains BLOCKED. The saved `BuildWise Production E2E` browser profile currently reports no confirmed signed-in sites; do not assume it has a valid login session.
-- Release remains blocked: PR #40 is open, reports `mergeable=false`, and `buildwise-implementation` is diverged from `main` (53 commits ahead, 11 behind at this check). Do not merge the broad PR into `main` until conflicts/history are reconciled and CI, backup restore, migration parity, and authenticated E2E gates are evidenced.
-
-
-## Main reconciliation and final integration decision
-
-- Architect decision: `main` is the final canonical branch. Reconcile the current `main` and `buildwise-implementation` histories in one two-parent merge commit; preserve the implementation tree and combine the useful live-state evidence from `main` into this existing state file. Do not create a parallel state file or delete historical source branches before verifying the merge.
-- Comparison at 2026-10-19: implementation is 61 commits ahead and 11 behind `main`; the merge base is `06e9454d41c65331c28a6e83b25b4594e7f600e7`. The only file changed on `main` relative to the merge base is `.agent-control/STATE.md`; the implementation branch contains the useful code, migrations, test changes, and operational docs. Reconcile that state content rather than reverting implementation files.
-- Live Supabase project: `beuestoewletjsgmigmf`, ACTIVE_HEALTHY. `public.properties` and `public.owners` currently contain 0 rows; `public.import_raw_rows` contains 0 rows. Existing import batches 1–3 are stuck `running`; batch 4 is `rolled_back` after 1,750 malformed property rows were removed. Do not repeat that faulty importer behavior.
-- Migration drift remains a release blocker: prior audit recorded 106 migration ledger entries but only 40 SQL migration files in the branch tree. Reconcile ledger to Git history before treating schema deployment as complete; do not delete or rewrite migrations merely to make counts match.
-- Excel import requirement: preserve every non-empty source row from all worksheets, archive the original row payload and source sheet/row, do not deduplicate or discard rows based on validation. Import records with unknown/invalid fields into an editable CRM review state; property editing/deletion must act on the same CRM records, with deletion restricted to authorized roles and audit/rollback evidence.
-- Production release is not complete until main deploys the merged SHA, the deployed URL loads the merged version, all Excel rows are accounted for, and authenticated E2E confirms create/edit/delete and role isolation. The 850 checklist items are requirements, not file count; item 630 remains blocked until browser evidence.
-
-
-## 2026-10-19 — Canonical main merge and Excel preservation
-
-- Canonical branch is now `main`; the merge commit is `2e7a7e98e1cc723385900e9a38b4979d05055871`. `buildwise-implementation` was fast-forwarded to the same current head as a temporary mirror; all new work must target `main`. PR #40 is closed as merged.
-- Latest code head at this state update: `d51443c113e013b1a75faf248aca896e75d1c567`. GitHub Actions run `39292216698` completed successfully: `npm test` and `tests/release-smoke.mjs` both passed.
-- Excel importer now treats headerless `Sheet3` as contact pairs and creates one CRM lead per non-empty contact slot (including name-only entries). `Sheet1` and `Sheet4` are routed to properties. Validation warnings no longer stop the whole batch; each row is attempted and raw data is archived. Additional property fields are allow-listed by the CRM data agent.
-- The existing CRM import archive UI now lists raw import rows with manager-only JSON edit/delete. `imported_by` is set to the current authenticated user. The manager-only `import_raw_rows_delete_manager` RLS policy was applied to the live Supabase project.
-- Workbook audit: Sheet1 has 5,838 data rows; Sheet4 has 130; Sheet3 contains 66 non-empty contact slots, of which 4 are name-only. Expected normalized CRM attempts: 5,968 property/request rows + 66 leads = 6,034. The source has 6,001 non-empty worksheet rows including the 33 contact-pair rows; the contact sheet is expanded into individual CRM contacts without dropping source values.
-- IMPORTANT: the uploaded workbook has NOT yet been imported into live Supabase. At the last database check, `properties=0`, `owners=0`, and `import_raw_rows=0`; the app import requires an authenticated CRM session and a browser file upload. Do not claim the workbook is already present until the batch reports counts and DB queries confirm them.
-- Netlify production currently serves deploy `6ad342d27b5cec5695f0b1ed` from old commit `a4d8f074fb6ef6dcb19e9ef1a09896bb322431d6`, not the latest main. The connected Netlify browser profile has no sign-in, so deployment of current main is blocked until the user signs in to Netlify. The public landing URL is `https://buildwis-ai.netlify.app`.
-- Production gates still open: publish latest main SHA, import and verify all 6,034 CRM attempts / raw archive rows, authenticated CRUD and role-isolation E2E (item 630), successful encrypted backup + restore drill, and reconcile migration ledger drift (previous audit: 106 live ledger entries vs 40 SQL files in the branch tree).
-
-## 2026-10-20 — Live Supabase re-verification (read-only, no DB writes)
-
-- Project `beuestoewletjsgmigmf`. Live `pg_policy`: every policy referencing `is_active_user()` is scoped to role `{authenticated}` (migration `20261017120000_scope_is_active_user_policies.sql` is applied). The older "blocked on policy scope" note is RESOLVED.
-- Live ACL: `is_active_user()` / `is_manager_user()` executable only by postgres, service_role, authenticated (anon/PUBLIC revoked).
-- Security advisor now: 1x `authenticated_security_definer_function_executable`, 134x `auth_allow_anonymous_sign_ins` (frontend never calls signInAnonymously; disable "Allow anonymous sign-ins" in Auth settings), 1x `auth_leaked_password_protection` (Pro-only; free substitute `src/core/password-policy.js`, client-side only).
-- Open: backup secrets/variable (`SUPABASE_DB_URL`, `BACKUP_AGE_RECIPIENT`), `SUPABASE_PUBLISHABLE_KEY` for keepalive, authenticated E2E (630), Excel data load.
-
-
-## Current operational state — 2026-10-27 (supersedes older branch/deploy notes)
-- Single source of code: `main`. `buildwise-implementation` was fast-forwarded to the same SHA as main after confirming it had zero unique commits; comparison now reports identical refs.
-- Latest verified main at time of this record: `0fabd68e5885e66cb154e77dc78a3b07c1171f76`. Full test suite, application validation, QA, worker runtime, and GitHub Pages deployment passed on this SHA.
-- Current user review URL: https://homaankoohandaz-sketch.github.io/homaan_crm/ . Browser smoke: BuildWise AI title and four role-entry cards visible; no JavaScript console errors observed.
-- Netlify is NOT current: published deploy `6ade20cbeb9d4e580b599dbc` is a deploy-preview for SHA `4c3432e3c4cda3ba03ed6527f91d806b4b718983`, not current main. Netlify connector can inspect deploys but does not expose a deploy-trigger operation; no saved browser profile is signed into Netlify. Keep GitHub Pages as the review URL until Netlify is authenticated and republished from current main.
-- Cloudflare Pages deployment fails because `CLOUDFLARE_API_TOKEN` is absent. This is an external credential blocker; do not mark Cloudflare deployment healthy.
-- Excel exact-row deduplication was ported to the canonical branch via PR #48 and merged at `a307a12a027f1ad66f286d0ad1c5c6cf36af6299`. It only changes the import preview; it does not delete database rows. Regression coverage is now included in `npm test`; full suite passed before this documentation-only state update.
-- Closed superseded PRs: #43 (old-base Excel dedup), #45 (duplicate motion implementation; #46 already merged), #47 (preview-only PR targeting retired branch). PR #48 is merged.
-- Existing open PRs formerly based on `buildwise-implementation` were retargeted to `main`. GitHub reports them as not mergeable/conflicted; reconcile each diff against current main and run its focused + full tests before merging. Do not bulk-merge.
-- Checklist source of truth: `.agent-control/MASTER-CHECKLIST-v3-850.md`. Item 670 remains unchecked: content-bot code and unit tests exist, but the required professional marketing-asset workflow has not been verified in runtime/UI. Item 630 remains BLOCKED until authenticated E2E evidence exists. The 850-item checklist is canonical; old task counts are historical, not a second queue.
-- Next: (1) resolve open PR conflicts one by one, prioritizing import/runtime and security; (2) complete authenticated UI/E2E for item 630; (3) if Netlify is required, obtain an authenticated Netlify browser session and publish current main; (4) add `CLOUDFLARE_API_TOKEN` only if Cloudflare remains an intended production target.
-
-
-## Deployment safety fallback — 2026-10-27
-- Repository-level branch protection could not be read/changed through the current GitHub integration (branch-protection API returned 403); repository rulesets endpoint returned an empty list. This is an integration permission limitation, not proof that the account itself lacks admin access.
-- Workaround committed to `.github/workflows/pages.yml` at `06e8a9befc0d3596cc4a45558f48d84924592dab`: GitHub Pages deployment now depends on a validation job running `npm test`, release smoke checks, architecture contract, phase code map, and infrastructure deployment contract tests. If validation fails, Pages deployment is blocked.
-- This protects the published site from failing main commits but does **not** prevent a direct push/merge into `main`. Absolute merge protection still requires enabling GitHub branch protection/rulesets through an authenticated GitHub settings session with appropriate permissions.
-- The new workflow commit was pushed and file content re-read successfully; its CI result was still pending at last verification. Do not claim the new gate passed until its run finishes.
-
-
-## Operational reset and repository audit — 2026-10-31
-
-User-approved operating decision (D-027): rebuild the delivery process, retain code only when evidence supports it, preserve current user data, keep all nine phases active for audit/planning and controlled implementation, and target a personal trial. Priority order: Excel, Google Sheets, search, permissions, backup/restore, unified tasks, UI. This supersedes the 2026-10-18 temporary decision to deactivate phases 02–09; it does not waive safety gates.
-
-### Read-only repository evidence captured
-- Repository: homaankoohandaz-sketch/homaan_crm; public; default branch main; current branch metadata retrieved 2026-10-31.
-- main and buildwise-implementation are not equivalent. GitHub compare reports main is 24 commits ahead of buildwise-implementation (0 commits ahead in the reverse direction; status behind). Do not merge or reset either branch based on this alone.
-- Branch inventory returns dozens of historical/feature branches, including old implementation, security, backup, import, personal CRM, and UI motion branches. Inventory must be triaged; existence does not mean code is integrated or safe.
-- Open PR inventory includes unresolved audit/migration reconciliation, performance, customer-portal XSS, RLS hardening, public-request CORS, AI Edge hardening, CRM empty-row import, backup encryption, and anonymous-access security work. PRs are not automatically accepted as correct or mergeable.
-- Canonical TASK-QUEUE.yaml on main was stale/inconsistent with the current operating decision and is replaced by evidence-first task queue v4.
-- STATE.md contains contradictory historical notes: active branch main versus older restore/workflow notes referencing buildwise-implementation; historical migration counts and backup failures must not be treated as current live measurements.
-- MASTER-CHECKLIST-v3-850.md is the canonical 850-item acceptance register. Embedded historical counts explicitly are not current totals. Preserve existing states until item-by-item evidence review.
-- DECISIONS.md has D-001 through D-026. D-027 records the user's current operating decision.
-- PHASE-CURRENT-ARCHITECTURE.md is explicitly a deprecated pointer, not an active phase plan.
-
-### Confirmed discrepancies / unresolved evidence
-1. Branch strategy: main is canonical in current docs, but many feature branches and open PRs remain; buildwise-implementation is 24 commits behind main. Reconcile each PR/branch by file-level diff and tests; no blind merge.
-2. Migration provenance: historical STATE/PR evidence reports major mismatch between live migration ledger and repository SQL files, including differing names/versions. Current live ledger has not been re-read in this audit; treat parity as UNVERIFIED and prohibit apply/repair until current read-only comparison.
-3. Backup: historical run failed credential validation and PRs document missing successful encrypted artifact/off-site copy/restore drill. Current successful restore evidence was not retrieved; status UNVERIFIED/OPEN.
-4. Security: historical reports identify 14 authenticated-executable SECURITY DEFINER functions, overlapping/multiple permissive policies and unresolved customer-portal/public-request concerns. Current live grants/policies and deployments were not re-read in this audit; status UNVERIFIED, not a claim of current vulnerability count.
-5. Runtime/deployment: current exact GitHub Pages/Netlify deployed SHA and authenticated browser acceptance were not freshly verified in this audit. No claim of current site freshness or personal-trial readiness.
-6. CRM imports: main's history documents Excel importer work and an expected workbook of 6,034 normalized attempts, but the workbook was explicitly not loaded in the recorded evidence. Current live data/import behavior remains unverified.
-7. Phase scope: current user confirms all nine phases active. This means audit/planning and controlled development across all phases; personal-trial delivery remains incremental and does not require all 9 phases complete first.
-
-### Safety boundaries
-No production data reset, destructive migration, migration repair, schema change, bulk import, secret rotation, force push, blind PR merge or production deployment was performed by this audit. Existing data must be preserved. All status changes require exact commit + tests + runtime/UI + security evidence as applicable.
-
-### Current active task
-AUDIT-000-reconcile-baseline — produce a current discrepancy register and evidence pack before implementation tasks advance. See .agent-control/TASK-QUEUE.yaml v4.
-
-
-## Supabase live read-only snapshot — 2026-10-31 (connector observation)
-- Project `beuestoewletjsgmigmf` returned `ACTIVE_HEALTHY`, Postgres 17.6.1.166, region `ap-northeast-2`.
-- Live migration ledger: 108 entries. Latest: `20261024100056` / `property_file_triage_and_market_batch_column_20261024`. This confirms the historical count of 106 is stale. It does NOT establish local SQL parity; local tree reconciliation remains required.
-- Public schema: 133 tables; all 133 reported with RLS enabled in the compact table listing. This does not prove policies are correctly scoped or tested.
-- Nonzero table counts include properties 6,039; import_batches 6; import_raw_rows 250; activity_logs 9,609; ai_actions 610; leads 5; deals 1; construction_projects 1; customer_shares 1; workflow_templates 7. These are live row counts, not proof that each workflow works. Preserve these records.
-- Security advisor: 14 authenticated-executable SECURITY DEFINER findings; 34 multiple-permissive-policy findings (performance category, including policies for anon and authenticated roles); leaked-password protection disabled warning; anonymous sign-in warning also returned. Each function/policy requires intent and privilege review; do not blanket-revoke or rewrite policies.
-- Performance advisor: 124 unindexed-FK findings (INFO) and 87 unused-index findings (INFO). Do not bulk-create/drop indexes without workload and lock-impact review.
-- Edge Functions: 12 ACTIVE entries observed, including `google-sheets-sync` v6, `crm-data-agent` v5, `public-request` v4, `customer-portal` v3, and `ai-orchestrator` v14. Listing is not a function-level security or behavior acceptance test.
-- No database writes, migration applies/repairs, function deployments, or Auth changes were made during this snapshot.
-
-
-## 2026-11-03 — Unified BuildWise UI implementation
-- User explicitly authorized the visual redesign and code changes, overriding the prior testing-only restriction for this scoped UI task.
-- Applied a shared RTL dark workspace shell to the authenticated app: persistent sidebar, global search, central module workspace, contextual BuildWise assistant rail, responsive mobile navigation, and consistent dark styling for existing module cards/forms/tables.
-- Rebuilt the dashboard with database-backed KPIs, recent projects, request mix, team activity, and direct operational shortcuts. No illustrative business figures were introduced.
-- Global search now queries the existing properties, leads, and deals tables and renders grouped results; it does not change underlying module permissions.
-- Cache-busting updated to 20261103a in index assets and service-worker cache.
-- Implementation files: `buildwise-app.js`, `buildwise-ui.css`, `index.html`, `sw.js`; tests: `tests/unit/ui-governance.test.mjs`; full test command now includes the UI governance suite in `package.json`.
-- Code commit before this state record: `468e01deb172ca9c58dd913d59bce4a0a76bdc26`; latest test-assertion commit: `7171d7f98658d3cc8f34e1c7cd473021a680d3fa`.
-- Verification on `7171d7f98658d3cc8f34e1c7cd473021a680d3fa`: BuildWise Full Test Suite PASS; Application Validation PASS; GitHub Pages deployment PASS.
-- Live URL fetched successfully and public authentication entry rendered. Authenticated dashboard and module interaction remain unverified because no authenticated browser session was available.
-- Cloudflare Pages workflow remains failed on this SHA; GitHub Pages is the canonical deployed review URL per README.
-- Next: authenticated browser walkthrough of each role and module, then tune each module's internal page layout/inline actions against the common shell. No schema, migration, or live database changes were made.
-
-
-## 2026-11-03 — Product scope change (D-028)
-- Active BuildWise delivery narrowed to CRM-first real-estate operations to accelerate a usable release.
-- Archived from active scope: checklist 066–100 (market/municipal/valuation analysis), 191–235 (project accounting), 343–367 (workflow engine), 453–476 (construction/project control).
-- Archive markers were added to the canonical checklist while retaining historical status markers.
-- No source modules, routes, database tables, migrations, records or deployment were deleted/changed in this documentation-only step. The next implementation step must inspect active navigation and feature dependencies before hiding/removing any entry points.
-- Future destination: possible integrated return or independent Project Control app; no second repository/app is authorized yet.
-
-
-## 2026-11-04 — CRM import and manager-access execution
-
-- Latest code SHA: `b5f11472cb4080918dae801971385b67dfb594c1`.
-- Implemented canonical Persian/Arabic property import mapper in `src/domains/crm/property-import-mapper.js`; `data-import.js` now passes source workbook, sheet and row provenance.
-- Added regression coverage for 222.xlsx owner/mobile/street/alley/side_street, Persian numeric values, alternate header spellings, and deterministic source-row IDs.
-- Existing database identity range is confirmed: 5,838 records, `IMP-222-00001` through `IMP-222-05838`. Stable mapper reproduces this range for 222.xlsx / Sheet2 without changing production data.
-- Manager role handling now trims/case-normalizes role values, exposes `window.isManager` to UI extensions, and displays the Persian role label in the sidebar (owner account displays as مدیر اصلی).
-- Full Test Suite: PASS on SHA above. BuildWise QA: PASS. Application Validation: PASS. GitHub Pages deployment is still running at report time; do not claim the new SHA is live until the deployment run succeeds.
-- Live data remains unchanged. The original 222.xlsx workbook is not present in the repository or current project files. No deletion, re-import, bulk update, migration, backup or security change was performed.
-- Supabase ledger remains 108 migrations, latest `20261024100056`. Do not add/apply migrations until provenance reconciliation is complete.
-
-
-## 2026-11-04 — Import QA and manager UI follow-up
-
-- Latest reviewed main SHA: `343ec1314bbdfa8b67c5dbef0458a8ed3535378e`.
-- Full Test Suite: PASS. BuildWise QA: PASS. Application Validation: PASS. GitHub Pages deployment: PASS.
-- Live release stamp and cache version verified at `20261104crmfix3`.
-- Import preview now displays field coverage before database writes for owner, street, alley, side_street, mobile and property name. This makes missing source columns visible before import.
-- Stable 222.xlsx / Sheet2 source-row IDs are covered by tests and match the existing `IMP-222-00001` … `IMP-222-05838` sequence.
-- Manager role label/capability bridge is tested; property, deal and imported-raw-record CRUD controls have regression coverage. Authenticated browser E2E remains unverified because no authenticated browser session is available.
-- No production rows changed. Original 222.xlsx is still needed for actual reconciliation. Cloudflare Pages remains an external deployment failure; GitHub Pages is the verified live host.
-
-
-## 2026-11-04 — CRM search batch
-
-- Latest app SHA: `d4199d6cf06f91903a9685aa68d83969fa0f408f`.
-- Added one-character text search and advanced property filters: owner/name/code/address, price range, area range, region, neighborhood, type, bedrooms and status.
-- Search is role-aware: manager queries the properties table (including mobile); other roles query the restricted `properties_client` view without mobile.
-- Full Test Suite: PASS; BuildWise QA: PASS; Application Validation: PASS; GitHub Pages deployment: PASS.
-- Live HTML/cache version verified: `20261104crmfix4`.
-- Authenticated database search results and cross-role visibility remain unverified without a live authenticated browser session.
-
-
-## 2026-11-04 — CRM task engine compatibility
-
-- Latest app SHA: `c5483e61f2be8ae74fe3942b564ca9aede953fe0`.
-- Live `tasks.status` constraint accepts only `pending` and `done`; the domain engine previously wrote `open`, `in_progress`, `completed`, and `rejected`. Added a persistence adapter that maps domain states to the existing DB values and reconstructs them on reads.
-- CRM task subjects now support property, lead, request, contact, customer share and deal without a schema migration. Property/lead relations use the existing `property_id`/`lead_id` columns and nullable `subject_type`.
-- Active Task Center is limited to `context_type='crm'`; construction/procurement task options are removed from the active UI. Existing engine support/schema remains preserved.
-- Full Test Suite: PASS; BuildWise QA: PASS; Application Validation: PASS; GitHub Pages deployment: PASS.
-- Live HTML/cache version verified: `20261104taskfix1`.
-- No production task rows were created; live task count remains zero. The persistence adapter is unit-tested against the actual DB status contract. Authenticated insert/update E2E remains unverified.
-- No migration was added: live migration ledger has 108 entries while the repository contains 47 migration files; drift reconciliation is still required before any new migration.
-
-
-## 2026-11-04 — CRM dashboard and task follow-up completion pass
-
-- App source SHA: `4b71cceeff4e9584466ed94434b078c274fee757`.
-- Dashboard no longer queries archived `construction_projects`; task KPI now uses the live `tasks.status='pending'` value.
-- Task engine adapter now persists domain lifecycle using database-supported `pending/done` plus `response=yes/no`, and reconstructs canonical states.
-- CRM task form links follow-ups to actual properties, leads, public requests, contacts, deals and customer shares using database-backed selectors.
-- Active Task Center reads only `context_type='crm'`; archived construction/procurement task options are removed from active UI.
-- Full Test Suite: PASS; BuildWise QA: PASS; Application Validation: PASS.
-- GitHub Pages deploy attempt failed after artifact retries: first attempt HTTP 502, rerun then found three duplicate `github-pages` artifacts. This is a workflow retry artifact issue, not an application test failure. A clean new deployment run is required.
-- No production tasks or property records were created/modified. Authenticated task create/update E2E remains unverified.
-
-
-## 2026-11-04 — Living-room glass theme and final Pages release
-
-- Latest app SHA: `5f782cababc051e1982e13d7f4599c8ab182563b`.
-- Added a real living-room background photo from Unsplash under the warm smoked-glass surfaces; dark overlay preserves text contrast. Photo is published under the Unsplash License.
-- Dashboard cleanup, task status adapter, CRM-only follow-up selector and manager UI are included in this release.
-- Full Test Suite: PASS; BuildWise QA: PASS; Application Validation: PASS; GitHub Pages deployment: PASS.
-- Live HTML/cache stamp verified: `20261104taskfix4`.
-- Cloudflare Pages remains non-canonical; GitHub Pages is the verified deployment.
+- Authenticated E2E item 630 remains BLOCKED. The saved `BuildWise Production E2E` browser profile currently reports no confirmed signed-in sites; do not assume it is usable for authenticated E2E.
