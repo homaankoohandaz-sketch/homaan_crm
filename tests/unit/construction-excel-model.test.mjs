@@ -20,10 +20,10 @@ test('reproduces the supplied M6 Excel model without dropping its rows', () => {
   assert.equal(result.cells.C11, 397);
   assert.equal(result.cells.C12, 2382);
   assert.equal(result.cells.C16, 2864);
-  assert.equal(result.cells.C20, 2291.2);
+  assert.ok(Math.abs(result.cells.C20 - 2291.2) < 1e-9);
   assert.equal(result.cells.C25, 407);
   assert.equal(result.cells.C28, 3271);
-  assert.equal(result.cells.C30, 2116.6);
+  assert.ok(Math.abs(result.cells.C30 - 2116.6) < 1e-9);
   assert.equal(result.cells.C35, 406.5);
   assert.equal(result.cells.C36, 135.5);
   assert.equal(result.cells.C39, 163550000000);
