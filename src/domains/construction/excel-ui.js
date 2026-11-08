@@ -8,13 +8,12 @@ const DEFAULTS = Object.freeze({
   landArea:397, plotWidth:10, buildingRegulation:6, groundCoveragePercent:100,
   lowerBuildablePercent:0, lowerFloorsForFormula:0, displayedLowerFloors:2,
   balconyArea:60, rooftopArea:25, efficiencyPercent:80,
-  additionalStoreyCount:1, additionalStoreyArea:397, consoleArea:10,
-  parkingArea:75, storageArea:60, managementPercent:0, builderPercent:75, ownerPercent:25,
+  additionalStoreyCount:1, managementPercent:0, builderPercent:75, ownerPercent:25,
   constructionCostPerM2:50000000, landPayment:'-', servicesCost:0,
   extraDensityBrokerCost:0, engineeringManagementCost:0, permitCost:7000000000,
   ownerPayment:0, landPricePerM2:100000000, urbanPlanningDifference:0,
   residentialSalePricePerM2:100000000, commercialSalePricePerM2:150000000,
-  commercialAreaMultiplier:2, monthlyRentPerM2:1000000,
+  monthlyRentPerM2:1000000,
   rentNote:'به قرار هر متر 1 میلیون تومان', participationNote:''
 });
 
@@ -25,8 +24,6 @@ const FIELDS = [
   ['lowerFloorsForFormula','طبقات پایین در فرمول','number'],['displayedLowerFloors','طبقات پایین (ردیف نمایشی اکسل)','number'],
   ['balconyArea','بالکن (m²)','number'],['rooftopArea','فضای مسقف بام (m²)','number'],
   ['efficiencyPercent','درصد مفید (%)','number'],['additionalStoreyCount','تعداد طبقه تراکم مازاد','number'],
-  ['additionalStoreyArea','متراژ هر طبقه مازاد (ورودی نمایشی)','number'],['consoleArea','کنسول (m²)','number'],
-  ['parkingArea','پارکینگ (m²)','number'],['storageArea','انباری (m²)','number'],
   ['managementPercent','درصد مدیریت پیمان (%)','number'],['builderPercent','درصد سازنده (%)','number'],
   ['ownerPercent','درصد مالک (%)','number'],['constructionCostPerM2','هزینه ساخت هر متر','number'],
   ['landPayment','پرداختی از زمین','text'],['servicesCost','سهم خدمات','number'],
@@ -35,7 +32,7 @@ const FIELDS = [
   ['landPricePerM2','قیمت هر متر زمین','number'],['urbanPlanningDifference','مابه‌التفاوت شهرسازی زمین','number'],
   ['residentialSalePricePerM2','قیمت فروش هر متر مسکونی','number'],
   ['commercialSalePricePerM2','قیمت فروش هر متر تجاری','number'],
-  ['commercialAreaMultiplier','ضریب متراژ تجاری','number'],['monthlyRentPerM2','اجاره ماهانه هر متر','number'],
+  ['monthlyRentPerM2','اجاره ماهانه هر متر','number'],
   ['rentNote','توضیح اجاره','text'],['participationNote','توضیح درصد مشارکت','text']
 ];
 
