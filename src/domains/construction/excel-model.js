@@ -141,7 +141,6 @@ export function calculateExcelConstructionModel(input = {}) {
     commercialMultiplier: nonNegative(input.commercialAreaMultiplier ?? 2, 'commercialAreaMultiplier'),
     rent: nonNegative(input.monthlyRentPerM2 ?? 0, 'monthlyRentPerM2')
   };
-  if (Math.abs(v.builder + v.owner - 1) > 1e-9) throw new RangeError('builderPercent + ownerPercent must equal 100');
   const c = {};
   // Raw inputs first, matching their spreadsheet cells.
   c.C5=v.landArea; c.C6=v.plotWidth; c.C7=v.buildingRegulation;
@@ -151,7 +150,7 @@ export function calculateExcelConstructionModel(input = {}) {
   c.C38=v.constructionCost; c.C41=v.landPayment; c.C42=v.services; c.C43=v.broker;
   c.C44=v.engineering; c.C45=v.permit; c.C46=v.ownerPayment; c.C48=v.landPrice;
   c.C50=v.urbanDifference; c.C54=v.residentialPrice; c.C82=v.commercialPrice;
-  c.C81=c.C5*v.commercialMultiplier*c.C17;
+  c.C81=c.C5*2*c.C17;
   // Area and additional-density formulas.
   c.C11=c.C5*c.C8; c.C12=c.C11*c.C7;
   c.C16=c.C12+c.C11+(c.C5*c.C9*c.C10)+c.C14+c.C15;
@@ -185,6 +184,7 @@ export function calculateExcelConstructionModel(input = {}) {
     code:'COMMERCIAL_AREA_SUBTRACTED_FROM_SELLABLE',
     message:'متراژ تجاری از قابل فروش کسر شده؛ فروش تجاری در C83 جداگانه محاسبه می‌شود.'
   });
+  if (Math.abs(v.builder + v.owner - 1) > 1e-9) warnings.push({code:'PARTICIPATION_TOTAL_NOT_100',message:'مجموع درصد سهم سازنده و مالک برابر ۱۰۰٪ نیست.'});
   if (v.management !== 0) warnings.push({code:'MANAGEMENT_PERCENT_UNUSED',message:'درصد مدیریت پیمان در نسخه اکسل ورودی دارد اما در هیچ فرمولی اعمال نشده است.'});
   if (v.urbanDifference !== 0) warnings.push({code:'URBAN_DIFFERENCE_UNUSED',message:'مابه‌التفاوت شهرسازی در نسخه اکسل وارد محاسبه کل هزینه نشده است.'});
   return Object.freeze({model:'construction-excel-m6-v2',cells:Object.freeze(c),rows:CONSTRUCTION_EXCEL_ROWS,warnings:Object.freeze(warnings),inputs:Object.freeze({...input})});
