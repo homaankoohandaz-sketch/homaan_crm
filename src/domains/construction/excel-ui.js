@@ -111,7 +111,7 @@ function showToast(message,type='info') {
   if (typeof window.toast === 'function') window.toast(message,type);
   else { const el=document.createElement('div'); el.textContent=message; el.className='bw-toast '+type; document.body.append(el); setTimeout(()=>el.remove(),3000); }
 }
-function renderPage(inputs, projects=[]) {
+function renderPage(inputs, projects=[], shareTargets=[]) {
   const main=document.getElementById('main');
   if (!main) throw new Error('صفحه اصلی اپ پیدا نشد.');
   const manager=typeof window.isManager==='function' && window.isManager();
@@ -126,10 +126,11 @@ function renderPage(inputs, projects=[]) {
   const actions=manager ? '<button class="btn primary" onclick="window.saveExcelConstructionProject()">ذخیره پروژه</button><button class="btn" onclick="window.newExcelConstructionProject()">پروژه جدید</button>'+(activeProjectId?'<button class="btn" onclick="window.copyExcelConstructionShareLink()">کپی لینک نمایش مشتری/مشاور</button>':'') : '';
   const print='<button class="btn" onclick="window.print()">چاپ / PDF</button>';
   const projectList=manager ? '<section class="card"><div class="card-title">پروژه‌های ذخیره‌شده</div><div class="bw-cx-projects">'+projects.map(p=>'<button class="btn" onclick="window.loadExcelConstructionProject(\''+esc(p.id)+'\')">'+esc(p.title||'پروژه بدون نام')+'</button>').join('')+'</div></section>' : '';
+  const shareCard=manager && activeProjectId ? '<section class="card"><div class="card-title">دسترسی مشاور / مشتری</div><p>حساب موردنظر را انتخاب و دسترسی فقط‌خواندنی همین پروژه را فعال کنید.</p><div class="bw-cx-actions"><select id="bw-cx-share-user"><option value="">انتخاب حساب فعال</option>'+shareTargets.map(u=>'<option value="'+esc(u.user_id)+'">'+esc((u.full_name||u.email||u.user_id)+' · '+(u.role==='agent'||u.role==='advisor'?'مشاور':'مشتری'))+'</option>').join('')+'</select><button class="btn primary" onclick="window.shareExcelConstructionProject()">اعطای دسترسی</button></div></section>' : '';
   main.innerHTML='<div class="bw-cx-wrap">'+renderHeader(inputs)+'<div class="bw-cx-actions">'+actions+print+'</div>'+editor
     +'<section class="card"><div class="card-title">گزارش محاسبه ساخت و منافع پروژه</div><div class="bw-cx-table-wrap"><table class="bw-cx-table"><thead><tr><th>ردیف</th><th>شرح</th><th>مقدار</th></tr></thead><tbody>'+renderRows(result,manager)+'</tbody></table></div></section>'
     +(manager && result.warnings.length?'<section class="card bw-cx-warnings"><strong>هشدارهای فرمول اکسل</strong>'+result.warnings.map(w=>'<p>'+esc(w.message)+'</p>').join('')+'</section>':'')
-    +projectList+'</div>';
+    +projectList+shareCard+'</div>';
   if (manager) {
     const form=document.getElementById('bw-construction-editor');
     form.addEventListener('input',()=>{try{updatePreview(readInputs(),manager);}catch(error){showToast(error.message,'error');}});
@@ -152,7 +153,7 @@ function updatePreview(inputs, manager) {
   const concept=document.querySelector('.bw-cx-contact strong');
   if(concept) concept.textContent=inputs.projectConcept;
 }
-async function fetchProjects() {
+async function fetchShareTargets() {\n  const {data,error}=await window.db.from('app_roles').select('user_id,full_name,email,role').eq('active',true).in('role',['advisor','agent','customer']).order('full_name',{ascending:true});\n  if(error) throw error; return data||[];\n}\nasync function fetchProjects() {
   if (!window.db) return [];
   const {data,error}=await window.db.from('construction_projects').select('id,title,assumptions,created_at').order('created_at',{ascending:false}).limit(50);
   if (error) throw error;
@@ -194,6 +195,20 @@ window.loadExcelConstructionProject = async function(id) {
   const title=document.getElementById('bw-cx-project-title');
   if(title) title.value=data.title||'';
 };
+window.shareExcelConstructionProject = async function() {
+  if (!(typeof window.isManager==='function' && window.isManager()) || !activeProjectId) return showToast('ابتدا پروژه را ذخیره کنید.','error');
+  const userId=document.getElementById('bw-cx-share-user')?.value;
+  if(!userId) return showToast('حساب مشاور یا مشتری را انتخاب کنید.','error');
+  try {
+    const existing=await window.db.from('construction_project_access').select('id').eq('project_id',activeProjectId).eq('user_id',userId).maybeSingle();
+    if(existing.error) throw existing.error;
+    const response=existing.data
+      ? await window.db.from('construction_project_access').update({revoked_at:null,granted_by:window.me?.id}).eq('id',existing.data.id)
+      : await window.db.from('construction_project_access').insert({project_id:activeProjectId,user_id:userId,granted_by:window.me?.id});
+    if(response.error) throw response.error;
+    showToast('دسترسی فقط‌خواندنی برای حساب انتخاب‌شده فعال شد.','success');
+  } catch(error) { showToast(error.message||'اعطای دسترسی انجام نشد.','error'); }
+};
 window.copyExcelConstructionShareLink = async function() {
   if (!(typeof window.isManager==='function' && window.isManager()) || !activeProjectId) return;
   const url=window.location.origin+window.location.pathname+'?construction_project='+encodeURIComponent(activeProjectId);
@@ -219,6 +234,6 @@ window.saveExcelConstructionProject = async function() {
     if(response.error) throw response.error;
     activeProjectId=response.data.id;
     showToast('پروژه و تمام ورودی‌ها و خروجی‌های اکسل ذخیره شد.','success');
-    const projects=await fetchProjects(); renderPage(inputs,projects);
+    const [projects,shareTargets]=await Promise.all([fetchProjects(),fetchShareTargets()]); renderPage(inputs,projects,shareTargets);
   } catch(error) { showToast(error.message||'ذخیره پروژه انجام نشد.','error'); }
 };
