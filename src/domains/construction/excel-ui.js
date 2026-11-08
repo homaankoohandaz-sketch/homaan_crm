@@ -1,6 +1,7 @@
 import { calculateExcelConstructionModel, CONSTRUCTION_EXCEL_ROWS } from './excel-model.js';
 
 const DEFAULTS = Object.freeze({
+  projectTitle:'پروژه M6 نمونه',
   projectConcept:'هومان کوه انداز',
   contactPhone:'09178030705',
   projectType:'M6 مسکونی تجاری',
@@ -18,7 +19,7 @@ const DEFAULTS = Object.freeze({
 });
 
 const FIELDS = [
-  ['projectType','نوع پروژه','text'],['landArea','متراژ زمین (m²)','number'],
+  ['projectTitle','عنوان پروژه','text'],['projectType','نوع پروژه','text'],['landArea','متراژ زمین (m²)','number'],
   ['plotWidth','عرض زمین (m)','number'],['buildingRegulation','ضابطه ساخت / طبقات بالا','number'],
   ['groundCoveragePercent','سطح اشغال (%)','number'],['lowerBuildablePercent','درصد ساخت منفی (%)','number'],
   ['lowerFloorsForFormula','طبقات پایین در فرمول','number'],['displayedLowerFloors','طبقات پایین (ردیف نمایشی اکسل)','number'],
@@ -130,12 +131,29 @@ function renderPage(inputs, projects=[]) {
   const projectList=manager ? '<section class="card"><div class="card-title">پروژه‌های ذخیره‌شده</div><div class="bw-cx-projects">'+projects.map(p=>'<button class="btn" onclick="window.loadExcelConstructionProject(\''+esc(p.id)+'\')">'+esc(p.title||'پروژه بدون نام')+'</button>').join('')+'</div></section>' : '';
   main.innerHTML='<div class="bw-cx-wrap">'+renderHeader(inputs)+'<div class="bw-cx-actions">'+actions+print+'</div>'+editor
     +'<section class="card"><div class="card-title">گزارش محاسبه ساخت و منافع پروژه</div><div class="bw-cx-table-wrap"><table class="bw-cx-table"><thead><tr><th>ردیف</th><th>شرح</th><th>مقدار</th></tr></thead><tbody>'+renderRows(result,manager)+'</tbody></table></div></section>'
-    +(result.warnings.length?'<section class="card bw-cx-warnings"><strong>هشدارهای فرمول اکسل</strong>'+result.warnings.map(w=>'<p>'+esc(w.message)+'</p>').join('')+'</section>':'')
+    +(manager && result.warnings.length?'<section class="card bw-cx-warnings"><strong>هشدارهای فرمول اکسل</strong>'+result.warnings.map(w=>'<p>'+esc(w.message)+'</p>').join('')+'</section>':'')
     +projectList+'</div>';
   if (manager) {
     const form=document.getElementById('bw-construction-editor');
-    form.addEventListener('input',()=>{try{const next=readInputs();renderPage(next,projects);}catch(error){showToast(error.message,'error');}});
+    form.addEventListener('input',()=>{try{updatePreview(readInputs(),manager);}catch(error){showToast(error.message,'error');}});
   }
+}
+function updatePreview(inputs, manager) {
+  const result=calculateExcelConstructionModel(inputs);
+  window.__BUILDWISE_EXCEL_CONSTRUCTION_LAST=result;
+  const tbody=document.querySelector('.bw-cx-table tbody');
+  if(tbody) tbody.innerHTML=renderRows(result,manager);
+  const warning=document.querySelector('.bw-cx-warnings');
+  if(manager && result.warnings.length) {
+    const html='<strong>هشدارهای فرمول اکسل</strong>'+result.warnings.map(w=>'<p>'+esc(w.message)+'</p>').join('');
+    if(warning) warning.innerHTML=html;
+    else {
+      const section=document.createElement('section'); section.className='card bw-cx-warnings'; section.innerHTML=html;
+      document.querySelector('.bw-cx-table')?.closest('.card')?.after(section);
+    }
+  } else if(warning) warning.remove();
+  const concept=document.querySelector('.bw-cx-contact strong');
+  if(concept) concept.textContent=inputs.projectConcept;
 }
 async function fetchProjects() {
   if (!window.db) return [];
@@ -161,7 +179,7 @@ window.loadExcelConstructionProject = async function(id) {
   activeProjectId=data.id;
   const saved=data.assumptions?.excelM6?.inputs;
   if(!saved) return showToast('ورودی‌های نسخه M6 در این پروژه ذخیره نشده است.','error');
-  const inputs={...DEFAULTS,...saved};
+  const inputs={...DEFAULTS,...saved,projectTitle:data.title||'پروژه M6'};
   const projects=await fetchProjects();
   renderPage(inputs,projects);
   const title=document.getElementById('bw-cx-project-title');
