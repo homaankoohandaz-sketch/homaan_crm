@@ -138,7 +138,6 @@ export function calculateExcelConstructionModel(input = {}) {
     urbanDifference: nonNegative(input.urbanPlanningDifference ?? 0, 'urbanPlanningDifference'),
     residentialPrice: nonNegative(input.residentialSalePricePerM2 ?? 0, 'residentialSalePricePerM2'),
     commercialPrice: nonNegative(input.commercialSalePricePerM2 ?? 0, 'commercialSalePricePerM2'),
-    commercialMultiplier: nonNegative(input.commercialAreaMultiplier ?? 2, 'commercialAreaMultiplier'),
     rent: nonNegative(input.monthlyRentPerM2 ?? 0, 'monthlyRentPerM2')
   };
   const c = {};
