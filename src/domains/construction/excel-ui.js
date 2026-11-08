@@ -98,7 +98,7 @@ function renderEditor(inputs) {
   ).join('')+'</div></form>';
 }
 function renderHeader(inputs) {
-  return '<header class="bw-cx-print-head"><div><strong>BuildWise AI</strong><div class="bw-cx-tagline">REAL ESTATE OPERATING SYSTEM</div></div><div class="bw-cx-contact"><strong>'+esc(inputs.projectConcept)+'</strong><span>مشاور مدیریت و ساخت</span><b>شماره تماس: '+esc(inputs.contactPhone)+'</b></div></header>';
+  return '<header class="bw-cx-print-head"><div><strong>BuildWise AI</strong><div class="bw-cx-tagline">REAL ESTATE OPERATING SYSTEM</div><span>'+esc(inputs.projectTitle||'')+'</span></div><div class="bw-cx-contact"><strong>'+esc(inputs.projectConcept)+'</strong><span>مشاور مدیریت و ساخت</span><b>شماره تماس: '+esc(inputs.contactPhone)+'</b><small>مبالغ بدون تبدیل؛ واحد مطابق ورودی اکسل</small></div></header>';
 }
 function styleOnce() {
   if (document.getElementById('bw-cx-style')) return;
@@ -123,7 +123,7 @@ function renderPage(inputs, projects=[]) {
   window.__BUILDWISE_EXCEL_CONSTRUCTION_LAST=result;
   styleOnce();
   const editor=manager ? '<section class="card"><div class="card-title">ورودی‌ها و تنظیمات محاسبه (مدیر)</div>'+renderEditor(inputs)+'</section>' : '';
-  const actions=manager ? '<button class="btn primary" onclick="window.saveExcelConstructionProject()">ذخیره پروژه</button><button class="btn" onclick="window.newExcelConstructionProject()">پروژه جدید</button>' : '';
+  const actions=manager ? '<button class="btn primary" onclick="window.saveExcelConstructionProject()">ذخیره پروژه</button><button class="btn" onclick="window.newExcelConstructionProject()">پروژه جدید</button>'+(activeProjectId?'<button class="btn" onclick="window.copyExcelConstructionShareLink()">کپی لینک نمایش مشتری/مشاور</button>':'') : '';
   const print='<button class="btn" onclick="window.print()">چاپ / PDF</button>';
   const projectList=manager ? '<section class="card"><div class="card-title">پروژه‌های ذخیره‌شده</div><div class="bw-cx-projects">'+projects.map(p=>'<button class="btn" onclick="window.loadExcelConstructionProject(\''+esc(p.id)+'\')">'+esc(p.title||'پروژه بدون نام')+'</button>').join('')+'</div></section>' : '';
   main.innerHTML='<div class="bw-cx-wrap">'+renderHeader(inputs)+'<div class="bw-cx-actions">'+actions+print+'</div>'+editor
@@ -161,7 +161,19 @@ async function fetchProjects() {
 window.constructionExcelM6 = async function() {
   try {
     const manager=typeof window.isManager==='function' && window.isManager();
-    const projects=manager?await fetchProjects():[];
+    if (!manager) {
+      const projectId=new URLSearchParams(window.location.search).get('construction_project');
+      const main=document.getElementById('main');
+      if (!projectId) { if(main) main.innerHTML='<section class="card"><h2>محاسبه ساخت و ساز</h2><p>برای مشاهده اطلاعات پروژه، لینک اختصاصی آن را از مدیر دریافت کنید.</p></section>'; return; }
+      const {data,error}=await window.db.from('construction_projects').select('id,title,assumptions').eq('id',projectId).single();
+      if(error) throw error;
+      const saved=data.assumptions?.excelM6?.inputs;
+      if(!saved) throw new Error('اطلاعات محاسبات M6 برای این پروژه ثبت نشده است.');
+      activeProjectId=data.id;
+      renderPage({...DEFAULTS,...saved,projectTitle:data.title||saved.projectTitle},[]);
+      return;
+    }
+    const projects=await fetchProjects();
     renderPage({...DEFAULTS},projects);
   } catch(error) { const main=document.getElementById('main'); if(main) main.innerHTML='<div class="errorbox">'+esc(error.message)+'</div>'; }
 };
@@ -181,6 +193,12 @@ window.loadExcelConstructionProject = async function(id) {
   renderPage(inputs,projects);
   const title=document.getElementById('bw-cx-project-title');
   if(title) title.value=data.title||'';
+};
+window.copyExcelConstructionShareLink = async function() {
+  if (!(typeof window.isManager==='function' && window.isManager()) || !activeProjectId) return;
+  const url=window.location.origin+window.location.pathname+'?construction_project='+encodeURIComponent(activeProjectId);
+  try { await navigator.clipboard.writeText(url); showToast('لینک نمایش پروژه کپی شد.','success'); }
+  catch { window.prompt('لینک نمایش پروژه را کپی کنید:',url); }
 };
 window.saveExcelConstructionProject = async function() {
   if (!(typeof window.isManager==='function' && window.isManager())) return showToast('فقط مدیر مجاز به ذخیره محاسبه است.','error');
