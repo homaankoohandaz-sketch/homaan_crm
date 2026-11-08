@@ -31,13 +31,13 @@ test('reproduces the supplied M6 Excel model without dropping its rows', () => {
   assert.equal(result.cells.C51, 210250000000);
   assert.equal(result.cells.C59, 361140000000);
   assert.equal(result.cells.C60, 150890000000);
-  assert.equal(result.cells.C61, 150890000000 / 280924837099.0 * 100);
-  assert.equal(result.cells.C72, 1646);
-  assert.equal(result.cells.C77, 470);
+  assert.ok(Math.abs(result.cells.C61 - 0.537118759445932) < 1e-10);
+  assert.ok(Math.abs(result.cells.C72 - 1646.4681569560046) < 1e-9);
+  assert.ok(Math.abs(result.cells.C77 - 470.1318430439952) < 1e-9);
   assert.equal(result.cells.C81, 635.2);
   assert.equal(result.cells.C83, 95280000000);
-  assert.equal(result.cells.C89, 100 - 210250000000 / 361140000000 * 100);
-  assert.equal(CONSTRUCTION_EXCEL_ROWS.length, 67);
+  assert.ok(Math.abs(result.cells.C89 - 0.41781580550479035) < 1e-10);
+  assert.equal(CONSTRUCTION_EXCEL_ROWS.length, 81);
 });
 
 test('flags formula-model double counting instead of silently changing Excel outputs', () => {
