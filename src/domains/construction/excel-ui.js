@@ -153,7 +153,11 @@ function updatePreview(inputs, manager) {
   const concept=document.querySelector('.bw-cx-contact strong');
   if(concept) concept.textContent=inputs.projectConcept;
 }
-async function fetchShareTargets() {\n  const {data,error}=await window.db.from('app_roles').select('user_id,full_name,email,role').eq('active',true).in('role',['advisor','agent','customer']).order('full_name',{ascending:true});\n  if(error) throw error; return data||[];\n}\nasync function fetchProjects() {
+async function fetchShareTargets() {
+  const {data,error}=await window.db.from('app_roles').select('user_id,full_name,email,role').eq('active',true).in('role',['advisor','agent','customer']).order('full_name',{ascending:true});
+  if(error) throw error; return data||[];
+}
+async function fetchProjects() {
   if (!window.db) return [];
   const {data,error}=await window.db.from('construction_projects').select('id,title,assumptions,created_at').order('created_at',{ascending:false}).limit(50);
   if (error) throw error;
