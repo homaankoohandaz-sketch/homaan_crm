@@ -86,7 +86,7 @@ test('all role-authorized core modules remain in navigation; database display se
 
 
 test('every standard navigation route has a dispatcher target', () => {
-  assert.match(app, /const f=\{requests,tasks:window\.taskCenter,promotions,dashboard,properties,leads,deals,search,data:dataHub,matching,room,customerflow,ai,'app-settings':appSettings\}\[id\]/);
+  assert.match(app, /const f=\{requests,tasks:window\.taskCenter,promotions,dashboard,properties,leads,deals,search,data:dataHub,matching,room,customerflow,ai,construction:window\.constructionExcelM6,'app-settings':appSettings\}\[id\]/);
 });
 
 
