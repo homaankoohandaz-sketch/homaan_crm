@@ -174,8 +174,8 @@ window.constructionExcelM6 = async function() {
       renderPage({...DEFAULTS,...saved,projectTitle:data.title||saved.projectTitle},[]);
       return;
     }
-    const projects=await fetchProjects();
-    renderPage({...DEFAULTS},projects);
+    const [projects,shareTargets]=await Promise.all([fetchProjects(),fetchShareTargets()]);
+    renderPage({...DEFAULTS},projects,shareTargets);
   } catch(error) { const main=document.getElementById('main'); if(main) main.innerHTML='<div class="errorbox">'+esc(error.message)+'</div>'; }
 };
 window.newExcelConstructionProject = function() {
@@ -190,8 +190,8 @@ window.loadExcelConstructionProject = async function(id) {
   const saved=data.assumptions?.excelM6?.inputs;
   if(!saved) return showToast('ورودی‌های نسخه M6 در این پروژه ذخیره نشده است.','error');
   const inputs={...DEFAULTS,...saved,projectTitle:data.title||'پروژه M6'};
-  const projects=await fetchProjects();
-  renderPage(inputs,projects);
+  const [projects,shareTargets]=await Promise.all([fetchProjects(),fetchShareTargets()]);
+  renderPage(inputs,projects,shareTargets);
   const title=document.getElementById('bw-cx-project-title');
   if(title) title.value=data.title||'';
 };
